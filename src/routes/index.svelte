@@ -2,12 +2,14 @@
 	import * as THREE from "three";
 	import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 	import Deepdwn from "$lib/components/deepdwn.svelte";
-	//import vertexShader from "$lib/scripts/shaders/vertex.glsl";
+	import { fragmentShader } from "$lib/scripts/shaders/fragment";
+	import { vertexShader } from "$lib/scripts/shaders/vertex";
 
 	let gameOn = false;
 	const endGame = () => {
 		location.reload();
 	};
+
 	const startGame = () => {
 		gameOn = true;
 
@@ -35,25 +37,47 @@
 		/**
 		 * Object
 		 */
-		const grid = []
+		const grid = [];
+
+		const materialType = new THREE.RawShaderMaterial({
+			vertexShader: vertexShader,
+			fragmentShader: fragmentShader,
+			uniforms: {
+				uFrequency: { value: new THREE.Vector2(10, 5) },
+				uTime: { value: 0 },
+				uColor: { value: new THREE.Color("orange") },
+			},
+		});
 
 		const createGrid = (x, y) => {
 			for (let i = -(y / 2); i < y / 2; i++) {
 				for (let j = -(x / 2); j < x / 2; j++) {
 					const cube = new THREE.Mesh(
 						new THREE.BoxGeometry(1, 0.1, 1),
-						new THREE.MeshBasicMaterial({
-							color: 0xff6699,
-						})
+						materialType
+						//new THREE.MeshBasicMaterial({
+						//	color: 0xff6699,
+						//})
 					);
 					cube.position.x = j * 1.1;
 					cube.position.z = i * 1.1;
 					grid.push(cube);
-					scene.add(cube)
+					scene.add(cube);
 				}
 			}
 		};
 		createGrid(15, 15);
+		const material = new THREE.RawShaderMaterial({
+			vertexShader: vertexShader,
+			fragmentShader: fragmentShader,
+			uniforms: {
+				uFrequency: { value: new THREE.Vector2(10, 5) },
+				uTime: { value: 0 },
+				uColor: { value: new THREE.Color("orange") },
+			},
+		});
+
+		scene.add(material);
 
 		/**
 		 * Sizes
@@ -139,10 +163,13 @@
 				intersect.object.material.wireframe = true;
 			}
 			for (const gridPiece of grid) {
-	   if(!intersects.find(intersect => intersect.object === gridPiece))
-        {
-			gridPiece.material.wireframe = false
-       }
+				if (
+					!intersects.find(
+						(intersect) => intersect.object === gridPiece
+					)
+				) {
+					gridPiece.material.wireframe = false;
+				}
 			}
 
 			// Update controls
