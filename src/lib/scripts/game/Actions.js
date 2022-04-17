@@ -1,5 +1,5 @@
-import Game from "../stores/gameStore";
-import Metrics from "../stores/metricStore";
+import Game from "$lib/stores/gameStore";
+import Metrics from "$lib/stores/metricStore";
 import Utility from "./Utility";
 
 const Actions = {

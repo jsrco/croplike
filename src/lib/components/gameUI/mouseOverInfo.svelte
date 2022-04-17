@@ -5,16 +5,13 @@
 <section class="mounseOverInfo flex flex-col mb-4 text-white">
     {#if $Metrics.mouseEventData.name}
         <p>
-            <span class="text-purple-400">Name</span>: {$Metrics.mouseEventData
-                .name}
+            <span class="text-purple-400">Name</span>: {$Metrics.mouseEventData.name}
         </p>
         <p>
-            <span class="text-purple-400">Explored</span>: {$Metrics
-                .mouseEventData.explored}
+            <span class="text-purple-400">Explored</span>: {$Metrics.mouseEventData.explored}
         </p>
         <p>
-            <span class="text-purple-400">Walkable</span>: {$Metrics
-                .mouseEventData.walkable}
+            <span class="text-purple-400">Walkable</span>: {$Metrics.mouseEventData.walkable}
         </p>
     {:else}
         <p class="text-purple-400">Mouseover game map</p>
