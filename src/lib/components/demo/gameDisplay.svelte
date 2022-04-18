@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from "svelte";
-	import Console from "$lib/components/gameUI/console.svelte";
-	import MouseOverInfo from "$lib/components/gameUI/mouseOverInfo.svelte";
+	import Console from  "$lib/components/demo/gameUI/console.svelte"
+	import MouseOverInfo from "$lib/components/demo/gameUI/mouseOverInfo.svelte";
 	import Game from "$lib/stores/demo/gameStore";
 
 	let gameContainer;

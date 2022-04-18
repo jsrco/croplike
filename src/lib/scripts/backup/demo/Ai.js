@@ -1,5 +1,5 @@
 
-import Metrics from "$lib/stores/metricStore";
+import Metrics from "$lib/stores/demo/metricStore";
 
 class Ai {
     constructor(entity) {

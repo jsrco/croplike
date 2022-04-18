@@ -1,5 +1,5 @@
 <script>
-    import Metrics from "$lib/stores/metricStore";
+    import Metrics from "$lib/stores/demo/metricStore";
 </script>
 
 <section class="mounseOverInfo flex flex-col mb-4 text-white">

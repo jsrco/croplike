@@ -1,5 +1,5 @@
 <script>
-    import Metrics from "$lib/stores/metricStore";
+    import Metrics from "$lib/stores/demo/metricStore";
 
     let debug = false;
 </script>

@@ -3,6 +3,3 @@
 </script>
 
 <Deepdwn />
-
-<style>
-</style>
