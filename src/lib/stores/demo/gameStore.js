@@ -23,11 +23,11 @@
 import { Display, FOV } from "rot-js";
 import { writable } from "svelte/store";
 
-import Actions from "$lib/scripts/game/Actions";
-import ColorSwatch from "$lib/scripts/game/ColorSwatch";
-import Entity from "$lib/scripts/game/Entity";
-import Maps from "$lib/scripts/game/Maps";
-import Metrics from "$lib/stores/metricStore";
+import Actions from "$lib/scripts/backup/demo/Actions";
+import ColorSwatch from "$lib/scripts/backup/demo/ColorSwatch";
+import Entity from "$lib/scripts/backup/demo/Entity";
+import Maps from "$lib/scripts/backup/demo/Maps";
+import Metrics from "$lib/stores/demo/metricStore";
 
 const dieselEngine = writable({
     actions: Actions,

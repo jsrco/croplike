@@ -1,6 +1,5 @@
 import Game from "./Game";
-
-let ROT = require("rot-js");
+import ROT from 'rot-js'
 
 class Builder {
   constructor(width, height, depth) {

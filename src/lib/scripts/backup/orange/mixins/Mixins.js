@@ -1,8 +1,7 @@
 import Entity from "../Entity";
 import { EntityRepository } from "../Entities";
 import Game from "../Game";
-
-let ROT = require("rot-js");
+import ROT from 'rot-js'
 
 // Create Mixins namespace
 class Mixins {}
@@ -737,26 +736,25 @@ Mixins.TaskActor = {
       }
     }
     // Generate path and move to first tile
-    let source = this;
-    let z = source.getZ();
+    let z = this.getZ();
     let path = new ROT.Path.AStar(
       player.getX(),
       player.getY(),
       function (x, y) {
         // If entity present, can't move
-        let entity = source.getMap().getEntityAt(x, y, z);
-        if (entity && entity !== player && entity !== source) {
+        let entity = this.getMap().getEntityAt(x, y, z);
+        if (entity && entity !== player && entity !== this) {
           return false;
         }
-        return source.getMap().getTile(x, y, z).isWalkable();
+        return this.getMap().getTile(x, y, z).isWalkable();
       },
       { topology: 4 }
     );
     // Move to the second cell passed in the callback (entity's strting point)
     let count = 0;
-    path.compute(source.getX(), source.getY(), function (x, y) {
+    path.compute(this.getX(), this.getY(), function (x, y) {
       if (count === 1) {
-        source.tryMove(x, y, z);
+        this.tryMove(x, y, z);
       }
       count++;
     });

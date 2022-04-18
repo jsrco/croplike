@@ -1,5 +1,5 @@
 
-import ColorSwatch from "$lib/scripts/game/ColorSwatch";
+import ColorSwatch from "$lib/scripts/backup/demo/ColorSwatch";
 import Tiles from "./Tiles";
 
 class Maps {

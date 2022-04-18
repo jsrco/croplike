@@ -9,8 +9,8 @@ import Mixins from "./mixins/Mixins";
 import Screen from "./Screen";
 import SprintF from "sprintf-js";
 import Tile from "./Tile";
+import ROT from 'rot-js'
 
-let ROT = require("rot-js");
 let Game = {
   _display: null,
   _currentScreen: null,
@@ -37,13 +37,12 @@ let Game = {
       width: this._screenWidth,
     });
     // Create a helper function for binding to an event and making it send it to the screen
-    let game = this; // So that the Game don't lose this
     let bindEventToScreen = (event) => {
       window.addEventListener(event, (e) => {
         // When an event is received, send it to the screen if there is one
-        if (game._currentScreen !== null) {
+        if (this._currentScreen !== null) {
           // Send the event type and data to the screen
-          game._currentScreen.handleInput(event, e);
+          this._currentScreen.handleInput(event, e);
         }
       });
     };
