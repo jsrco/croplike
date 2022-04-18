@@ -180,9 +180,8 @@ Game
 * https://github.com/ondras/rot.js
 * https://svelte.dev/docs
 * https://tailwindcss.com/
-* https://threejs.org
 ## Animation
-ROT.js / Three.js
+ROT.js / canvas
 # Schedule
 ## Design Document
  EO December 2021
@@ -202,10 +201,14 @@ ROT.js / Three.js
 * Install required assets
 ### Feb 28, 2022
 * Research spike yielded better Pixi.js results
-* Converted format. Rot.js for map tools.
+* Converted format. Rot.js for map tools
 ### March 13, 2022
 * Sunset old code
-* Back to three.js due to Pixi fullscreen dev.
+* Back to three.js due to Pixi fullscreen dev
+### April 18, 2022
+* Sunrise old code
+* Removing Three.js and Pixi.js, may revisit. Writing own Canvas.
+
 ### April 1, 2022 
 * Temp localHost user refactor
 * Basic site to game connections. UI / Wiki
