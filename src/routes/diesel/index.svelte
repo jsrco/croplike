@@ -70,7 +70,7 @@
       diesel.animate(0);
     };
 
-    window.addEventListener("mousemove", function (e) {
+    window.addEventListener("pointermove", function (e) {
       mouse.x = e.x;
       mouse.y = e.y;
     });
