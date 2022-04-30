@@ -95,10 +95,14 @@
           if (
             this.textdata.data[y * 4 * this.textdata.width + x * 4 + 3] > 128
           ) {
-            let positionX = (x-96)/22;
-            let positionY = (y-48)/22;
+            let positionX = (x - 96) / 22;
+            let positionY = (y - 48) / 22;
             this.#particleArray.push(
-              new Particle(this.#ctx, (positionX * 64) + this.#width / 2 , (positionY * 64) +  this.#height / 2)
+              new Particle(
+                this.#ctx,
+                positionX * 64 + this.#width / 2,
+                positionY * 64 + this.#height / 2
+              )
             );
           }
         }
@@ -121,7 +125,6 @@
       dieselAnimation = requestAnimationFrame(this.animate.bind(this));
     }
   }
-
   onMount(() => {
     window.onload = function () {
       ctx = canvas.getContext("2d");
@@ -130,12 +133,24 @@
       diesel = new Diesel(ctx, canvas.height, canvas.width);
       diesel.animate(0);
     };
-
+    window.addEventListener(
+      "click",
+      function (e) {
+        if (mouse.x > window.innerWidth - 11 && mouse.y < 11) {
+          if (!document.fullscreenElement) {
+            if (document.documentElement.requestFullscreen)
+              document.documentElement.requestFullscreen();
+          } else {
+            if (document.exitFullscreen) document.exitFullscreen();
+          }
+        } // the ENTER key
+      },
+      false
+    );
     window.addEventListener("pointermove", function (e) {
       mouse.x = e.x;
       mouse.y = e.y;
     });
-
     window.addEventListener("resize", function () {
       cancelAnimationFrame(dieselAnimation);
       canvas.height = window.innerHeight;
