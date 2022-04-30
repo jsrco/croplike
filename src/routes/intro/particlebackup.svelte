@@ -10,7 +10,7 @@
   let mouse = {
     x: null,
     y: null,
-    radius: 25,
+    radius: 50,
   };
   class Particle {
     #ctx;
@@ -24,7 +24,7 @@
       this.#baseX = x;
       this.#baseY = y;
       this.#ctx = ctx;
-      this.#density = Math.random() * 30;
+      this.#density = Math.random() * 30 + 1;
       this.#size = 1;
       this.#x = x;
       this.#y = y;
@@ -71,13 +71,11 @@
     #timer: number;
     #x: number;
     #y: number;
-    textdata;
+
     constructor(ctx, height, width) {
       this.#ctx = ctx;
-      this.#ctx.font = "bold 50px 'PressStart2P', cursive";
+      this.#ctx.font = "30px 'PressStart2P', cursive";
       this.#ctx.fillStyle = "white";
-      this.#drawText("croplike", 0,60);
-      this.textdata = this.#ctx.getImageData(0, 0, canvas.width, canvas.height);
       this.#height = height;
       this.#width = width;
       this.#lastTime = 0;
@@ -90,18 +88,14 @@
       this.#ctx.fillText(text, x, y);
     }
     #addParticles() {
-      for (var y = 0, y2 = this.textdata.height; y < y2; y++) {
-        for (var x = 0, x2 = this.textdata.width; x < x2; x++) {
-          if (
-            this.textdata.data[y * 4 * this.textdata.width + x * 4 + 3] > 128
-          ) {
-            let positionX = ((x-160)+(this.#width/2))/ 16;
-            let positionY = ((y-40)+(this.#height/2)) / 16;
-            this.#particleArray.push(
-              new Particle(this.#ctx, positionX * 15, positionY * 15)
-            );
-          }
-        }
+      for (let i = 0; i < 10000; i++) {
+        this.#particleArray.push(
+          new Particle(
+            this.#ctx,
+            Math.random() * this.#width,
+            Math.random() * this.#height
+          )
+        );
       }
     }
     animate(timeStamp) {
@@ -114,6 +108,7 @@
           this.#particleArray[i].draw();
           this.#particleArray[i].update();
         }
+        this.#drawText("croplike", this.#width / 2, this.#height / 2);
         this.#timer = 0;
       } else {
         this.#timer += deltaTime;
