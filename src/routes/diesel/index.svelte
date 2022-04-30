@@ -48,6 +48,8 @@
             this.#drawGridPiece(x, y);
           }
         }
+        this.#ctx.fillRect(2, 2, 22, 22)
+
         this.timer = 0;
       } else {
         this.timer += deltaTime;
@@ -69,20 +71,26 @@
       diesel = new Diesel(ctx, canvas.height, canvas.width);
       diesel.animate(0);
     };
-    window.addEventListener(
-      "click",
-      function (e) {
-        if (mouse.x > window.innerWidth - 11 && mouse.y < 11) {
-          if (!document.fullscreenElement) {
-            if (document.documentElement.requestFullscreen)
-              document.documentElement.requestFullscreen();
-          } else {
-            if (document.exitFullscreen) document.exitFullscreen();
-          }
-        } // the ENTER key
-      },
-      false
-    );
+    /**
+     * Fullscreen
+     */
+    window.addEventListener("dblclick", () => {
+      const fullscreenElement =
+      canvas.fullscreenElement || canvas.webkitFullscreenElement;
+      if (!fullscreenElement) {
+        if (canvas.requestFullscreen) {
+          canvas.requestFullscreen();
+        } else if (canvas.webkitRequestFullscreen) {
+          canvas.webkitRequestFullscreen();
+        }
+      } else {
+        if (canvas.exitFullscreen) {
+          canvas.exitFullscreen();
+        } else if (canvas.webkitExitFullscreen) {
+          canvas.webkitExitFullscreen();
+        }
+      }
+    });
     window.addEventListener("pointermove", function (e) {
       mouse.x = e.x;
       mouse.y = e.y;
