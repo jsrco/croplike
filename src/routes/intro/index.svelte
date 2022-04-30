@@ -134,10 +134,11 @@
     };
     /**
      * Fullscreen
-     */
+     */ 
     window.addEventListener("dblclick", () => {
       const fullscreenElement =
-      canvas.fullscreenElement || canvas.webkitFullscreenElement;
+        document.fullscreenElement || document.webkitFullscreenElement;
+
       if (!fullscreenElement) {
         if (canvas.requestFullscreen) {
           canvas.requestFullscreen();
@@ -145,10 +146,10 @@
           canvas.webkitRequestFullscreen();
         }
       } else {
-        if (canvas.exitFullscreen) {
-          canvas.exitFullscreen();
-        } else if (canvas.webkitExitFullscreen) {
-          canvas.webkitExitFullscreen();
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
         }
       }
     });

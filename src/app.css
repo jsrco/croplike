@@ -13,6 +13,12 @@
     src: url("/assets/fonts/ShareTech-Regular.ttf");
 }
 
+html,
+body
+{
+    overflow: hidden;
+}
+
 html {
     background: #1d1d1d;
 }	
@@ -24,8 +30,9 @@ html {
 }
 
 canvas {
+    outline: none;
     overflow: hidden;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 1;
