@@ -74,9 +74,9 @@
     textdata;
     constructor(ctx, height, width) {
       this.#ctx = ctx;
-      this.#ctx.font = "bold 50px 'PressStart2P', cursive";
+      this.#ctx.font = "24px 'PressStart2P'";
       this.#ctx.fillStyle = "white";
-      this.#drawText("croplike", 0,60);
+      this.#drawText("croplike", 0, 60);
       this.textdata = this.#ctx.getImageData(0, 0, canvas.width, canvas.height);
       this.#height = height;
       this.#width = width;
@@ -95,10 +95,10 @@
           if (
             this.textdata.data[y * 4 * this.textdata.width + x * 4 + 3] > 128
           ) {
-            let positionX = ((x-160)+(this.#width/2))/ 16;
-            let positionY = ((y-40)+(this.#height/2)) / 16;
+            let positionX = (x-96)/22;
+            let positionY = (y-48)/22;
             this.#particleArray.push(
-              new Particle(this.#ctx, positionX * 15, positionY * 15)
+              new Particle(this.#ctx, (positionX * 64) + this.#width / 2 , (positionY * 64) +  this.#height / 2)
             );
           }
         }

@@ -30,13 +30,12 @@
       this.lastTime = 0;
       this.interval = 1000 / 60;
       this.timer = 0;
-      this.cellSize = 30;
+      this.cellSize = 25;
     }
     #drawGridPiece(x, y) {
-      const length = 300;
       this.#ctx.beginPath();
       this.#ctx.moveTo(x, y);
-      this.#ctx.rect(x,y,27,27)
+      this.#ctx.rect(x,y,22,22)
       this.#ctx.stroke();
     }
     animate(timeStamp) {
