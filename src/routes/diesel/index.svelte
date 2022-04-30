@@ -29,7 +29,7 @@
       this.angle = 0;
       this.lastTime = 0;
       this.interval = 1000 / 60;
-      this.timer = 0;
+      this.timer = 20;
       this.cellSize = 25;
     }
     #drawGridPiece(x, y) {
@@ -64,8 +64,13 @@
   };
 
   onMount(() => {
+    ctx = canvas.getContext("2d");
+    ctx.font = "24px 'PressStart2P'";
+    ctx.fillStyle = "white";
+    ctx.fillText("croplike", 0, 30);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     window.onload = function () {
-      ctx = canvas.getContext("2d");
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       diesel = new Diesel(ctx, canvas.height, canvas.width);

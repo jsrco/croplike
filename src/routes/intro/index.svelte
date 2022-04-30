@@ -10,6 +10,8 @@
     y: null,
     radius: 25,
   };
+  let particleArray;
+  let textdata;
   class Particle {
     ctx;
     baseX: number;
@@ -65,42 +67,27 @@
     width;
     interval: number;
     lastTime: number;
-    particleArray: Array<any>;
     timer: number;
     x: number;
     y: number;
-    textdata;
-    constructor(ctx, height, width) {
+    constructor(ctx, width, height) {
       this.ctx = ctx;
-      this.ctx.font = "24px 'PressStart2P'";
-      this.ctx.fillStyle = "white";
-      this.drawText("croplike", 0, 60);
-      this.textdata = this.ctx.getImageData(0, 0, canvas.width, canvas.height);
       this.height = height;
       this.width = width;
       this.lastTime = 0;
       this.interval = 1000 / 60;
-      this.particleArray = [];
       this.timer = 0;
       this.addParticles();
     }
-    drawText(text, x, y) {
-      this.ctx.fillText(text, x, y);
-    }
     addParticles() {
-      for (var y = 0, y2 = this.textdata.height; y < y2; y++) {
-        for (var x = 0, x2 = this.textdata.width; x < x2; x++) {
-          if (
-            this.textdata.data[y * 4 * this.textdata.width + x * 4 + 3] > 128
-          ) {
-            let positionX = (x - 96) / 22;
-            let positionY = (y - 48) / 22;
-            this.particleArray.push(
-              new Particle(
-                this.ctx,
-                positionX * 64 + this.width / 2,
-                positionY * 64 + this.height / 2
-              )
+      particleArray = []
+      for (let y = 0, y2 = textdata.height; y < y2; y++) {
+        for (let x = 0, x2 = textdata.width; x < x2; x++) {
+          if (textdata.data[y * 4 * textdata.width + x * 4 + 3] > 128) {
+            let positionX = (x + 2) / 48;
+            let positionY = (y - 2) / 48;
+            particleArray.push(
+              new Particle(this.ctx, positionX * 64, positionY * 64)
             );
           }
         }
@@ -112,9 +99,9 @@
       if (this.timer > this.interval) {
         this.ctx.clearRect(0, 0, this.width, this.height);
         // draw here
-        for (let i = 0; i < this.particleArray.length; i++) {
-          this.particleArray[i].draw();
-          this.particleArray[i].update();
+        for (let i = 0; i < particleArray.length; i++) {
+          particleArray[i].draw();
+          particleArray[i].update();
         }
         this.timer = 0;
       } else {
@@ -126,15 +113,19 @@
 
   onMount(() => {
     ctx = canvas.getContext("2d");
-    window.onload = function () {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      diesel = new Diesel(ctx, canvas.height, canvas.width);
-      diesel.animate(0);
-    };
+    ctx.font = "24px 'PressStart2P'";
+    ctx.fillStyle = "white";
+    ctx.fillText("croplike", 0, 30);
+    textdata = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    diesel = new Diesel(ctx, canvas.height, canvas.width);
+    diesel.animate(0);
+
     /**
      * Fullscreen
-     */ 
+     */
     window.addEventListener("dblclick", () => {
       const fullscreenElement =
         document.fullscreenElement || document.webkitFullscreenElement;
