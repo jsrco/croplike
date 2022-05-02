@@ -56,13 +56,22 @@
           "Game already unlocked. You should not be trying the action: ",
           tracking,
         ]);
-      else this.#locked = false;
-      this.#EngineUpdate(tracking);
+      else {
+        this.#locked = false;
+        this.#EngineUpdate(tracking);
+      }
     }
     #EngineUpdate(tracking: string) {
+      if (this.#locked)
+        console.log([
+          "Game is locked. You should not be trying to update the engine: ",
+          tracking,
+        ]);
+      else {
       console.log(tracking);
       // handle reactions and moves
       this.#EngineLock(tracking);
+      }
     }
     animate(timeStamp: number) {
       if (this.#locked && this.#updating.length === 0) {
@@ -103,9 +112,9 @@
       this.#ctx.rect(x, y, 22, 22);
       this.#ctx.stroke();
     }
-    test(action:string) {
-      this.#EngineUpdate(action)
-      this.#EngineUnlock(action)
+    test(action: string) {
+      this.#EngineUpdate(action);
+      this.#EngineUnlock(action);
     }
   }
 
@@ -124,7 +133,7 @@
       diesel = new Diesel(ctx);
       // start game
       diesel.animate(0);
-      diesel.test("animation test")
+      diesel.test("animation test");
       /**
        * Fullscreen
        */
