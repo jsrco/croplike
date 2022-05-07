@@ -18,9 +18,10 @@
     x: 0,
     y: 0,
   };
+  let updateArray: Array<any> = [];
 
   class Diesel {
-    #ctx: any;
+    #ctx: CanvasRenderingContext2D;
     #cellSize: number;
     #interval: number;
     #lastTime: number;
@@ -28,7 +29,7 @@
     #timer: number;
     #updating: Array<any>;
 
-    constructor(ctx: any) {
+    constructor(ctx: CanvasRenderingContext2D) {
       this.#cellSize = 25;
       this.#ctx = ctx;
       this.#ctx.font = "24px 'PressStart2P'";
@@ -39,22 +40,24 @@
       // start with a locked game
       this.#locked = true;
       this.#timer = 0;
-      this.#updating = [];
+      this.#updating = updateArray;
     }
     // engine mechanics
     #EngineLock(tracking: string) {
       if (this.#locked)
         console.log([
-          "Game already locked. You should not be trying the action: ",
           tracking,
+          "failed",
+          "Game already locked. You should not be trying the action. ",
         ]);
       else this.#locked = true;
     }
     #EngineUnlock(tracking: string) {
       if (!this.#locked)
         console.log([
-          "Game already unlocked. You should not be trying the action: ",
           tracking,
+          "failed",
+          "Game already unlocked. You should not be trying the action. ",
         ]);
       else {
         this.#locked = false;
@@ -64,17 +67,18 @@
     #EngineUpdate(tracking: string) {
       if (this.#locked)
         console.log([
-          "Game is locked. You should not be trying to update the engine: ",
           tracking,
+          "failed",
+          "Game is locked. You should not be trying to update the engine. ",
         ]);
       else {
-      console.log(tracking);
-      // handle reactions and moves
-      this.#EngineLock(tracking);
+        // handle reactions and moves
+        this.#EngineLock(tracking);
+        console.log([tracking, "succeeded", "Game has been updated."]);
       }
     }
     animate(timeStamp: number) {
-      if (this.#locked && this.#updating.length === 0) {
+      if (this.#locked && this.#updating.length > 0) {
         const deltaTime = timeStamp - this.#lastTime;
         this.#lastTime = timeStamp;
         if (this.#timer > this.#interval) {
@@ -113,6 +117,8 @@
       this.#ctx.stroke();
     }
     test(action: string) {
+      if (this.#updating[0] !== "player") this.#updating.push("player")
+
       this.#EngineUpdate(action);
       this.#EngineUnlock(action);
     }
