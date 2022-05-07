@@ -48,7 +48,7 @@
         console.log([
           tracking,
           "failed",
-          "Game already locked. You should not be trying the action. ",
+          "Game already locked. You should not be trying the action.",
         ]);
       else this.#locked = true;
     }
@@ -57,7 +57,7 @@
         console.log([
           tracking,
           "failed",
-          "Game already unlocked. You should not be trying the action. ",
+          "Game already unlocked. You should not be trying the action.",
         ]);
       else {
         this.#locked = false;
@@ -69,7 +69,7 @@
         console.log([
           tracking,
           "failed",
-          "Game is locked. You should not be trying to update the engine. ",
+          "Game is locked. You should not be trying to update the engine.",
         ]);
       else {
         // handle reactions and moves
@@ -117,7 +117,7 @@
       this.#ctx.stroke();
     }
     test(action: string) {
-      if (this.#updating[0] !== "player") this.#updating.push("player")
+      if (this.#updating[0] !== "player") this.#updating.push("player");
 
       this.#EngineUpdate(action);
       this.#EngineUnlock(action);
