@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-
+  import { Actor } from "$lib/scripts/actor";
   /*
   Updating array, while actor or prop is moving they are pushed to array, when they arrive remove themselves.
   If the array length > 0, animate the screen and prevent input
@@ -18,7 +18,7 @@
     x: 0,
     y: 0,
   };
-  let updateArray: Array<any> = [];
+  let updateArray: Array<string> = [];
 
   class Diesel {
     #ctx: CanvasRenderingContext2D;
@@ -26,8 +26,9 @@
     #interval: number;
     #lastTime: number;
     #locked: boolean;
+    #player: Actor;
     #timer: number;
-    #updating: Array<any>;
+    #updating: Array<string>;
 
     constructor(ctx: CanvasRenderingContext2D) {
       this.#cellSize = 25;
@@ -41,6 +42,7 @@
       this.#locked = true;
       this.#timer = 0;
       this.#updating = updateArray;
+      this.#player = new Actor(ctx, 2, 2, 25, updateArray);
     }
     // engine mechanics
     #EngineLock(tracking: string) {
@@ -85,7 +87,8 @@
           this.#ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
           this.drawGrid();
           //player
-          this.#ctx.fillRect(2, 2, 22, 22);
+          this.#player.draw();
+          this.#player.update();
           this.#timer = 0;
         } else {
           this.#timer += deltaTime;
@@ -113,14 +116,13 @@
       this.#ctx.lineWidth = 1;
       this.#ctx.beginPath();
       this.#ctx.moveTo(x, y);
-      this.#ctx.rect(x, y, 22, 22);
+      this.#ctx.rect(x, y, 25, 25);
       this.#ctx.stroke();
     }
     test(action: string) {
-      if (this.#updating[0] !== "player") this.#updating.push("player");
-
       this.#EngineUpdate(action);
       this.#EngineUnlock(action);
+      this.#player.move(78, 2);
     }
   }
 
