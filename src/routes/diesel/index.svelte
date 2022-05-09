@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { Actor } from "$lib/scripts/actor";
+  import { Diesel } from "$lib/scripts/diesel";
   /*
   Updating array, while actor or prop is moving they are pushed to array, when they arrive remove themselves.
   If the array length > 0, animate the screen and prevent input
@@ -12,119 +12,13 @@
   let canvas: any;
   let ctx: any;
   let diesel: Diesel;
-  let dieselAnimation: any;
+  let dieselAnimation;
   let mouse = {
     radius: 25,
     x: 0,
     y: 0,
   };
   let updateArray: Array<string> = [];
-
-  class Diesel {
-    #ctx: CanvasRenderingContext2D;
-    #cellSize: number;
-    #interval: number;
-    #lastTime: number;
-    #locked: boolean;
-    #player: Actor;
-    #timer: number;
-    #updating: Array<string>;
-
-    constructor(ctx: CanvasRenderingContext2D) {
-      this.#cellSize = 25;
-      this.#ctx = ctx;
-      this.#ctx.font = "24px 'PressStart2P'";
-      this.#ctx.fillStyle = "white";
-      this.#ctx.fillText("croplike", 0, 30);
-      this.#interval = 1000 / 60;
-      this.#lastTime = 0;
-      // start with a locked game
-      this.#locked = true;
-      this.#timer = 0;
-      this.#updating = updateArray;
-      this.#player = new Actor(ctx, 2, 2, 25, updateArray);
-    }
-    // engine mechanics
-    #EngineLock(tracking: string) {
-      if (this.#locked)
-        console.log([
-          tracking,
-          "failed",
-          "Game already locked. You should not be trying the action.",
-        ]);
-      else this.#locked = true;
-    }
-    #EngineUnlock(tracking: string) {
-      if (!this.#locked)
-        console.log([
-          tracking,
-          "failed",
-          "Game already unlocked. You should not be trying the action.",
-        ]);
-      else {
-        this.#locked = false;
-        this.#EngineUpdate(tracking);
-      }
-    }
-    #EngineUpdate(tracking: string) {
-      if (this.#locked)
-        console.log([
-          tracking,
-          "failed",
-          "Game is locked. You should not be trying to update the engine.",
-        ]);
-      else {
-        // handle reactions and moves
-        this.#EngineLock(tracking);
-        console.log([tracking, "succeeded", "Game has been updated."]);
-      }
-    }
-    animate(timeStamp: number) {
-      if (this.#locked && this.#updating.length > 0) {
-        const deltaTime = timeStamp - this.#lastTime;
-        this.#lastTime = timeStamp;
-        if (this.#timer > this.#interval) {
-          this.#ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-          this.drawGrid();
-          //player
-          this.#player.draw();
-          this.#player.update();
-          this.#timer = 0;
-        } else {
-          this.#timer += deltaTime;
-        }
-      }
-      dieselAnimation = requestAnimationFrame(this.animate.bind(this));
-    }
-    drawGrid() {
-      for (
-        let y = 2;
-        y + this.#cellSize < window.innerHeight;
-        y += this.#cellSize
-      ) {
-        for (
-          let x = 2;
-          x + this.#cellSize < window.innerWidth;
-          x += this.#cellSize
-        ) {
-          this.drawGridPiece(x, y);
-        }
-      }
-    }
-    drawGridPiece(x: number, y: number) {
-      this.#ctx.strokeStyle = "white";
-      this.#ctx.lineWidth = 1;
-      this.#ctx.beginPath();
-      this.#ctx.moveTo(x, y);
-      this.#ctx.rect(x, y, 25, 25);
-      this.#ctx.stroke();
-    }
-    test(action: string) {
-      this.#EngineUpdate(action);
-      this.#EngineUnlock(action);
-      this.#player.move(78, 2);
-    }
-  }
 
   onMount(() => {
     const PressStart2P = new FontFace(
@@ -138,7 +32,7 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      diesel = new Diesel(ctx);
+      diesel = new Diesel(ctx, dieselAnimation, updateArray);
       // start game
       diesel.animate(0);
       diesel.test("animation test");
@@ -170,7 +64,7 @@
         cancelAnimationFrame(dieselAnimation);
         canvas.height = window.innerHeight;
         canvas.width = window.innerWidth;
-        diesel = new Diesel(ctx);
+        diesel = new Diesel(ctx, dieselAnimation, updateArray);
         diesel.animate(0);
       });
     });

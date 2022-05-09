@@ -2,6 +2,7 @@ export class Actor {
     #ctx: CanvasRenderingContext2D;
     #dX: number;
     #dY: number;
+    #force: number;
     #size: number;
     #updateArray: Array<string>;
     #x: number;
@@ -31,13 +32,12 @@ export class Actor {
         } else {
             this.#updateArray.splice(this.#updateArray.indexOf(name))
             this.move(78, 78);
-
         }
         if (this.#dX !== this.#x) {
-            (this.#dX > this.#x) ? this.#x++ : this.#x--
+            (this.#dX > this.#x) ? this.#x+=2 : this.#x-=2
         }
         if (this.#dY !== this.#y) {
-            (this.#dY > this.#y) ? this.#y++ : this.#y--
+            (this.#dY > this.#y) ? this.#y+=2 : this.#y-=2
         }
     }
 }
