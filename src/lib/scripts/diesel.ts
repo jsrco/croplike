@@ -101,6 +101,10 @@ export class Diesel {
         this.#ctx.rect(x, y, 25, 25);
         this.#ctx.stroke();
     }
+    init():void {
+        this.animate(0);
+        this.test("animation test");
+    }
     /*
     renderGetOffsets(): void {
         const { pos } = this.player;
@@ -115,7 +119,6 @@ export class Diesel {
     }
     */
     test(action: string):void {
-        this.#EngineUpdate(action);
         this.#EngineUnlock(action);
         this.#player.move(78, 2);
     }

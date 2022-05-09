@@ -34,8 +34,7 @@
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       diesel = new Diesel(ctx, dieselAnimation, updateArray);
       // start game
-      diesel.animate(0);
-      diesel.test("animation test");
+      diesel.init();
       /**
        * Fullscreen
        */
