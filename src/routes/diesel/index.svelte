@@ -32,7 +32,8 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      diesel = new Diesel(ctx, dieselAnimation, updateArray);
+      updateArray.push('player')
+      diesel = new Diesel(ctx, dieselAnimation, updateArray, canvas.width, canvas.height);
       // start game
       diesel.init();
       /**
@@ -61,20 +62,13 @@
       });
       window.addEventListener("resize", function () {
         cancelAnimationFrame(dieselAnimation);
-        canvas.height = window.innerHeight;
         canvas.width = window.innerWidth;
-        diesel = new Diesel(ctx, dieselAnimation, updateArray);
+        canvas.height = window.innerHeight;
+        diesel = new Diesel(ctx, dieselAnimation, updateArray, canvas.width, canvas.height);
         diesel.animate(0);
       });
     });
   });
 </script>
 
-<div class="fontLoad" />
 <canvas bind:this={canvas} />
-
-<style>
-  .fontLoad {
-    font-family: PressStart2P;
-  }
-</style>

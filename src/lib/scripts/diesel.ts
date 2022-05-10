@@ -1,13 +1,16 @@
 import { Actor } from "$lib/scripts/actor";
+import { Tile } from "$lib/scripts/tile";
 
 export class Diesel {
     #ctx: CanvasRenderingContext2D;
     #cellSize: number;
+    #clientHeight: number;
+    #clientWidth: number;
     #dieselAnimation: any;
     #interval: number;
     #lastTime: number;
     #locked: boolean;
-    #player: Actor;
+    #player: Tile;
     #timer: number;
     #updating: Array<string>;
 
@@ -24,10 +27,9 @@ export class Diesel {
         this.#locked = true;
         this.#timer = 0;
         this.#updating = updateArray;
-        this.#player = new Actor(ctx, 2, 2, 25, updateArray);
     }
     // engine mechanics
-    #EngineLock(tracking: string):void {
+    #EngineLock(tracking: string): void {
         if (this.#locked)
             console.log([
                 tracking,
@@ -36,7 +38,7 @@ export class Diesel {
             ]);
         else this.#locked = true;
     }
-    #EngineUnlock(tracking: string):void {
+    #EngineUnlock(tracking: string): void {
         if (!this.#locked)
             console.log([
                 tracking,
@@ -48,7 +50,7 @@ export class Diesel {
             this.#EngineUpdate(tracking);
         }
     }
-    #EngineUpdate(tracking: string):void {
+    #EngineUpdate(tracking: string): void {
         if (this.#locked)
             console.log([
                 tracking,
@@ -61,16 +63,21 @@ export class Diesel {
             console.log([tracking, "succeeded", "Game has been updated."]);
         }
     }
-    animate(timeStamp: number):void {
+    animate(timeStamp: number): void {
         if (this.#locked && this.#updating.length > 0) {
             const deltaTime = timeStamp - this.#lastTime;
             this.#lastTime = timeStamp;
             if (this.#timer > this.#interval) {
                 this.#ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-                this.drawGrid();
                 //player
+                this.#player = new Tile(this.#ctx, {
+                    fillStyle: "orange",
+                    size: this.#cellSize,
+                    strokeStyle: "yellow",
+                    x:  window.innerWidth / 2 - this.#cellSize / 2,
+                    y:  window.innerHeight / 2 - this.#cellSize / 2,
+                })
                 this.#player.draw();
-                this.#player.update();
                 this.#timer = 0;
             } else {
                 this.#timer += deltaTime;
@@ -78,32 +85,8 @@ export class Diesel {
         }
         this.#dieselAnimation = requestAnimationFrame(this.animate.bind(this));
     }
-    drawGrid():void {
-        for (
-            let y = 2;
-            y + this.#cellSize < window.innerHeight;
-            y += this.#cellSize
-        ) {
-            for (
-                let x = 2;
-                x + this.#cellSize < window.innerWidth;
-                x += this.#cellSize
-            ) {
-                this.drawGridPiece(x, y);
-            }
-        }
-    }
-    drawGridPiece(x: number, y: number):void {
-        this.#ctx.strokeStyle = "white";
-        this.#ctx.lineWidth = 1;
-        this.#ctx.beginPath();
-        this.#ctx.moveTo(x, y);
-        this.#ctx.rect(x, y, 25, 25);
-        this.#ctx.stroke();
-    }
-    init():void {
+    init(): void {
         this.animate(0);
-        this.test("animation test");
     }
     /*
     renderGetOffsets(): void {
@@ -117,9 +100,8 @@ export class Diesel {
             y: topLeftY,
         };
     }
-    */
-    test(action: string):void {
+    test(action: string): void {
         this.#EngineUnlock(action);
-        this.#player.move(78, 2);
     }
+    */
 }
