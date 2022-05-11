@@ -1,4 +1,4 @@
-const ColorSwatch = {
+export const ColorSwatch = {
   bgDark: "#1D1D1D",
   blueGray: [
     "#F8FAFC",
@@ -265,4 +265,3 @@ const ColorSwatch = {
     "#881337",
   ],
 };
-export default ColorSwatch;

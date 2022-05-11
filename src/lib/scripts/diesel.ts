@@ -1,10 +1,17 @@
+import { ColorSwatch } from "$lib/scripts/colorSwatch";
 import { Tile } from "$lib/scripts/tile";
 
-export class Diesel {
+interface Mouse {
+    radius: number,
+    x: number,
+    y: number,
 
+}
+export class Diesel {
     #canvas: any;
     #cellSize: number;
     #dieselAnimation: any;
+    #mouse: Mouse
     #interval: number;
     #lastTime: number;
     #locked: boolean;
@@ -23,6 +30,11 @@ export class Diesel {
         this.#interval = 1000 / 60;
         this.#lastTime = 0;
         this.#locked = true;
+        this.#mouse = {
+            radius: 25,
+            x: 0,
+            y: 0,
+        };
         this.#timer = 0;
         this.#updating = false;
     }
@@ -53,7 +65,6 @@ export class Diesel {
         }
         else
             console.log(`::failed::\n    ${tracking}\n    Game is locked. You should not be trying to update the engine.`)
-
     }
 
     /**
@@ -67,13 +78,21 @@ export class Diesel {
                 this.#canvas.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
                 //player here so the postion is always updated when draw occurs
                 this.#player = new Tile(this.#canvas.ctx, {
-                    fillStyle: "orange",
+                    fillStyle: ColorSwatch.orange[5],
                     size: this.#cellSize,
                     strokeStyle: "yellow",
                     x: this.#canvas.width / 2 - this.#cellSize / 2,
                     y: this.#canvas.height / 2 - this.#cellSize / 2,
                 })
                 this.#player.draw();
+                /**
+                 * Demo draw
+                 */
+                this.#canvas.ctx.font = "24px 'PressStart2P'";
+                this.#canvas.ctx.fillStyle = "white";
+                this.#canvas.ctx.fillText("croplike", 12, 30);
+
+
                 this.#timer = 0;
             }
         } else {
@@ -87,16 +106,9 @@ export class Diesel {
      */
     init(): void {
         /**
-         * Demo draw
-         */
-        this.#canvas.ctx.font = "24px 'PressStart2P'";
-        this.#canvas.ctx.fillStyle = "white";
-        this.#canvas.ctx.fillText("croplike", 0, 30);
-
-        /**
          * Fullscreen
          */
-         window.addEventListener("dblclick", () => {
+        window.addEventListener("dblclick", () => {
             const fullscreenElement =
                 document.fullscreenElement || document.webkitFullscreenElement;
             if (!fullscreenElement) {
