@@ -1,107 +1,144 @@
-import { Actor } from "$lib/scripts/actor";
 import { Tile } from "$lib/scripts/tile";
 
 export class Diesel {
-    #ctx: CanvasRenderingContext2D;
+
+    #canvas: any;
     #cellSize: number;
-    #clientHeight: number;
-    #clientWidth: number;
     #dieselAnimation: any;
     #interval: number;
     #lastTime: number;
     #locked: boolean;
     #player: Tile;
     #timer: number;
-    #updating: Array<string>;
+    #updating: boolean;
 
-    constructor(ctx: CanvasRenderingContext2D, dieselAnimation: any, updateArray: Array<string>) {
+    constructor(canvas: any) {
+        this.#canvas = canvas;
+        this.#canvas.ctx = canvas.getContext("2d");
+        this.#canvas.width = window.innerWidth;
+        this.#canvas.height = window.innerHeight;
+        this.#canvas.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         this.#cellSize = 25;
-        this.#ctx = ctx;
-        this.#ctx.font = "24px 'PressStart2P'";
-        this.#ctx.fillStyle = "white";
-        this.#ctx.fillText("croplike", 0, 30);
-        this.#dieselAnimation = dieselAnimation;
+        this.#dieselAnimation = requestAnimationFrame(this.tick.bind(this));
         this.#interval = 1000 / 60;
         this.#lastTime = 0;
-        // start with a locked game
         this.#locked = true;
         this.#timer = 0;
-        this.#updating = updateArray;
+        this.#updating = false;
     }
-    // engine mechanics
+
+
+    /**
+     * Engine Mechanics
+     */
     #EngineLock(tracking: string): void {
-        if (this.#locked)
-            console.log([
-                tracking,
-                "failed",
-                "Game already locked. You should not be trying the action.",
-            ]);
-        else this.#locked = true;
-    }
-    #EngineUnlock(tracking: string): void {
         if (!this.#locked)
-            console.log([
-                tracking,
-                "failed",
-                "Game already unlocked. You should not be trying the action.",
-            ]);
-        else {
+            this.#locked = true;
+        else
+            console.log(`::failed::\n    ${tracking}\n    Game already locked. You should not be trying the action.`)
+    }
+    #EngineUnlock(tracking: string, action: () => void): void {
+        if (this.#locked) {
             this.#locked = false;
-            this.#EngineUpdate(tracking);
+            this.#EngineUpdate(tracking, action);
         }
+        else
+            console.log(`::failed::\n    ${tracking}\n    Game already unlocked. You should not be trying the action.`)
     }
-    #EngineUpdate(tracking: string): void {
-        if (this.#locked)
-            console.log([
-                tracking,
-                "failed",
-                "Game is locked. You should not be trying to update the engine.",
-            ]);
-        else {
-            // handle reactions and moves
-            this.#EngineLock(tracking);
-            console.log([tracking, "succeeded", "Game has been updated."]);
+    #EngineUpdate(tracking: string, action: () => void): void {
+        if (!this.#locked) {
+            // actions handle any game updates and will lock the game accordingly. 
+            action()
+            console.log(`::succeeded::\n    ${tracking}\n    Game has been updated.`);
         }
+        else
+            console.log(`::failed::\n    ${tracking}\n    Game is locked. You should not be trying to update the engine.`)
+
     }
-    animate(timeStamp: number): void {
-        if (this.#locked && this.#updating.length > 0) {
-            const deltaTime = timeStamp - this.#lastTime;
-            this.#lastTime = timeStamp;
-            if (this.#timer > this.#interval) {
-                this.#ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-                //player
-                this.#player = new Tile(this.#ctx, {
+
+    /**
+     * Animate Game
+     */
+    tick(timeStamp: number): void {
+        const deltaTime = timeStamp - this.#lastTime;
+        this.#lastTime = timeStamp;
+        if (this.#timer > this.#interval) {
+            if (this.#locked && this.#updating) {
+                this.#canvas.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+                //player here so the postion is always updated when draw occurs
+                this.#player = new Tile(this.#canvas.ctx, {
                     fillStyle: "orange",
                     size: this.#cellSize,
                     strokeStyle: "yellow",
-                    x:  window.innerWidth / 2 - this.#cellSize / 2,
-                    y:  window.innerHeight / 2 - this.#cellSize / 2,
+                    x: this.#canvas.width / 2 - this.#cellSize / 2,
+                    y: this.#canvas.height / 2 - this.#cellSize / 2,
                 })
                 this.#player.draw();
                 this.#timer = 0;
-            } else {
-                this.#timer += deltaTime;
             }
+        } else {
+            this.#timer += deltaTime;
         }
-        this.#dieselAnimation = requestAnimationFrame(this.animate.bind(this));
+        this.#dieselAnimation = requestAnimationFrame(this.tick.bind(this));
     }
+
+    /**
+     * Start Engine
+     */
     init(): void {
-        this.animate(0);
+        /**
+         * Demo draw
+         */
+        this.#canvas.ctx.font = "24px 'PressStart2P'";
+        this.#canvas.ctx.fillStyle = "white";
+        this.#canvas.ctx.fillText("croplike", 0, 30);
+
+        /**
+         * Fullscreen
+         */
+         window.addEventListener("dblclick", () => {
+            const fullscreenElement =
+                document.fullscreenElement || document.webkitFullscreenElement;
+            if (!fullscreenElement) {
+                if (this.#canvas.requestFullscreen) {
+                    this.#canvas.requestFullscreen();
+                } else if (this.#canvas.webkitRequestFullscreen) {
+                    this.#canvas.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        });
+
+        /**
+         * Resize and redraw
+         */
+        window.addEventListener("resize", () => {
+            cancelAnimationFrame(this.#dieselAnimation);
+            this.#canvas.width = window.innerWidth;
+            this.#canvas.height = window.innerHeight;
+            this.tick(0);
+        });
+
+        /**
+         * Init Game
+         */
+        this.tick(0);
+        this.test("action test", () => {
+            this.#updating = true;
+            console.log("this is a test action, and game lock")
+            this.#EngineLock("action test lock tracking message")
+        })
     }
-    /*
-    renderGetOffsets(): void {
-        const { pos } = this.player;
-        let topLeftX = Math.max(0, pos[0].x - width / 2);
-        topLeftX = Math.min(topLeftX, this.map.mapWidth - width);
-        let topLeftY = Math.max(0, pos[0].y - height / 2);
-        topLeftY = Math.min(topLeftY, this.map.mapHeight - height);
-        return {
-            x: topLeftX,
-            y: topLeftY,
-        };
+
+    /**
+     * Test Function
+     */
+    test(tracking: string, action: () => void): void {
+        this.#EngineUnlock(tracking, action);
     }
-    test(action: string): void {
-        this.#EngineUnlock(action);
-    }
-    */
 }

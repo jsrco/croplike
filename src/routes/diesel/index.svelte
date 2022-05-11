@@ -1,18 +1,17 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { Diesel } from "$lib/scripts/diesel";
+  import type Canvas from "rot-js/lib/display/canvas";
   /*
   Updating array, while actor or prop is moving they are pushed to array, when they arrive remove themselves.
-  If the array length > 0, animate the screen and prevent input
-  Animate only if updating is true and game is locked
+  If the array length > 0, tick the screen and prevent input
+  tick only if updating is true and game is locked
   Engine lock remains the same
   Inputhandler only if game is updating is false
   */
 
-  let canvas: any;
-  let ctx: any;
+  let canvas: Canvas;
   let diesel: Diesel;
-  let dieselAnimation;
   let mouse = {
     radius: 25,
     x: 0,
@@ -28,44 +27,11 @@
     PressStart2P.load().then(function (font) {
       // with canvas, if this is ommited won't work
       document.fonts.add(font);
-      ctx = canvas.getContext("2d");
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      updateArray.push('player')
-      diesel = new Diesel(ctx, dieselAnimation, updateArray, canvas.width, canvas.height);
+      diesel = new Diesel(canvas);
       // start game
       diesel.init();
-      /**
-       * Fullscreen
-       */
-      window.addEventListener("dblclick", () => {
-        const fullscreenElement =
-          document.fullscreenElement || document.webkitFullscreenElement;
-        if (!fullscreenElement) {
-          if (canvas.requestFullscreen) {
-            canvas.requestFullscreen();
-          } else if (canvas.webkitRequestFullscreen) {
-            canvas.webkitRequestFullscreen();
-          }
-        } else {
-          if (document.exitFullscreen) {
-            document.exitFullscreen();
-          } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-          }
-        }
-      });
       window.addEventListener("pointermove", function (e) {
         mouse.x = e.x;
-        mouse.y = e.y;
-      });
-      window.addEventListener("resize", function () {
-        cancelAnimationFrame(dieselAnimation);
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        diesel = new Diesel(ctx, dieselAnimation, updateArray, canvas.width, canvas.height);
-        diesel.animate(0);
       });
     });
   });
