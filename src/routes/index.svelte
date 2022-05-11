@@ -17,7 +17,6 @@
       diesel = new Diesel(canvas);
       // start game
       diesel.init();
-
     });
   });
 </script>

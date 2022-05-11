@@ -1,12 +1,7 @@
+import { Actor } from "$lib/scripts/actor";
 import { ColorSwatch } from "$lib/scripts/colorSwatch";
+import type { Mouse } from '$lib/scripts/interfaces/index'
 import { Tile } from "$lib/scripts/tile";
-
-interface Mouse {
-    radius: number,
-    x: number,
-    y: number,
-
-}
 export class Diesel {
     #canvas: any;
     #cellSize: number;
@@ -15,10 +10,10 @@ export class Diesel {
     #interval: number;
     #lastTime: number;
     #locked: boolean;
-    #player: Tile;
+    #player: Actor;
+    #playerDemo: Tile;
     #timer: number;
     #updating: boolean;
-
     constructor(canvas: any) {
         this.#canvas = canvas;
         this.#canvas.ctx = canvas.getContext("2d");
@@ -38,8 +33,6 @@ export class Diesel {
         this.#timer = 0;
         this.#updating = false;
     }
-
-
     /**
      * Engine Mechanics
      */
@@ -66,7 +59,6 @@ export class Diesel {
         else
             console.log(`::failed::\n    ${tracking}\n    Game is locked. You should not be trying to update the engine.`)
     }
-
     /**
      * Animate Game
      */
@@ -77,22 +69,33 @@ export class Diesel {
             if (this.#locked && this.#updating) {
                 this.#canvas.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
                 //player here so the postion is always updated when draw occurs
-                this.#player = new Tile(this.#canvas.ctx, {
+                this.#playerDemo = new Tile(this.#canvas.ctx, {
+                    fillStyle: ColorSwatch.orange[5],
+                    size: this.#cellSize,
+                    strokeStyle: "yellow",
+                    x: 45,
+                    y: 45,
+                })
+                //player here so the postion is always updated when draw occurs
+                this.#player = new Actor(this.#canvas.ctx, {
                     fillStyle: ColorSwatch.orange[5],
                     size: this.#cellSize,
                     strokeStyle: "yellow",
                     x: this.#canvas.width / 2 - this.#cellSize / 2,
                     y: this.#canvas.height / 2 - this.#cellSize / 2,
                 })
+                this.#playerDemo.draw();
                 this.#player.draw();
+                this.#player.update();
                 /**
                  * Demo draw
                  */
                 this.#canvas.ctx.font = "24px 'PressStart2P'";
                 this.#canvas.ctx.fillStyle = "white";
                 this.#canvas.ctx.fillText("croplike", 12, 30);
-
-
+                /**
+                 * Reset Timer
+                 */
                 this.#timer = 0;
             }
         } else {
@@ -100,7 +103,6 @@ export class Diesel {
         }
         this.#dieselAnimation = requestAnimationFrame(this.tick.bind(this));
     }
-
     /**
      * Start Engine
      */
@@ -125,7 +127,13 @@ export class Diesel {
                 }
             }
         });
-
+        /**
+         * Mouse Tracking
+         */
+        window.addEventListener("pointermove", (e) => {
+            this.#mouse.x = e.x;
+            this.#mouse.y = e.y;
+        });
         /**
          * Resize and redraw
          */
@@ -135,7 +143,6 @@ export class Diesel {
             this.#canvas.height = window.innerHeight;
             this.tick(0);
         });
-
         /**
          * Init Game
          */
@@ -146,7 +153,6 @@ export class Diesel {
             this.#EngineLock("action test lock tracking message")
         })
     }
-
     /**
      * Test Function
      */

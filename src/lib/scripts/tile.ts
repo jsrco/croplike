@@ -1,10 +1,4 @@
-interface TileOptions {
-    fillStyle: string,
-    size: number,
-    strokeStyle: string
-    x: number,
-    y: number,
-}
+import type { TileOptions } from '$lib/scripts/interfaces/index'
 export class Tile {
     #ctx: CanvasRenderingContext2D
     #tileOptions: TileOptions
