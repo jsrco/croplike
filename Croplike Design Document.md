@@ -208,7 +208,9 @@ ROT.js / canvas
 ### April 18, 2022
 * Sunrise old code
 * Removing Three.js and Pixi.js, may revisit. Writing own Canvas.
-
+### May 24, 2022
+* Ramp up on knowledge 
+* Exploring options for stage
 ### April 1, 2022 
 * Temp localHost user refactor
 * Basic site to game connections. UI / Wiki
