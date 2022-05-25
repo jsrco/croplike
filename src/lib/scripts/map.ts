@@ -2,19 +2,13 @@ import { ColorSwatch } from "$lib/scripts/colorSwatch";
 import type { MapProperties } from '$lib/scripts/interfaces/index'
 
 export class Map {
-    bufferSize: number;
     mapHeight: number;
     mapWidth: number;
     map: Array<unknown>;
-    xOffset: number
-    yOffset: number
     constructor(mapProperties: MapProperties) {
         this.mapHeight = mapProperties.mapHeight;
         this.mapWidth = mapProperties.mapWidth;
         this.map = [];
-        this.bufferSize = 32;
-        this.xOffset = 0
-        this.yOffset = 0
         this.builder();
     }
     builder(): void {
