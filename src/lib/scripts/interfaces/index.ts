@@ -12,11 +12,11 @@ export interface Position {
     y: number,
 }
 export interface TileOptions {
-    background: string,
     char: string,
     explorable: boolean,
     explored: boolean,
-    foreground: string,
+    fillStyle: string,
     lightPasses:boolean,
     name:string,
+    strokeStyle: string,
 }

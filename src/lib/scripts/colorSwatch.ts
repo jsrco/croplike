@@ -264,4 +264,4 @@ export const ColorSwatch = {
     "#9F1239",
     "#881337",
   ],
-};
+}

@@ -1,4 +1,4 @@
-import type { TileOptions } from '$lib/scripts/interfaces/index'
+import type { Position, TileOptions } from '$lib/scripts/interfaces/index'
 export class Tile {
     #tileOptions: TileOptions
     constructor(tileOptions: TileOptions) {

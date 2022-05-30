@@ -1,24 +1,31 @@
 import type { Position, TileOptions } from '$lib/scripts/interfaces/index'
 import type { Map } from '$lib/scripts/map'
-import { Tile } from "$lib/scripts/tile";
+import { Tile } from '$lib/scripts/tile'
 export class Actor extends Tile {
-    #currentMap: Map;
-    #position: Position;
+    #position: Position
     #updatedPosition: Position
-    constructor(tileOptions: TileOptions, map: Map ,position: Position) {
+    constructor(tileOptions: TileOptions, position: Position) {
         super(tileOptions)
-        this.#currentMap = map
         this.#position = position
         this.#updatedPosition = position
     }
-    #canUpdate(position:Position): boolean{
+    #canUpdate(position: Position): boolean {
         if (position)
             return true
     }
-    updateActorPostion(position:Position): boolean {
-        if (position && this.#canUpdate(position)) {
+    draw(ctx: CanvasRenderingContext2D, position: Position, size: number): void {
+        
             // Handle logic on animation.
             // Update the postion if updatedPosition does not match after checks have been done.
+        const { x, y } = position
+        const { fillStyle } = this.getTileOptions()
+        ctx.moveTo(x, y);
+        ctx.rect(x, y, size, size);
+        ctx.fillStyle = fillStyle
+        ctx.fill();
+    }
+    updateActorPostion(position: Position): boolean {
+        if (position && this.#canUpdate(position)) {
             this.#updatedPosition = position
             return true
         } else {
