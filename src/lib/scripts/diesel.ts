@@ -1,5 +1,4 @@
 import type { Mouse } from '$lib/scripts/interfaces/index'
-import { Actor } from './actor'
 import { ColorSwatch } from './colorSwatch'
 export class Diesel {
     #canvas: any
@@ -32,18 +31,6 @@ export class Diesel {
             x: 0,
             y: 0,
         }
-        this.#player = new Actor({
-            char: "@",
-            explorable: false,
-            explored: false,
-            fillStyle: ColorSwatch.red[9],
-            lightPasses: false,
-            name: "wall",
-            strokeStyle: ColorSwatch.red[9],
-        }, {
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2
-        })
         this.#timer = 0
         this.#updating = false
     }
@@ -89,10 +76,6 @@ export class Diesel {
             if (this.#locked && this.#updating) {
                 this.#canvas.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
                 //player here so the postion is always updated when draw occurs
-                this.#player.draw(this.#canvas.ctx, {
-                    x: window.innerWidth / 2,
-                    y: window.innerHeight / 2
-                }, 20)
                 /**
                  * Demo draw
                  */

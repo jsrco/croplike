@@ -1,7 +1,4 @@
-export interface MapProperties {
-    height: number, // total map height:y
-    width: number //  total map width:x
-}
+
 export interface Mouse {
     radius: number,
     x: number,
