@@ -1,29 +1,27 @@
 import { ColorSwatch } from "$lib/scripts/colorSwatch"
-import type { MapProperties, Position } from '$lib/scripts/interfaces/index'
+import type { MapProperties } from '$lib/scripts/interfaces/index'
 import { Tile } from "./tile"
 
 export class Map {
-    mapHeight: number
-    mapWidth: number
-    map: Array<Array<Tile>>
+    #map: Array<Array<Tile>>
+    #mapProperties:MapProperties
     constructor(mapProperties: MapProperties) {
-        const { height, width } = mapProperties
-        this.mapHeight = height
-        this.mapWidth = width
-        this.map = []
+        this.#map = []
+        this.#mapProperties = mapProperties
         this.#builder()
     }
     #builder(): void {
-        for (let x = 0; x < this.mapWidth; x++) {
-            this.map.push([])
-            for (let y = 0; y < this.mapHeight; y++) {
+        const { height, width } = this.#mapProperties
+        for (let x = 0; x < width; x++) {
+            this.#map.push([])
+            for (let y = 0; y < height; y++) {
                 if (
                     x === 0 ||
                     y === 0 ||
-                    x === this.mapWidth - 1 ||
-                    y === this.mapHeight - 1
+                    x === width - 1 ||
+                    y === height - 1
                 ) {
-                    this.map[x][y] = new Tile({
+                    this.#map[x][y] = new Tile({
                         char: "#",
                         explorable: false,
                         explored: false,
@@ -33,7 +31,7 @@ export class Map {
                         strokeStyle: ColorSwatch.red[9],
                     })
                 } else {
-                    this.map[x][y] = new Tile({
+                    this.#map[x][y] = new Tile({
                         char: ".",
                         explorable: true,
                         explored: false,
@@ -46,8 +44,8 @@ export class Map {
             }
         }
     }
-    draw(ctx: CanvasRenderingContext2D, position: Position, size: number): void {
-        // draw map
+    getMapProperties(): MapProperties {
+        return this.#mapProperties
     }
 }
 

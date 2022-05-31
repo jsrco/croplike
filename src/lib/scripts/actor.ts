@@ -1,5 +1,4 @@
 import type { Position, TileOptions } from '$lib/scripts/interfaces/index'
-import type { Map } from '$lib/scripts/map'
 import { Tile } from '$lib/scripts/tile'
 export class Actor extends Tile {
     #position: Position
@@ -23,6 +22,9 @@ export class Actor extends Tile {
         ctx.rect(x, y, size, size);
         ctx.fillStyle = fillStyle
         ctx.fill();
+    }
+    getPosition(): Position {
+        return this.#position
     }
     updateActorPostion(position: Position): boolean {
         if (position && this.#canUpdate(position)) {

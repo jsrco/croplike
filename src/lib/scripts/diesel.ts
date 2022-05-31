@@ -77,11 +77,7 @@ export class Diesel {
      * Animate Game
      */
     handleInput(inputData) {
-            // West
-            if (inputData.key === "ArrowLeft") this.#player.updateActorPostion();
-            // East
-            else if (inputData.key === "ArrowRight") this.actions.move(this.player, 1, 0, 2, 0);
-        
+        // handle basic direction movement of map
         }
     /**
      * Animate Game
