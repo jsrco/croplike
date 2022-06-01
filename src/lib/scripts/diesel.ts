@@ -89,26 +89,6 @@ export class Diesel {
      */
     init(): void {
         /**
-         * Fullscreen
-         */
-        window.addEventListener("dblclick", () => {
-            const fullscreenElement =
-                document.fullscreenElement || document.webkitFullscreenElement
-            if (!fullscreenElement) {
-                if (this.#canvas.requestFullscreen) {
-                    this.#canvas.requestFullscreen()
-                } else if (this.#canvas.webkitRequestFullscreen) {
-                    this.#canvas.webkitRequestFullscreen()
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen()
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen()
-                }
-            }
-        })
-        /**
          * Mouse Tracking
          */
         window.addEventListener("pointermove", (e) => {
