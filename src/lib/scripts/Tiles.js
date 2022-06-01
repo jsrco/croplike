@@ -1,4 +1,4 @@
-import ColorSwatch from "$lib/scripts/backup/demo/ColorSwatch";
+import ColorSwatch from "./ColorSwatch";
 
 class Tiles {
   constructor(properties) {

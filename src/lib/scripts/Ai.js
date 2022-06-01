@@ -1,6 +1,4 @@
 
-import Metrics from "$lib/stores/demo/metricStore";
-
 class Ai {
     constructor(entity) {
         // Pass access to the entity for this.
@@ -8,7 +6,7 @@ class Ai {
     }
     act() {
         // AI Actions go here. 
-        Metrics.addConsole("AI acts: BIG TODD")
+        console.log("AI acts: BIG TODD")
     }
 }
 
