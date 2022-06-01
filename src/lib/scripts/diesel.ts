@@ -1,5 +1,4 @@
 import type { Mouse } from '$lib/scripts/interfaces/index'
-import { ColorSwatch } from './colorSwatch'
 export class Diesel {
     #canvas: any
     #dieselAnimation: any
@@ -7,17 +6,10 @@ export class Diesel {
     #interval: number
     #lastTime: number
     #locked: boolean
-    #player: Actor
     #timer: number
     #updating: boolean
     constructor(canvas: any) {
         this.#canvas = canvas
-        // displayOptions imported from Rot to create a new display.
-        // display logic map out in regards to animation loop and render 
-        // handle stage === camera
-        // handle offset
-        // handle actor updates
-        // clamp camera to hero but allow border move
         this.#canvas.ctx = canvas.getContext("2d")
         this.#canvas.width = window.innerWidth
         this.#canvas.height = window.innerHeight
@@ -61,7 +53,7 @@ export class Diesel {
             console.log(`::failed::\n    ${tracking}\n    Game is locked. You should not be trying to update the engine.`)
     }
     /**
-     * Animate Game
+     * Handle Input
      */
     handleInput(inputData) {
         // handle basic direction movement of map
