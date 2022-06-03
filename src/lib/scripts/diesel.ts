@@ -13,7 +13,7 @@ export class Diesel {
         this.ctx = canvas.getContext("2d")
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
-        this.cellSize = 20
+        this.cellSize = 30
         this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
         this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
         this.interval = 1000 / 60
