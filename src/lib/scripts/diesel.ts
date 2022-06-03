@@ -1,232 +1,123 @@
-import { Display, FOV } from "rot-js"
-import ColorSwatch from "./ColorSwatch"
-import Entity from "./Entity"
-import Maps from "./Maps"
-
+import { ColorSwatch } from './colorSwatch'
 export class Diesel {
-    display: any
-    displayOptions: any
-    entities: any
-    gameTime: number
-    gameTimeFlow: boolean
+    canvas: any
+    cellSize: number
+    ctx:  CanvasRenderingContext2D
+    dieselAnimation: any
+    interval: number
+    lastTime: number
     locked: boolean
-    map: Maps
-    mouse: any
-    player: Entity
-    constructor(gameContainer) {
-        this.display = new Display(this.displayOptions);
-        gameContainer.appendChild(this.display.getContainer());
-        this.displayOptions = {
-            bg: ColorSwatch.bgDark,
-            fg: ColorSwatch.red[4],
-            fontSize: 10,
-            fontFamily: "'PressStart2P', cursive",
-            forceSquareRatio: true,
-            height: 450,
-            spacing: 1.1,
-            width: 800,
-        }
-        this.entities = []
-        this.gameTime = 1
-        this.gameTimeFlow = true
-        // Start with a locked game
+    timer: number
+    constructor(canvas: any) {
+        this.canvas = canvas
+        this.ctx = canvas.getContext("2d")
+        this.canvas.width = window.innerWidth
+        this.canvas.height = window.innerHeight
+        this.cellSize = 20
+        this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
+        this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
+        this.interval = 1000 / 60
+        this.lastTime = 0
         this.locked = true
-        this.map = new Maps({ mapHeight: 1000, mapWidth: 1000 })
-        this.mouse = {
-            radius: 25,
-            x: 0,
-            y: 0,
-        }
-        this.player = new Entity({
-            char: "@",
-            fg: "#fff",
-            map: this.map,
-            name: "player",
-            pos: [{ x: 13, y: 14 },]
-            // Add to the array for 3 x 3 player.
-            // { x: 12, y: 14 }, { x: 14, y: 14 },
-            //{ x: 13, y: 13 }, { x: 12, y: 13 }, { x: 14, y: 13 },
-            //{ x: 13, y: 15 }, { x: 12, y: 15 }, { x: 14, y: 15 },]
-        });
+        this.timer = 0
     }
     /**
      * Engine Mechanics
      */
-    EngineLock(tracking: string): void {
-        if (this.locked) console.log(`::failed::\n    ${tracking}\n    Game already locked. You should not be trying the action.`);
-        else this.locked = true;
+    #EngineLock(tracking: string): void {
+        if (!this.locked)
+            this.locked = true
+        else
+            console.log(`::failed::\n    ${tracking}\n    Game already locked. You should not be trying the action.`)
     }
-    EngineUnlock(tracking: string, action): void {
-        if (!this.locked) console.log(`::failed::\n    ${tracking}\n    Game already unlocked. You should not be trying the action.`)
-        else this.locked = false;
-        this.EngineUpdate(tracking, action);
+    #EngineUnlock(tracking: string, action: () => void): void {
+        if (this.locked) {
+            this.locked = false
+            this.#EngineUpdate(tracking, action)
+        }
+        else
+            console.log(`::failed::\n    ${tracking}\n    Game already unlocked. You should not be trying the action.`)
     }
-    EngineUpdate(tracking: string, action): void {
+    #EngineUpdate(tracking: string, action: () => void): void {
         if (!this.locked) {
-            // Handle Reactions to player moves
-            this.tick()
-
             // actions handle any game updates and will lock the game accordingly. 
-            //action()
+            action()
+            this.#EngineLock(tracking)
             console.log(`::succeeded::\n    ${tracking}\n    Game has been updated.`)
-
-            // Temp Entity Action
-            this.entities[0].ai.act()
-
-            this.renderDisplay();
-            this.EngineLock("tracking");
         }
         else
             console.log(`::failed::\n    ${tracking}\n    Game is locked. You should not be trying to update the engine.`)
     }
     /**
-     * Time
+     * Handle Input
      */
-    tick() {
-        if (this.gameTimeFlow) {
-            if (this.gameTime >= 9) {
-                this.gameTimeFlow = false
-
-            } else this.gameTime++
-        } else {
-            if (this.gameTime <= 1) {
-                this.gameTimeFlow = true
-            } else this.gameTime--
-        }
-    }
-    move(entity, dx, dy, d, inputType) {
-        // Looking will not add to engine for now
-        if (entity.facing !== d) {
-            entity.facing = d;
-            this.renderDisplay()
-        } else {
-            // Check Reaction
-            if (entity.tryMove(dx, dy)) {
-                // Console Logging
-                this.EngineUnlock("move", console.log("moving"))
-            } else console.log(`::failed::\n    ${"moving"}\n    Move failed.`)
-
-        }
-    }
     handleInput(inputType, inputData) {
         if (inputType === "keydown") {
             // West
-            if (inputData.key === "ArrowLeft") this.move(this.player, -1, 0, 6, 0);
+            if (inputData.key === "ArrowLeft") this.test("left", () => {
+                console.log("attempted move")
+            })
             // East
-            else if (inputData.key === "ArrowRight") this.move(this.player, 1, 0, 2, 0);
+            else if (inputData.key === "ArrowRight") this.test("right", () => {
+                console.log("attempted move")
+            })
             // North
-            else if (inputData.key === "ArrowUp") this.move(this.player, 0, -1, 0, 0);
+            else if (inputData.key === "ArrowUp") this.test("up", () => {
+                console.log("attempted move")
+            })
             // South
-            else if (inputData.key === "ArrowDown") this.move(this.player, 0, 1, 4, 0);
-            // North West
-            else if (inputData.keyCode === 36) this.move(this.player, -1, -1, 7, 0);
-            // North East
-            else if (inputData.keyCode === 33) this.move(this.player, 1, -1, 1, 0);
-            // South East
-            else if (inputData.keyCode === 34) this.move(this.player, 1, 1, 3, 0);
-            // South West
-            else if (inputData.keyCode === 35) this.move(this.player, -1, 1, 5, 0);
-            // Wait
-            else if (inputData.keyCode === 12)
-                this.move(this.player, 0, 0, this.player.facing, 0);
+            else if (inputData.key === "ArrowDown") this.test("down", () => {
+                console.log("attempted move")
+            })
         }
     }
-    // Renders
-    renderDisplay() {
-        const { height, width } = this.displayOptions;
-        const { char, facing, fg, pos } = this.player;
-        const displayB = this.display;
-        const lightpasses = (x, y) => {
-            return this.map.tiles[x] !== undefined && this.map.tiles[x][y] !== undefined
-                ? this.map.tiles[x][y].lightPasses
-                : false;
-        };
-        const fov = new FOV.RecursiveShadowcasting(lightpasses);
-        const offsets = this.renderGetOffsets();
-
-        for (let x = offsets.x; x < offsets.x + width; x++) {
-            for (let y = offsets.y; y < offsets.y + height; y++) {
-                const tile = this.map.tiles[x][y];
-                let fgColor = tile.fg
-                if (this.gameTime > 2) fgColor = ColorSwatch.purple[9]
-                if (this.gameTime > 7) fgColor = ColorSwatch.blueGray[9]
-                this.display.draw(
-                    x - offsets.x,
-                    y - offsets.y,
-                    tile.char,
-                    tile.explored ? fgColor : ColorSwatch.bgDark,
-                    tile.explored ? tile.bg : ColorSwatch.bgDark
-                );
+    /**
+     * Animate Game
+     */
+    drawGrid():void {
+        for (let y = 2; y + this.cellSize < this.canvas.height; y += this.cellSize + 3) {
+            for (let x = 2; x + this.cellSize < this.canvas.width; x += this.cellSize + 3) {
+                this.drawGridPiece(x, y)
             }
         }
-
-        let fovTime = 8
-        if (this.gameTime > 2) fovTime = 6;
-        if (this.gameTime > 7) fovTime = 4;
-
-        fov.compute90(
-            pos[0].x,
-            pos[0].y,
-            fovTime,
-            facing,
-            (
-                x,
-                y,
-                r,
-            ) => {
-                const fovX = x - offsets.x;
-                const fovY = y - offsets.y;
-
-                if (
-                    this.map.tiles[x] !== undefined &&
-                    this.map.tiles[x][y] !== undefined
-                ) {
-                    let fgColor = ColorSwatch.red[5]
-                    if (this.gameTime > 2) fgColor = ColorSwatch.purple[5];
-                    if (this.gameTime > 7) fgColor = ColorSwatch.blue[5];
-
-                    const ch = r ? this.map.tiles[x][y].char : "@";
-                    const color = this.map.tiles[x][y] ? fgColor : fg;
-                    displayB.draw(fovX, fovY, ch, color);
-                    this.map.tiles[x][y].explored = true
-
-
-                    // Render Entities Temp
-                    const entityTodd = this.entities[0]
-                    if (x === entityTodd.pos[0].x && y === entityTodd.pos[0].y) {
-                        this.display.draw(
-                            entityTodd.pos[0].x - offsets.x,
-                            entityTodd.pos[0].y - offsets.y,
-                            entityTodd.char,
-                            this.map.tiles[entityTodd.pos[0].x][entityTodd.pos[0].y].explored ? entityTodd.fg : ColorSwatch.bgDark,
-                            entityTodd.explored ? entityTodd.bg : ColorSwatch.bgDark);
-
-                    }
-                }
+    }
+    drawGridPiece(x: number, y: number):void {
+        this.ctx.strokeStyle = ColorSwatch.red[9]
+        this.ctx.lineWidth = 1;
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y);
+        this.ctx.strokeRect(x, y, this.cellSize, this.cellSize);
+    }
+    tick(timeStamp: number): void {
+        const deltaTime = timeStamp - this.lastTime
+        this.lastTime = timeStamp
+        if (this.timer > this.interval) {
+            if (this.locked) {
+                this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
+                /**
+                 * Demo draw
+                 */
+                
+                this.drawGrid()
+                this.ctx.font = "24px 'PressStart2P'"
+                this.ctx.fillText("croplike", 12, 30)
+                this.ctx.fillStyle = "white"
+                /**
+                 * Reset Timer
+                 */
+                this.timer = 0
             }
-        );
-
-        // draw player last   
-        for (let i = 0; i < this.player.pos.length; i++) {
-            // draw structure if it exist
-            this.display.draw(pos[i].x - offsets.x, pos[i].y - offsets.y, char, fg);
+        } else {
+            this.timer += deltaTime
         }
+        this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
     }
-    renderGetOffsets() {
-        const { height, width } = this.displayOptions;
-        const { pos } = this.player;
-        let topLeftX = Math.max(0, pos[0].x - width / 2);
-        topLeftX = Math.min(topLeftX, this.map.mapWidth - width);
-        let topLeftY = Math.max(0, pos[0].y - height / 2);
-        topLeftY = Math.min(topLeftY, this.map.mapHeight - height);
-        return {
-            x: topLeftX,
-            y: topLeftY,
-        };
-    }
+    /**
+     * Start Engine
+     */
     init(): void {
         /**
-         *  Bind keyboard input events for game to display
+         * Handle Input
          */
         const bindEventToScreen = (event) => {
             window.addEventListener(event, (e) => {
@@ -238,27 +129,27 @@ export class Diesel {
         /**
          * Mouse Tracking
          */
-        window.addEventListener("pointermove", (e) => {
-            this.mouse.x = e.x
-            this.mouse.y = e.y
-        })
+        //window.addEventListener("pointermove", (e) => {
+        //    console.log("setting mouse")
+        //})
         /**
          * Resize and redraw
          */
         window.addEventListener("resize", () => {
-            this.display.width = window.innerWidth
-            this.display.height = window.innerHeight
-            this.renderDisplay()
+            cancelAnimationFrame(this.dieselAnimation)
+            this.canvas.width = window.innerWidth
+            this.canvas.height = window.innerHeight
+            this.tick(0)
         })
-
-        this.map.tiles[17][10].walkable = false;
-        this.entities.push(new Entity({
-            char: "T",
-            fg: ColorSwatch.yellow[4],
-            map: this.map,
-            name: "Todd",
-            pos: [{ x: 17, y: 10 },],
-        }))
-        this.renderDisplay()
+        /**
+         * Init Game
+         */
+        this.tick(0)
+    }
+    /**
+     * Test Function
+     */
+    test(tracking: string, action: () => void): void {
+        this.#EngineUnlock(tracking, action)
     }
 }

@@ -41,5 +41,5 @@
   });
 </script>
 
-<div bind:this={canvas} />
+<canvas bind:this={canvas} />
 <Deepdwn />
