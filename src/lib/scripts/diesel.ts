@@ -1,4 +1,5 @@
 import { ColorSwatch } from './colorSwatch'
+import { TileMap } from './tileMap'
 export class Diesel {
     canvas: any
     cellSize: number
@@ -7,6 +8,7 @@ export class Diesel {
     interval: number
     lastTime: number
     locked: boolean
+    tileMap: TileMap
     timer: number
     constructor(canvas: any) {
         this.canvas = canvas
@@ -19,6 +21,7 @@ export class Diesel {
         this.interval = 1000 / 60
         this.lastTime = 0
         this.locked = true
+        this.tileMap = new TileMap({mapHeight: 20, mapWidth: 20})
         this.timer = 0
     }
     /**
@@ -145,6 +148,7 @@ export class Diesel {
          * Init Game
          */
         this.tick(0)
+        console.log(this.tileMap)
     }
     /**
      * Test Function
