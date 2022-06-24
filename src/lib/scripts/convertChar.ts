@@ -179,5 +179,5 @@ export function convertChar(type: string): position {
     // Future Content
     if (type === "@") return { x: 15, y: 12 }
     if (type === "skull") return { x: 13, y: 6 }
-
+    if (type === '.') return { x: 17, y: 14 }
 }

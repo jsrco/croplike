@@ -9,6 +9,8 @@ export class Diesel {
     interval: number
     lastTime: number
     locked: boolean
+    playerPoisiton: position
+    spriteGrid: position
     spriteSheet: HTMLImageElement
     timer: number
     constructor(canvas: any) {
@@ -22,10 +24,11 @@ export class Diesel {
         this.interval = 1000 / 60
         this.lastTime = 0
         this.locked = true
+        this.spriteGrid = { x: 579 / 32, y: 291 / 16 }
         this.spriteSheet = new Image()
         this.spriteSheet.src = 'assets/ff5x5.png'
         this.timer = 0
-
+        this.playerPoisiton = { x: 10, y: 10 }
     }
     /**
      * Engine Mechanics
@@ -61,19 +64,39 @@ export class Diesel {
         if (inputType === "keydown") {
             // West
             if (inputData.key === "ArrowLeft") this.test("left", () => {
-                console.log("attempted move")
+                this.playerPoisiton.x -= 15
             })
             // East
             else if (inputData.key === "ArrowRight") this.test("right", () => {
-                console.log("attempted move")
+                this.playerPoisiton.x += 15
             })
             // North
             else if (inputData.key === "ArrowUp") this.test("up", () => {
-                console.log("attempted move")
+                this.playerPoisiton.y -= 15
             })
             // South
             else if (inputData.key === "ArrowDown") this.test("down", () => {
-                console.log("attempted move")
+                this.playerPoisiton.y += 15
+            })
+            // North West
+            else if (inputData.keyCode === 36) this.test("up left", () => {
+                this.playerPoisiton.x -= 15
+                this.playerPoisiton.y -= 15
+            })
+            // North East
+            else if (inputData.keyCode === 33) this.test("up right", () => {
+                this.playerPoisiton.x += 15
+                this.playerPoisiton.y -= 15
+            })
+            // South East
+            else if (inputData.keyCode === 34) this.test("down right ", () => {
+                this.playerPoisiton.x += 15
+                this.playerPoisiton.y += 15
+            })
+            // South West
+            else if (inputData.keyCode === 35) this.test("down left", () => {
+                this.playerPoisiton.x -= 15
+                this.playerPoisiton.y += 15
             })
         }
     }
@@ -82,9 +105,8 @@ export class Diesel {
      */
     drawFrame(type: string, pos: position, size) {
         // image , sx, sy, sw, sh, dx, dy, dw, dh
-        const spritegrid: position = { x: 579 / 32, y: 291 / 16 }
         const char: position = convertChar(type)
-        this.ctx.drawImage(this.spriteSheet, spritegrid.x * char.x, spritegrid.y * char.y, spritegrid.x, spritegrid.y, pos.x, pos.y, size, size)
+        this.ctx.drawImage(this.spriteSheet, this.spriteGrid.x * char.x, this.spriteGrid.y * char.y, this.spriteGrid.x, this.spriteGrid.y, pos.x, pos.y, size, size)
     }
     drawGrid(): void {
         for (let y = 2; y + this.cellSize < this.canvas.height; y += this.cellSize + 3) {
@@ -109,34 +131,64 @@ export class Diesel {
                 /**
                  * Demo draw
                  */
-                this.drawFrame("aUpper",{x:10,y:10}, 15)
-                this.drawFrame("aLower",{x:10,y:35}, 15)
-                this.drawFrame("aFancy",{x:10,y:60}, 15)
-                this.drawFrame("aFull",{x:10,y:85}, 15)
-                this.drawFrame("aThick",{x:10,y:110}, 15)
-                this.drawFrame("@",{x:10,y:135}, 15)
-                this.drawFrame("skull",{x:10,y:160}, 15)
-                this.drawFrame("bUpper",{x:35,y:10}, 15)
-                this.drawFrame("bLower",{x:35,y:35}, 15)
-                this.drawFrame("bFancy",{x:35,y:60}, 15)
-                this.drawFrame("bFull",{x:35,y:85}, 15)
-                this.drawFrame("bThick",{x:35,y:110}, 15)
-                this.drawFrame("cUpper",{x:60,y:10}, 15)
-                this.drawFrame("cLower",{x:60,y:35}, 15)
-                this.drawFrame("cFancy",{x:60,y:60}, 15)
-                this.drawFrame("cFull",{x:60,y:85}, 15)
-                this.drawFrame("cThick",{x:60,y:110}, 15)
-                this.drawFrame("dUpper",{x:85,y:10}, 15)
-                this.drawFrame("dLower",{x:85,y:35}, 15)
-                this.drawFrame("dFancy",{x:85,y:60}, 15)
-                this.drawFrame("dFull",{x:85,y:85}, 15)
-                this.drawFrame("dThick",{x:85,y:110}, 15)
-                
-                this.drawFrame("eUpper",{x:110,y:10}, 15)
-                this.drawFrame("eLower",{x:110,y:35}, 15)
-                this.drawFrame("eFancy",{x:110,y:60}, 15)
-                this.drawFrame("eFull",{x:110,y:85}, 15)
-                this.drawFrame("eThick",{x:110,y:110}, 15)
+                this.drawFrame("aUpper", { x: 10, y: 10 }, 15)
+                this.drawFrame("aLower", { x: 10, y: 25 }, 15)
+                this.drawFrame("aFancy", { x: 10, y: 40 }, 15)
+                this.drawFrame("aFull", { x: 10, y: 55 }, 15)
+                this.drawFrame("aThick", { x: 10, y: 70 }, 15)
+                this.drawFrame("@", { x: 10, y: 85 }, 15)
+                this.drawFrame("skull", { x: 10, y: 100 }, 15)
+                this.drawFrame("bUpper", { x: 25, y: 10 }, 15)
+                this.drawFrame("bLower", { x: 25, y: 25 }, 15)
+                this.drawFrame("bFancy", { x: 25, y: 40 }, 15)
+                this.drawFrame("bFull", { x: 25, y: 55 }, 15)
+                this.drawFrame("bThick", { x: 25, y: 70 }, 15)
+                this.drawFrame("cUpper", { x: 40, y: 10 }, 15)
+                this.drawFrame("cLower", { x: 40, y: 25 }, 15)
+                this.drawFrame("cFancy", { x: 40, y: 40 }, 15)
+                this.drawFrame("cFull", { x: 40, y: 55 }, 15)
+                this.drawFrame("cThick", { x: 40, y: 70 }, 15)
+                this.drawFrame("dUpper", { x: 55, y: 10 }, 15)
+                this.drawFrame("dLower", { x: 55, y: 25 }, 15)
+                this.drawFrame("dFancy", { x: 55, y: 40 }, 15)
+                this.drawFrame("dFull", { x: 55, y: 55 }, 15)
+                this.drawFrame("dThick", { x: 55, y: 70 }, 15)
+
+                this.drawFrame("eUpper", { x: 70, y: 10 }, 15)
+                this.drawFrame("eLower", { x: 70, y: 25 }, 15)
+                this.drawFrame("eFancy", { x: 70, y: 40 }, 15)
+                this.drawFrame("eFull", { x: 70, y: 55 }, 15)
+                this.drawFrame("eThick", { x: 70, y: 70 }, 15)
+
+                this.drawFrame("#", { x: 85, y: 10 }, 15)
+                this.drawFrame("#", { x: 85, y: 25 }, 15)
+                this.drawFrame("#", { x: 85, y: 40 }, 15)
+                this.drawFrame("#", { x: 85, y: 55 }, 15)
+                this.drawFrame("#", { x: 85, y: 70 }, 15)
+                this.drawFrame("#", { x: 100, y: 10 }, 15)
+                this.drawFrame(".", { x: 100, y: 25 }, 15)
+                this.drawFrame(".", { x: 100, y: 40 }, 15)
+                this.drawFrame(".", { x: 100, y: 55 }, 15)
+                this.drawFrame("#", { x: 100, y: 70 }, 15)
+
+                this.drawFrame("#", { x: 115, y: 10 }, 15)
+                this.drawFrame(".", { x: 115, y: 25 }, 15)
+                this.drawFrame(".", { x: 115, y: 40 }, 15)
+                this.drawFrame(".", { x: 115, y: 55 }, 15)
+                this.drawFrame("#", { x: 115, y: 70 }, 15)
+                this.drawFrame("#", { x: 130, y: 10 }, 15)
+                this.drawFrame(".", { x: 130, y: 25 }, 15)
+                this.drawFrame(".", { x: 130, y: 40 }, 15)
+                this.drawFrame(".", { x: 130, y: 55 }, 15)
+                this.drawFrame("#", { x: 130, y: 70 }, 15)
+                this.drawFrame("#", { x: 145, y: 10 }, 15)
+                this.drawFrame("#", { x: 145, y: 25 }, 15)
+                this.drawFrame("#", { x: 145, y: 40 }, 15)
+                this.drawFrame("#", { x: 145, y: 55 }, 15)
+                this.drawFrame("#", { x: 145, y: 70 }, 15)
+                this.drawFrame("@", this.playerPoisiton, 15)
+
+
                 //this.drawGrid()
                 //this.ctx.font = "24px 'PressStart2P'"
                 //this.ctx.fillText("croplike", 12, 30)
