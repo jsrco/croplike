@@ -22,7 +22,6 @@ export class Diesel {
         this.spriteSheet.src = 'assets/ff5x5.png'
         this.spriteSheet.style.imageRendering = "pixelated";
         this.spriteSize = 21
-        this.timer = 0
         this.playerPoisiton = { x: 157, y: 73 }
     }
     /**
@@ -101,9 +100,11 @@ export class Diesel {
     drawSprite(type: string, pos: position, color: string, size: number): void {
         const char: position = convertChar(type)
         // draw image, sx, sy, sw, sh, dx, dy, dw, dh
-        this.ctx.drawImage(this.spriteSheet, 18 * char.x, 18 * char.y, 21, 21, pos.x, pos.y, size, size)
+        this.ctx.drawImage(this.spriteSheet, 
+            18 * char.x, 18 * char.y, 21, 21, 
+            pos.x, pos.y, size, size)
         // set composite mode
-        this.ctx.globalCompositeOperation = 'destination-over'
+        this.ctx.globalCompositeOperation = 'source-atop'
         // draw color
         this.ctx.fillStyle = color
         this.ctx.fillRect(pos.x, pos.y, size, size)
@@ -135,69 +136,60 @@ export class Diesel {
             this.drawSprite("#", { x: 10, y: 94 }, "orange", this.spriteSize)
 
 
-            this.drawSprite("#", { x: 31, y: 10 }, "orange", this.spriteSize)
-            this.drawSprite("uFull", { x: 31, y: 31 }, "orange", this.spriteSize)
-            this.drawSprite("fFancy", { x: 31, y: 52 }, "orange", this.spriteSize)
-            this.drawSprite("aThick", { x: 31, y: 73 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 31, y: 94 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 52, y: 10 }, "orange", this.spriteSize)
-            this.drawSprite("mLower", { x: 52, y: 31 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 52, y: 52 }, "orange", this.spriteSize)
-            this.drawSprite("gFull", { x: 52, y: 73 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 52, y: 94 }, "orange", this.spriteSize)
+            this.drawSprite("#", { x: 31, y: 10 }, "salmon", this.spriteSize)
+            this.drawSprite("uFull", { x: 31, y: 31 }, "salmon", this.spriteSize)
+            this.drawSprite("fFancy", { x: 31, y: 52 }, "salmon", this.spriteSize)
+            this.drawSprite("aThick", { x: 31, y: 73 }, "salmon", this.spriteSize)
+            this.drawSprite("#", { x: 31, y: 94 }, "salmon", this.spriteSize)
 
-            this.drawSprite("#", { x: 73, y: 10 }, "orange", this.spriteSize)
-            this.drawSprite("mUpper", { x: 73, y: 31 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 73, y: 52 }, "orange", this.spriteSize)
-            this.drawSprite("eLower", { x: 73, y: 73 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 73, y: 94 }, "orange", this.spriteSize)
+            this.drawSprite("#", { x: 52, y: 10 }, "pink", this.spriteSize)
+            this.drawSprite("mLower", { x: 52, y: 31 }, "pink", this.spriteSize)
+            this.drawSprite(".", { x: 52, y: 52 }, "pink", this.spriteSize)
+            this.drawSprite("gFull", { x: 52, y: 73 }, "pink", this.spriteSize)
+            this.drawSprite("#", { x: 52, y: 94 }, "pink", this.spriteSize)
 
-            this.drawSprite("#", { x: 94, y: 10 }, "orange", this.spriteSize)
-            this.drawSprite("eFull", { x: 94, y: 31 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 94, y: 52 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 94, y: 73 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 94, y: 94 }, "orange", this.spriteSize)
+            this.drawSprite("#", { x: 73, y: 10 }, "yellow", this.spriteSize)
+            this.drawSprite("mUpper", { x: 73, y: 31 }, "yellow", this.spriteSize)
+            this.drawSprite(".", { x: 73, y: 52 }, "yellow", this.spriteSize)
+            this.drawSprite("eLower", { x: 73, y: 73 }, "yellow", this.spriteSize)
+            this.drawSprite("#", { x: 73, y: 94 }, "yellow", this.spriteSize)
 
-            this.drawSprite("#", { x: 115, y: 10 }, "orange", this.spriteSize)
-            this.drawSprite("rFancy", { x: 115, y: 31 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 115, y: 52 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 115, y: 73 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 115, y: 94 }, "orange", this.spriteSize)
+            this.drawSprite("#", { x: 94, y: 10 }, "blue", this.spriteSize)
+            this.drawSprite("eFull", { x: 94, y: 31 }, "blue", this.spriteSize)
+            this.drawSprite(".", { x: 94, y: 52 }, "blue", this.spriteSize)
+            this.drawSprite(".", { x: 94, y: 73 }, "blue", this.spriteSize)
+            this.drawSprite("#", { x: 94, y: 94 }, "blue", this.spriteSize)
 
-            this.drawSprite("#", { x: 136, y: 10 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 136, y: 31 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 136, y: 52 }, "orange", this.spriteSize)
-            this.drawSprite("shield", { x: 136, y: 73 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 136, y: 94 }, "orange", this.spriteSize)
+            this.drawSprite("#", { x: 115, y: 10 }, "green", this.spriteSize)
+            this.drawSprite("rFancy", { x: 115, y: 31 }, "green", this.spriteSize)
+            this.drawSprite(".", { x: 115, y: 52 }, "green", this.spriteSize)
+            this.drawSprite(".", { x: 115, y: 73 }, "green", this.spriteSize)
+            this.drawSprite("#", { x: 115, y: 94 }, "green", this.spriteSize)
 
-            this.drawSprite("#", { x: 157, y: 10 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 157, y: 31 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 157, y: 52 }, "orange", this.spriteSize)
-            this.drawSprite("@", { x: 157, y: 73 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 157, y: 94 }, "orange", this.spriteSize)
+            this.drawSprite("#", { x: 136, y: 10 }, "red", this.spriteSize)
+            this.drawSprite(".", { x: 136, y: 31 }, "red", this.spriteSize)
+            this.drawSprite(".", { x: 136, y: 52 }, "red", this.spriteSize)
+            this.drawSprite("shield", { x: 136, y: 73 }, "red", this.spriteSize)
+            this.drawSprite("#", { x: 136, y: 94 }, "red", this.spriteSize)
 
-            this.drawSprite("#", { x: 178, y: 10 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 178, y: 31 }, "orange", this.spriteSize)
-            this.drawSprite(".", { x: 178, y: 52 }, "orange", this.spriteSize)
-            this.drawSprite("sword", { x: 178, y: 73 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 178, y: 94 }, "orange", this.spriteSize)
+            this.drawSprite("#", { x: 157, y: 10 }, "purple", this.spriteSize)
+            this.drawSprite(".", { x: 157, y: 31 }, "purple", this.spriteSize)
+            this.drawSprite(".", { x: 157, y: 52 }, "purple", this.spriteSize)
+            this.drawSprite("@", { x: 157, y: 73 }, "purple", this.spriteSize)
+            this.drawSprite("#", { x: 157, y: 94 }, "purple", this.spriteSize)
 
-            this.drawSprite("#", { x: 199, y: 10 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 199, y: 31 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 199, y: 52 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 199, y: 73 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 199, y: 94 }, "orange", this.spriteSize)
-            this.drawSprite("@", this.playerPoisiton, "orange", this.spriteSize)
+            this.drawSprite("#", { x: 178, y: 10 }, "teal", this.spriteSize)
+            this.drawSprite(".", { x: 178, y: 31 }, "teal", this.spriteSize)
+            this.drawSprite(".", { x: 178, y: 52 }, "teal", this.spriteSize)
+            this.drawSprite("sword", { x: 178, y: 73 }, "teal", this.spriteSize)
+            this.drawSprite("#", { x: 178, y: 94 }, "teal", this.spriteSize)
 
-
-            //this.drawGrid()
-            //this.ctx.font = "24px 'PressStart2P'"
-            //this.ctx.fillText("croplike", 12, 30)
-            //this.ctx.fillStyle = "white"
-            /**
-             * Reset Timer
-             */
-            this.timer = 0
+            this.drawSprite("#", { x: 199, y: 10 }, "indigo", this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 31 }, "indigo", this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 52 }, "indigo", this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 73 }, "indigo", this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 94 }, "indigo", this.spriteSize)
+            this.drawSprite("@", this.playerPoisiton, "white", this.spriteSize)
         }
         this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
     }
