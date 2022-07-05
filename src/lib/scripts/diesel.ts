@@ -97,16 +97,19 @@ export class Diesel {
     /**
      * Animate Game
      */
-    drawSprite(type: string, pos: position, color: string, size: number): void {
+    drawSprite(type: string, pos: position, bg: string, fg: string, size: number): void {
         const char: position = convertChar(type)
         // draw image, sx, sy, sw, sh, dx, dy, dw, dh
         this.ctx.drawImage(this.spriteSheet, 
             18 * char.x, 18 * char.y, 21, 21, 
             pos.x, pos.y, size, size)
-        // set composite mode
+        // draw fg color
         this.ctx.globalCompositeOperation = 'source-atop'
-        // draw color
-        this.ctx.fillStyle = color
+        this.ctx.fillStyle = fg
+        this.ctx.fillRect(pos.x, pos.y, size, size)
+        // draw bg color
+        this.ctx.globalCompositeOperation = "destination-over"
+        this.ctx.fillStyle = bg
         this.ctx.fillRect(pos.x, pos.y, size, size)
         // reset composite mode
         this.ctx.globalCompositeOperation = "source-over"
@@ -129,67 +132,67 @@ export class Diesel {
             /**
              * Demo draw
              */
-            this.drawSprite("#", { x: 10, y: 10 }, "orange", this.spriteSize)
-            this.drawSprite("sThick", { x: 10, y: 31 }, "orange", this.spriteSize)
-            this.drawSprite("oLower", { x: 10, y: 52 }, "orange", this.spriteSize)
-            this.drawSprite("rFull", { x: 10, y: 73 }, "orange", this.spriteSize)
-            this.drawSprite("#", { x: 10, y: 94 }, "orange", this.spriteSize)
+            this.drawSprite("#", { x: 10, y: 10 }, "orange", "white",this.spriteSize)
+            this.drawSprite("sThick", { x: 10, y: 31 }, "orange", "white",this.spriteSize)
+            this.drawSprite("oLower", { x: 10, y: 52 }, "orange", "white",this.spriteSize)
+            this.drawSprite("rFull", { x: 10, y: 73 }, "orange", "white",this.spriteSize)
+            this.drawSprite("#", { x: 10, y: 94 }, "orange", "white",this.spriteSize)
 
 
-            this.drawSprite("#", { x: 31, y: 10 }, "salmon", this.spriteSize)
-            this.drawSprite("uFull", { x: 31, y: 31 }, "salmon", this.spriteSize)
-            this.drawSprite("fFancy", { x: 31, y: 52 }, "salmon", this.spriteSize)
-            this.drawSprite("aThick", { x: 31, y: 73 }, "salmon", this.spriteSize)
-            this.drawSprite("#", { x: 31, y: 94 }, "salmon", this.spriteSize)
+            this.drawSprite("#", { x: 31, y: 10 }, "salmon", "white",this.spriteSize)
+            this.drawSprite("uFull", { x: 31, y: 31 }, "salmon", "white",this.spriteSize)
+            this.drawSprite("fFancy", { x: 31, y: 52 }, "salmon", "white",this.spriteSize)
+            this.drawSprite("aThick", { x: 31, y: 73 }, "salmon", "white",this.spriteSize)
+            this.drawSprite("#", { x: 31, y: 94 }, "salmon", "white",this.spriteSize)
 
-            this.drawSprite("#", { x: 52, y: 10 }, "pink", this.spriteSize)
-            this.drawSprite("mLower", { x: 52, y: 31 }, "pink", this.spriteSize)
-            this.drawSprite(".", { x: 52, y: 52 }, "pink", this.spriteSize)
-            this.drawSprite("gFull", { x: 52, y: 73 }, "pink", this.spriteSize)
-            this.drawSprite("#", { x: 52, y: 94 }, "pink", this.spriteSize)
+            this.drawSprite("#", { x: 52, y: 10 }, "pink", "white",this.spriteSize)
+            this.drawSprite("mLower", { x: 52, y: 31 }, "pink", "white",this.spriteSize)
+            this.drawSprite(".", { x: 52, y: 52 }, "pink", "white",this.spriteSize)
+            this.drawSprite("gFull", { x: 52, y: 73 }, "pink", "white",this.spriteSize)
+            this.drawSprite("#", { x: 52, y: 94 }, "pink", "white",this.spriteSize)
 
-            this.drawSprite("#", { x: 73, y: 10 }, "yellow", this.spriteSize)
-            this.drawSprite("mUpper", { x: 73, y: 31 }, "yellow", this.spriteSize)
-            this.drawSprite(".", { x: 73, y: 52 }, "yellow", this.spriteSize)
-            this.drawSprite("eLower", { x: 73, y: 73 }, "yellow", this.spriteSize)
-            this.drawSprite("#", { x: 73, y: 94 }, "yellow", this.spriteSize)
+            this.drawSprite("#", { x: 73, y: 10 }, "yellow", "white",this.spriteSize)
+            this.drawSprite("mUpper", { x: 73, y: 31 }, "yellow", "white",this.spriteSize)
+            this.drawSprite(".", { x: 73, y: 52 }, "yellow", "white",this.spriteSize)
+            this.drawSprite("eLower", { x: 73, y: 73 }, "yellow", "white",this.spriteSize)
+            this.drawSprite("#", { x: 73, y: 94 }, "yellow", "white",this.spriteSize)
 
-            this.drawSprite("#", { x: 94, y: 10 }, "blue", this.spriteSize)
-            this.drawSprite("eFull", { x: 94, y: 31 }, "blue", this.spriteSize)
-            this.drawSprite(".", { x: 94, y: 52 }, "blue", this.spriteSize)
-            this.drawSprite(".", { x: 94, y: 73 }, "blue", this.spriteSize)
-            this.drawSprite("#", { x: 94, y: 94 }, "blue", this.spriteSize)
+            this.drawSprite("#", { x: 94, y: 10 }, "blue", "white",this.spriteSize)
+            this.drawSprite("eFull", { x: 94, y: 31 }, "blue", "white",this.spriteSize)
+            this.drawSprite(".", { x: 94, y: 52 }, "blue", "white",this.spriteSize)
+            this.drawSprite(".", { x: 94, y: 73 }, "blue", "white",this.spriteSize)
+            this.drawSprite("#", { x: 94, y: 94 }, "blue", "white",this.spriteSize)
 
-            this.drawSprite("#", { x: 115, y: 10 }, "green", this.spriteSize)
-            this.drawSprite("rFancy", { x: 115, y: 31 }, "green", this.spriteSize)
-            this.drawSprite(".", { x: 115, y: 52 }, "green", this.spriteSize)
-            this.drawSprite(".", { x: 115, y: 73 }, "green", this.spriteSize)
-            this.drawSprite("#", { x: 115, y: 94 }, "green", this.spriteSize)
+            this.drawSprite("#", { x: 115, y: 10 }, "green", "white",this.spriteSize)
+            this.drawSprite("rFancy", { x: 115, y: 31 }, "green", "white",this.spriteSize)
+            this.drawSprite(".", { x: 115, y: 52 }, "green", "white",this.spriteSize)
+            this.drawSprite(".", { x: 115, y: 73 }, "green", "white",this.spriteSize)
+            this.drawSprite("#", { x: 115, y: 94 }, "green", "white",this.spriteSize)
 
-            this.drawSprite("#", { x: 136, y: 10 }, "red", this.spriteSize)
-            this.drawSprite(".", { x: 136, y: 31 }, "red", this.spriteSize)
-            this.drawSprite(".", { x: 136, y: 52 }, "red", this.spriteSize)
-            this.drawSprite("shield", { x: 136, y: 73 }, "red", this.spriteSize)
-            this.drawSprite("#", { x: 136, y: 94 }, "red", this.spriteSize)
+            this.drawSprite("#", { x: 136, y: 10 }, "red", "white",this.spriteSize)
+            this.drawSprite(".", { x: 136, y: 31 }, "red", "white",this.spriteSize)
+            this.drawSprite(".", { x: 136, y: 52 }, "red", "white",this.spriteSize)
+            this.drawSprite("shield", { x: 136, y: 73 }, "red", "white",this.spriteSize)
+            this.drawSprite("#", { x: 136, y: 94 }, "red", "white",this.spriteSize)
 
-            this.drawSprite("#", { x: 157, y: 10 }, "purple", this.spriteSize)
-            this.drawSprite(".", { x: 157, y: 31 }, "purple", this.spriteSize)
-            this.drawSprite(".", { x: 157, y: 52 }, "purple", this.spriteSize)
-            this.drawSprite("@", { x: 157, y: 73 }, "purple", this.spriteSize)
-            this.drawSprite("#", { x: 157, y: 94 }, "purple", this.spriteSize)
+            this.drawSprite("#", { x: 157, y: 10 }, "purple", "white",this.spriteSize)
+            this.drawSprite(".", { x: 157, y: 31 }, "purple", "white",this.spriteSize)
+            this.drawSprite(".", { x: 157, y: 52 }, "purple", "white",this.spriteSize)
+            this.drawSprite("@", { x: 157, y: 73 }, "purple", "white",this.spriteSize)
+            this.drawSprite("#", { x: 157, y: 94 }, "purple", "white",this.spriteSize)
 
-            this.drawSprite("#", { x: 178, y: 10 }, "teal", this.spriteSize)
-            this.drawSprite(".", { x: 178, y: 31 }, "teal", this.spriteSize)
-            this.drawSprite(".", { x: 178, y: 52 }, "teal", this.spriteSize)
-            this.drawSprite("sword", { x: 178, y: 73 }, "teal", this.spriteSize)
-            this.drawSprite("#", { x: 178, y: 94 }, "teal", this.spriteSize)
+            this.drawSprite("#", { x: 178, y: 10 }, "teal", "white",this.spriteSize)
+            this.drawSprite(".", { x: 178, y: 31 }, "teal", "white",this.spriteSize)
+            this.drawSprite(".", { x: 178, y: 52 }, "teal", "white",this.spriteSize)
+            this.drawSprite("sword", { x: 178, y: 73 }, "teal", "white",this.spriteSize)
+            this.drawSprite("#", { x: 178, y: 94 }, "teal", "white",this.spriteSize)
 
-            this.drawSprite("#", { x: 199, y: 10 }, "indigo", this.spriteSize)
-            this.drawSprite("#", { x: 199, y: 31 }, "indigo", this.spriteSize)
-            this.drawSprite("#", { x: 199, y: 52 }, "indigo", this.spriteSize)
-            this.drawSprite("#", { x: 199, y: 73 }, "indigo", this.spriteSize)
-            this.drawSprite("#", { x: 199, y: 94 }, "indigo", this.spriteSize)
-            this.drawSprite("@", this.playerPoisiton, "white", this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 10 }, "indigo", "white",this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 31 }, "indigo", "white",this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 52 }, "indigo", "white",this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 73 }, "indigo", "white",this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 94 }, "indigo", "white",this.spriteSize)
+            this.drawSprite("@", this.playerPoisiton, "purple", "white",this.spriteSize)
         }
         this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
     }
