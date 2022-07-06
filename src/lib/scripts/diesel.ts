@@ -19,7 +19,7 @@ export class Diesel {
         this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
         this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
         this.locked = true
-        this.map = this.makeMap(500,500)
+        this.map = this.makeMap(500, 500)
         this.spriteSheet = new Image()
         this.spriteSheet.src = 'assets/ff5x5.png'
         this.spriteSheet.style.imageRendering = "pixelated";
@@ -104,36 +104,39 @@ export class Diesel {
         for (let x = 0; x < width; x++) {
             tileCollection.push([]);
             for (let y = 0; y < height; y++) {
-              if (
-                x === 0 ||
-                y === 0 ||
-                x === width - 1 ||
-                y === height - 1 ||
-                (x % 4 === 0 && y % 4 === 0)
-              ) {
-                tileCollection[x][y] = 1
-              } else {
-                tileCollection[x][y] = 0
-              }
+                if (
+                    x === 0 ||
+                    y === 0 ||
+                    x === width - 1 ||
+                    y === height - 1 ||
+                    (x % 4 === 0 && y % 4 === 0)
+                ) {
+                    tileCollection[x][y] = 1
+                } else {
+                    tileCollection[x][y] = 0
+                }
             }
-          }
-          return tileCollection
+        }
+        return tileCollection
     }
-    drawMap():string {
+    drawMap(): string {
         // after getting total tiles vs this.canvas w / h (make it always odd / odd) so player at center unless out of context. have it set on init / and resize, only needed if screensize changes.
         // so you get the player position, get the total tiles, if it is greater or === to the edge of the map / place player in center else place player off center of total Tiles
         // get upper left position for context of what to draw vs total tiles / player postion (center / off center), 
         // math map for loop
         // draw tiles only if they need 2 update
         // draw map center screen
-        // draw player
+        // draw entity / player is a function that only switches to source-atop and draws colored rect 
+        // draw order actor / prop / scene
+        // draw all three in one pass. no draw over
+        
         return "a map drawn"
     }
     drawSprite(type: string, pos: position, bg: string, fg: string, size: number): void {
         const char: position = convertChar(type)
         // draw image, sx, sy, sw, sh, dx, dy, dw, dh
-        this.ctx.drawImage(this.spriteSheet, 
-            18 * char.x, 18 * char.y, 21, 21, 
+        this.ctx.drawImage(this.spriteSheet,
+            18 * char.x, 18 * char.y, 21, 21,
             pos.x, pos.y, size, size)
         // draw fg color
         this.ctx.globalCompositeOperation = 'source-atop'
@@ -164,8 +167,66 @@ export class Diesel {
             /**
              * Demo draw
              */
-            
-            this.drawSprite("@", this.playerPoisiton, "purple", "white",this.spriteSize)
+            this.drawSprite("#", { x: 10, y: 10 }, "orange", "white", this.spriteSize)
+            this.drawSprite("sThick", { x: 10, y: 31 }, "orange", "white", this.spriteSize)
+            this.drawSprite("oLower", { x: 10, y: 52 }, "orange", "white", this.spriteSize)
+            this.drawSprite("rFull", { x: 10, y: 73 }, "orange", "white", this.spriteSize)
+            this.drawSprite("#", { x: 10, y: 94 }, "orange", "white", this.spriteSize)
+
+
+            this.drawSprite("#", { x: 31, y: 10 }, "salmon", "white", this.spriteSize)
+            this.drawSprite("uFull", { x: 31, y: 31 }, "salmon", "white", this.spriteSize)
+            this.drawSprite("fFancy", { x: 31, y: 52 }, "salmon", "white", this.spriteSize)
+            this.drawSprite("aThick", { x: 31, y: 73 }, "salmon", "white", this.spriteSize)
+            this.drawSprite("#", { x: 31, y: 94 }, "salmon", "white", this.spriteSize)
+
+            this.drawSprite("#", { x: 52, y: 10 }, "pink", "white", this.spriteSize)
+            this.drawSprite("mLower", { x: 52, y: 31 }, "pink", "white", this.spriteSize)
+            this.drawSprite(".", { x: 52, y: 52 }, "pink", "white", this.spriteSize)
+            this.drawSprite("gFull", { x: 52, y: 73 }, "pink", "white", this.spriteSize)
+            this.drawSprite("#", { x: 52, y: 94 }, "pink", "white", this.spriteSize)
+
+            this.drawSprite("#", { x: 73, y: 10 }, "yellow", "white", this.spriteSize)
+            this.drawSprite("mUpper", { x: 73, y: 31 }, "yellow", "white", this.spriteSize)
+            this.drawSprite(".", { x: 73, y: 52 }, "yellow", "white", this.spriteSize)
+            this.drawSprite("eLower", { x: 73, y: 73 }, "yellow", "white", this.spriteSize)
+            this.drawSprite("#", { x: 73, y: 94 }, "yellow", "white", this.spriteSize)
+
+            this.drawSprite("#", { x: 94, y: 10 }, "blue", "white", this.spriteSize)
+            this.drawSprite("eFull", { x: 94, y: 31 }, "blue", "white", this.spriteSize)
+            this.drawSprite(".", { x: 94, y: 52 }, "blue", "white", this.spriteSize)
+            this.drawSprite(".", { x: 94, y: 73 }, "blue", "white", this.spriteSize)
+            this.drawSprite("#", { x: 94, y: 94 }, "blue", "white", this.spriteSize)
+
+            this.drawSprite("#", { x: 115, y: 10 }, "green", "white", this.spriteSize)
+            this.drawSprite("rFancy", { x: 115, y: 31 }, "green", "white", this.spriteSize)
+            this.drawSprite(".", { x: 115, y: 52 }, "green", "white", this.spriteSize)
+            this.drawSprite(".", { x: 115, y: 73 }, "green", "white", this.spriteSize)
+            this.drawSprite("#", { x: 115, y: 94 }, "green", "white", this.spriteSize)
+
+            this.drawSprite("#", { x: 136, y: 10 }, "red", "white", this.spriteSize)
+            this.drawSprite(".", { x: 136, y: 31 }, "red", "white", this.spriteSize)
+            this.drawSprite(".", { x: 136, y: 52 }, "red", "white", this.spriteSize)
+            this.drawSprite("shield", { x: 136, y: 73 }, "red", "white", this.spriteSize)
+            this.drawSprite("#", { x: 136, y: 94 }, "red", "white", this.spriteSize)
+
+            this.drawSprite("#", { x: 157, y: 10 }, "purple", "white", this.spriteSize)
+            this.drawSprite(".", { x: 157, y: 31 }, "purple", "white", this.spriteSize)
+            this.drawSprite(".", { x: 157, y: 52 }, "purple", "white", this.spriteSize)
+            this.drawSprite("@", { x: 157, y: 73 }, "purple", "white", this.spriteSize)
+            this.drawSprite("#", { x: 157, y: 94 }, "purple", "white", this.spriteSize)
+
+            this.drawSprite("#", { x: 178, y: 10 }, "teal", "white", this.spriteSize)
+            this.drawSprite(".", { x: 178, y: 31 }, "teal", "white", this.spriteSize)
+            this.drawSprite(".", { x: 178, y: 52 }, "teal", "white", this.spriteSize)
+            this.drawSprite("sword", { x: 178, y: 73 }, "teal", "white", this.spriteSize)
+            this.drawSprite("#", { x: 178, y: 94 }, "teal", "white", this.spriteSize)
+
+            this.drawSprite("#", { x: 199, y: 10 }, "indigo", "white", this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 31 }, "indigo", "white", this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 52 }, "indigo", "white", this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 73 }, "indigo", "white", this.spriteSize)
+            this.drawSprite("#", { x: 199, y: 94 }, "indigo", "white", this.spriteSize)
         }
         this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
     }
