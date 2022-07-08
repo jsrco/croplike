@@ -1,10 +1,12 @@
 import { ColorSwatch } from './colorSwatch'
 import { convertChar } from './convertChar'
 import type { mapOptions, position } from './interfaces'
+import type { Display } from 'rot-js'
 export class Diesel {
     canvas: any
     ctx: CanvasRenderingContext2D
     dieselAnimation: any
+    display: Display
     locked: boolean
     map: Array<Array<number>>
     mapSize: mapOptions
@@ -161,20 +163,20 @@ export class Diesel {
         // get upper left position for context of what to draw vs total tiles / player postion (center / off center), 
         // math map for loop
         const offsets = this.getOffsets();
-        let mapx = Math.floor((this.canvas.width - this.mapScreenSize.width*this.spriteSize)/2)
+        let mapx = Math.floor((this.canvas.width - this.mapScreenSize.width * this.spriteSize) / 2)
         for (let x = offsets.x; x < offsets.x + this.mapScreenSize.width; x++) {
-            let mapy = Math.floor((this.canvas.height - this.mapScreenSize.height*this.spriteSize)/2)
+            let mapy = Math.floor((this.canvas.height - this.mapScreenSize.height * this.spriteSize) / 2)
             for (let y = offsets.y; y < offsets.y + this.mapScreenSize.height; y++) {
                 // rework this logic 
-                if (x === this.playerPoisiton.x && y === this.playerPoisiton.y) {
-                    this.drawSprite("@", { x: mapx, y: mapy }, "#1d1d1d", "yellow", this.spriteSize)
-                } else {
+                if (!(x === this.playerPoisiton.x) || !(y === this.playerPoisiton.y)) {
                     if (this.map[x][y] === 0) this.drawSprite(".", { x: mapx, y: mapy }, "#1d1d1d", "white", this.spriteSize)
                     if (this.map[x][y] === 1) this.drawSprite("#", { x: mapx, y: mapy }, "purple", "white", this.spriteSize)
+                } else {
+                    this.drawSprite("@", { x: mapx, y: mapy }, "#1d1d1d", "yellow", this.spriteSize)
                 }
-                mapy+=this.spriteSize
+                mapy += this.spriteSize
             }
-            mapx+=this.spriteSize
+            mapx += this.spriteSize
         }
 
         //todo
