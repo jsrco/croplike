@@ -19,13 +19,9 @@ export class Diesel {
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
         this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
-        this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
         this.locked = true
         this.mapSize = { height: 500, width: 500 }
         this.map = this.makeMap(this.mapSize)
-        this.spriteSheet = new Image()
-        this.spriteSheet.src = 'assets/ff5x5.png'
-        this.spriteSheet.style.imageRendering = "pixelated";
         this.spriteSize = 21
         this.mapScreenSize = this.setMapScreenSize()
         this.playerPoisiton = { x: 25, y: 25 }
@@ -70,34 +66,41 @@ export class Diesel {
             // East
             else if (inputData.key === "ArrowRight") this.test("right", () => {
                 this.playerPoisiton.x++
+                this.tick()
             })
             // North
             else if (inputData.key === "ArrowUp") this.test("up", () => {
                 this.playerPoisiton.y--
+                this.tick()
             })
             // South
             else if (inputData.key === "ArrowDown") this.test("down", () => {
                 this.playerPoisiton.y++
+                this.tick()
             })
             // North West
             else if (inputData.keyCode === 36) this.test("up left", () => {
                 this.playerPoisiton.x--
                 this.playerPoisiton.y--
+                this.tick()
             })
             // North East
             else if (inputData.keyCode === 33) this.test("up right", () => {
                 this.playerPoisiton.x++
                 this.playerPoisiton.y--
+                this.tick()
             })
             // South East
             else if (inputData.keyCode === 34) this.test("down right ", () => {
                 this.playerPoisiton.x++
                 this.playerPoisiton.y++
+                this.tick()
             })
             // South West
             else if (inputData.keyCode === 35) this.test("down left", () => {
                 this.playerPoisiton.x--
                 this.playerPoisiton.y++
+                this.tick()
             })
         }
     }
@@ -105,14 +108,22 @@ export class Diesel {
      * Animate Game
      */
     getOffsets(): position {
-        let topLeftX = Math.max(0, this.playerPoisiton.x - Math.floor(this.mapScreenSize.width / 2));
-        topLeftX = Math.min(topLeftX, this.mapSize.width - this.mapScreenSize.width);
-        let topLeftY = Math.max(0, this.playerPoisiton.y - Math.floor(this.mapScreenSize.height / 2));
-        topLeftY = Math.min(topLeftY, this.mapSize.height - this.mapScreenSize.height);
+        let topLeftX = Math.max(0, this.playerPoisiton.x - Math.floor(this.mapScreenSize.width / 2))
+        topLeftX = Math.min(topLeftX, this.mapSize.width - this.mapScreenSize.width)
+        let topLeftY = Math.max(0, this.playerPoisiton.y - Math.floor(this.mapScreenSize.height / 2))
+        topLeftY = Math.min(topLeftY, this.mapSize.height - this.mapScreenSize.height)
         return {
             x: topLeftX,
             y: topLeftY,
-        };
+        }
+    }
+    loadImage(src) {
+        return new Promise((resolve, reject) => {
+            this.spriteSheet = new Image()
+            this.spriteSheet.onload = () => resolve(this.spriteSheet)
+            this.spriteSheet.onerror = reject
+            this.spriteSheet.src = src
+        })
     }
     makeMap(mapOption: mapOptions) {
         const { height, width } = this.mapSize;
@@ -149,22 +160,21 @@ export class Diesel {
         // so you get the player position, get the total tiles, if it is greater or === to the edge of the map / place player in center else place player off center of total Tiles
         // get upper left position for context of what to draw vs total tiles / player postion (center / off center), 
         // math map for loop
-
         const offsets = this.getOffsets();
-        let mapx = 0
+        let mapx = Math.floor((this.canvas.width - this.mapScreenSize.width*this.spriteSize)/2)
         for (let x = offsets.x; x < offsets.x + this.mapScreenSize.width; x++) {
-            let mapy = 0
+            let mapy = Math.floor((this.canvas.height - this.mapScreenSize.height*this.spriteSize)/2)
             for (let y = offsets.y; y < offsets.y + this.mapScreenSize.height; y++) {
                 // rework this logic 
                 if (x === this.playerPoisiton.x && y === this.playerPoisiton.y) {
-                    this.drawSprite("@", { x: this.spriteSize * mapx, y: this.spriteSize * mapy }, "#1d1d1d", "yellow", this.spriteSize)
+                    this.drawSprite("@", { x: mapx, y: mapy }, "#1d1d1d", "yellow", this.spriteSize)
                 } else {
-                    if (this.map[x][y] === 0) this.drawSprite(".", { x: this.spriteSize * mapx, y: this.spriteSize * mapy }, "#1d1d1d", "white", this.spriteSize)
-                    if (this.map[x][y] === 1) this.drawSprite("#", { x: this.spriteSize * mapx, y: this.spriteSize * mapy }, "purple", "white", this.spriteSize)
+                    if (this.map[x][y] === 0) this.drawSprite(".", { x: mapx, y: mapy }, "#1d1d1d", "white", this.spriteSize)
+                    if (this.map[x][y] === 1) this.drawSprite("#", { x: mapx, y: mapy }, "purple", "white", this.spriteSize)
                 }
-                mapy++
+                mapy+=this.spriteSize
             }
-            mapx++
+            mapx+=this.spriteSize
         }
 
         //todo
@@ -177,35 +187,34 @@ export class Diesel {
         return "a map drawn"
     }
     drawSprite(type: string, pos: position, bg: string, fg: string, size: number): void {
+
         // todo break this into 3 seperate functions, drawSprite handles one, draw sprites handles many 
         const char: position = convertChar(type)
         // draw image, sx, sy, sw, sh, dx, dy, dw, dh
         this.ctx.drawImage(this.spriteSheet,
             18 * char.x, 18 * char.y, 21, 21,
             pos.x, pos.y, size, size)
-        // draw fg color
-        this.ctx.globalCompositeOperation = 'source-atop'
-        this.ctx.fillStyle = fg
-        this.ctx.fillRect(pos.x, pos.y, size, size)
-
-        // draw bg color
-        this.ctx.globalCompositeOperation = "destination-over"
-        this.ctx.fillStyle = bg
-        this.ctx.fillRect(pos.x, pos.y, size, size)
-
-        // reset composite mode
-        this.ctx.globalCompositeOperation = "source-over"
+        /*
+             // draw fg color
+         this.ctx.globalCompositeOperation = 'source-atop'
+         this.ctx.fillStyle = fg
+         this.ctx.fillRect(pos.x, pos.y, size, size)
+ 
+         // draw bg color
+         this.ctx.globalCompositeOperation = "destination-over"
+         this.ctx.fillStyle = bg
+         this.ctx.fillRect(pos.x, pos.y, size, size)
+ 
+         // reset composite mode
+         this.ctx.globalCompositeOperation = "source-over"
+        */
     }
     tick(): void {
-        if (this.locked) {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-            /**
-             * Demo draw
-             */
-            this.drawMap()
-
-        }
-        //this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        /**
+         * Demo draw
+         */
+        this.drawMap()
     }
     /**
      * Start Engine
@@ -216,11 +225,11 @@ export class Diesel {
          */
         const bindEventToScreen = (event) => {
             window.addEventListener(event, (e) => {
-                this.handleInput(event, e);
-            });
-        };
-        bindEventToScreen("mousemove");
-        bindEventToScreen("keydown");
+                this.handleInput(event, e)
+            })
+        }
+        bindEventToScreen("mousemove")
+        bindEventToScreen("keydown")
         /**
          * Mouse Tracking
          */
@@ -240,8 +249,9 @@ export class Diesel {
         /**
          * Init Game
          */
-        this.tick()
-        this.drawMap()
+        this.loadImage("assets/ff5x5.png").then(image => {
+            this.tick()
+        })
     }
     /**
      * Test Function
