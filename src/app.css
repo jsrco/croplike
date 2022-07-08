@@ -30,7 +30,6 @@ html {
 }
 
 canvas {
-    image-rendering: pixelated;
     outline: none;
     overflow: hidden;
     position: fixed;

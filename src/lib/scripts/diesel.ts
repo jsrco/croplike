@@ -21,7 +21,7 @@ export class Diesel {
         this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
         this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
         this.locked = true
-        this.mapSize = {height: 500, width: 500}
+        this.mapSize = { height: 500, width: 500 }
         this.map = this.makeMap(this.mapSize)
         this.spriteSheet = new Image()
         this.spriteSheet.src = 'assets/ff5x5.png'
@@ -64,46 +64,47 @@ export class Diesel {
         if (inputType === "keydown") {
             // West
             if (inputData.key === "ArrowLeft") this.test("left", () => {
-                this.playerPoisiton.x -= this.spriteSize
+                this.playerPoisiton.x--
+                this.tick()
             })
             // East
             else if (inputData.key === "ArrowRight") this.test("right", () => {
-                this.playerPoisiton.x += this.spriteSize
+                this.playerPoisiton.x++
             })
             // North
             else if (inputData.key === "ArrowUp") this.test("up", () => {
-                this.playerPoisiton.y -= this.spriteSize
+                this.playerPoisiton.y--
             })
             // South
             else if (inputData.key === "ArrowDown") this.test("down", () => {
-                this.playerPoisiton.y += this.spriteSize
+                this.playerPoisiton.y++
             })
             // North West
             else if (inputData.keyCode === 36) this.test("up left", () => {
-                this.playerPoisiton.x -= this.spriteSize
-                this.playerPoisiton.y -= this.spriteSize
+                this.playerPoisiton.x--
+                this.playerPoisiton.y--
             })
             // North East
             else if (inputData.keyCode === 33) this.test("up right", () => {
-                this.playerPoisiton.x += this.spriteSize
-                this.playerPoisiton.y -= this.spriteSize
+                this.playerPoisiton.x++
+                this.playerPoisiton.y--
             })
             // South East
             else if (inputData.keyCode === 34) this.test("down right ", () => {
-                this.playerPoisiton.x += this.spriteSize
-                this.playerPoisiton.y += this.spriteSize
+                this.playerPoisiton.x++
+                this.playerPoisiton.y++
             })
             // South West
             else if (inputData.keyCode === 35) this.test("down left", () => {
-                this.playerPoisiton.x -= this.spriteSize
-                this.playerPoisiton.y += this.spriteSize
+                this.playerPoisiton.x--
+                this.playerPoisiton.y++
             })
         }
     }
     /**
      * Animate Game
      */
-     getOffsets(): position {
+    getOffsets(): position {
         let topLeftX = Math.max(0, this.playerPoisiton.x - Math.floor(this.mapScreenSize.width / 2));
         topLeftX = Math.min(topLeftX, this.mapSize.width - this.mapScreenSize.width);
         let topLeftY = Math.max(0, this.playerPoisiton.y - Math.floor(this.mapScreenSize.height / 2));
@@ -145,38 +146,38 @@ export class Diesel {
     drawMap(): string {
         //done
         // after getting total tiles vs this.canvas w / h (make it always odd / odd) so player at center unless out of context. have it set on init / and resize, only needed if screensize changes.
+        // so you get the player position, get the total tiles, if it is greater or === to the edge of the map / place player in center else place player off center of total Tiles
+        // get upper left position for context of what to draw vs total tiles / player postion (center / off center), 
+        // math map for loop
 
-        
         const offsets = this.getOffsets();
         let mapx = 0
-        let mapy = 0
         for (let x = offsets.x; x < offsets.x + this.mapScreenSize.width; x++) {
+            let mapy = 0
             for (let y = offsets.y; y < offsets.y + this.mapScreenSize.height; y++) {
-                if (x === this.playerPoisiton.x && y === this.playerPoisiton.y)  {
-                    this.drawSprite("@", { x: this.spriteSize * mapx, y: this.spriteSize * mapy }, "purple", "white", this.spriteSize)
+                // rework this logic 
+                if (x === this.playerPoisiton.x && y === this.playerPoisiton.y) {
+                    this.drawSprite("@", { x: this.spriteSize * mapx, y: this.spriteSize * mapy }, "#1d1d1d", "yellow", this.spriteSize)
                 } else {
-                  //  if (this.map[x][y]===0)                 this.drawSprite(".", { x: this.spriteSize * mapx, y: this.spriteSize * mapy  }, "purple", "white", this.spriteSize)
-                    if (this.map[x][y]===1)                 this.drawSprite("#", { x: this.spriteSize * mapx, y: this.spriteSize * mapy }, "purple", "white", this.spriteSize)
+                    if (this.map[x][y] === 0) this.drawSprite(".", { x: this.spriteSize * mapx, y: this.spriteSize * mapy }, "#1d1d1d", "white", this.spriteSize)
+                    if (this.map[x][y] === 1) this.drawSprite("#", { x: this.spriteSize * mapx, y: this.spriteSize * mapy }, "purple", "white", this.spriteSize)
                 }
                 mapy++
-                console.log(mapx)
             }
             mapx++
         }
 
         //todo
-        // so you get the player position, get the total tiles, if it is greater or === to the edge of the map / place player in center else place player off center of total Tiles
-        // get upper left position for context of what to draw vs total tiles / player postion (center / off center), 
-        // math map for loop
         // draw tiles only if they need 2 update
         // draw map center screen
         // draw entity / player is a function that only switches to source-atop and draws colored rect 
         // draw order actor / prop / scene
-        // draw all three in one pass. no draw over=
+        // draw all three in one pass. no draw over
 
         return "a map drawn"
     }
     drawSprite(type: string, pos: position, bg: string, fg: string, size: number): void {
+        // todo break this into 3 seperate functions, drawSprite handles one, draw sprites handles many 
         const char: position = convertChar(type)
         // draw image, sx, sy, sw, sh, dx, dy, dw, dh
         this.ctx.drawImage(this.spriteSheet,
@@ -186,12 +187,12 @@ export class Diesel {
         this.ctx.globalCompositeOperation = 'source-atop'
         this.ctx.fillStyle = fg
         this.ctx.fillRect(pos.x, pos.y, size, size)
-        /*
+
         // draw bg color
         this.ctx.globalCompositeOperation = "destination-over"
         this.ctx.fillStyle = bg
         this.ctx.fillRect(pos.x, pos.y, size, size)
-        */
+
         // reset composite mode
         this.ctx.globalCompositeOperation = "source-over"
     }
