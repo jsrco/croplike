@@ -128,10 +128,10 @@ export class Diesel {
         })
     }
     makeMap(mapOption: mapOptions) {
-        const { height, width } = this.mapSize;
+        const { height, width } = this.mapSize
         const tileCollection = []
         for (let x = 0; x < width; x++) {
-            tileCollection.push([]);
+            tileCollection.push([])
             for (let y = 0; y < height; y++) {
                 if (
                     x === 0 ||
@@ -162,7 +162,7 @@ export class Diesel {
         // so you get the player position, get the total tiles, if it is greater or === to the edge of the map / place player in center else place player off center of total Tiles
         // get upper left position for context of what to draw vs total tiles / player postion (center / off center), 
         // math map for loop
-        const offsets = this.getOffsets();
+        const offsets = this.getOffsets()
         let mapx = Math.floor((this.canvas.width - this.mapScreenSize.width * this.spriteSize) / 2)
         for (let x = offsets.x; x < offsets.x + this.mapScreenSize.width; x++) {
             let mapy = Math.floor((this.canvas.height - this.mapScreenSize.height * this.spriteSize) / 2)
@@ -180,6 +180,10 @@ export class Diesel {
         }
 
         //todo
+        // create display for rot.js introudction to remove our own draw. 
+        // adjust implemented code to support rot.js again
+        // consildate
+        // massive knowledge gain achieved 
         // draw tiles only if they need 2 update
         // draw map center screen
         // draw entity / player is a function that only switches to source-atop and draws colored rect 
@@ -217,6 +221,10 @@ export class Diesel {
          * Demo draw
          */
         this.drawMap()
+        // todo 
+        // implement animation loop
+        // built off boolean of engine updating 
+        // add to resize if need
     }
     /**
      * Start Engine
@@ -237,7 +245,7 @@ export class Diesel {
          */
         //window.addEventListener("pointermove", (e) => {
         //    console.log("setting mouse")
-        //})        const offsets = this.renderGetOffsets();
+        //})        const offsets = this.renderGetOffsets()
         /**
          * Resize and redraw
          */
