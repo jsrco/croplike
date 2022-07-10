@@ -15,6 +15,7 @@ export class Diesel {
     spriteSize: number
     timer: number
     constructor(gameContainer: any) {
+        this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
         this.spriteSize = 21
         this.display = new Display({
             bg: "transparent",
@@ -214,6 +215,7 @@ export class Diesel {
         // implement animation loop
         // built off boolean of engine updating 
         // add to resize if need
+        this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
     }
     /**
      * Start Engine
@@ -260,7 +262,8 @@ export class Diesel {
         /**
          * Resize and redraw
          */
-        window.addEventListener("resize", () => {        
+        window.addEventListener("resize", () => {  
+            cancelAnimationFrame(this.dieselAnimation)      
             this.screenSize = this.setScreenSize()
             this.display.setOptions(this.screenSize)
             this.tick()
