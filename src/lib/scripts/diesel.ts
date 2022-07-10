@@ -1,32 +1,36 @@
 import { ColorSwatch } from './colorSwatch'
 import { convertChar } from './convertChar'
+import { Color, Display } from 'rot-js'
 import type { mapOptions, position } from './interfaces'
-import type { Display } from 'rot-js'
 export class Diesel {
     canvas: any
-    ctx: CanvasRenderingContext2D
     dieselAnimation: any
     display: Display
     locked: boolean
     map: Array<Array<number>>
     mapSize: mapOptions
-    mapScreenSize: mapOptions
     playerPoisiton: position
+    screenSize: mapOptions
     spriteSheet: HTMLImageElement
     spriteSize: number
     timer: number
-    constructor(canvas: any) {
-        this.canvas = canvas
-        this.ctx = canvas.getContext("2d")
-        this.canvas.width = window.innerWidth
-        this.canvas.height = window.innerHeight
-        this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
-        this.locked = true
+    constructor(gameContainer: any) {
+        this.spriteSize = 21
+        this.display = new Display({
+            bg: "transparent",
+            forceSquareRatio: true,
+            fontFamily: "PressStart2P",
+            fontSize: this.spriteSize
+        })
+        this.screenSize = this.setScreenSize()
+        this.display.setOptions(this.screenSize)
+        gameContainer.appendChild(this.display.getContainer())
+        this.canvas = gameContainer.firstChild
+        /*
         this.mapSize = { height: 500, width: 500 }
         this.map = this.makeMap(this.mapSize)
-        this.spriteSize = 21
-        this.mapScreenSize = this.setMapScreenSize()
         this.playerPoisiton = { x: 25, y: 25 }
+        */
     }
     /**
      * Engine Mechanics
@@ -109,11 +113,41 @@ export class Diesel {
     /**
      * Animate Game
      */
+     drawMap(): string {
+        //done
+        // after getting total tiles vs this.canvas w / h (make it always odd / odd) so player at center unless out of context. have it set on init / and resize, only needed if screensize changes.
+        // so you get the player position, get the total tiles, if it is greater or === to the edge of the map / place player in center else place player off center of total Tiles
+        // get upper left position for context of what to draw vs total tiles / player postion (center / off center), 
+        // math map for loop
+        const offsets = this.getOffsets()
+        let mapx = Math.floor((window.innerWidth - this.screenSize.width * this.spriteSize) / 2)
+        for (let x = offsets.x; x < offsets.x + this.screenSize.width; x++) {
+            let mapy = Math.floor((window.innerHeight - this.screenSize.height * this.spriteSize) / 2)
+            for (let y = offsets.y; y < offsets.y + this.screenSize.height; y++) {
+                // rework this logic 
+                mapy += this.spriteSize
+            }
+            mapx += this.spriteSize
+        }
+
+        //todo
+        // create display for rot.js introudction to remove our own draw. 
+        // adjust implemented code to support rot.js again
+        // consildate
+        // massive knowledge gain achieved 
+        // draw tiles only if they need 2 update
+        // draw map center screen
+        // draw entity / player is a function that only switches to source-atop and draws colored rect 
+        // draw order actor / prop / scene
+        // draw all three in one pass. no draw over
+
+        return "a map drawn"
+    }
     getOffsets(): position {
-        let topLeftX = Math.max(0, this.playerPoisiton.x - Math.floor(this.mapScreenSize.width / 2))
-        topLeftX = Math.min(topLeftX, this.mapSize.width - this.mapScreenSize.width)
-        let topLeftY = Math.max(0, this.playerPoisiton.y - Math.floor(this.mapScreenSize.height / 2))
-        topLeftY = Math.min(topLeftY, this.mapSize.height - this.mapScreenSize.height)
+        let topLeftX = Math.max(0, this.playerPoisiton.x - Math.floor(this.screenSize.width / 2))
+        topLeftX = Math.min(topLeftX, this.mapSize.width - this.screenSize.width)
+        let topLeftY = Math.max(0, this.playerPoisiton.y - Math.floor(this.screenSize.height / 2))
+        topLeftY = Math.min(topLeftY, this.mapSize.height - this.screenSize.height)
         return {
             x: topLeftX,
             y: topLeftY,
@@ -148,79 +182,34 @@ export class Diesel {
         }
         return tileCollection
     }
-    setMapScreenSize(): mapOptions {
-        const mapHeight = Math.floor(this.canvas.height / this.spriteSize)
-        const mapWidth = Math.floor(this.canvas.width / this.spriteSize)
+    setScreenSize(): mapOptions {
+        const mapHeight = Math.floor(window.innerHeight / this.spriteSize)
+        const mapWidth = Math.floor(window.innerWidth / this.spriteSize)
         return {
             height: mapHeight % 2 === 0 ? mapHeight - 1 : mapHeight,
             width: mapWidth % 2 === 0 ? mapWidth - 1 : mapWidth
         }
     }
-    drawMap(): string {
-        //done
-        // after getting total tiles vs this.canvas w / h (make it always odd / odd) so player at center unless out of context. have it set on init / and resize, only needed if screensize changes.
-        // so you get the player position, get the total tiles, if it is greater or === to the edge of the map / place player in center else place player off center of total Tiles
-        // get upper left position for context of what to draw vs total tiles / player postion (center / off center), 
-        // math map for loop
-        const offsets = this.getOffsets()
-        let mapx = Math.floor((this.canvas.width - this.mapScreenSize.width * this.spriteSize) / 2)
-        for (let x = offsets.x; x < offsets.x + this.mapScreenSize.width; x++) {
-            let mapy = Math.floor((this.canvas.height - this.mapScreenSize.height * this.spriteSize) / 2)
-            for (let y = offsets.y; y < offsets.y + this.mapScreenSize.height; y++) {
-                // rework this logic 
-                if (!(x === this.playerPoisiton.x) || !(y === this.playerPoisiton.y)) {
-                    if (this.map[x][y] === 0) this.drawSprite(".", { x: mapx, y: mapy }, "#1d1d1d", "white", this.spriteSize)
-                    if (this.map[x][y] === 1) this.drawSprite("#", { x: mapx, y: mapy }, "purple", "white", this.spriteSize)
-                } else {
-                    this.drawSprite("@", { x: mapx, y: mapy }, "#1d1d1d", "yellow", this.spriteSize)
-                }
-                mapy += this.spriteSize
-            }
-            mapx += this.spriteSize
-        }
-
-        //todo
-        // create display for rot.js introudction to remove our own draw. 
-        // adjust implemented code to support rot.js again
-        // consildate
-        // massive knowledge gain achieved 
-        // draw tiles only if they need 2 update
-        // draw map center screen
-        // draw entity / player is a function that only switches to source-atop and draws colored rect 
-        // draw order actor / prop / scene
-        // draw all three in one pass. no draw over
-
-        return "a map drawn"
-    }
-    drawSprite(type: string, pos: position, bg: string, fg: string, size: number): void {
-
-        // todo break this into 3 seperate functions, drawSprite handles one, draw sprites handles many 
-        const char: position = convertChar(type)
-        // draw image, sx, sy, sw, sh, dx, dy, dw, dh
-        this.ctx.drawImage(this.spriteSheet,
-            18 * char.x, 18 * char.y, 21, 21,
-            pos.x, pos.y, size, size)
-        /*
-             // draw fg color
-         this.ctx.globalCompositeOperation = 'source-atop'
-         this.ctx.fillStyle = fg
-         this.ctx.fillRect(pos.x, pos.y, size, size)
- 
-         // draw bg color
-         this.ctx.globalCompositeOperation = "destination-over"
-         this.ctx.fillStyle = bg
-         this.ctx.fillRect(pos.x, pos.y, size, size)
- 
-         // reset composite mode
-         this.ctx.globalCompositeOperation = "source-over"
-        */
-    }
     tick(): void {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        this.display.clear()
         /**
          * Demo draw
          */
-        this.drawMap()
+         let foreground, background, colors;
+         for (let i = 0; i < 15; i++) {
+             // Calculate the foreground color, getting progressively darker
+             // and the background color, getting progressively lighter.
+             foreground = Color.toRGB([255 - (i*20),
+                                           255 - (i*20),
+                                           255 - (i*20)]);
+             background = Color.toRGB([i*20, i*20, i*20]);
+             // Create the color format specifier.
+             colors = "%c{" + foreground + "}%b{" + background + "}";
+             // Draw the text at col 2 and row i
+             this.display.drawText(2, i, colors + "Hello, world!");
+         }
+
+        // this.drawMap()
         // todo 
         // implement animation loop
         // built off boolean of engine updating 
@@ -230,6 +219,26 @@ export class Diesel {
      * Start Engine
      */
     init(): void {
+        /**
+       * Fullscreen
+       */
+        window.addEventListener("dblclick", () => {
+            const fullscreenElement =
+                document.fullscreenElement || document.webkitFullscreenElement;
+            if (!fullscreenElement) {
+                if (this.canvas.requestFullscreen) {
+                    this.canvas.requestFullscreen();
+                } else if (this.canvas.webkitRequestFullscreen) {
+                    this.canvas.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        });
         /**
          * Handle Input
          */
@@ -243,17 +252,17 @@ export class Diesel {
         /**
          * Mouse Tracking
          */
-        //window.addEventListener("pointermove", (e) => {
-        //    console.log("setting mouse")
-        //})        const offsets = this.renderGetOffsets()
+        /*
+        window.addEventListener("pointermove", (e) => {
+            console.log("setting mouse")
+        })        
+        */
         /**
          * Resize and redraw
          */
-        window.addEventListener("resize", () => {
-            cancelAnimationFrame(this.dieselAnimation)
-            this.canvas.width = window.innerWidth
-            this.canvas.height = window.innerHeight
-            this.mapScreenSize = this.setMapScreenSize()
+        window.addEventListener("resize", () => {        
+            this.screenSize = this.setScreenSize()
+            this.display.setOptions(this.screenSize)
             this.tick()
         })
         /**
