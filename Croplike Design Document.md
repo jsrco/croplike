@@ -207,12 +207,16 @@ ROT.js / canvas
 * Back to three.js due to Pixi fullscreen dev
 ### April 18, 2022
 * Sunrise old code
-* Removing Three.js and Pixi.js, may revisit. Writing own Canvas.
+* Removing Three.js and Pixi.js, may revisit. Writing own Canvas for education
 ### May 24, 2022
 * Ramp up on knowledge 
 * Exploring options for stage
 ### May 31, 2022
-* Sunset code and idea shelved till further notice.
+* Sunset code and idea shelved till further notice
+### July 9, 2022
+* Added rot.js display back into project 
+* Sunrise project Orange
+* Began refactor of Orange logic with Diesel intent
 ### April 1, 2022 
 * Temp localHost user refactor
 * Basic site to game connections. UI / Wiki
