@@ -1,11 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte"
-  import { Diesel } from "$lib/scripts/diesel"
-  import Deepdwn from "$lib/components/Deepdwn.svelte"
+  import Deepdwn from "$lib/components/deepdwn.svelte"
+  import Game from "$lib/scripts/diesel"
 
   let gameContainer: any
-  let diesel: Diesel
-
   onMount(() => {
     const PressStart2P = new FontFace(
       "PressStart2P",
@@ -14,12 +12,14 @@
     PressStart2P.load().then(function (font) {
       // with canvas, if this is ommited won't work
       document.fonts.add(font)
-      diesel = new Diesel(gameContainer)
+      $Game.init(gameContainer);
+
     })
   })
 </script>
 
 <div bind:this={gameContainer} />
+<p>{$Game.canvas}</p>
 <Deepdwn />
 
 

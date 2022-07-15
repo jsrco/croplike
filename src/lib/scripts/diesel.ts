@@ -1,74 +1,49 @@
 import { ColorSwatch } from './colorSwatch'
-import { TileMap } from './tileMap'
-import { Color, Display } from 'rot-js'
 import type { mapOptions, position } from './interfaces'
-export class Diesel {
-    canvas: any
-    currentScreen: any
-    dieselAnimation: any
-    display: Display
-    locked: boolean
-    map: Array<Array<number>>
-    mapSize: mapOptions
-    playerPosition: position
-    screenSize: mapOptions
-    spriteSheet: HTMLImageElement
-    spriteSize: number
-    constructor(gameContainer: any) {
-        this.loadImage("assets/ff5x5.png").then(image => {
-            console.log(image)
-        })
-        this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
-        this.spriteSize = 21
-        this.display = new Display({
-            layout: "tile-gl",
-            bg: "transparent",
-            forceSquareRatio: true,
-            fontFamily: "PressStart2P",
-            fontSize: this.spriteSize,
-            tileSet: this.spriteSheet,
-            tileMap: TileMap,
-            tileWidth: this.spriteSize,
-            tileHeight: this.spriteSize,
-            tileColorize: true
-        })
-        this.screenSize = this.setScreenSize()
-        this.display.setOptions(this.screenSize)
-        gameContainer.appendChild(this.display.getContainer())
-        this.canvas = gameContainer.firstChild
-        this.mapSize = { height: 500, width: 500 }
-        this.map = this.makeMap(this.mapSize)
-        this.playerPosition = { x: 25, y: 25 }
-        this.init()
+import { Color, Display } from 'rot-js'
+import { writable } from "svelte/store";
+import { TileMap } from './tileMap'
 
-    }
+
+const dieselEngine = writable( {
+    canvas: null,
+    currentScreen: null,
+    dieselAnimation: null,
+    display: null,
+    locked: null,
+    map: null,
+    mapSize: null,
+    playerPosition: null,
+    screenSize: null,
+    spriteSheet: null,
+    spriteSize: null,
     /**
      * Engine Mechanics
      */
-    #EngineLock(tracking: string): void {
+    EngineLock(tracking: string): void {
         if (!this.locked)
             this.locked = true
         else
             console.log(`::failed::\n    ${tracking}\n    Game already locked. You should not be trying the action.`)
-    }
-    #EngineUnlock(tracking: string, action: () => void): void {
+    },
+    EngineUnlock(tracking: string, action: () => void): void {
         if (this.locked) {
             this.locked = false
-            this.#EngineUpdate(tracking, action)
+            this.EngineUpdate(tracking, action)
         }
         else
             console.log(`::failed::\n    ${tracking}\n    Game already unlocked. You should not be trying the action.`)
-    }
-    #EngineUpdate(tracking: string, action: () => void): void {
+    },
+    EngineUpdate(tracking: string, action: () => void): void {
         if (!this.locked) {
             // actions handle any game updates and will lock the game accordingly. 
             action()
-            this.#EngineLock(tracking)
+            this.EngineLock(tracking)
             console.log(`::succeeded::\n    ${tracking}\n    Game has been updated.`)
         }
         else
             console.log(`::failed::\n    ${tracking}\n    Game is locked. You should not be trying to update the engine.`)
-    }
+    },
     /**
      * Handle Input
      */
@@ -112,7 +87,7 @@ export class Diesel {
             }
             console.log(this.playerPosition)
         }
-    }
+    },
     /**
      * Animate Game
      */
@@ -164,7 +139,7 @@ export class Diesel {
         // draw all three in one pass. no draw over
 
         return "a map drawn"
-    }
+    },
     getOffsets(): position {
         let topLeftX = Math.max(0, this.playerPosition.x - Math.floor(this.screenSize.width / 2))
         topLeftX = Math.min(topLeftX, this.mapSize.width - this.screenSize.width)
@@ -174,7 +149,7 @@ export class Diesel {
             x: topLeftX,
             y: topLeftY,
         }
-    }
+    },
     loadImage(src) {
         return new Promise((resolve, reject) => {
             this.spriteSheet = new Image()
@@ -182,7 +157,7 @@ export class Diesel {
             this.spriteSheet.onerror = reject
             this.spriteSheet.src = src
         })
-    }
+    },
     makeMap(mapOption: mapOptions) {
         const { height, width } = this.mapSize
         const tileCollection = []
@@ -203,7 +178,7 @@ export class Diesel {
             }
         }
         return tileCollection
-    }
+    },
     setScreenSize(): mapOptions {
         const mapHeight = Math.floor(window.innerHeight / this.spriteSize)
         const mapWidth = Math.floor(window.innerWidth / this.spriteSize)
@@ -211,7 +186,7 @@ export class Diesel {
             height: mapHeight % 2 === 0 ? mapHeight - 1 : mapHeight,
             width: mapWidth % 2 === 0 ? mapWidth - 1 : mapWidth
         }
-    }
+    },
     tick(): void {
         this.display.clear()
         /**
@@ -226,11 +201,35 @@ export class Diesel {
         // built off boolean of engine updating 
         // add to resize if need
         this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
-    }
+    },
     /**
      * Start Engine
      */
-    init(): void {
+    init(gameContainer: any) {
+        this.loadImage("assets/ff5x5.png").then(image => {
+            console.log(image)
+        })
+        this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
+        this.spriteSize = 21
+        this.display = new Display({
+            layout: "tile-gl",
+            bg: "transparent",
+            forceSquareRatio: true,
+            fontFamily: "PressStart2P",
+            fontSize: this.spriteSize,
+            tileSet: this.spriteSheet,
+            tileMap: TileMap,
+            tileWidth: this.spriteSize,
+            tileHeight: this.spriteSize,
+            tileColorize: true
+        })
+        this.screenSize = this.setScreenSize()
+        this.display.setOptions(this.screenSize)
+        gameContainer.appendChild(this.display.getContainer())
+        this.canvas = gameContainer.firstChild
+        this.mapSize = { height: 500, width: 500 }
+        this.map = this.makeMap(this.mapSize)
+        this.playerPosition = { x: 25, y: 25 }
         /**
        * Fullscreen
        */
@@ -282,11 +281,17 @@ export class Diesel {
          * Init Game
          */
         this.tick()
-    }
+    },
     /**
      * Test Function
      */
     test(tracking: string, action: () => void): void {
-        this.#EngineUnlock(tracking, action)
+        this.EngineUnlock(tracking, action)
     }
-}
+})
+
+const Game = {
+    subscribe: dieselEngine.subscribe,
+};
+
+export default Game;
