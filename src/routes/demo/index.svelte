@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte"
-  import Deepdwn from "$lib/components/deepdwn.svelte"
+  import Deepdwn from "$lib/components/Deepdwn.svelte"
   import Game from "$lib/scripts/diesel"
 
   let gameContainer: any
@@ -19,7 +19,6 @@
 </script>
 
 <div bind:this={gameContainer} />
-<p>{$Game.canvas}</p>
 <Deepdwn />
 
 

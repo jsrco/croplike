@@ -1,11 +1,11 @@
 import { ColorSwatch } from './colorSwatch'
 import type { mapOptions, position } from './interfaces'
-import { Color, Display } from 'rot-js'
-import { writable } from "svelte/store";
+import { Display } from 'rot-js'
+import { Screen } from './screen'
+import { writable } from 'svelte/store'
 import { TileMap } from './tileMap'
 
-
-const dieselEngine = writable( {
+const dieselEngine = writable({
     canvas: null,
     currentScreen: null,
     dieselAnimation: null,
@@ -48,21 +48,21 @@ const dieselEngine = writable( {
      * Handle Input
      */
     handleInput(inputType, inputData): void {
-        if (inputType === "keydown") {
+        if (inputType === 'keydown') {
             // West
-            if (inputData.key === "ArrowLeft") {
+            if (inputData.key === 'ArrowLeft') {
                 this.playerPosition.x--
             }
             // East
-            else if (inputData.key === "ArrowRight") {
+            else if (inputData.key === 'ArrowRight') {
                 this.playerPosition.x++
             }
             // North
-            else if (inputData.key === "ArrowUp") {
+            else if (inputData.key === 'ArrowUp') {
                 this.playerPosition.y--
             }
             // South
-            else if (inputData.key === "ArrowDown") {
+            else if (inputData.key === 'ArrowDown') {
                 this.playerPosition.y++
             }
             // North West
@@ -71,12 +71,12 @@ const dieselEngine = writable( {
                 this.playerPosition.y--
             }
             // North East
-            else if (inputData.keyCode === 33)  {
+            else if (inputData.keyCode === 33) {
                 this.playerPosition.x++
                 this.playerPosition.y--
             }
             // South East
-            else if (inputData.keyCode === 34)  {
+            else if (inputData.keyCode === 34) {
                 this.playerPosition.x++
                 this.playerPosition.y++
             }
@@ -98,31 +98,31 @@ const dieselEngine = writable( {
         // get upper left position for context of what to draw vs total tiles / player postion (center / off center), 
         // math map for loop
 
-        const offsets = this.getOffsets();
+        const offsets = this.getOffsets()
         for (let x = 0; x < this.screenSize.width; x++) {
             for (let y = 0; y < this.screenSize.height; y++) {
-                if (offsets.x+x === this.playerPosition.x && offsets.y+y === this.playerPosition.y) {
+                if (offsets.x + x === this.playerPosition.x && offsets.y + y === this.playerPosition.y) {
                     this.display.draw(
                         x,
                         y,
-                        "@",
-                        "orange",
-                        "blue"
+                        '@',
+                        'orange',
+                        'blue'
                     )
                 } else {
-                    if (this.map[offsets.x+x][offsets.y+y] === 1) this.display.draw(
+                    if (this.map[offsets.x + x][offsets.y + y] === 1) this.display.draw(
                         x,
                         y,
-                        "#",
-                        "orange",
-                        "red"
+                        '#',
+                        'orange',
+                        'red'
                     )
-                    if (this.map[offsets.x+x][offsets.y+y] === 0) this.display.draw(
+                    if (this.map[offsets.x + x][offsets.y + y] === 0) this.display.draw(
                         x,
                         y,
-                        ".",
-                        "orange",
-                        "red"
+                        '.',
+                        'orange',
+                        'red'
                     )
                 }
             }
@@ -138,7 +138,7 @@ const dieselEngine = writable( {
         // draw order actor / prop / scene
         // draw all three in one pass. no draw over
 
-        return "a map drawn"
+        return 'a map drawn'
     },
     getOffsets(): position {
         let topLeftX = Math.max(0, this.playerPosition.x - Math.floor(this.screenSize.width / 2))
@@ -187,35 +187,28 @@ const dieselEngine = writable( {
             width: mapWidth % 2 === 0 ? mapWidth - 1 : mapWidth
         }
     },
-    tick(): void {
+    masterRender(): void {
         this.display.clear()
         /**
          * Demo draw
          */
-        this.drawMap()
-        // this.currentScreen.render(this.display);
-
-        // this.drawMap()
-        // todo 
-        // implement animation loop
-        // built off boolean of engine updating 
-        // add to resize if need
-        this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
+        this.currentScreen.render(this.display)
+        this.dieselAnimation = requestAnimationFrame(this.masterRender.bind(this))
     },
     /**
      * Start Engine
      */
     init(gameContainer: any) {
-        this.loadImage("assets/ff5x5.png").then(image => {
+        this.loadImage('assets/ff5x5.png').then(image => {
             console.log(image)
         })
-        this.dieselAnimation = requestAnimationFrame(this.tick.bind(this))
+        this.dieselAnimation = requestAnimationFrame(this.masterRender.bind(this))
         this.spriteSize = 21
         this.display = new Display({
-            layout: "tile-gl",
-            bg: "transparent",
+            layout: 'tile-gl',
+            bg: 'transparent',
             forceSquareRatio: true,
-            fontFamily: "PressStart2P",
+            fontFamily: 'PressStart2P',
             fontSize: this.spriteSize,
             tileSet: this.spriteSheet,
             tileMap: TileMap,
@@ -230,57 +223,65 @@ const dieselEngine = writable( {
         this.mapSize = { height: 500, width: 500 }
         this.map = this.makeMap(this.mapSize)
         this.playerPosition = { x: 25, y: 25 }
+        this.screen = Screen
         /**
        * Fullscreen
        */
-        window.addEventListener("dblclick", () => {
+        window.addEventListener('dblclick', () => {
             const fullscreenElement =
-                document.fullscreenElement || document.webkitFullscreenElement;
+                document.fullscreenElement || document.webkitFullscreenElement
             if (!fullscreenElement) {
                 if (this.canvas.requestFullscreen) {
-                    this.canvas.requestFullscreen();
+                    this.canvas.requestFullscreen()
                 } else if (this.canvas.webkitRequestFullscreen) {
-                    this.canvas.webkitRequestFullscreen();
+                    this.canvas.webkitRequestFullscreen()
                 }
             } else {
                 if (document.exitFullscreen) {
-                    document.exitFullscreen();
+                    document.exitFullscreen()
                 } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
+                    document.webkitExitFullscreen()
                 }
             }
-        });
+        })
         /**
          * Handle Input
          */
         const bindEventToScreen = (event) => {
             window.addEventListener(event, (e) => {
-                this.handleInput(event, e)
+                // When an event is received, send it to the
+                // screen if there is one
+                if (this.currentScreen !== null) {
+                    // Send the event type and data to the screen
+                    this.currentScreen.handleInput(event, e)
+                }
             })
         }
-        bindEventToScreen("mousemove")
-        bindEventToScreen("keydown")
+        bindEventToScreen('click')
+        bindEventToScreen('mousemove')
+        bindEventToScreen('keydown')
         /**
          * Mouse Tracking
          */
         /*
-        window.addEventListener("pointermove", (e) => {
-            console.log("setting mouse")
+        window.addEventListener('pointermove', (e) => {
+            console.log('setting mouse')
         })        
         */
         /**
          * Resize and redraw
          */
-        window.addEventListener("resize", () => {
+        window.addEventListener('resize', () => {
             cancelAnimationFrame(this.dieselAnimation)
             this.screenSize = this.setScreenSize()
             this.display.setOptions(this.screenSize)
-            this.tick()
+            this.masterRender()
         })
         /**
          * Init Game
          */
-        this.tick()
+        //this.tick()
+        Game.switchScreen(this.screen.startScreen)
     },
     /**
      * Test Function
@@ -292,6 +293,27 @@ const dieselEngine = writable( {
 
 const Game = {
     subscribe: dieselEngine.subscribe,
-};
+    switchScreen: (screen: any) => {
+        dieselEngine.update(self => {
+            // If we had a screen before, notify it that we exited
+            if (self.currentScreen !== null) {
+                self.currentScreen.exit()
+            }
+            // Clear the display
+            self.display.clear()
+            // Update our current screen, notify it we entered
+            // and then render it
+            self.currentScreen = screen
+            if (!self.currentScreen !== null) {
+                self.currentScreen.enter()
+                self.masterRender()
+            }
+            return self
+        })
+    }
+}
 
-export default Game;
+export default Game
+
+
+
