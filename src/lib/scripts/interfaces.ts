@@ -1,9 +1,9 @@
-export interface mapOptions {
+export interface displayOptions {
     height: number,
     width: number
 }
 
 export interface position {
-    x:number;
+    x:number
     y:number
 }
