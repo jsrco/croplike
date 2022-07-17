@@ -1,6 +1,5 @@
 import { Glyph } from './glyph'
-import type { position } from './interfaces'
-import { Mixins } from './mixins'
+import type { Map } from './map'
 
 export class Entity extends Glyph {
   attachedMixins: any
@@ -9,8 +8,10 @@ export class Entity extends Glyph {
   description: string
   isDiggable: boolean
   isWalkable: boolean
-  position: position
-  constructor(properties: { character?: string; foreground?: string; background?: string, blocksLight?: boolean, description?: string, isDiggable?: boolean, isWalkable?: boolean, mixins?: any, position?: position }) {
+  map: Map
+  x:number
+  y:number
+  constructor(properties: { character?: string; foreground?: string; background?: string, blocksLight?: boolean, description?: string, isDiggable?: boolean, isWalkable?: boolean, mixins?: any }, x?: number, y?: number) {
     // Instantiate properties to default if they weren't passed
     properties = properties || {}
     // Call glyph constructor with set of properties
@@ -21,12 +22,16 @@ export class Entity extends Glyph {
     this.description = properties.description || ''
     this.isDiggable = properties.isDiggable || false
     this.isWalkable = properties.isWalkable || false
-    this.position = properties.position
+    this.map = null
+    this.x = x || null
+    this.y = y || null
     // Create an object which will keep track what mixins we have
     // attached to this entity based on the name property
     this.attachedMixins = {}
+    // Create a similar object for groups
+    this.attachedMixinGroups = {}
     // Setup the object's mixins
-    const mixins = properties['mixins'] || []
+    const mixins = properties.mixins || []
     for (let i = 0; i < mixins.length; i++) {
       // Copy over all properties from each mixin but name, init, and listeners, make sure not to override a property that already exists
       for (const key in mixins[i]) {

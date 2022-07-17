@@ -1,7 +1,7 @@
 import { Game } from '$lib/scripts/diesel'
+import { Templates } from './entities'
 import { Entity } from './entity'
 import { Map } from './map'
-import { Mixins } from './mixins'
 import { Color, Map as ROTMap } from 'rot-js'
 import { Tile } from './tile'
 
@@ -29,8 +29,8 @@ Screen.playScreen = {
     enter() {
         console.log('Entered play screen.')
         const map = []
-        const mapWidth = 500
-        const mapHeight = 500
+        const mapWidth = 200
+        const mapHeight = 200
         for (let x = 0; x < mapWidth; x++) {
             // Create the nested array for the y values
             map.push([])
@@ -55,18 +55,11 @@ Screen.playScreen = {
                 map[x][y] = Tile.wallTile
             }
         })
-        // Create our map from the tiles
-        this.map = new Map(map)
-        // Create our player and set the position
-        const createdPos = this.map.getRandomFloorPosition()
-        this.player = new Entity({
-            background: 'black',
-            character: '@',
-            description: 'player',
-            foreground: 'white',
-            mixins: [Mixins.Moveable],
-            position: createdPos
-        })
+        // Create our map from the tiles and player
+        this.player = new Entity(Templates.PlayerTemplate);
+        this.map = new Map(map, this.player);
+        // Start the map's engine
+        this.map.engine.start();
     },
     exit() { console.log('Exited play screen.') },
     handleInput(inputType, inputData) {
@@ -77,23 +70,25 @@ Screen.playScreen = {
                 Game.switchScreen(Screen.winScreen)
             } else if (inputData.key === 'Escape') {
                 Game.switchScreen(Screen.loseScreen)
+            } else {
+                // Movement
+                if (inputData.key === 'ArrowLeft') {
+                    this.move(-1, 0)
+                } else if (inputData.key === 'ArrowRight') {
+                    this.move(1, 0)
+                } else if (inputData.key === 'ArrowUp') {
+                    this.move(0, -1)
+                } else if (inputData.key === 'ArrowDown') {
+                    this.move(0, 1)
+                }
+                // Unlock the engine
+                this.map.engine.unlock();
             }
-        }
-
-        // Movement
-        if (inputData.key === 'ArrowLeft') {
-            this.move(-1, 0)
-        } else if (inputData.key === 'ArrowRight') {
-            this.move(1, 0)
-        } else if (inputData.key === 'ArrowUp') {
-            this.move(0, -1)
-        } else if (inputData.key === 'ArrowDown') {
-            this.move(0, 1)
         }
     },
     move(dX, dY) {
-        const newX = this.player.position.x + dX;
-        const newY = this.player.position.y + dY;
+        const newX = this.player.x + dX;
+        const newY = this.player.y + dY;
         // Try to move to the new cell
         this.player.tryMove(newX, newY, this.map)
     },
@@ -103,11 +98,11 @@ Screen.playScreen = {
         let screenHeight
         const screenHeightUnsub = Game.subscribe(value => screenHeight = value.screenSize.height)
         // Make sure the x-axis doesn't go to the left of the left bound
-        let topLeftX = Math.max(0, this.player.position.x - Math.floor(screenWidth / 2))
+        let topLeftX = Math.max(0, this.player.x - Math.floor(screenWidth / 2))
         // Make sure we still have enough space to fit an entire game screen
         topLeftX = Math.min(topLeftX, this.map.width - screenWidth)
         // Make sure the y-axis doesn't above the top bound
-        let topLeftY = Math.max(0, this.player.position.y - Math.floor(screenHeight / 2))
+        let topLeftY = Math.max(0, this.player.y - Math.floor(screenHeight / 2))
         // Make sure we still have enough space to fit an entire game screen
         topLeftY = Math.min(topLeftY, this.map.height - screenHeight)
         // Iterate through all visible map cells
@@ -122,14 +117,23 @@ Screen.playScreen = {
                     glyph.background)
             }
         }
-        // Render the player
-        display.draw(
-            this.player.position.x - topLeftX,
-            this.player.position.y - topLeftY,
-            this.player.character,
-            this.player.getForeground,
-            this.player.getBackground
-        )
+        // Render the entities
+        const entities = this.map.entities;
+        for (let i = 0; i < entities.length; i++) {
+            const entity = entities[i];
+            // Only render the entitiy if they would show up on the screen
+            if (entity.x >= topLeftX && entity.y >= topLeftY &&
+                entity.x < topLeftX + screenWidth &&
+                entity.y < topLeftY + screenHeight) {
+                display.draw(
+                    entity.x - topLeftX,
+                    entity.y - topLeftY,
+                    entity.character,
+                    entity.foreground,
+                    entity.background
+                );
+            }
+        }
         screenWidthUnsub()
         screenHeightUnsub()
     }
@@ -153,7 +157,7 @@ Screen.startScreen = {
         display.drawText(1, 2, '%c{goldenrod} a roguelike')
         display.drawText(1, 3, '%c{darkorange}on farming and letting go')
         display.drawText(1, 4, '%c{goldenrod}Press Enter to start')
-        display.drawText(1, 5, '%c{yellow}double Click for fullscreen. to start!')
+        display.drawText(1, 5, '%c{yellow}double click for fullscreen!')
     }
 }
 

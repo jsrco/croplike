@@ -60,13 +60,13 @@ const dieselEngine = writable({
             width: mapWidth % 2 === 0 ? mapWidth - 1 : mapWidth
         }
     },
-    masterRender(): void {
+    refresh(): void {
         this.display.clear()
         /**
          * Demo draw
          */
         this.currentScreen.render(this.display)
-        this.dieselAnimation = requestAnimationFrame(this.masterRender.bind(this))
+        this.dieselAnimation = requestAnimationFrame(this.refresh.bind(this))
     },
     /**
      * Start Engine
@@ -75,7 +75,7 @@ const dieselEngine = writable({
         this.loadImage('assets/ff5x5.png').then(image => {
             console.log(image, 'loaded')
         })
-        this.dieselAnimation = requestAnimationFrame(this.masterRender.bind(this))
+        this.dieselAnimation = requestAnimationFrame(this.refresh.bind(this))
         this.spriteSize = 21
         this.display = new Display({
             layout: 'tile-gl',
@@ -146,7 +146,7 @@ const dieselEngine = writable({
             cancelAnimationFrame(this.dieselAnimation)
             this.screenSize = this.setScreenSize()
             this.display.setOptions(this.screenSize)
-            this.masterRender()
+            this.refresh()
         })
         /**
          * Init Game
@@ -164,6 +164,12 @@ const dieselEngine = writable({
 
 export const Game = {
     subscribe: dieselEngine.subscribe,
+    refresh: () => {
+        dieselEngine.update(self => {
+            self.refresh()
+            return self
+        })
+    },
     switchScreen: (screen: any) => {
         dieselEngine.update(self => {
             // If we had a screen before, notify it that we exited
@@ -177,7 +183,7 @@ export const Game = {
             self.currentScreen = screen
             if (!self.currentScreen !== null) {
                 self.currentScreen.enter()
-                self.masterRender()
+                self.refresh()
             }
             return self
         })
