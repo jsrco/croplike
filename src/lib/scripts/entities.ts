@@ -1,6 +1,5 @@
-import { ColorSwatch } from "./colorSwatch";
-import { Mixins } from "./mixins";
-
+import { ColorSwatch } from './colorSwatch'
+import { Mixins } from './mixins'
 export const Templates = {
   FungusTemplate: {
     character: 'fThick',
@@ -9,8 +8,8 @@ export const Templates = {
   },
   PlayerTemplate: {
     attackValue: 10,
-    character: "@",
-    foreground: "white",
+    character: '@',
+    foreground: 'white',
     inventorySlots: 22,
     maxHp: 40,
     mixins: [Mixins.Moveable, Mixins.PlayerActor,

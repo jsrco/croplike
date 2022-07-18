@@ -1,9 +1,7 @@
-import type { displayOptions } from './interfaces'
 import { Display } from 'rot-js'
 import { Screen } from './screen'
 import { writable } from 'svelte/store'
 import { TileMap } from './tileMap'
-
 const dieselEngine = writable({
     canvas: null,
     currentScreen: null,
@@ -14,36 +12,6 @@ const dieselEngine = writable({
     screenSize: null,
     spriteSheet: null,
     spriteSize: null,
-    /**
-     * Engine Mechanics
-     */
-    EngineLock(tracking: string): void {
-        if (!this.locked)
-            this.locked = true
-        else
-            console.log(`::failed::\n    ${tracking}\n    Game already locked. You should not be trying the action.`)
-    },
-    EngineUnlock(tracking: string, action: () => void): void {
-        if (this.locked) {
-            this.locked = false
-            this.EngineUpdate(tracking, action)
-        }
-        else
-            console.log(`::failed::\n    ${tracking}\n    Game already unlocked. You should not be trying the action.`)
-    },
-    EngineUpdate(tracking: string, action: () => void): void {
-        if (!this.locked) {
-            // actions handle any game updates and will lock the game accordingly. 
-            action()
-            this.EngineLock(tracking)
-            console.log(`::succeeded::\n    ${tracking}\n    Game has been updated.`)
-        }
-        else
-            console.log(`::failed::\n    ${tracking}\n    Game is locked. You should not be trying to update the engine.`)
-    },
-    /**
-     *  Visual Setup
-     */
     loadImage(src) {
         return new Promise((resolve, reject) => {
             this.spriteSheet = new Image()
@@ -52,7 +20,7 @@ const dieselEngine = writable({
             this.spriteSheet.src = src
         })
     },
-    setScreenSize(): displayOptions {
+    setScreenSize() {
         const mapHeight = Math.floor(window.innerHeight / this.spriteSize)
         const mapWidth = Math.floor(window.innerWidth / this.spriteSize)
         return {
@@ -62,15 +30,9 @@ const dieselEngine = writable({
     },
     refresh(): void {
         this.display.clear()
-        /**
-         * Demo draw
-         */
         this.currentScreen.render(this.display)
         this.dieselAnimation = requestAnimationFrame(this.refresh.bind(this))
     },
-    /**
-     * Start Engine
-     */
     init(gameContainer: any) {
         this.loadImage('assets/ff5x5.png').then(image => {
             console.log(image, 'loaded')
@@ -95,9 +57,6 @@ const dieselEngine = writable({
         this.canvas = gameContainer.firstChild
         this.playerPosition = { x: 25, y: 25 }
         this.screen = Screen
-        /**
-       * Fullscreen
-       */
         window.addEventListener('dblclick', () => {
             const fullscreenElement =
                 document.fullscreenElement || document.webkitFullscreenElement
@@ -115,15 +74,9 @@ const dieselEngine = writable({
                 }
             }
         })
-        /**
-         * Handle Input
-         */
         const bindEventToScreen = (event) => {
             window.addEventListener(event, (e) => {
-                // When an event is received, send it to the
-                // screen if there is one
                 if (this.currentScreen !== null) {
-                    // Send the event type and data to the screen
                     this.currentScreen.handleInput(event, e)
                 }
             })
@@ -131,37 +84,23 @@ const dieselEngine = writable({
         bindEventToScreen('click')
         bindEventToScreen('mousemove')
         bindEventToScreen('keydown')
-        /**
-         * Mouse Tracking
-         */
         /*
         window.addEventListener('pointermove', (e) => {
             console.log('setting mouse')
         })        
         */
-        /**
-         * Resize and redraw
-         */
         window.addEventListener('resize', () => {
             cancelAnimationFrame(this.dieselAnimation)
             this.screenSize = this.setScreenSize()
             this.display.setOptions(this.screenSize)
             this.refresh()
         })
-        /**
-         * Init Game
-         */
-        //this.tick()
         Game.switchScreen(this.screen.startScreen)
     },
-    /**
-     * Test Function
-     */
     test(tracking: string, action: () => void): void {
         this.EngineUnlock(tracking, action)
     }
 })
-
 export const Game = {
     subscribe: dieselEngine.subscribe,
     refresh: () => {
@@ -172,14 +111,10 @@ export const Game = {
     },
     switchScreen: (screen: any) => {
         dieselEngine.update(self => {
-            // If we had a screen before, notify it that we exited
             if (self.currentScreen !== null) {
                 self.currentScreen.exit()
             }
-            // Clear the display
             self.display.clear()
-            // Update our current screen, notify it we entered
-            // and then render it
             self.currentScreen = screen
             if (!self.currentScreen !== null) {
                 self.currentScreen.enter()
@@ -189,5 +124,3 @@ export const Game = {
         })
     }
 }
-
-

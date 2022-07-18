@@ -1,30 +1,22 @@
 import { Glyph } from './glyph'
-
 export class Tile extends Glyph {
-    blocksLight: boolean
-    description: string
-    isDiggable: boolean
-    isWalkable: boolean
-    static nullTile: Tile
-    static floorTile: Tile
-    static wallTile: Tile
-  constructor(properties: { character?: string; foreground?: string; background?: string, blocksLight?: boolean, description?: string, isDiggable?:boolean, isWalkable?:boolean }) {
-    // Instantiate properties to default if they weren't passed
+  blocksLight: boolean
+  description: string
+  isDiggable: boolean
+  isWalkable: boolean
+  static nullTile: Tile
+  static floorTile: Tile
+  static wallTile: Tile
+  constructor(properties: { character?: string; foreground?: string; background?: string, blocksLight?: boolean, description?: string, isDiggable?: boolean, isWalkable?: boolean }) {
     properties = properties || {}
-    // Call glyph constructor with set of properties
     super(properties)
-    // Call the Glyph constructor with properties, set up the properties, use false by default
     this.blocksLight =
-    properties.blocksLight || true
+      properties.blocksLight || true
     this.description = properties.description || ''
     this.isDiggable = properties.isDiggable || false
     this.isWalkable = properties.isWalkable || false
-    }
+  }
 }
-
-
-// Tile Repo
-// Make sure to add all new tiles as static Tile properties
 Tile.nullTile = new Tile({
   description: 'Unknown'
 })
