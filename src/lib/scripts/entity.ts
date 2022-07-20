@@ -4,7 +4,7 @@ export class Entity extends Glyph {
   attachedMixins: any
   attachedMixinGroups: any
   attackValue: number
-  blocksLight: boolean
+  isBlockingLight: boolean
   defenseValue: number
   description: string
   hp: number
@@ -15,12 +15,12 @@ export class Entity extends Glyph {
   name: string
   x: number
   y: number
-  constructor(properties: { character?: string; foreground?: string; background?: string, blocksLight?: boolean, description?: string, isDiggable?: boolean, isWalkable?: boolean, mixins?: any, attackValue?: number, defenseValue?: number, name?: string, hp?: number, maxHp?: number }, x?: number, y?: number) {
+  constructor(properties: { attackValue?: number, background?: string, character?: string, defenseValue?: number, description?: string, foreground?: string, hp?: number, isBlockingLight?: boolean, isDiggable?: boolean, isWalkable?: boolean, maxHp?: number, mixins?: any, name?: string}, x?: number, y?: number) {
     properties = properties || {}
     super(properties)
     this.attackValue = properties.attackValue
-    this.blocksLight =
-      properties.blocksLight || true
+    this.isBlockingLight =
+      properties.isBlockingLight || true
     this.description = properties.description || ''
     this.isDiggable = properties.isDiggable || false
     this.isWalkable = properties.isWalkable || false

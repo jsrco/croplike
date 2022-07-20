@@ -1,17 +1,17 @@
 import { Glyph } from './glyph'
 export class Tile extends Glyph {
-  blocksLight: boolean
+  isBlockingLight: boolean
   description: string
   isDiggable: boolean
   isWalkable: boolean
   static nullTile: Tile
   static floorTile: Tile
   static wallTile: Tile
-  constructor(properties: { character?: string; foreground?: string; background?: string, blocksLight?: boolean, description?: string, isDiggable?: boolean, isWalkable?: boolean }) {
+  constructor(properties: { background?: string, character?: string,  description?: string, foreground?: string, isBlockingLight?: boolean,  isDiggable?: boolean, isWalkable?: boolean }) {
     properties = properties || {}
     super(properties)
-    this.blocksLight =
-      properties.blocksLight || true
+    this.isBlockingLight =
+      properties.isBlockingLight || true
     this.description = properties.description || ''
     this.isDiggable = properties.isDiggable || false
     this.isWalkable = properties.isWalkable || false
@@ -23,7 +23,7 @@ Tile.nullTile = new Tile({
 Tile.floorTile = new Tile({
   character: '.',
   foreground: '#4D4C60',
-  blocksLight: false,
+  isBlockingLight: false,
   description: 'As far as the light allows, you see filth cover everything. The floor, it looks like it is moving.',
   isWalkable: true,
 })
