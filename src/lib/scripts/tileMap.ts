@@ -176,4 +176,6 @@ export const TileMap: {
     'shield': [spriteSize * 19, 6 * spriteSize],
     'sword': [spriteSize * 20, 6 * spriteSize],
     ' ': [spriteSize * 31, 15 * spriteSize],
+    ':': [spriteSize * 30, 14 * spriteSize],
+
 }

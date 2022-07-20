@@ -4,15 +4,17 @@ export const Templates = {
   FungusTemplate: {
     character: 'fThick',
     foreground: ColorSwatch.green[4],
-    mixins: [Mixins.FungusActor, Mixins.Destructible]
+    maxHp: 10,
+    mixins: [Mixins.FungusActor, Mixins.Destructible],
+    name:'fungal growth',
   },
   PlayerTemplate: {
     attackValue: 10,
     character: '@',
     foreground: 'white',
-    inventorySlots: 22,
     maxHp: 40,
     mixins: [Mixins.Moveable, Mixins.PlayerActor,
-    Mixins.SimpleAttacker, Mixins.Destructible]
+    Mixins.Attacker, Mixins.Destructible, Mixins.MessageRecipient],
+    name: 'player'
   }
 }

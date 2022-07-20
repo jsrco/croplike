@@ -3,22 +3,29 @@ import type { Map } from './map'
 export class Entity extends Glyph {
   attachedMixins: any
   attachedMixinGroups: any
+  attackValue: number
   blocksLight: boolean
+  defenseValue: number
   description: string
+  hp: number
   isDiggable: boolean
   isWalkable: boolean
   map: Map
+  maxHp:number
+  name: string
   x: number
   y: number
-  constructor(properties: { character?: string; foreground?: string; background?: string, blocksLight?: boolean, description?: string, isDiggable?: boolean, isWalkable?: boolean, mixins?: any }, x?: number, y?: number) {
+  constructor(properties: { character?: string; foreground?: string; background?: string, blocksLight?: boolean, description?: string, isDiggable?: boolean, isWalkable?: boolean, mixins?: any, attackValue?: number, defenseValue?: number, name?: string, hp?: number, maxHp?: number }, x?: number, y?: number) {
     properties = properties || {}
     super(properties)
+    this.attackValue = properties.attackValue
     this.blocksLight =
       properties.blocksLight || true
     this.description = properties.description || ''
     this.isDiggable = properties.isDiggable || false
     this.isWalkable = properties.isWalkable || false
     this.map = null
+    this.name = properties.name || ''
     this.x = x || null
     this.y = y || null
     this.attachedMixins = {}

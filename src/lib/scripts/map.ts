@@ -10,7 +10,7 @@ export class Map {
     scheduler: Simple
     tiles: any
     width: number
-    constructor(tiles, player) {
+    constructor(tiles: string | any[], player: any) {
         this.tiles = tiles
         this.width = tiles.length
         this.height = tiles[0].length
@@ -22,7 +22,7 @@ export class Map {
             this.addEntityAtRandomPosition(new Entity(Templates.FungusTemplate));
         }
     }
-    addEntity(entity) {
+    addEntity(entity): void {
         if (entity.x < 0 || entity.x >= this.width ||
             entity.y < 0 || entity.y >= this.height) {
             throw new Error('Adding entity out of bounds.')
@@ -33,18 +33,18 @@ export class Map {
             this.scheduler.add(entity, true)
         }
     }
-    addEntityAtRandomPosition(entity) {
+    addEntityAtRandomPosition(entity: Entity): void {
         const position = this.getRandomFloorPosition()
         entity.x = position.x
         entity.y = position.y
         this.addEntity(entity)
     }
-    dig(x: number, y: number) {
+    dig(x: number, y: number): void {
         if (this.tiles[x][y].isDiggable) {
             this.tiles[x][y] = Tile.floorTile
         }
     }
-    getEntityAt(x: number, y: number) {
+    getEntityAt(x: number, y: number): Entity | boolean {
         for (let i = 0; i < this.entities.length; i++) {
             if (this.entities[i].x == x && this.entities[i].y == y) {
                 return this.entities[i]
@@ -52,8 +52,24 @@ export class Map {
         }
         return false
     }
+    getEntitiesWithinRadius(centerX: number, centerY: number, radius: number): any[] {
+        const results = []
+        const leftX = centerX - radius
+        const rightX = centerX + radius
+        const topY = centerY - radius
+        const bottomY = centerY + radius
+        for (let i = 0; i < this.entities.length; i++) {
+            if (this.entities[i].x >= leftX &&
+                this.entities[i].x <= rightX && 
+                this.entities[i].y >= topY &&
+                this.entities[i].y <= bottomY) {
+                results.push(this.entities[i]);
+            }
+        }
+        return results;
+    }
     getRandomFloorPosition() {
-        let x, y;
+        let x: number, y: number;
         do {
             x = Math.floor(Math.random() * this.width);
             y = Math.floor(Math.random() * this.height);
@@ -73,7 +89,7 @@ export class Map {
             return this.tiles[x][y] || Tile.nullTile
         }
     }
-    isEmptyFloor(x, y) {
+    isEmptyFloor(x: number, y: number) {
         return this.tiles[x][y] == Tile.floorTile &&
             !this.getEntityAt(x, y)
     }

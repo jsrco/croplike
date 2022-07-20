@@ -20,6 +20,11 @@ const dieselEngine = writable({
             this.spriteSheet.src = src
         })
     },
+    refresh(): void {
+        this.display.clear()
+        this.currentScreen.render(this.display)
+        this.dieselAnimation = requestAnimationFrame(this.refresh.bind(this))
+    },
     setScreenSize() {
         const mapHeight = Math.floor(window.innerHeight / this.spriteSize)
         const mapWidth = Math.floor(window.innerWidth / this.spriteSize)
@@ -27,12 +32,7 @@ const dieselEngine = writable({
             height: mapHeight % 2 === 0 ? mapHeight - 1 : mapHeight,
             width: mapWidth % 2 === 0 ? mapWidth - 1 : mapWidth
         }
-    },
-    refresh(): void {
-        this.display.clear()
-        this.currentScreen.render(this.display)
-        this.dieselAnimation = requestAnimationFrame(this.refresh.bind(this))
-    },
+    },    
     init(gameContainer: any) {
         this.loadImage('assets/ff5x5.png').then(image => {
             console.log(image, 'loaded')
@@ -96,9 +96,6 @@ const dieselEngine = writable({
             this.refresh()
         })
         Game.switchScreen(this.screen.startScreen)
-    },
-    test(tracking: string, action: () => void): void {
-        this.EngineUnlock(tracking, action)
     }
 })
 export const Game = {

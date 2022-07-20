@@ -107,6 +107,20 @@ Screen.playScreen = {
                 );
             }
         }
+        const messages = this.player.messages
+        let messageY = 0;
+        const messagesCap = messages.length >=4 ? messages.length - 4 : 0
+        for (let i = messagesCap; i < messages.length; i++) {
+            // Draw each message, adding the number of lines
+            messageY += display.drawText(
+                0, 
+                messageY,
+                '%c{white}%b{black}' + messages[i]
+            );
+        }
+        let stats = '%c{white}%b{black}';
+        stats += `HP: ${this.player.hp}/${this.player.maxHp}`
+        display.drawText(0, screenHeight-1, stats);
         screenWidthUnsub()
         screenHeightUnsub()
     }
