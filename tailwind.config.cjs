@@ -5,7 +5,15 @@ module.exports = {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    fontFamily: {
+      'start': ['PressStart2p'],
+      'share': ['ShareTech'],
+    },
+    extend: {
+      colors: {
+        dirt: '#1d1d1d'
+      }
+    },
   },
   plugins: [],
 }
