@@ -4,6 +4,6 @@ import Navigation from './components/Navigation.vue'
 
 <template>
   <Navigation />
-  <div class="text-white">loading...</div>
+  <div class="font-start pt-1 px-3 sm:px-4 lg:px-5 text-sm text-white">loading...</div>
 </template>
 

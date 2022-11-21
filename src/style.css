@@ -13,6 +13,11 @@
 }
 
 canvas {
+  z-index: 1;    
+}
+
+canvas,
+#app {
   height: 100%;
   left: 0;
   outline: none;
@@ -20,20 +25,11 @@ canvas {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1;    
 }
 
 html {
   background: #1d1d1d;
-  font-family:ShareTech;
-  min-width: 320px;
 }	
-
-html,
-body
-{
-  overflow: hidden;
-}
 
 * {
   margin: 0;
