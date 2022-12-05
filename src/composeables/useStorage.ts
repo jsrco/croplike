@@ -15,11 +15,18 @@ const useStorage = () => {
         console.log('userStorage wiped, account inactive')
     }
 
-    if (storage.value.getUser() === undefined) {
-        storage.value.setUser('test')
-        console.log('test user set')
+    const resetUserStorage = () => {
+        isActive.value = true
+        if (storage.value.getUser() === undefined) {
+            storage.value.setUser('test')
+            console.log('"test" user set')
+        }
+        console.log('userStorage set, account active')
     }
+
+    resetUserStorage()
     isActive.value = true
+
     isOutOfSynch.value = false
 
     return {
@@ -27,6 +34,7 @@ const useStorage = () => {
         isActive,
         isDev,
         isOutOfSynch,
+        resetUserStorage,
         storage,
     }
 }
