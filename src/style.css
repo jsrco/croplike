@@ -13,7 +13,7 @@
 }
 
 canvas {
-  z-index: 1;    
+  z-index: 1;
 }
 
 canvas,
@@ -24,16 +24,23 @@ canvas,
   overflow: hidden;
   position: fixed;
   top: 0;
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE10+/Edge */
+  user-select: none;
+  /* Standard */
   width: 100%;
 }
 
 html {
   background: #1d1d1d;
-}	
+}
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
