@@ -18,8 +18,8 @@ const useStorage = () => {
     const resetUserStorage = () => {
         isActive.value = true
         if (storage.value.getUser() === undefined) {
-            storage.value.setUser('test')
-            console.log('"test" user set')
+            storage.value.setUser('testUser')
+            console.log('"testUser" user set')
         }
         console.log('userStorage set, account active')
     }
