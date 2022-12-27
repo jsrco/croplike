@@ -2,31 +2,19 @@ import * as PIXI from 'pixi.js'
 import { ref } from "vue"
 
 const Screen = ref<PIXI.Application>()
-const ScreenHeight = ref<number>()
-const ScreenWidth = ref<number>()
+const setScreen = (newScreen: PIXI.Application) => Screen.value = newScreen
+const setScreenSize = () => {
+    Screen.value.renderer.resize(window.innerWidth, window.innerHeight - 36)
+}
+
+window.addEventListener('resize', () => {
+    setScreenSize()
+})
 
 const useScreen = (display?: PIXI.Application) => {
-
-    const render = () => Screen.value?.render()
-    const setScreen = (newScreen: PIXI.Application) => {
-        Screen.value = newScreen
-        setScreenSize(21)
-    }
-    const setScreenSize = (spriteSize: number) => {
-        ScreenHeight.value = Math.floor(window.innerHeight - 36 / spriteSize)
-        ScreenWidth.value = Math.floor(window.innerWidth / spriteSize)
-        return {
-            height: ScreenHeight.value % 2 === 0 ? ScreenHeight.value - 1 : ScreenHeight.value,
-            width: ScreenWidth.value % 2 === 0 ? ScreenWidth.value - 1 : ScreenWidth.value
-        }
-    }    
     if (display) setScreen(display)
-    
     return {
         Screen,
-        render,
-        ScreenHeight,
-        ScreenWidth,
         setScreen,
         setScreenSize,
     }
