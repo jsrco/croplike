@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "pixi.js": "^7.0.5",
     "rot-js": "^2.2.0",
     "vue": "^3.2.41"
   },

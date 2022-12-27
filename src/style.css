@@ -12,11 +12,6 @@
   src: url("./assets/fonts/ShareTech-Regular.ttf");
 }
 
-canvas {
-  z-index: 1;
-}
-
-canvas,
 #app {
   height: 100%;
   left: 0;
