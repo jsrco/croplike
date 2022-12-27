@@ -10,10 +10,10 @@ import { onMounted, ref } from 'vue';
 
 const gameContainer = ref(null)
 
-let app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36,});
+let startScreen : PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36,});
 
 onMounted(()=>{
     console.log(typeof gameContainer.value,gameContainer.value)
-    gameContainer.value?.appendChild(app.view)
+    gameContainer.value?.appendChild(startScreen.view)
 })
 </script>

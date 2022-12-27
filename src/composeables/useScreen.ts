@@ -1,15 +1,14 @@
+import * as PIXI from 'pixi.js'
 import { ref } from "vue"
 
-type GameScreen = { render: () => {} }
-
-const Screen = ref<GameScreen>()
+const Screen = ref<PIXI.Application>()
 const ScreenHeight = ref<number>()
 const ScreenWidth = ref<number>()
 
-const useScreen = (display?: GameScreen) => {
+const useScreen = (display?: PIXI.Application) => {
 
     const render = () => Screen.value?.render()
-    const setScreen = (newScreen: GameScreen) => {
+    const setScreen = (newScreen: PIXI.Application) => {
         Screen.value = newScreen
         setScreenSize(21)
     }
