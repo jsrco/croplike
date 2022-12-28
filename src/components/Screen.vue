@@ -7,30 +7,13 @@
 
 <script setup lang="ts">
 import useScreen from '../composeables/useScreen'
-import * as PIXI from 'pixi.js'
 import { onMounted, ref } from 'vue';
+import { startScreen } from '../scripts/screens';
 
-const { setScreenSize } = useScreen()
-
-const gameContainer = ref()
-
-const startScreen: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, });
-
-const style = new PIXI.TextStyle({
-    fontFamily: 'PressStart2p',
-    fontSize: 36,
-    fill: ['#4ade80'],
-});
-
-const richText = new PIXI.Text('a start screen', style);
-richText.x = 10
-richText.y = 10
-
-startScreen.stage.addChild(richText)
+const { GameContainerTarget } = useScreen()
+const gameContainer = ref(GameContainerTarget)
 
 onMounted(() => {
     useScreen(startScreen)
-    gameContainer.value?.appendChild(startScreen.view)
-
 })
 </script>
