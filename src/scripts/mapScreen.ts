@@ -37,4 +37,20 @@ const createGridPiece = (pX: number, pY:number, size: number) => {
     })
 }
 
-createGridPiece(5,5,52)
+createGridPiece(5,5,32)
+
+export const drawGrid = () => {
+    graphics.clear()
+    const gridSize = 32
+    let xStarter = 5
+    const seperator = gridSize + 3
+    const xAmount = ((window.innerWidth / gridSize) - 5)
+    console.log(xAmount)
+    const yAmount = ((window.innerHeight / gridSize) - 5)
+    for ( xStarter; xStarter < xAmount ; xStarter += seperator) {
+        let yStarter = 5
+        for (yStarter; yStarter < yAmount ; yStarter += seperator) {
+            createGridPiece(xStarter,yStarter,gridSize)
+        }
+    }
+}
