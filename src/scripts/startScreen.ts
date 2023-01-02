@@ -1,5 +1,6 @@
 import useScreen from "../composeables/useScreen";
 import * as PIXI from 'pixi.js'
+import { mapScreen } from "./mapScreen";
 
 export const startScreen: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, });
 
@@ -32,34 +33,4 @@ PressStart2P.load().then(function (font) {
         //handle event
         useScreen(mapScreen)
     });
-
-    const mapScreen: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, });
-    const graphics = new PIXI.Graphics();
-    graphics.lineStyle(2, 0xFF00FF, 1);
-    graphics.beginFill(0x650A5A, 0.25);
-    graphics.drawRoundedRect(10, 10, 21, 21, 2);
-    graphics.endFill();
-    graphics.interactive = true
-    graphics.hitArea = new PIXI.RoundedRectangle(10, 10, 21, 21, 2)
-    mapScreen.stage.addChild(graphics)
-    graphics.on('click', (event) => {
-        //handle event
-        useScreen(startScreen)
-    });
-    graphics.on('mouseout', (event) => {
-        //handle event
-        graphics.clear()
-        graphics.lineStyle(2, 0xFF00FF, 1);
-        graphics.beginFill(0x650A5A, 0.25);
-        graphics.drawRoundedRect(10, 10, 21, 21, 2);
-        graphics.endFill();
-    });
-    graphics.on('mouseover', (event) => {
-        //handle event
-        graphics.clear()
-        graphics.lineStyle(2, 0xFF00FF, 1);
-        graphics.beginFill(0x650A5A, 0.50);
-        graphics.drawRoundedRect(10, 10, 21, 21, 2);
-        graphics.endFill();
-    })
 });

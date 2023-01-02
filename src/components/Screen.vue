@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import useScreen from '../composeables/useScreen'
 import { onMounted, ref } from 'vue';
-import { startScreen } from '../scripts/screens';
+import { startScreen } from '../scripts/startScreen';
 
 const { GameContainerTarget } = useScreen()
 const gameContainer = ref(GameContainerTarget)
