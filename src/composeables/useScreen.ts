@@ -3,6 +3,8 @@ import { ref } from "vue"
 
 const GameContainerTarget = ref()
 const Screen = ref<PIXI.Application>({})
+const ScreenHeight = ref(window.innerHeight - 36)
+const ScreenWidth = ref(window.innerWidth)
 const setScreen = (newScreen: PIXI.Application) => {
     Screen.value = newScreen
     setScreenSize()
@@ -10,6 +12,8 @@ const setScreen = (newScreen: PIXI.Application) => {
     GameContainerTarget.value.appendChild(Screen.value.view)
 }
 const setScreenSize = () => {
+    ScreenHeight.value = window.innerHeight - 36
+    ScreenWidth.value = window.innerWidth 
     Screen.value.renderer.resize(window.innerWidth, window.innerHeight - 36)
 }
 
@@ -22,6 +26,8 @@ const useScreen = (display?: PIXI.Application) => {
     return {
         GameContainerTarget,
         Screen,
+        ScreenHeight,
+        ScreenWidth,
         setScreen,
     }
 }

@@ -1,6 +1,6 @@
 import useScreen from "../composeables/useScreen";
 import * as PIXI from 'pixi.js'
-import { mapScreen } from "./mapScreen";
+import { createGrid, mapScreen } from "./mapScreen";
 
 export const startScreen: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, });
 
@@ -32,5 +32,6 @@ PressStart2P.load().then(function (font) {
     startScreen.stage.on('click', (event) => {
         //handle event
         useScreen(mapScreen)
+        createGrid()
     });
 });
