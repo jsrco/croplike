@@ -32,5 +32,7 @@ PressStart2P.load().then(function (font) {
     startScreen.stage.on('click', (event) => {
         //handle event
         useScreen(mapScreen)
+        mapScreen.render()
+        requestAnimationFrame(createGrid)
     })
 })

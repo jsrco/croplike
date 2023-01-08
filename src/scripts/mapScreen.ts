@@ -10,7 +10,7 @@ mapScreen.specialStagename = 'mapScreen'
 const templateShape = new Graphics()
     .beginFill(0xffffff)
     .lineStyle({ width: 1, alignment: 0 })
-    .drawRoundedRect(0, 0, 36, 36, 2)
+    .drawRoundedRect(0, 0, 32, 32, 2)
 const { width, height } = templateShape
 
 // Draw the RoundedRect to the RenderTexture
@@ -35,7 +35,7 @@ export const createGrid = () => {
     mapScreen.stage.removeChildren()
     const shapes: Sprite[] = []
     const gridSize = height
-    const seperator = gridSize + 3
+    const seperator = gridSize
     let counter = 0
     for (let xStarter = 3; xStarter < ScreenWidth.value - seperator; xStarter += seperator) {
         let yStarter = 3
@@ -46,19 +46,19 @@ export const createGrid = () => {
             shape.position.x = xStarter
             shape.position.y = yStarter
             shape.interactive = true
-            shape.on('click', (event) => {
-                //handle event
-                mapScreen.stage.removeChildren()
-                useScreen(startScreen)
-            });
-            shape.on('mouseout', (event) => {
+            shape.on('pointerleave', (event) => {
                 //handle event
                 shape.tint = 0xffffff
 
-            });
-            shape.on('mouseover', (event) => {
+            })
+            shape.on('pointerover', (event) => {
                 //handle event
                 shape.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16);
+            })
+            shape.on('pointertap', (event) => {
+                //handle event
+                mapScreen.stage.removeChildren()
+                useScreen(startScreen)
             })
         }
     }
@@ -68,8 +68,6 @@ export const createGrid = () => {
     mapScreen.stage.addChild(container)
 }
 
-mapScreen.render()
-requestAnimationFrame(createGrid)
 
 window.addEventListener('resize', () => {
     if (Screen.value.specialStagename === 'mapScreen') {
