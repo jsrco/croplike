@@ -3,6 +3,8 @@ import * as PIXI from 'pixi.js'
 import { Container, Graphics, MSAA_QUALITY, Matrix, RenderTexture, Renderer, Sprite } from "pixi.js"
 import { startScreen } from "./startScreen"
 
+PIXI.settings.SCALE_MODE = 0
+
 const { Screen, ScreenHeight, ScreenWidth } = useScreen()
 export const mapScreen: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
 mapScreen.specialStagename = 'mapScreen'
