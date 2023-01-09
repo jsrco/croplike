@@ -43,7 +43,7 @@ export const createGrid = () => {
         let yStarter = 3
         for (yStarter; yStarter < ScreenHeight.value - seperator; yStarter += seperator) {
             const shape = new Sprite(renderTexture);
-            shapes[counter] = shape;
+            shapes[counter] = shape
             counter++
             shape.position.x = xStarter
             shape.position.y = yStarter
@@ -51,11 +51,20 @@ export const createGrid = () => {
             shape.on('pointerleave', (event) => {
                 //handle event
                 shape.tint = 0xffffff
-
+                const sHeight = shape.height
+                shape.scale.set(1, 1)
+                shape.position.x += (sHeight - shape.height) / 2
+                shape.position.y += (sHeight - shape.height) / 2
+                shape.zIndex
             })
             shape.on('pointerover', (event) => {
                 //handle event
-                shape.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16);
+                shape.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16)
+                const sHeight = shape.height
+                shape.scale.set(1.2, 1.2)
+                shape.position.x -= (shape.height - sHeight) / 2
+                shape.position.y -= (shape.height - sHeight) / 2
+                shape.position.z = 1000
             })
             shape.on('pointertap', (event) => {
                 //handle event
