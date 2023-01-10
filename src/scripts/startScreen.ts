@@ -55,10 +55,15 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
 
         explosion.x = Math.random() * startScreen.screen.width;
         explosion.y = Math.random() * startScreen.screen.height;
+        explosion.interactive = true
         explosion.anchor.set(0.5);
         explosion.rotation = Math.random() * Math.PI;
         explosion.scale.set(0.75 + Math.random() * 0.5);
         explosion.gotoAndPlay(Math.random() * 26 | 0);
+        explosion.on('pointerover', (event) => {
+            //handle event
+            explosion.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16);
+        })
         startScreen.stage.addChild(explosion);
     }
 

@@ -4,6 +4,7 @@ import { Container, Graphics, MSAA_QUALITY, Matrix, RenderTexture, Renderer, Spr
 import { startScreen } from "./startScreen"
 
 PIXI.settings.SCALE_MODE = 0
+PIXI.settings.SORTABLE_CHILDREN = true
 
 const { Screen, ScreenHeight, ScreenWidth } = useScreen()
 export const mapScreen: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
@@ -48,23 +49,24 @@ export const createGrid = () => {
             shape.position.x = xStarter
             shape.position.y = yStarter
             shape.interactive = true
+            shape.zIndex = counter
             shape.on('pointerleave', (event) => {
                 //handle event
                 shape.tint = 0xffffff
                 const sHeight = shape.height
+                shape.zIndex -= shapes.length
                 shape.scale.set(1, 1)
                 shape.position.x += (sHeight - shape.height) / 2
                 shape.position.y += (sHeight - shape.height) / 2
-                shape.zIndex
             })
             shape.on('pointerover', (event) => {
                 //handle event
                 shape.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16)
                 const sHeight = shape.height
-                shape.scale.set(1.2, 1.2)
+                shape.zIndex += shapes.length
+                shape.scale.set(1.1, 1.1)
                 shape.position.x -= (shape.height - sHeight) / 2
                 shape.position.y -= (shape.height - sHeight) / 2
-                shape.position.z = 1000
             })
             shape.on('pointertap', (event) => {
                 //handle event
