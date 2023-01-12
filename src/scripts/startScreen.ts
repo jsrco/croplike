@@ -1,10 +1,11 @@
 import useScreen from "../composeables/useScreen"
 import * as PIXI from 'pixi.js'
+import { GameScreen } from "./gameScreen"
 import { createGrid, mapScreen } from "./mapScreen"
 
 PIXI.settings.SCALE_MODE = 0
 
-export const startScreen: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
+export const startScreen: GameScreen = new GameScreen( { appOptions: { width: window.innerWidth, height: window.innerHeight - 36, }, stageName: 'startScreen'})
 
 const PressStart2P = new FontFace(
     "PixiPressStart2P",

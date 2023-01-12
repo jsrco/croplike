@@ -2,13 +2,14 @@ import useScreen from "../composeables/useScreen"
 import * as PIXI from 'pixi.js'
 import { Container, Graphics, MSAA_QUALITY, Matrix, RenderTexture, Renderer, Sprite } from "pixi.js"
 import { startScreen } from "./startScreen"
+import { GameScreen } from "./gameScreen"
 
 PIXI.settings.SCALE_MODE = 0
 PIXI.settings.SORTABLE_CHILDREN = true
 
 const { Screen, ScreenHeight, ScreenWidth } = useScreen()
-export const mapScreen: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
-mapScreen.specialStagename = 'mapScreen'
+
+export const mapScreen: GameScreen = new GameScreen( { appOptions: { width: window.innerWidth, height: window.innerHeight - 36, }, stageName: 'mapScreen'})
 
 const templateShape = new Graphics()
     .beginFill(0xffffff)
@@ -83,7 +84,7 @@ export const createGrid = () => {
 
 
 window.addEventListener('resize', () => {
-    if (Screen.value.specialStagename === 'mapScreen') {
+    if (Screen.value?.stageName === 'mapScreen') {
         createGrid()
     }
 })
