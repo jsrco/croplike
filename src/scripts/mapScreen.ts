@@ -1,8 +1,9 @@
 import useScreen from "../composeables/useScreen"
 import * as PIXI from 'pixi.js'
 import { Container, Graphics, MSAA_QUALITY, Matrix, RenderTexture, Renderer, Sprite } from "pixi.js"
-import { startScreen } from "./startScreen"
 import { GameScreen } from "./gameScreen"
+import { ref } from "vue"
+import { actionScreen, createAction } from "./actionScreen"
 
 PIXI.settings.SCALE_MODE = 0
 PIXI.settings.SORTABLE_CHILDREN = true
@@ -35,6 +36,8 @@ mapScreen.renderer.render(templateShape, {
 // Discard the original Graphics
 templateShape.destroy(true)
 
+export const clickedObject = ref<Number>(0)
+
 export const createGrid = () => {
     mapScreen.stage.removeChildren()
     const shapes: Sprite[] = []
@@ -45,8 +48,8 @@ export const createGrid = () => {
         let yStarter = 3
         for (yStarter; yStarter < ScreenHeight.value - seperator; yStarter += seperator) {
             const shape = new Sprite(renderTexture);
+            const shpaeNumber = counter + 1
             shapes[counter] = shape
-            counter++
             shape.position.x = xStarter
             shape.position.y = yStarter
             shape.interactive = true
@@ -72,8 +75,12 @@ export const createGrid = () => {
             shape.on('pointertap', (event) => {
                 //handle event
                 mapScreen.stage.removeChildren()
-                useScreen(startScreen)
+                clickedObject.value = shpaeNumber
+                useScreen(actionScreen)
+                actionScreen.render()
+                requestAnimationFrame(createAction)
             })
+            counter++
         }
     }
     const container = new Container()
