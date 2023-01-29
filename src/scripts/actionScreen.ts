@@ -20,7 +20,7 @@ export const createAction = () => {
     richText.x = 10
     richText.y = 10
     actionScreen.stage.addChild(richText)
-    const poorText = new PIXI.Text(`You clicked on map grid: ${clickedObject.value}`, style);
+    const poorText = new PIXI.Text(`You clicked grid: ${clickedObject.value.shapeNumber}\nPosition: ${clickedObject.value.position}\nType:${clickedObject.value.type}`, style);
     poorText.x = 10
     poorText.y = 30
     actionScreen.stage.addChild(poorText)

@@ -39,7 +39,7 @@ mapScreen.renderer.render(templateShape, {
 // Discard the original Graphics
 templateShape.destroy(true)
 
-export const clickedObject = ref<Number>(0)
+export const clickedObject = ref()
 const style = new PIXI.TextStyle({
     fontFamily: 'PixiPressStart2P',
     fontSize: 8,
@@ -56,8 +56,10 @@ export const createGrid = () => {
         let yStarter = 3
         let yCount = 0
         for (yStarter; yStarter < ScreenHeight.value - seperator; yStarter += seperator) {
-            const shape = new Sprite(renderTexture);
-            const shpaeNumber = counter + 1
+            const shape = new Sprite(renderTexture)
+            const position = [xCount,yCount]
+            const shapeNumber = counter
+            const type = map.value._map[xCount][yCount]
             shapes[counter] = shape
             shape.position.x = xStarter
             shape.position.y = yStarter
@@ -92,7 +94,7 @@ export const createGrid = () => {
             shape.on('pointertap', (event) => {
                 //handle event
                 mapScreen.stage.removeChildren()
-                clickedObject.value = shpaeNumber
+                clickedObject.value = {position, shapeNumber, type}
                 useScreen(actionScreen)
                 actionScreen.render()
                 requestAnimationFrame(createAction)
