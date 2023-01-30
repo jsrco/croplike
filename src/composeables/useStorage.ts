@@ -1,4 +1,4 @@
-import { GameStorage } from "./storage"
+import { GameStorage } from "../scripts/storage"
 import { ref } from "vue"
 
 const isActive = ref(false)

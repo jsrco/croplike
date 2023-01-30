@@ -18,7 +18,7 @@
     </div>
     <div 
         v-if="isInDebug"
-        class="absolute backdrop-blur-lg border border-gray-300 dropdown flex flex-col pl-4 pr-3 py-1 rounded-sm max-w-12 z-20">
+        class="absolute bg-dirt border border-gray-300 dropdown flex flex-col pl-4 pr-3 py-1 rounded-sm max-w-12 z-20">
         <div 
             v-for="item in debugList" 
             class="font-share text-gray-400 active:text-green-400 hover:text-white "
