@@ -10,9 +10,9 @@ PIXI.settings.SCALE_MODE = 0
 PIXI.settings.SORTABLE_CHILDREN = true
 
 const { Screen, ScreenHeight, ScreenWidth } = useScreen()
-const { map } = useCartographer()
+const { isOutBounds, map } = useCartographer()
 
-export const mapScreen: GameScreen = new GameScreen( { appOptions: { width: window.innerWidth, height: window.innerHeight - 36, }, stageName: 'mapScreen'})
+export const mapScreen: GameScreen = new GameScreen({ appOptions: { width: window.innerWidth, height: window.innerHeight - 36, }, stageName: 'mapScreen' })
 
 const templateShape = new Graphics()
     .beginFill(0xffffff)
@@ -57,31 +57,29 @@ export const createGrid = () => {
         let yCount = 0
         for (yStarter; yStarter < ScreenHeight.value - seperator; yStarter += seperator) {
             const shape = new Sprite(renderTexture)
-            const position = [xCount,yCount]
+            const position = [xCount, yCount]
             const shapeNumber = counter
-            const type = map.value._map[xCount][yCount]
+            const type = isOutBounds(position[0], position[1]) ? 2 : map.value._map[position[0]][position[1]]
             shapes[counter] = shape
             shape.position.x = xStarter
             shape.position.y = yStarter
             shape.interactive = true
             shape.zIndex = counter
-            shape.tint = map.value._map[xCount][yCount] === 1 ? 0xfad11 : 0x11111
-            let text = new PIXI.Text( `${xCount}, ${yCount}\n${counter}\n${map.value._map[xCount][yCount]}`, style);
-            shape.addChild(text)
-
+            let tint = type === 1 ? 0x4ade80 : 0xFF1D1D1D
+            tint = type === 2 ? 0x11111 : tint
+            shape.tint = tint
+            let text = new PIXI.Text(`${position[0]}, ${position[1]}\n${counter}\n${type}`, style)
             shape.on('pointerleave', (event) => {
                 //handle event
-                // shape.tint = 0xffffff
                 const sHeight = shape.height
                 shape.zIndex -= shapes.length
                 shape.scale.set(1, 1)
                 shape.position.x += (sHeight - shape.height) / 2
                 shape.position.y += (sHeight - shape.height) / 2
-                //shape.removeChild(text)
+                shape.removeChild(text)
             })
             shape.on('pointerover', (event) => {
                 // handle event
-                // shape.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16)
                 const sHeight = shape.height
                 shape.zIndex += shapes.length
                 shape.scale.set(1.1, 1.1)
@@ -89,12 +87,12 @@ export const createGrid = () => {
                 shape.position.y -= (shape.height - sHeight) / 2
                 text.position.x = 0
                 text.position.y = 0
-                //shape.addChild(text)
+                shape.addChild(text)
             })
             shape.on('pointertap', (event) => {
                 //handle event
                 mapScreen.stage.removeChildren()
-                clickedObject.value = {position, shapeNumber, type}
+                clickedObject.value = { position, shapeNumber, type }
                 useScreen(actionScreen)
                 actionScreen.render()
                 requestAnimationFrame(createAction)

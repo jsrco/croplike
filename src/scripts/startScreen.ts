@@ -32,7 +32,7 @@ PressStart2P.load().then(function (font) {
 
     startScreen.stage.interactive = true;
     startScreen.stage.hitArea = startScreen.screen;
-    startScreen.stage.on('click', (event) => {
+    startScreen.stage.on('pointerup', (event) => {
         //handle event
         useScreen(mapScreen)
         mapScreen.render()

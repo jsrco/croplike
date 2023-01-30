@@ -10,24 +10,24 @@ export const actionScreen: GameScreen = new GameScreen({ appOptions: { width: wi
 const style = new PIXI.TextStyle({
     fontFamily: 'PixiPressStart2P',
     fontSize: 16,
-    fill: ['#4ade80'],
+    fill: ['#fff'],
 })
 
 export const createAction = () => {
     actionScreen.stage.removeChildren()
 
-    const richText = new PIXI.Text('a action screen', style);
+    const richText = new PIXI.Text('action screen', style);
     richText.x = 10
     richText.y = 10
     actionScreen.stage.addChild(richText)
-    const poorText = new PIXI.Text(`You clicked grid: ${clickedObject.value.shapeNumber}\nPosition: ${clickedObject.value.position}\nType:${clickedObject.value.type}`, style);
+    const poorText = new PIXI.Text(`Grid: ${clickedObject.value.shapeNumber}\nPosition: ${clickedObject.value.position}\nType:${clickedObject.value.type}`, style);
     poorText.x = 10
     poorText.y = 30
     actionScreen.stage.addChild(poorText)
     
     actionScreen.stage.interactive = true;
     actionScreen.stage.hitArea = actionScreen.screen;
-    actionScreen.stage.on('click', (event) => {
+    actionScreen.stage.on('pointerup', (event) => {
         //handle event
         useScreen(mapScreen)
         mapScreen.render()
