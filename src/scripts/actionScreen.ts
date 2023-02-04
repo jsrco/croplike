@@ -33,4 +33,22 @@ export const createAction = () => {
         mapScreen.render()
         requestAnimationFrame(createGrid)
     })
+
+    var square = new PIXI.Graphics()
+    square.beginFill(0xff0000)
+    square.drawRect(0, 0, 50, 50)
+    square.endFill()
+    square.x = 100
+    square.y = 100
+    actionScreen.stage.addChild(square)
+
+
+    const update = () => {
+        square.position.x += 1;
+    
+        actionScreen.render()
+        
+        requestAnimationFrame(update)
+    }
+    update()
 }
