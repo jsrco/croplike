@@ -1,11 +1,12 @@
-import useScreen from "../composeables/useScreen"
 import * as PIXI from 'pixi.js'
 import { GameScreen } from "./gameScreen"
 import { createGrid, mapScreen } from "./mapScreen"
+import useScreen from "../composeables/useScreen"
+import useStorage from '../composeables/useStorage'
 
 PIXI.settings.SCALE_MODE = 0
 
-export const startScreen: GameScreen = new GameScreen( { appOptions: { width: window.innerWidth, height: window.innerHeight - 36, }, stageName: 'startScreen'})
+export const startScreen: GameScreen = new GameScreen({ appOptions: { width: window.innerWidth, height: window.innerHeight - 36, }, stageName: 'startScreen' })
 
 const PressStart2P = new FontFace(
     "PixiPressStart2P",
@@ -14,7 +15,6 @@ const PressStart2P = new FontFace(
 PressStart2P.load().then(function (font) {
     // with canvas, if this is ommited won't work
     document.fonts.add(font)
-    console.log('font loaded')
 
     const style = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
@@ -34,9 +34,15 @@ PressStart2P.load().then(function (font) {
     startScreen.stage.hitArea = startScreen.screen;
     startScreen.stage.on('pointerup', (event) => {
         //handle event
-        useScreen(mapScreen)
-        mapScreen.render()
-        requestAnimationFrame(createGrid)
+        const { checkIfSynched, isOutOfSynch } = useStorage()
+        checkIfSynched()
+        if (isOutOfSynch.value) {
+            throw Error('data out of synch')
+        } else {
+            useScreen(mapScreen)
+            mapScreen.render()
+            requestAnimationFrame(createGrid)
+        }
     })
 })
 
@@ -44,7 +50,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     // create an array to store the textures
     const ff5x5Texture = [];
     let i;
-    
+
     for (i = 0; i < 26; i++) {
         const texture = PIXI.Texture.from(`ff5x5 ${i}.png`);
         ff5x5Texture.push(texture);
@@ -69,13 +75,13 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     }
 
     const backuptexture = PIXI.Texture.from(`ff5x5 0.png`)
-    
+
     const renderedBackup = new PIXI.AnimatedSprite([backuptexture])
 
     renderedBackup.x = 50
     renderedBackup.y = 50
     renderedBackup.interactive = true
-    renderedBackup.scale.set(10,10)
+    renderedBackup.scale.set(10, 10)
     renderedBackup.on('pointerleave', (event) => {
         //handle event
         renderedBackup.tint = 0xffffff

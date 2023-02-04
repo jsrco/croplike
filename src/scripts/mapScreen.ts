@@ -10,7 +10,6 @@ PIXI.settings.SCALE_MODE = 0
 PIXI.settings.SORTABLE_CHILDREN = true
 
 const { Screen, ScreenHeight, ScreenWidth } = useScreen()
-const { isOutBounds, map } = useCartographer()
 
 export const mapScreen: GameScreen = new GameScreen({ appOptions: { width: window.innerWidth, height: window.innerHeight - 36, }, stageName: 'mapScreen' })
 
@@ -46,6 +45,7 @@ const style = new PIXI.TextStyle({
     fill: ['#fff'],
 })
 export const createGrid = () => {
+    const { isOutBounds, map } = useCartographer()
     mapScreen.stage.removeChildren()
     const shapes: Sprite[] = []
     const gridSize = height

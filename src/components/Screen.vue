@@ -6,20 +6,14 @@
 </template>
 
 <script setup lang="ts">
-import useCartographer from '../composeables/useCartographer'
 import useScreen from '../composeables/useScreen'
-import { onMounted, ref } from 'vue';
-import { startScreen } from '../scripts/startScreen';
-import { RAD_TO_DEG } from 'pixi.js';
-
-const { map } = useCartographer()
-
+import { onMounted, ref } from 'vue'
+import { startScreen } from '../scripts/startScreen'
 
 const { GameContainerTarget } = useScreen()
 const gameContainer = ref(GameContainerTarget)
 
 onMounted(() => {
-    console.log(map.value)
     useScreen(startScreen)
 })
 </script>
