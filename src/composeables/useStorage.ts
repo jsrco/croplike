@@ -27,16 +27,16 @@ const useStorage = () => {
     const resetUserStorage = () => {
         if (!storage.value.getType(Locals.Game_USER)) {
             storage.value.setType(Locals.Game_USER, 'testUser')
-            console.dir('"game-user" user set')
+            console.dir('"game-user" test user set')
         }
         if (!storage.value.getType(Locals.Game_MAP)) {
             const {generateNewMap } = useCartographer()
             generateNewMap()
-            console.dir('"game-map" user set')
+            console.dir('"game-map" game map created')
         }
         checkIfSynched()        
         useScreen(startScreen)
-        console.dir('userStorage set, account active')
+        console.dir('account active')
     }
 
     checkIfSynched()
