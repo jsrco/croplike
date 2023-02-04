@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { GameScreen } from "./gameScreen"
 import { clickedObject, createGrid, mapScreen } from "./mapScreen"
 import useScreen from "../composeables/useScreen"
+import { ref } from 'vue'
 
 PIXI.settings.SCALE_MODE = 0
 
@@ -15,30 +16,44 @@ const style = new PIXI.TextStyle({
 
 const square = new PIXI.Graphics()
 const squareDimension = 15
-
+const vX = ref(0)
 const onKeyDown = (key: { keyCode: number }) => {
-    if (useScreen().Screen.value?.stageName === 'actionScreen')
-    // A Key is 65
-    // Left arrow is 37
-    if (key.keyCode === 65 || key.keyCode === 37) {
-        // If the A key or the Left arrow is pressed, move the player to the left.
-        if (square.position.x != 0) {
-            // Don't move to the left if the player is at the left side of the stage
-            square.position.x -= 1
+    if (useScreen().Screen.value?.stageName === 'actionScreen') {
+        // A Key is 65
+        // Left arrow is 37
+        if (key.keyCode === 65 || key.keyCode === 37) {
+            // If the A key or the Left arrow is pressed, move the player to the left.
+            if (square.position.x >= 0) {
+                if (vX.value > 0) {
+                    vX.value = 0
+                }
+                if (vX.value > -5) vX.value--
+                // Don't move to the left if the player is at the left side of the stage
+                square.position.x += vX.value
+            }
         }
-    }
-    // D Key is 68
-    // Right arrow is 39
-    if (key.keyCode === 68 || key.keyCode === 39) {
-        // If the D key or the Right arrow is pressed, move the player to the right.
-        if (square.position.x != window.innerWidth - squareDimension) {
-            // Don't move to the right if the player is at the right side of the stage
-            square.position.x += 1
+        // D Key is 68
+        // Right arrow is 39
+        if (key.keyCode === 68 || key.keyCode === 39) {
+            // If the D key or the Right arrow is pressed, move the player to the right.
+            if (square.position.x < window.innerWidth - squareDimension) {
+                if (vX.value < 0) {
+                    vX.value = 0
+                }
+                if (vX.value < 5) vX.value++
+                // Don't move to the right if the player is at the right side of the stage
+                square.position.x += vX.value
+            }
         }
     }
 }
+const onKeyUp = (key: { keyCode: number }) => {
+    if (useScreen().Screen.value?.stageName === 'actionScreen') {
+        vX.value = 0
+    }
+}
 document.addEventListener('keydown', onKeyDown)
-
+document.addEventListener('keyup', onKeyUp)
 export const createAction = () => {
     actionScreen.stage.removeChildren()
 
@@ -50,7 +65,7 @@ export const createAction = () => {
     poorText.x = 10
     poorText.y = 30
     actionScreen.stage.addChild(poorText)
-    
+
     actionScreen.stage.interactive = true;
     actionScreen.stage.hitArea = actionScreen.screen;
     actionScreen.stage.on('pointerup', (event) => {
@@ -67,7 +82,7 @@ export const createAction = () => {
     square.y = window.innerHeight - squareDimension - 36
     actionScreen.stage.addChild(square)
 
-    const update = () => {    
+    const update = () => {
         actionScreen.render()
         requestAnimationFrame(update)
     }
