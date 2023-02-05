@@ -2,7 +2,6 @@ import * as PIXI from 'pixi.js'
 import { GameScreen } from "./gameScreen"
 import { clickedObject, createGrid, mapScreen } from "./mapScreen"
 import useScreen from "../composeables/useScreen"
-import { ref } from 'vue'
 
 PIXI.settings.SCALE_MODE = 0
 
@@ -112,7 +111,7 @@ export const createAction = () => {
     actionScreen.stage.addChild(square)
 
     actionScreen.ticker.add((delta) => {
-        player.update(delta)
+        player.update()
     })
     actionScreen.render()
 }
