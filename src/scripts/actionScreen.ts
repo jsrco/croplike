@@ -14,29 +14,51 @@ const style = new PIXI.TextStyle({
 })
 
 const square = new PIXI.Graphics()
-const squareDimension = 15
+const squareDimension = 55
 class Entity {
     drag: number
     gravity: number
+    hanging: boolean
     jumpSpeed: number
+    minWallSlideSpeed: number
     vx: number
     vy: number
+    wallSlideSpeed: number
     constructor() {
-        this.drag = 0.95;
+        this.drag = 0.95
         this.gravity = 0.5
+        this.hanging = false
         this.jumpSpeed = 10
+        this.minWallSlideSpeed = 0.1
         this.vx = 0
         this.vy = 0
+        this.wallSlideSpeed = 1
     }
     moveLeft() {
-        this.vx = -5
+        if (!this.hanging) {
+            this.vx -= 5;
+        }
     }
     moveRight() {
-        this.vx = 5
+        if (!this.hanging) {
+            this.vx += 5;
+        }
     }
     jump() {
-        if (square.y === window.innerHeight - 36 - squareDimension) {
+        if (square.y === window.innerHeight - 36 - squareDimension || this.hanging) {
+            if (this.hanging) {
+                this.vy = -this.jumpSpeed / 2
+            } else {
+                this.vy = -this.jumpSpeed
+            }
+            this.hanging = false
+        }
+    }
+    wallJump() {
+        if (this.hanging) {
             this.vy = -this.jumpSpeed
+            this.vx = this.vx * -1.5
+            this.hanging = false
         }
     }
     update() {
@@ -47,13 +69,36 @@ class Entity {
             square.y = window.innerHeight - 36 - squareDimension
             this.vy = 0
         }
+
         if (square.x < 0) {
-            square.x = 0
-            this.vx = 0
+            square.x = 0;
+            if (this.vx < 0) {
+                this.vy = this.wallSlideSpeed;
+                this.wallSlideSpeed *= 0.9;
+                if (this.wallSlideSpeed < this.minWallSlideSpeed) {
+                    this.wallSlideSpeed = 0;
+                }
+                this.hanging = true
+            } else {
+                this.wallSlideSpeed = 1;
+            }
         } else if (square.x + squareDimension > window.innerWidth) {
             square.x = window.innerWidth - squareDimension
-            this.vx = 0
+            if (this.vx > 0) {
+                this.vy = this.wallSlideSpeed
+                this.wallSlideSpeed *= 0.9
+                if (this.wallSlideSpeed < this.minWallSlideSpeed) {
+                    this.wallSlideSpeed = 0
+                }
+                this.hanging = true
+            } else {
+                this.wallSlideSpeed = 1
+            }
+        } else {
+            this.wallSlideSpeed = 1
+            this.hanging = false
         }
+      
         this.vx *= this.drag
     }
 }
@@ -77,7 +122,8 @@ const onKeyDown = (key: { keyCode: number }) => {
         }
         if (key.keyCode === 87 || key.keyCode === 38) {
             // If the W key or the Up arrow is pressed, move the player up.
-            player.jump()
+            if(player.hanging) player.wallJump()
+            else player.jump()
         }
     }
 }
