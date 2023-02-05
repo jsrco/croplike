@@ -33,6 +33,7 @@ export abstract class Storage<T extends string> {
 
 // Game Storage
 export enum Locals {
+  Game_MAP = 'game-map',
   Game_USER = 'game-user',
 }
 
@@ -50,17 +51,21 @@ export class GameStorage extends Storage<Locals> {
     return this.instance
   }
 
-  public getUser() {
-    const user = this.get(Locals.Game_USER)
-    const result = user ? JSON.parse(user) : undefined
+  public getType(type: Locals) {
+    const storageType = this.get(type)
+    const result = storageType ? JSON.parse(storageType) : undefined
     return result
   }
 
-  public setUser(user: string) {
-    this.set(Locals.Game_USER, JSON.stringify(user))
+  public setType(type: Locals, data: any) {
+    this.set(type, JSON.stringify(data))
   }
 
-  public clear() {
-    this.clearItems([Locals.Game_USER])
+  public clear(type: Locals) {
+    this.clearItem(type)
+  }
+
+  public clearAll() {
+    this.clearItems([Locals.Game_MAP, Locals.Game_USER])
   }
 }

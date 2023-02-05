@@ -1,35 +1,48 @@
-import { GameStorage } from "../scripts/storage"
 import { ref } from "vue"
+import { GameStorage, Locals } from "../scripts/storage"
+import { startScreen } from "../scripts/startScreen"
+import useCartographer from "./useCartographer"
+import useScreen from "./useScreen"
 
 const isActive = ref(false)
 const isDev = ref(true)
-const isOutOfSynch = ref(true)
+const isOutOfSynch = ref(false)
 const storage = ref()
 
 const useStorage = () => {
     storage.value = GameStorage.getInstance()
 
+    const checkIfSynched = () => {
+        storage.value.getType(Locals.Game_USER) ? isActive.value = true : isActive.value = false
+        !storage.value.getType(Locals.Game_MAP) || !storage.value.getType(Locals.Game_USER) ? isOutOfSynch.value = true : isOutOfSynch.value = false
+    }
+
     const clearUserStorage = () => {
-        storage.value.clear()
-        isActive.value = false
-        console.log('userStorage wiped, account inactive')
+        storage.value.clearAll()
+        checkIfSynched()
+        useScreen(startScreen)
+        console.dir('userStorage wiped, account inactive')
     }
 
     const resetUserStorage = () => {
-        isActive.value = true
-        if (storage.value.getUser() === undefined) {
-            storage.value.setUser('testUser')
-            console.log('"testUser" user set')
+        if (!storage.value.getType(Locals.Game_USER)) {
+            storage.value.setType(Locals.Game_USER, 'testUser')
+            console.dir('"game-user" test user set')
         }
-        console.log('userStorage set, account active')
+        if (!storage.value.getType(Locals.Game_MAP)) {
+            const {generateNewMap } = useCartographer()
+            generateNewMap()
+            console.dir('"game-map" game map created')
+        }
+        checkIfSynched()        
+        useScreen(startScreen)
+        console.dir('account active')
     }
 
-    resetUserStorage()
-    isActive.value = true
-
-    isOutOfSynch.value = false
+    checkIfSynched()
 
     return {
+        checkIfSynched,
         clearUserStorage,
         isActive,
         isDev,

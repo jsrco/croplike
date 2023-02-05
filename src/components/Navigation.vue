@@ -12,8 +12,8 @@
             </span>
         </div>
         <div
-            :class="{ 'text-green-400': isActive && !isOutOfSynch, 'text-red-400': !isActive, 'text-yellow-400': isOutOfSynch, }">
-            {{ storage.getUser() || 'none' }}
+            :class="{ 'text-green-400': isActive && !isOutOfSynch, 'text-red-400': !isActive && isOutOfSynch, 'text-yellow-400': isActive && isOutOfSynch, }">
+            {{ storage.getType(Locals.Game_USER) || 'none' }}
         </div>
     </div>
     <div 
@@ -30,6 +30,8 @@
 
 <script setup lang="ts">
 import { ref, Ref } from 'vue'
+import { Locals } from "../scripts/storage"
+import useCartographer from './../composeables/useCartographer'
 import useStorage from './../composeables/useStorage'
 
 const { clearUserStorage, isActive, isDev, isOutOfSynch, resetUserStorage, storage } = useStorage()
@@ -37,7 +39,10 @@ const { clearUserStorage, isActive, isDev, isOutOfSynch, resetUserStorage, stora
 const debugList = [
     {
         name: 'console storage',
-        operation: () => console.dir(storage.value.storage)
+        operation: () => {
+            console.dir(storage.value.getType(Locals.Game_USER))
+            console.dir(storage.value.getType(Locals.Game_MAP))
+        }
     },
     {
         name: 'clear user storage',
@@ -46,6 +51,10 @@ const debugList = [
     {
         name: 'reset user storage',
         operation: () => resetUserStorage()
+    },
+    {
+        name: 'reset game map',
+        operation: () => useCartographer().resetMap()
     },
 ]
 
