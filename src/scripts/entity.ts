@@ -22,7 +22,28 @@ export class Entity {
             if (entity === this) continue
             if (this.isCollidingWith(entity)) {
                 // handle collision with entity
-                console.log(this.name + ' collided with ' + entity.name)
+                if (this.name === 'player') {
+                    this.square.x += this.vx
+                    entity.square.x -= this.vx / 2
+                    console.log(this.name + ' pushed ' + entity.name)
+                } else {
+                    const overlapX = (this.size + entity.size) - (Math.abs(this.square.x - entity.square.x));
+                    const overlapY = (this.size + entity.size) - (Math.abs(this.square.y - entity.square.y));
+                    if (overlapX >= overlapY) {
+                        if (this.square.y > entity.square.y) {
+                            this.square.y += overlapY;
+                        } else {
+                            this.square.y -= overlapY;
+                        }
+                    } else {
+                        if (this.square.x > entity.square.x) {
+                            this.square.x += overlapX;
+                        } else {
+                            this.square.x -= overlapX;
+                        }
+                    }
+                    console.log(this.name + ' collided with ' + entity.name)
+                }
             }
         }
     }
