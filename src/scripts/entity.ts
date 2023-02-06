@@ -22,31 +22,29 @@ export class Entity {
             if (entity === this) continue
             if (this.isCollidingWith(entity)) {
                 // handle collision with entity
+                console.log(this.name + ' collided with ' + entity.name)
+    
                 if (this.name === 'player') {
-                    this.square.x += this.vx
-                    entity.square.x -= this.vx / 2
-                    console.log(this.name + ' pushed ' + entity.name)
-                } else {
-                    const overlapX = (this.size + entity.size) - (Math.abs(this.square.x - entity.square.x));
-                    const overlapY = (this.size + entity.size) - (Math.abs(this.square.y - entity.square.y));
-                    if (overlapX >= overlapY) {
-                        if (this.square.y > entity.square.y) {
-                            this.square.y += overlapY;
+                    const xDiff = (this.square.x + this.size/2) - (entity.square.x + entity.size/2)
+                    const yDiff = (this.square.y + this.size/2) - (entity.square.y + entity.size/2)
+    
+                    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                        if (xDiff > 0) {
+                            entity.square.x -= 1
                         } else {
-                            this.square.y -= overlapY;
+                            entity.square.x += 1
                         }
                     } else {
-                        if (this.square.x > entity.square.x) {
-                            this.square.x += overlapX;
+                        if (yDiff > 0) {
+                            entity.square.y -= 1
                         } else {
-                            this.square.x -= overlapX;
+                            entity.square.y += 1
                         }
                     }
-                    console.log(this.name + ' collided with ' + entity.name)
                 }
             }
         }
-    }
+    }    
     private isCollidingWith(other: Entity) {
         const x1 = this.square.x
         const y1 = this.square.y
