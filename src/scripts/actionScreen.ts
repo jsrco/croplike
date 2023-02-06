@@ -17,9 +17,9 @@ const style = new PIXI.TextStyle({
     fill: ['#fff'],
 })
 
-const npc = new Entity(new PIXI.Graphics())
-const player = new Entity(new PIXI.Graphics())
-
+const npc = new Entity(new PIXI.Graphics(), 'npc')
+const player = new Entity(new PIXI.Graphics(), 'player')
+const entities = [player,npc]
 const onKeyDown = (key: { keyCode: number }) => {
     if (useScreen().Screen.value?.stageName === 'actionScreen') {
         // A Key is 65
@@ -88,8 +88,8 @@ export const createAction = () => {
             npcPath.value--
             if (npcPath.value === 201) npcPath.value = 0
         }
-        npc.update()
-        player.update()
+        npc.update(entities)
+        player.update(entities)
     })
     actionScreen.render()
 }
