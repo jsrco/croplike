@@ -6,7 +6,7 @@ export class Entity {
     maxSpeed: number = 12
     minWallSlideSpeed: number = 0.1
     name: string
-    size: number = 55
+    size: number = 15
     square: any
     vx: number = 0
     vy: number = 0
@@ -23,24 +23,13 @@ export class Entity {
             if (this.isCollidingWith(entity)) {
                 // handle collision with entity
                 console.log(this.name + ' collided with ' + entity.name)
-    
                 if (this.name === 'player') {
-                    const xDiff = (this.square.x + this.size/2) - (entity.square.x + entity.size/2)
-                    const yDiff = (this.square.y + this.size/2) - (entity.square.y + entity.size/2)
-    
-                    if (Math.abs(xDiff) > Math.abs(yDiff)) {
-                        if (xDiff > 0) {
-                            entity.square.x -= 1
-                        } else {
-                            entity.square.x += 1
-                        }
-                    } else {
-                        if (yDiff > 0) {
-                            entity.square.y -= 1
-                        } else {
-                            entity.square.y += 1
-                        }
-                    }
+                    // slightly push the other entity away
+                    let angle = Math.atan2(this.square.y - entity.square.y, this.square.x - entity.square.x)
+                    let xDistance = Math.cos(angle) * 1
+                    let yDistance = Math.sin(angle) * 1
+                    entity.square.x += xDistance
+                    entity.square.y += yDistance
                 }
             }
         }
