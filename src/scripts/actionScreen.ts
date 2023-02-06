@@ -2,8 +2,12 @@ import * as PIXI from 'pixi.js'
 import { GameScreen } from "./gameScreen"
 import { clickedObject, createGrid, mapScreen } from "./mapScreen"
 import useScreen from "../composeables/useScreen"
+import { Entity } from './entity'
+import { ref } from 'vue'
 
 PIXI.settings.SCALE_MODE = 0
+
+const npcPath = ref(0)
 
 export const actionScreen: GameScreen = new GameScreen({ appOptions: { width: window.innerWidth, height: window.innerHeight - 36, }, stageName: 'actionScreen' })
 
@@ -13,98 +17,8 @@ const style = new PIXI.TextStyle({
     fill: ['#fff'],
 })
 
-const square = new PIXI.Graphics()
-const squareDimension = 55
-class Entity {
-    drag: number
-    gravity: number
-    hanging: boolean
-    jumpSpeed: number
-    minWallSlideSpeed: number
-    vx: number
-    vy: number
-    wallSlideSpeed: number
-    constructor() {
-        this.drag = 0.95
-        this.gravity = 0.5
-        this.hanging = false
-        this.jumpSpeed = 10
-        this.minWallSlideSpeed = 0.1
-        this.vx = 0
-        this.vy = 0
-        this.wallSlideSpeed = 1
-    }
-    moveLeft() {
-        if (!this.hanging) {
-            this.vx -= 5;
-        }
-    }
-    moveRight() {
-        if (!this.hanging) {
-            this.vx += 5;
-        }
-    }
-    jump() {
-        if (square.y === window.innerHeight - 36 - squareDimension || this.hanging) {
-            if (this.hanging) {
-                this.vy = -this.jumpSpeed / 2
-            } else {
-                this.vy = -this.jumpSpeed
-            }
-            this.hanging = false
-        }
-    }
-    wallJump() {
-        if (this.hanging) {
-            this.vy = -this.jumpSpeed
-            this.vx = this.vx * -1.5
-            this.hanging = false
-        }
-    }
-    update() {
-        square.x += this.vx
-        square.y += this.vy
-        this.vy += this.gravity
-        if (square.y > window.innerHeight - 36 - squareDimension) {
-            square.y = window.innerHeight - 36 - squareDimension
-            this.vy = 0
-        }
-
-        if (square.x < 0) {
-            square.x = 0;
-            if (this.vx < 0) {
-                this.vy = this.wallSlideSpeed;
-                this.wallSlideSpeed *= 0.9;
-                if (this.wallSlideSpeed < this.minWallSlideSpeed) {
-                    this.wallSlideSpeed = 0;
-                }
-                this.hanging = true
-            } else {
-                this.wallSlideSpeed = 1;
-            }
-        } else if (square.x + squareDimension > window.innerWidth) {
-            square.x = window.innerWidth - squareDimension
-            if (this.vx > 0) {
-                this.vy = this.wallSlideSpeed
-                this.wallSlideSpeed *= 0.9
-                if (this.wallSlideSpeed < this.minWallSlideSpeed) {
-                    this.wallSlideSpeed = 0
-                }
-                this.hanging = true
-            } else {
-                this.wallSlideSpeed = 1
-            }
-        } else {
-            this.wallSlideSpeed = 1
-            this.hanging = false
-        }
-      
-        this.vx *= this.drag
-    }
-}
-
-
-const player = new Entity()
+const npc = new Entity(new PIXI.Graphics())
+const player = new Entity(new PIXI.Graphics())
 
 const onKeyDown = (key: { keyCode: number }) => {
     if (useScreen().Screen.value?.stageName === 'actionScreen') {
@@ -149,14 +63,32 @@ export const createAction = () => {
         requestAnimationFrame(createGrid)
     })
 
-    square.beginFill(0xff0000)
-    square.drawRect(0, 0, squareDimension, squareDimension)
-    square.endFill()
-    square.x = 0
-    square.y = window.innerHeight - squareDimension - 36
-    actionScreen.stage.addChild(square)
+    npc.maxSpeed = 1
+    npc.square.beginFill(0xfff)
+    npc.square.drawRect(0, 0, npc.size, npc.size)
+    npc.square.endFill()
+    npc.square.x = 205
+    npc.square.y = window.innerHeight - npc.size - 36
+    actionScreen.stage.addChild(npc.square)
+
+    player.square.beginFill(0xff0000)
+    player.square.drawRect(0, 0, player.size, player.size)
+    player.square.endFill()
+    player.square.x = 0
+    player.square.y = window.innerHeight - player.size - 36
+    actionScreen.stage.addChild(player.square)
 
     actionScreen.ticker.add((delta) => {
+        if (npcPath.value < 200) {
+            npc.moveLeft()
+            npcPath.value++
+            if (npcPath.value === 200) npcPath.value = 400
+        } else if (npcPath.value > 201) {
+            npc.moveRight()
+            npcPath.value--
+            if (npcPath.value === 201) npcPath.value = 0
+        }
+        npc.update()
         player.update()
     })
     actionScreen.render()
