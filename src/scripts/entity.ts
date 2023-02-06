@@ -57,10 +57,7 @@ export class Entity {
             this.square.x = 0
             if (this.vx < 0) {
                 this.vy = this.wallSlideSpeed
-                this.wallSlideSpeed *= 0.9
-                if (this.wallSlideSpeed < this.minWallSlideSpeed) {
-                    this.wallSlideSpeed = 0
-                }
+                this.updateWallSlideSpeed()
                 this.hanging = true
             } else {
                 this.wallSlideSpeed = 1
@@ -69,10 +66,7 @@ export class Entity {
             this.square.x = window.innerWidth - this.size
             if (this.vx > 0) {
                 this.vy = this.wallSlideSpeed
-                this.wallSlideSpeed *= 0.9
-                if (this.wallSlideSpeed < this.minWallSlideSpeed) {
-                    this.wallSlideSpeed = 0
-                }
+                this.updateWallSlideSpeed()
                 this.hanging = true
             } else {
                 this.wallSlideSpeed = 1
