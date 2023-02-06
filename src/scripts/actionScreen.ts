@@ -75,6 +75,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
         npc.maxSpeed = 1
         npc.square.x = 205
         npc.square.y = window.innerHeight - npc.size - 36
+        npc.square.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16)
         actionScreen.stage.addChild(npc.square)
 
         player.square.x = 0
@@ -96,8 +97,4 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
         })
         actionScreen.render()
     }
-
-
-
-
 })

@@ -21,19 +21,22 @@ export class Entity {
         for (const entity of entities) {
             if (entity === this) continue
             if (this.isCollidingWith(entity)) {
-                // handle collision with entity
-                console.log(this.name + ' collided with ' + entity.name)
                 if (this.name === 'player') {
-                    // slightly push the other entity away
                     let angle = Math.atan2(this.square.y - entity.square.y, this.square.x - entity.square.x)
-                    let xDistance = Math.cos(angle) * 1
-                    let yDistance = Math.sin(angle) * 1
-                    entity.square.x += xDistance
-                    entity.square.y += yDistance
+                    let xDistance = Math.cos(angle) * 0.5
+                    let yDistance = Math.sin(angle) * 0.5
+                    let overlap = this.size + entity.size - this.getDistance(this, entity)
+                    entity.square.x += xDistance * overlap
+                    entity.square.y += yDistance * overlap
                 }
             }
         }
-    }    
+    }
+    private getDistance(entity1: Entity, entity2: Entity) {
+        let a = entity1.square.x - entity2.square.x
+        let b = entity1.square.y - entity2.square.y
+        return Math.sqrt(a * a + b * b)
+    }
     private isCollidingWith(other: Entity) {
         const x1 = this.square.x
         const y1 = this.square.y
