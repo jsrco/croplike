@@ -1,16 +1,16 @@
 export class Entity {
-    readonly drag: number = 0.95
-    readonly gravity: number = 0.7
+    drag: number = 0.95
+    gravity: number = 0.7
     hanging: boolean = false
-    readonly jumpSpeed: number = 9
+    jumpSpeed: number = 9
     maxSpeed: number = 12
-    readonly minWallSlideSpeed: number = 0.1
-    readonly size: number = 55
+    minWallSlideSpeed: number = 0.1
+    size: number = 55
     square: any
     vx: number = 0
     vy: number = 0
     wallSlideSpeed: number = 2
-    readonly windowHeightDummy: number
+    windowHeightDummy: number
     constructor(square: any) {
         this.square = square
         this.windowHeightDummy = window.innerHeight - 36 - this.size
