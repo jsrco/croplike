@@ -54,7 +54,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     }
     document.addEventListener('keydown', onKeyDown)
 
-    actionScreen.ticker.add((delta) => {
+    const patrolCheck = (delta) => {
         for (let npc of entities) {
             if (npc.name !== 'player') {
                 if (npc.path < 200) {
@@ -70,7 +70,9 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
             }
         }
         player.update(entities)
-    })
+    }
+
+
 
     createAction = () => {
         actionScreen.stage.removeChildren()
@@ -91,6 +93,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
             useScreen(mapScreen)
             mapScreen.render()
             requestAnimationFrame(createGrid)
+            actionScreen.ticker.remove(patrolCheck)
         })
 
         for (let entity of entities) {
@@ -109,6 +112,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
         player.sprite.y = window.innerHeight - player.size - 36
         player.resetState()
         actionScreen.stage.addChild(player.sprite)
+        actionScreen.ticker.add(patrolCheck)
 
         actionScreen.render()
     }
