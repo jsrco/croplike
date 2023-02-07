@@ -54,6 +54,24 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     }
     document.addEventListener('keydown', onKeyDown)
 
+    actionScreen.ticker.add((delta) => {
+        for (let npc of entities) {
+            if (npc.name !== 'player') {
+                if (npc.path < 200) {
+                    npc.moveLeft()
+                    npc.path++
+                    if (npc.path === 200) npc.path = 400
+                } else if (npc.path > 201) {
+                    npc.moveRight()
+                    npc.path--
+                    if (npc.path === 201) npc.path = 0
+                }
+                npc.update(entities)
+            }
+        }
+        player.update(entities)
+    })
+
     createAction = () => {
         actionScreen.stage.removeChildren()
 
@@ -77,6 +95,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
 
         for (let entity of entities) {
             if (entity.name !== 'player') {
+                entity.resetState()
                 entity.maxSpeed = 1
                 entity.square.x = Math.floor(Math.random() * (300 - 200 + 1) + 200)
                 entity.square.y = window.innerHeight - entity.size - 36
@@ -88,25 +107,9 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
 
         player.square.x = 0
         player.square.y = window.innerHeight - player.size - 36
+        player.resetState()
         actionScreen.stage.addChild(player.square)
 
-        actionScreen.ticker.add((delta) => {
-            for (let npc of entities) {
-                if (npc.name !== 'player') {
-                    if (npc.path < 200) {
-                        npc.moveLeft()
-                        npc.path++
-                        if (npc.path === 200) npc.path = 400
-                    } else if (npc.path > 201) {
-                        npc.moveRight()
-                        npc.path--
-                        if (npc.path === 201) npc.path = 0
-                    }
-                    npc.update(entities)
-                }
-            }
-            player.update(entities)
-        })
         actionScreen.render()
     }
 })

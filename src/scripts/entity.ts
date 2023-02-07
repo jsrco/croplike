@@ -1,9 +1,9 @@
 export class Entity {
     drag: number = 0.95
-    gravity: number = 0.7
+    gravity: number = 0.5
     hanging: boolean = false
-    jumpSpeed: number = 9
-    maxSpeed: number =8
+    jumpSpeed: number = 4
+    maxSpeed: number = 3
     minWallSlideSpeed: number = 0.1
     path: number = 0
     name: string
@@ -11,12 +11,15 @@ export class Entity {
     square: any
     vx: number = 0
     vy: number = 0
-    wallSlideSpeed: number = 2
-    windowHeightDummy: number
+    wallSlideSpeed: number = 1
+    windowHeightDummy: number = window.innerHeight - 36 - this.size
     constructor(square: any, name: string) {
         this.name = name
         this.square = square
-        this.windowHeightDummy = window.innerHeight - 36 - this.size
+    }
+    resetState() {
+        this.vx = 0
+        this.vy = 0
     }
     private checkForCollisions(entities: Entity[]) {
         for (const entity of entities) {
