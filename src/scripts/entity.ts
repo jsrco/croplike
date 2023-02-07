@@ -8,46 +8,54 @@ export class Entity {
     path: number = 0
     name: string
     size: number = 15
-    square: any
+    sprite: any
     vx: number = 0
     vy: number = 0
     wallSlideSpeed: number = 1
     windowHeightDummy: number = window.innerHeight - 36 - this.size
-    constructor(square: any, name: string) {
+    constructor(sprite: any, name: string) {
         this.name = name
-        this.square = square
+        this.sprite = sprite
     }
     resetState() {
         this.vx = 0
         this.vy = 0
     }
     private checkForCollisions(entities: Entity[]) {
+        let count = 0
         for (const entity of entities) {
+            count++
             if (entity === this) continue
             if (this.isCollidingWith(entity)) {
                 if (this.name === 'player') {
-                    let angle = Math.atan2(this.square.y - entity.square.y, this.square.x - entity.square.x)
+                    console.dir(`${this.name} hit ${entity.name} + ${count}`)
+                    let angle = Math.atan2(this.sprite.y - entity.sprite.y, this.sprite.x - entity.sprite.x)
                     let xDistance = Math.cos(angle) * 0.5
                     let yDistance = Math.sin(angle) * 0.5
                     let overlap = this.size + entity.size - this.getDistance(this, entity)
-                    entity.square.x += xDistance * overlap
-                    entity.square.y += yDistance * overlap
+                    entity.sprite.x += xDistance * overlap
+                    entity.sprite.y += yDistance * overlap
                 }
             }
         }
     }
     private getDistance(entity1: Entity, entity2: Entity) {
-        let a = entity1.square.x - entity2.square.x
-        let b = entity1.square.y - entity2.square.y
+        let a = entity1.sprite.x - entity2.sprite.x
+        let b = entity1.sprite.y - entity2.sprite.y
         return Math.sqrt(a * a + b * b)
     }
     private isCollidingWith(other: Entity) {
-        const x1 = this.square.x
-        const y1 = this.square.y
-        const x2 = other.square.x
-        const y2 = other.square.y
-        return x1 < x2 + other.size && x1 + this.size > x2 &&
-            y1 < y2 + other.size && y1 + this.size > y2
+        // Get the bounds of the first display object
+        let bounds1 = this.sprite.getBounds()
+
+        // Get the bounds of the second display object
+        let bounds2 = other.sprite.getBounds()
+        const x1 = this.sprite.x
+        const y1 = this.sprite.y
+        const x2 = other.sprite.x
+        const y2 = other.sprite.y
+        return bounds1.x + bounds1.width > bounds2.x && bounds1.x < bounds2.x + bounds2.width &&
+        bounds1.y + bounds1.height > bounds2.y && bounds1.y < bounds2.y + bounds2.height
     }
     moveLeft() {
         if (!this.hanging) {
@@ -66,7 +74,7 @@ export class Entity {
         }
     }
     jump() {
-        if (this.square.y >= this.windowHeightDummy) {
+        if (this.sprite.y >= this.windowHeightDummy) {
             this.vy = -this.jumpSpeed
             this.hanging = false
         }
@@ -79,16 +87,16 @@ export class Entity {
         }
     }
     update(entities: Entity[]) {
-        this.square.x += this.vx
-        this.square.y += this.vy
+        this.sprite.x += this.vx
+        this.sprite.y += this.vy
         this.vy += this.gravity
-        if (this.square.y > this.windowHeightDummy - 1) {
-            this.square.y = this.windowHeightDummy
+        if (this.sprite.y > this.windowHeightDummy - 1) {
+            this.sprite.y = this.windowHeightDummy
             this.vy = 0
             this.hanging = false
         }
-        if (this.square.x < 0) {
-            this.square.x = 0
+        if (this.sprite.x < 0) {
+            this.sprite.x = 0
             if (this.vx < 0) {
                 this.vy = this.wallSlideSpeed
                 this.updateWallSlideSpeed()
@@ -96,8 +104,8 @@ export class Entity {
             } else {
                 this.wallSlideSpeed = 1
             }
-        } else if (this.square.x + this.size > window.innerWidth) {
-            this.square.x = window.innerWidth - this.size
+        } else if (this.sprite.x + this.size > window.innerWidth) {
+            this.sprite.x = window.innerWidth - this.size
             if (this.vx > 0) {
                 this.vy = this.wallSlideSpeed
                 this.updateWallSlideSpeed()

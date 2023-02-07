@@ -97,18 +97,18 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
             if (entity.name !== 'player') {
                 entity.resetState()
                 entity.maxSpeed = 1
-                entity.square.x = Math.floor(Math.random() * (300 - 200 + 1) + 200)
-                entity.square.y = window.innerHeight - entity.size - 36
-                entity.square.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16)
-                actionScreen.stage.addChild(entity.square)
+                entity.sprite.x = Math.floor(Math.random() * (300 - 200 + 1) + 200)
+                entity.sprite.y = window.innerHeight - entity.size - 36
+                entity.sprite.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16)
+                actionScreen.stage.addChild(entity.sprite)
             }
         }
 
 
-        player.square.x = 0
-        player.square.y = window.innerHeight - player.size - 36
+        player.sprite.x = 0
+        player.sprite.y = window.innerHeight - player.size - 36
         player.resetState()
-        actionScreen.stage.addChild(player.square)
+        actionScreen.stage.addChild(player.sprite)
 
         actionScreen.render()
     }
