@@ -19,13 +19,13 @@ const style = new PIXI.TextStyle({
 
 
 export let createAction: FrameRequestCallback
-
+let entities: any
 PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     // create an array to store the textures
     const texture = PIXI.Texture.from(`ff5x5 357.png`)
 
     const player = new Entity(new PIXI.Sprite(texture), 'player')
-    const entities = [player]
+    entities = [player]
 
     for (let i = 0; i <= 149; i++) {
         entities.push(new Entity(new PIXI.Sprite(texture), 'npc'))
@@ -115,5 +115,13 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
         actionScreen.ticker.add(patrolCheck)
 
         actionScreen.render()
+    }
+})
+
+window.addEventListener('resize', () => {
+    if (useScreen().Screen.value?.stageName === 'actionScreen') {
+        for (let entity of entities) {
+            entity.windowHeightDummy = window.innerHeight - 36 - entity.size
+        }
     }
 })
