@@ -24,9 +24,12 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     // create an array to store the textures
     const texture = PIXI.Texture.from(`ff5x5 357.png`)
 
-    const npc = new Entity(new PIXI.Sprite(texture), 'npc')
     const player = new Entity(new PIXI.Sprite(texture), 'player')
-    const entities = [player, npc]
+    const entities = [player]
+
+    for (let i = 0; i <= 149; i++) {
+        entities.push(new Entity(new PIXI.Sprite(texture), 'npc'))
+    }
 
     const onKeyDown = (key: { keyCode: number }) => {
         if (useScreen().Screen.value?.stageName === 'actionScreen') {
@@ -50,7 +53,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
         }
     }
     document.addEventListener('keydown', onKeyDown)
-    
+
     createAction = () => {
         actionScreen.stage.removeChildren()
 
@@ -72,27 +75,36 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
             requestAnimationFrame(createGrid)
         })
 
-        npc.maxSpeed = 1
-        npc.square.x = 205
-        npc.square.y = window.innerHeight - npc.size - 36
-        npc.square.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16)
-        actionScreen.stage.addChild(npc.square)
+        for (let entity of entities) {
+            if (entity.name !== 'player') {
+                entity.maxSpeed = 1
+                entity.square.x = Math.floor(Math.random() * (300 - 200 + 1) + 200)
+                entity.square.y = window.innerHeight - entity.size - 36
+                entity.square.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16)
+                actionScreen.stage.addChild(entity.square)
+            }
+        }
+
 
         player.square.x = 0
         player.square.y = window.innerHeight - player.size - 36
         actionScreen.stage.addChild(player.square)
 
         actionScreen.ticker.add((delta) => {
-            if (npcPath.value < 200) {
-                npc.moveLeft()
-                npcPath.value++
-                if (npcPath.value === 200) npcPath.value = 400
-            } else if (npcPath.value > 201) {
-                npc.moveRight()
-                npcPath.value--
-                if (npcPath.value === 201) npcPath.value = 0
+            for (let npc of entities) {
+                if (npc.name !== 'player') {
+                    if (npc.path < 200) {
+                        npc.moveLeft()
+                        npc.path++
+                        if (npc.path === 200) npc.path = 400
+                    } else if (npc.path > 201) {
+                        npc.moveRight()
+                        npc.path--
+                        if (npc.path === 201) npc.path = 0
+                    }
+                    npc.update(entities)
+                }
             }
-            npc.update(entities)
             player.update(entities)
         })
         actionScreen.render()

@@ -3,8 +3,9 @@ export class Entity {
     gravity: number = 0.7
     hanging: boolean = false
     jumpSpeed: number = 9
-    maxSpeed: number = 12
+    maxSpeed: number =8
     minWallSlideSpeed: number = 0.1
+    path: number = 0
     name: string
     size: number = 15
     square: any
