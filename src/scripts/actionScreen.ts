@@ -24,11 +24,11 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     // create an array to store the textures
     const texture = PIXI.Texture.from(`ff5x5 357.png`)
 
-    const player = new Entity(new PIXI.Sprite(texture), 'player')
+    const player = new Entity(new PIXI.AnimatedSprite([texture]), 'player')
     entities = [player]
 
     for (let i = 0; i <= 149; i++) {
-        entities.push(new Entity(new PIXI.Sprite(texture), 'npc'))
+        entities.push(new Entity(new PIXI.AnimatedSprite([texture]), 'npc'))
     }
 
     const onKeyDown = (key: { keyCode: number }) => {
@@ -54,7 +54,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     }
     document.addEventListener('keydown', onKeyDown)
 
-    const patrolCheck = (delta) => {
+    const patrolCheck = (delta: number) => {
         for (let npc of entities) {
             if (npc.name !== 'player') {
                 if (npc.path < 200) {

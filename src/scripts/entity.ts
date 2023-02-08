@@ -1,3 +1,5 @@
+import * as PIXI from 'pixi.js'
+
 export class Entity {
     drag: number = 0.95
     gravity: number = 0.4
@@ -8,7 +10,7 @@ export class Entity {
     path: number = 0
     name: string
     size: number = 15
-    sprite: any
+    sprite: PIXI.AnimatedSprite
     vx: number = 0
     vy: number = 0
     wallSlideSpeed: number = 1
