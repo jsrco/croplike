@@ -4,20 +4,23 @@ export class Entity {
     drag: number = 0.95
     gravity: number = 0.4
     hanging: boolean = false
-    jumpSpeed: number = 5
-    maxSpeed: number = 3
+    jumpSpeed: number = 10
+    maxSpeed: number = 6
     minWallSlideSpeed: number = 0.1
     path: number = 0
     name: string
-    size: number = 15
+    size: number
     sprite: PIXI.AnimatedSprite
     vx: number = 0
     vy: number = 0
     wallSlideSpeed: number = 1
-    windowHeightDummy: number = window.innerHeight - 36 - this.size
+    windowHeightDummy: number
     constructor(sprite: any, name: string) {
         this.name = name
         this.sprite = sprite
+        if (name === 'player') this.sprite.scale = {x:3,y:3}
+        this.size = this.sprite.height
+        this.windowHeightDummy =  window.innerHeight - 36 - this.size
     }
     resetState() {
         this.vx = 0
@@ -30,7 +33,6 @@ export class Entity {
             if (entity === this) continue
             if (this.isCollidingWith(entity)) {
                 if (this.name === 'player') {
-                    console.dir(`${this.name} hit ${entity.name} + ${count}`)
                     let angle = Math.atan2(this.sprite.y - entity.sprite.y, this.sprite.x - entity.sprite.x)
                     let xDistance = Math.cos(angle) * 0.5
                     let yDistance = Math.sin(angle) * 0.5
@@ -49,7 +51,6 @@ export class Entity {
     private isCollidingWith(other: Entity) {
         // Get the bounds of the first display object
         let bounds1 = this.sprite.getBounds()
-
         // Get the bounds of the second display object
         let bounds2 = other.sprite.getBounds()
         const x1 = this.sprite.x
