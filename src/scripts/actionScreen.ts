@@ -24,11 +24,11 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     // create an array to store the textures
     const texture = PIXI.Texture.from(`ff5x5 357.png`)
 
-    const player = new Entity(new PIXI.AnimatedSprite([texture]), 'player')
+    const player = new Entity(new PIXI.AnimatedSprite([texture]), 'player', {})
     entities = [player]
 
     for (let i = 0; i <= 149; i++) {
-        entities.push(new Entity(new PIXI.AnimatedSprite([texture]), 'npc'))
+        entities.push(new Entity(new PIXI.AnimatedSprite([texture]), 'npc', {}))
     }
 
     const onKeyDown = (key: { keyCode: number }) => {
@@ -69,7 +69,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
                 npc.update(entities)
             }
         }
-        player.update(entities)
+        player.update(entities, delta)
     }
 
 
@@ -98,7 +98,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
 
         for (let entity of entities) {
             if (entity.name !== 'player') {
-                entity.resetState()
+                entity.resetSpeed()
                 entity.maxSpeed = 1
                 entity.sprite.x = Math.floor(Math.random() * (300 - 200 + 1) + 200)
                 entity.sprite.y = window.innerHeight - entity.size - 36
@@ -110,7 +110,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
 
         player.sprite.x = 0
         player.sprite.y = window.innerHeight - player.size - 36
-        player.resetState()
+        player.resetSpeed()
         actionScreen.stage.addChild(player.sprite)
         actionScreen.ticker.add(patrolCheck)
 

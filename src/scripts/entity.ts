@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js'
 
+type TextureTypes = "run" | "idle" | "jump" | "slide"
 export class Entity {
+    animationSpeed: number
     drag: number = 0.95
     gravity: number = 0.4
     hanging: boolean = false
@@ -11,20 +13,19 @@ export class Entity {
     name: string
     size: number
     sprite: PIXI.AnimatedSprite
+    textures: any
     vx: number = 0
     vy: number = 0
     wallSlideSpeed: number = 1
     windowHeightDummy: number
-    constructor(sprite: any, name: string) {
+    constructor(sprite: any, name: string, textures: any, animationSpeed: number = 0.1) {
+        this.animationSpeed = animationSpeed
         this.name = name
         this.sprite = sprite
+        this.textures = textures
         if (name === 'player') this.sprite.scale = {x:3,y:3}
         this.size = this.sprite.height
         this.windowHeightDummy =  window.innerHeight - 36 - this.size
-    }
-    resetState() {
-        this.vx = 0
-        this.vy = 0
     }
     private checkForCollisions(entities: Entity[]) {
         let count = 0
@@ -82,14 +83,20 @@ export class Entity {
             this.hanging = false
         }
     }
-    wallJump() {
-        if (this.hanging) {
-            this.vy = -this.jumpSpeed
-            this.vx = this.vx * -1.5
-            this.hanging = false
-        }
+    resetSpeed() {
+        this.vx = 0
+        this.vy = 0
     }
-    update(entities: Entity[]) {
+    playAnimation(type: TextureTypes) {
+        this.sprite.textures = this.textures[type]
+        this.sprite.animationSpeed = this.animationSpeed;
+        this.sprite.play()
+      }
+    stopAnimation() {
+        this.sprite.stop()
+    }
+    update(entities: Entity[], delta: number) {
+        if (this.name === 'player') console.dir(delta)
         this.sprite.x += this.vx
         this.sprite.y += this.vy
         this.vy += this.gravity
@@ -127,6 +134,13 @@ export class Entity {
         this.wallSlideSpeed *= 0.9
         if (this.wallSlideSpeed < this.minWallSlideSpeed) {
             this.wallSlideSpeed = 0
+        }
+    }
+    wallJump() {
+        if (this.hanging) {
+            this.vy = -this.jumpSpeed
+            this.vx = this.vx * -1.5
+            this.hanging = false
         }
     }
 }
