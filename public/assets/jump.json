@@ -1,0 +1,258 @@
+{ "frames": {
+   "jump 0.png": {
+    "frame": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 1.png": {
+    "frame": { "x": 1012, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 2.png": {
+    "frame": { "x": 2024, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 3.png": {
+    "frame": { "x": 3036, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 4.png": {
+    "frame": { "x": 4048, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 5.png": {
+    "frame": { "x": 5060, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 6.png": {
+    "frame": { "x": 6072, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 7.png": {
+    "frame": { "x": 7084, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 8.png": {
+    "frame": { "x": 8096, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 9.png": {
+    "frame": { "x": 9108, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 10.png": {
+    "frame": { "x": 10120, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 11.png": {
+    "frame": { "x": 11132, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 12.png": {
+    "frame": { "x": 12144, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 13.png": {
+    "frame": { "x": 13156, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 14.png": {
+    "frame": { "x": 14168, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 15.png": {
+    "frame": { "x": 15180, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 16.png": {
+    "frame": { "x": 16192, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 17.png": {
+    "frame": { "x": 17204, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 18.png": {
+    "frame": { "x": 18216, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 19.png": {
+    "frame": { "x": 19228, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 20.png": {
+    "frame": { "x": 20240, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 21.png": {
+    "frame": { "x": 21252, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 22.png": {
+    "frame": { "x": 22264, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 23.png": {
+    "frame": { "x": 23276, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 24.png": {
+    "frame": { "x": 24288, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 25.png": {
+    "frame": { "x": 25300, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 26.png": {
+    "frame": { "x": 26312, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 27.png": {
+    "frame": { "x": 27324, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 28.png": {
+    "frame": { "x": 28336, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   },
+   "jump 29.png": {
+    "frame": { "x": 29348, "y": 0, "w": 1012, "h": 864 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1012, "h": 864 },
+    "sourceSize": { "w": 1012, "h": 864 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.40-x64",
+  "image": "jump-sheet.png",
+  "format": "RGBA8888",
+  "size": { "w": 30360, "h": 864 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
