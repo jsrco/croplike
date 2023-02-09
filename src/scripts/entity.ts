@@ -19,7 +19,7 @@ export class Entity extends PIXI.AnimatedSprite {
         if (name === 'player') this.scale = {x:3,y:3}
         this.windowHeightDummy =  window.innerHeight - 36 - this.height
     }
-    private checkForCollisions(entities: Entity[]) {
+    checkForCollisions(entities: Entity[]) {
         let count = 0
         for (const entity of entities) {
             count++
@@ -36,12 +36,12 @@ export class Entity extends PIXI.AnimatedSprite {
             }
         }
     }
-    private getDistance(entity1: Entity, entity2: Entity) {
+    getDistance(entity1: Entity, entity2: Entity) {
         let a = entity1.x - entity2.x
         let b = entity1.y - entity2.y
         return Math.sqrt(a * a + b * b)
     }
-    private isCollidingWith(other: Entity) {
+    isCollidingWith(other: Entity) {
         // Get the bounds of the first display object
         let bounds1 = this.getBounds()
         // Get the bounds of the second display object
@@ -113,7 +113,7 @@ export class Entity extends PIXI.AnimatedSprite {
         this.vx *= this.drag
         this.checkForCollisions(entities)
     }
-    private updateWallSlideSpeed() {
+    updateWallSlideSpeed() {
         this.wallSlideSpeed *= 0.9
         if (this.wallSlideSpeed < this.minWallSlideSpeed) {
             this.wallSlideSpeed = 0
