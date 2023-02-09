@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 
 export class Entity extends PIXI.AnimatedSprite {
+    animationSpeed: number = .1
     drag: number = 0.95
     gravity: number = 0.4
     hanging: boolean = false
@@ -9,13 +10,15 @@ export class Entity extends PIXI.AnimatedSprite {
     minWallSlideSpeed: number = 0.1
     path: number = 0
     name: string
+    texturePack: any
     vx: number = 0
     vy: number = 0
     wallSlideSpeed: number = 1
     windowHeightDummy: number
-    constructor(textures: any, name: string) {
+    constructor(textures: any, name: string, texturePack: any) {
         super(textures)
         this.name = name
+        this.texturePack = texturePack
         if (name === 'player') this.scale = {x:3,y:3}
         this.windowHeightDummy =  window.innerHeight - 36 - this.height
     }
@@ -112,6 +115,7 @@ export class Entity extends PIXI.AnimatedSprite {
         }
         this.vx *= this.drag
         this.checkForCollisions(entities)
+        // Replace current texture with approiate animations
     }
     updateWallSlideSpeed() {
         this.wallSlideSpeed *= 0.9
