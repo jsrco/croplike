@@ -1,8 +1,6 @@
 import * as PIXI from 'pixi.js'
 
-type TextureTypes = "run" | "idle" | "jump" | "slide"
-export class Entity {
-    animationSpeed: number
+export class Entity extends PIXI.AnimatedSprite {
     drag: number = 0.95
     gravity: number = 0.4
     hanging: boolean = false
@@ -11,21 +9,15 @@ export class Entity {
     minWallSlideSpeed: number = 0.1
     path: number = 0
     name: string
-    size: number
-    sprite: PIXI.AnimatedSprite
-    textures: any
     vx: number = 0
     vy: number = 0
     wallSlideSpeed: number = 1
     windowHeightDummy: number
-    constructor(sprite: any, name: string, textures: any, animationSpeed: number = 0.1) {
-        this.animationSpeed = animationSpeed
+    constructor(textures: any, name: string) {
+        super(textures)
         this.name = name
-        this.sprite = sprite
-        this.textures = textures
-        if (name === 'player') this.sprite.scale = {x:3,y:3}
-        this.size = this.sprite.height
-        this.windowHeightDummy =  window.innerHeight - 36 - this.size
+        if (name === 'player') this.scale = {x:3,y:3}
+        this.windowHeightDummy =  window.innerHeight - 36 - this.height
     }
     private checkForCollisions(entities: Entity[]) {
         let count = 0
@@ -34,30 +26,30 @@ export class Entity {
             if (entity === this) continue
             if (this.isCollidingWith(entity)) {
                 if (this.name === 'player') {
-                    let angle = Math.atan2(this.sprite.y - entity.sprite.y, this.sprite.x - entity.sprite.x)
+                    let angle = Math.atan2(this.y - entity.y, this.x - entity.x)
                     let xDistance = Math.cos(angle) * 0.5
                     let yDistance = Math.sin(angle) * 0.5
-                    let overlap = this.size + entity.size - this.getDistance(this, entity)
-                    entity.sprite.x += xDistance * overlap
-                    entity.sprite.y += yDistance * overlap
+                    let overlap = this.height + entity.height - this.getDistance(this, entity)
+                    entity.x += xDistance * overlap
+                    entity.y += yDistance * overlap
                 }
             }
         }
     }
     private getDistance(entity1: Entity, entity2: Entity) {
-        let a = entity1.sprite.x - entity2.sprite.x
-        let b = entity1.sprite.y - entity2.sprite.y
+        let a = entity1.x - entity2.x
+        let b = entity1.y - entity2.y
         return Math.sqrt(a * a + b * b)
     }
     private isCollidingWith(other: Entity) {
         // Get the bounds of the first display object
-        let bounds1 = this.sprite.getBounds()
+        let bounds1 = this.getBounds()
         // Get the bounds of the second display object
-        let bounds2 = other.sprite.getBounds()
-        const x1 = this.sprite.x
-        const y1 = this.sprite.y
-        const x2 = other.sprite.x
-        const y2 = other.sprite.y
+        let bounds2 = other.getBounds()
+        const x1 = this.x
+        const y1 = this.y
+        const x2 = other.x
+        const y2 = other.y
         return bounds1.x + bounds1.width > bounds2.x && bounds1.x < bounds2.x + bounds2.width &&
         bounds1.y + bounds1.height > bounds2.y && bounds1.y < bounds2.y + bounds2.height
     }
@@ -78,7 +70,7 @@ export class Entity {
         }
     }
     jump() {
-        if (this.sprite.y >= this.windowHeightDummy) {
+        if (this.y >= this.windowHeightDummy) {
             this.vy = -this.jumpSpeed
             this.hanging = false
         }
@@ -87,26 +79,17 @@ export class Entity {
         this.vx = 0
         this.vy = 0
     }
-    playAnimation(type: TextureTypes) {
-        this.sprite.textures = this.textures[type]
-        this.sprite.animationSpeed = this.animationSpeed;
-        this.sprite.play()
-      }
-    stopAnimation() {
-        this.sprite.stop()
-    }
-    update(entities: Entity[], delta: number) {
-        if (this.name === 'player') console.dir(delta)
-        this.sprite.x += this.vx
-        this.sprite.y += this.vy
+    updateEntity(entities: Entity[], delta: number) {
+        this.x += this.vx
+        this.y += this.vy
         this.vy += this.gravity
-        if (this.sprite.y > this.windowHeightDummy - 1) {
-            this.sprite.y = this.windowHeightDummy
+        if (this.y > this.windowHeightDummy - 1) {
+            this.y = this.windowHeightDummy
             this.vy = 0
             this.hanging = false
         }
-        if (this.sprite.x < 0) {
-            this.sprite.x = 0
+        if (this.x < 0) {
+            this.x = 0
             if (this.vx < 0) {
                 this.vy = this.wallSlideSpeed
                 this.updateWallSlideSpeed()
@@ -114,8 +97,8 @@ export class Entity {
             } else {
                 this.wallSlideSpeed = 1
             }
-        } else if (this.sprite.x + this.size > window.innerWidth) {
-            this.sprite.x = window.innerWidth - this.size
+        } else if (this.x + this.height > window.innerWidth) {
+            this.x = window.innerWidth - this.height
             if (this.vx > 0) {
                 this.vy = this.wallSlideSpeed
                 this.updateWallSlideSpeed()

@@ -23,12 +23,12 @@ let entities: any
 PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     // create an array to store the textures
     const texture = PIXI.Texture.from(`ff5x5 357.png`)
-
-    const player = new Entity(new PIXI.AnimatedSprite([texture]), 'player', {})
+    const texture2 = PIXI.Texture.from(`ff5x5 358.png`)
+    const player = new Entity([texture, texture2], 'player')
     entities = [player]
 
     for (let i = 0; i <= 149; i++) {
-        entities.push(new Entity(new PIXI.AnimatedSprite([texture]), 'npc', {}))
+        entities.push(new Entity([texture], 'npc'))
     }
 
     const onKeyDown = (key: { keyCode: number }) => {
@@ -66,10 +66,10 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
                     npc.path--
                     if (npc.path === 201) npc.path = 0
                 }
-                npc.update(entities)
+                npc.updateEntity(entities)
             }
         }
-        player.update(entities, delta)
+        player.updateEntity(entities, delta)
     }
 
 
@@ -100,21 +100,22 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
             if (entity.name !== 'player') {
                 entity.resetSpeed()
                 entity.maxSpeed = 1
-                entity.sprite.x = Math.floor(Math.random() * (300 - 200 + 1) + 200)
-                entity.sprite.y = window.innerHeight - entity.size - 36
-                entity.sprite.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16)
-                actionScreen.stage.addChild(entity.sprite)
+                entity.x = Math.floor(Math.random() * (300 - 200 + 1) + 200)
+                entity.y = window.innerHeight - entity.height - 36
+                entity.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16)
+                actionScreen.stage.addChild(entity)
             }
         }
 
 
-        player.sprite.x = 0
-        player.sprite.y = window.innerHeight - player.size - 36
+        player.x = 0
+        player.y = window.innerHeight - player.height - 36
         player.resetSpeed()
-        actionScreen.stage.addChild(player.sprite)
+        actionScreen.stage.addChild(player)
         actionScreen.ticker.add(patrolCheck)
 
         actionScreen.render()
+        player.play()
     }
 })
 
