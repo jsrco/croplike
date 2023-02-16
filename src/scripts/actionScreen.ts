@@ -22,13 +22,23 @@ export let createAction: FrameRequestCallback
 let entities: any
 PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     // create an array to store the textures
-    const texture = PIXI.Texture.from(`ff5x5 357.png`)
-    const texture2 = PIXI.Texture.from(`ff5x5 358.png`)
-    const player = new Entity([texture, texture2], 'player')
+    const standing = [PIXI.Texture.from(`ff5x5 355.png`)]
+    const moveLeft = [PIXI.Texture.from(`ff5x5 408.png`)]
+    const moveRight = [PIXI.Texture.from(`ff5x5 409.png`)]
+    const jumping = [PIXI.Texture.from(`ff5x5 410.png`)]
+    const hangFall = [PIXI.Texture.from(`ff5x5 411.png`)]
+    const texturePack = {
+        standing,
+        moveLeft,
+        moveRight,
+        jumping,
+        hangFall
+    }
+    const player = new Entity(standing, 'player', texturePack)
     entities = [player]
 
     for (let i = 0; i <= 149; i++) {
-        entities.push(new Entity([texture], 'npc'))
+        entities.push(new Entity(standing, 'npc', texturePack))
     }
 
     const onKeyDown = (key: { keyCode: number }) => {

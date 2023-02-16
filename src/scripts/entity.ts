@@ -19,6 +19,7 @@ export class Entity extends PIXI.AnimatedSprite {
         super(textures)
         this.name = name
         this.texturePack = texturePack
+        console.log(texturePack)
         if (name === 'player') this.scale = {x:3,y:3}
         this.windowHeightDummy =  window.innerHeight - 36 - this.height
     }
@@ -114,6 +115,11 @@ export class Entity extends PIXI.AnimatedSprite {
             this.hanging = false
         }
         this.vx *= this.drag
+        if (this.vx > 0) this.textures = this.texturePack.moveRight
+        if (this.vx < 0) this.textures = this.texturePack.moveLeft
+        if (Math.abs(this.vx) < 0.3) this.textures = this.texturePack.standing
+        if (this.vy < 0) this.textures = this.texturePack.jumping
+        if (this.vy > 0 || this.hanging) this.textures = this.texturePack.hangFall
         this.checkForCollisions(entities)
         // Replace current texture with approiate animations
     }
