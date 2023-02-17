@@ -34,13 +34,21 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
         jumping,
         hangFall
     }
+
+    const giantPack = {
+        standing : [PIXI.Texture.from(`ff5x5 205.png`)],
+        moveLeft : [PIXI.Texture.from(`ff5x5 205.png`)],
+        moveRight :[PIXI.Texture.from(`ff5x5 205.png`)],
+        jumping :[PIXI.Texture.from(`ff5x5 205.png`)],
+        hangFall:[PIXI.Texture.from(`ff5x5 205.png`)],
+    }
     const player = new Entity(standing, 'player', texturePack)
     entities = [player]
 
-    for (let i = 0; i <= 149; i++) {
+    for (let i = 0; i <= 40; i++) {
         entities.push(new Entity(standing, 'npc', texturePack))
     }
-
+    entities.push(new Entity(standing, 'giant', giantPack))
     const onKeyDown = (key: { keyCode: number }) => {
         if (useScreen().Screen.value?.stageName === 'actionScreen') {
             // A Key is 65
@@ -79,7 +87,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
                 npc.updateEntity(entities)
             }
         }
-        player.updateEntity(entities, delta)
+        player.updateEntity(entities)
     }
 
 
@@ -111,7 +119,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
                 entity.resetSpeed()
                 entity.maxSpeed = 1
                 entity.x = Math.floor(Math.random() * (300 - 200 + 1) + 200)
-                entity.y = window.innerHeight - entity.height - 36
+                entity.y = window.innerHeight - entity.height - 100
                 entity.tint = parseInt(Math.floor(Math.random() * 16777215).toString(16), 16)
                 actionScreen.stage.addChild(entity)
             }

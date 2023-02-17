@@ -19,25 +19,46 @@ export class Entity extends PIXI.AnimatedSprite {
         super(textures)
         this.name = name
         this.texturePack = texturePack
-        console.log(texturePack)
-        if (name === 'player') this.scale = {x:3,y:3}
-        this.windowHeightDummy =  window.innerHeight - 36 - this.height
+        if (name === 'player') this.scale = { x: 3, y: 3 }
+        if (name === 'giant') this.scale = { x: 15, y: 15 }
+
+        this.windowHeightDummy = window.innerHeight - 36 - this.height
     }
-    checkForCollisions(entities: Entity[]) {
-        let count = 0
+    checkEntityCollisions(entities: Entity[]) {
         for (const entity of entities) {
-            count++
-            if (entity === this) continue
-            if (this.isCollidingWith(entity)) {
-                if (this.name === 'player') {
-                    let angle = Math.atan2(this.y - entity.y, this.x - entity.x)
-                    let xDistance = Math.cos(angle) * 0.5
-                    let yDistance = Math.sin(angle) * 0.5
-                    let overlap = this.height + entity.height - this.getDistance(this, entity)
-                    entity.x += xDistance * overlap
-                    entity.y += yDistance * overlap
-                }
+            if (entity === this) {
+                continue
             }
+
+            if (this.x + this.width > entity.x && this.x < entity.x + entity.width &&
+                this.y + this.height > entity.y && this.y < entity.y + entity.height) {
+                // Entities are colliding
+                return entity
+            }
+        }
+      
+        // No collisions found
+        return null
+    }
+    checkLevelCollisions(levelBoundaries: PIXI.Rectangle) {
+        // Check for collisions with left and right boundaries
+        if (this.x < levelBoundaries.x) {
+            this.x = levelBoundaries.x
+            this.vx = 0
+        } else if (this.x + this.width > levelBoundaries.x + levelBoundaries.width) {
+            this.x = levelBoundaries.x + levelBoundaries.width - this.width
+            this.vx = 0
+        }
+      
+        // Check for collisions with top and bottom boundaries
+        if (this.y < levelBoundaries.y) {
+            this.y = levelBoundaries.y
+            this.vy = 0
+            this.hanging = false
+        } else if (this.y + this.height > levelBoundaries.y + levelBoundaries.height) {
+            this.y = levelBoundaries.y + levelBoundaries.height - this.height
+            this.vy = 0
+            this.hanging = false
         }
     }
     getDistance(entity1: Entity, entity2: Entity) {
@@ -45,17 +66,47 @@ export class Entity extends PIXI.AnimatedSprite {
         let b = entity1.y - entity2.y
         return Math.sqrt(a * a + b * b)
     }
-    isCollidingWith(other: Entity) {
-        // Get the bounds of the first display object
-        let bounds1 = this.getBounds()
-        // Get the bounds of the second display object
-        let bounds2 = other.getBounds()
-        const x1 = this.x
-        const y1 = this.y
-        const x2 = other.x
-        const y2 = other.y
-        return bounds1.x + bounds1.width > bounds2.x && bounds1.x < bounds2.x + bounds2.width &&
-        bounds1.y + bounds1.height > bounds2.y && bounds1.y < bounds2.y + bounds2.height
+    jump() {
+        if (this.y >= this.windowHeightDummy) {
+            this.vy = -this.jumpSpeed
+            this.hanging = false
+        }
+    }
+    handleCollision(otherEntity: Entity) {
+        if (this.name === 'player') {
+            if (otherEntity.name === 'giant') {
+                this.handleGiantCollision(otherEntity)
+            } else {
+                this.handleDefaultCollision(otherEntity)
+            }
+        } else if (this.name === 'giant') {
+            if (otherEntity.name === 'player') {
+                otherEntity.handleGiantCollision(this)
+            } else {
+                this.handleDefaultCollision(otherEntity)
+            }
+        } else {
+            this.handleDefaultCollision(otherEntity)
+        }
+    }
+    handleDefaultCollision(otherEntity: Entity) {
+        // Handle default collision behavior
+            if ((this.name === 'player') && otherEntity.name !== 'player' && otherEntity.name !== 'giant' ) {
+                let angle = Math.atan2(this.y - otherEntity.y, this.x - otherEntity.x)
+                let xDistance = Math.cos(angle) * 0.5
+                let yDistance = Math.sin(angle) * 0.5
+                let overlap = this.height + otherEntity.height - this.getDistance(this, otherEntity)
+                otherEntity.x += xDistance * overlap
+                otherEntity.y += yDistance * overlap
+            }
+    }
+    handleGiantCollision(otherEntity: Entity) {
+        // Handle collision with giant
+        if (this.vy > 0 && this.y + this.height <= otherEntity.y + otherEntity.height * 0.2) {
+            this.y = otherEntity.y - this.height
+            this.vy = 0
+            this.hanging = true
+        }
     }
     moveLeft() {
         if (!this.hanging) {
@@ -73,17 +124,11 @@ export class Entity extends PIXI.AnimatedSprite {
             this.vx = this.wallSlideSpeed
         }
     }
-    jump() {
-        if (this.y >= this.windowHeightDummy) {
-            this.vy = -this.jumpSpeed
-            this.hanging = false
-        }
-    }
     resetSpeed() {
         this.vx = 0
         this.vy = 0
     }
-    updateEntity(entities: Entity[], delta: number) {
+    updateEntity(entities: Entity[]) {
         this.x += this.vx
         this.y += this.vy
         this.vy += this.gravity
@@ -115,13 +160,20 @@ export class Entity extends PIXI.AnimatedSprite {
             this.hanging = false
         }
         this.vx *= this.drag
+        // Replace current texture with approiate animations
         if (this.vx > 0) this.textures = this.texturePack.moveRight
         if (this.vx < 0) this.textures = this.texturePack.moveLeft
         if (Math.abs(this.vx) < 0.3) this.textures = this.texturePack.standing
         if (this.vy < 0) this.textures = this.texturePack.jumping
         if (this.vy > 0 || this.hanging) this.textures = this.texturePack.hangFall
-        this.checkForCollisions(entities)
-        // Replace current texture with approiate animations
+
+        const otherEntity = this.checkEntityCollisions(entities)
+        if (otherEntity) {
+            // Handle the collision
+            this.handleCollision(otherEntity)
+        }
+
+        this.checkLevelCollisions(new PIXI.Rectangle(0,0,window.innerWidth,this.windowHeightDummy + this.height))
     }
     updateWallSlideSpeed() {
         this.wallSlideSpeed *= 0.9
