@@ -105,7 +105,6 @@ export class Entity extends PIXI.AnimatedSprite {
         if (this.vy > 0 && this.y + this.height <= otherEntity.y + otherEntity.height * 0.2) {
             this.y = otherEntity.y - this.height
             this.vy = 0
-            this.hanging = true
         }
     }
     moveLeft() {
