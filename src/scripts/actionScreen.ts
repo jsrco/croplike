@@ -64,8 +64,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
             }
             if (key.keyCode === 87 || key.keyCode === 38) {
                 // If the W key or the Up arrow is pressed, move the player up.
-                if (player.hanging) player.wallJump()
-                else player.jump()
+                player.jump()
             }
             if (key.keyCode === 40) {
                 player.isPressingDown = true

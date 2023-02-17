@@ -37,7 +37,6 @@ export class Entity extends PIXI.AnimatedSprite {
                 return entity
             }
         }
-
         // No collisions found
         return null
     }
@@ -50,7 +49,6 @@ export class Entity extends PIXI.AnimatedSprite {
             this.x = levelBoundaries.x + levelBoundaries.width - this.width
             this.vx = 0
         }
-
         // Check for collisions with top and bottom boundaries
         if (this.y < levelBoundaries.y) {
             this.y = levelBoundaries.y
@@ -66,12 +64,6 @@ export class Entity extends PIXI.AnimatedSprite {
         let a = entity1.x - entity2.x
         let b = entity1.y - entity2.y
         return Math.sqrt(a * a + b * b)
-    }
-    jump() {
-        if (this.y >= this.windowHeightDummy) {
-            this.vy = -this.jumpSpeed
-            this.hanging = false
-        }
     }
     handleCollision(otherEntity: Entity) {
         if (this.name === 'player') {
@@ -95,10 +87,8 @@ export class Entity extends PIXI.AnimatedSprite {
     }
     handleGiantCollision(otherEntity: Entity) {
         const isAbove = this.y + this.height <= otherEntity.y
-    
         const otherEntityPrevX = otherEntity.x - otherEntity.vx
         const otherEntityPrevY = otherEntity.y - otherEntity.vy
-    
         if (this.x + this.width >= otherEntity.x + otherEntity.width) {
             // Player is colliding with the right side of the giant
             this.vx = 0
@@ -143,7 +133,16 @@ export class Entity extends PIXI.AnimatedSprite {
             this.vy = 0
         }
     }
-    
+    jump() {
+        if (this.hanging) {
+            this.vy = -this.jumpSpeed
+            this.vx = this.vx * -1.5
+            this.hanging = false
+        } else if (this.y >= this.windowHeightDummy) {
+            this.vy = -this.jumpSpeed
+            this.hanging = false
+        }
+    }
     moveLeft() {
         if (!this.hanging) {
             this.vx -= 5
@@ -208,20 +207,12 @@ export class Entity extends PIXI.AnimatedSprite {
             // Handle the collision
             this.handleCollision(otherEntity)
         }
-
         this.checkLevelCollisions(new PIXI.Rectangle(0, 0, window.innerWidth, this.windowHeightDummy + this.height))
     }
     updateWallSlideSpeed() {
         this.wallSlideSpeed *= 0.9
         if (this.wallSlideSpeed < this.minWallSlideSpeed) {
             this.wallSlideSpeed = 0
-        }
-    }
-    wallJump() {
-        if (this.hanging) {
-            this.vy = -this.jumpSpeed
-            this.vx = this.vx * -1.5
-            this.hanging = false
         }
     }
 }
