@@ -5,6 +5,7 @@ export class Entity extends PIXI.AnimatedSprite {
     drag: number = 0.95
     gravity: number = 0.4
     hanging: boolean = false
+    isPressingDown: boolean = false
     jumpSpeed: number = 10
     maxSpeed: number = 6
     minWallSlideSpeed: number = 0.1
@@ -36,7 +37,7 @@ export class Entity extends PIXI.AnimatedSprite {
                 return entity
             }
         }
-      
+
         // No collisions found
         return null
     }
@@ -49,7 +50,7 @@ export class Entity extends PIXI.AnimatedSprite {
             this.x = levelBoundaries.x + levelBoundaries.width - this.width
             this.vx = 0
         }
-      
+
         // Check for collisions with top and bottom boundaries
         if (this.y < levelBoundaries.y) {
             this.y = levelBoundaries.y
@@ -79,34 +80,70 @@ export class Entity extends PIXI.AnimatedSprite {
             } else {
                 this.handleDefaultCollision(otherEntity)
             }
-        } else if (this.name === 'giant') {
-            if (otherEntity.name === 'player') {
-                otherEntity.handleGiantCollision(this)
-            } else {
-                this.handleDefaultCollision(otherEntity)
-            }
-        } else {
-            this.handleDefaultCollision(otherEntity)
         }
     }
     handleDefaultCollision(otherEntity: Entity) {
         // Handle default collision behavior
-            if ((this.name === 'player') && otherEntity.name !== 'player' && otherEntity.name !== 'giant' ) {
-                let angle = Math.atan2(this.y - otherEntity.y, this.x - otherEntity.x)
-                let xDistance = Math.cos(angle) * 0.5
-                let yDistance = Math.sin(angle) * 0.5
-                let overlap = this.height + otherEntity.height - this.getDistance(this, otherEntity)
-                otherEntity.x += xDistance * overlap
-                otherEntity.y += yDistance * overlap
-            }
+        if ((this.name === 'player') && otherEntity.name !== 'player' && otherEntity.name !== 'giant') {
+            let angle = Math.atan2(this.y - otherEntity.y, this.x - otherEntity.x)
+            let xDistance = Math.cos(angle) * 0.5
+            let yDistance = Math.sin(angle) * 0.5
+            let overlap = this.height + otherEntity.height - this.getDistance(this, otherEntity)
+            otherEntity.x += xDistance * overlap
+            otherEntity.y += yDistance * overlap
+        }
     }
     handleGiantCollision(otherEntity: Entity) {
-        // Handle collision with giant
-        if (this.vy > 0 && this.y + this.height <= otherEntity.y + otherEntity.height * 0.2) {
+        const isAbove = this.y + this.height <= otherEntity.y
+    
+        const otherEntityPrevX = otherEntity.x - otherEntity.vx
+        const otherEntityPrevY = otherEntity.y - otherEntity.vy
+    
+        if (this.x + this.width >= otherEntity.x + otherEntity.width) {
+            // Player is colliding with the right side of the giant
+            this.vx = 0
+            if (!isAbove && !this.isPressingDown) {
+                this.hanging = true
+                this.vy = 0
+                if (otherEntityPrevX > otherEntity.x && this.vx < 0) {
+                    // otherEntity is moving away from player horizontally and player is not moving away
+                    this.hanging = false
+                    this.vy = this.gravity
+                }
+            }
+            this.x = otherEntity.x + otherEntity.width - 2
+        } else if (this.x <= otherEntity.x) {
+            // Player is colliding with the left side of the giant
+            this.vx = 0
+            if (!isAbove && !this.isPressingDown) {
+                this.hanging = true
+                this.vy = 0
+                if (otherEntityPrevX < otherEntity.x && this.vx > 0) {
+                    // otherEntity is moving away from player horizontally and player is not moving away
+                    this.hanging = false
+                    this.vy = this.gravity
+                }
+            }
+            this.x = otherEntity.x - this.width + 2
+        } else if (this.y + this.height >= otherEntity.y + otherEntity.height) {
+            // Player is colliding with the bottom of the giant
+            this.y = otherEntity.y + otherEntity.height - this.height
+            this.vy = 0
+            if (!this.hanging) {
+                this.hanging = true
+                if (otherEntityPrevY < otherEntity.y) {
+                    // otherEntity is moving away from player vertically and player is not moving away
+                    this.hanging = false
+                    this.vy = this.gravity
+                }
+            }
+        } else if (this.y <= otherEntity.y) {
+            // Player is colliding with the top of the giant
             this.y = otherEntity.y - this.height
             this.vy = 0
         }
     }
+    
     moveLeft() {
         if (!this.hanging) {
             this.vx -= 5
@@ -165,7 +202,6 @@ export class Entity extends PIXI.AnimatedSprite {
         if (this.vy < 0) this.textures = this.texturePack.jumping
         if (this.vy > 0 || this.hanging) this.textures = this.texturePack.hangFall
         if (Math.abs(this.vx) < 0.3 && Math.abs(this.vy) < 0.9 && !this.hanging) this.textures = this.texturePack.standing
-        if (this.name === 'player') console.log(this.vx, this.vy, this.hanging)
 
         const otherEntity = this.checkEntityCollisions(entities)
         if (otherEntity) {
@@ -173,7 +209,7 @@ export class Entity extends PIXI.AnimatedSprite {
             this.handleCollision(otherEntity)
         }
 
-        this.checkLevelCollisions(new PIXI.Rectangle(0,0,window.innerWidth,this.windowHeightDummy + this.height))
+        this.checkLevelCollisions(new PIXI.Rectangle(0, 0, window.innerWidth, this.windowHeightDummy + this.height))
     }
     updateWallSlideSpeed() {
         this.wallSlideSpeed *= 0.9

@@ -44,8 +44,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     }
     const player = new Entity(standing, 'player', texturePack)
     entities = [player]
-
-    for (let i = 0; i <= 40; i++) {
+    for (let i = 0; i <= 500; i++) {
         entities.push(new Entity(standing, 'npc', texturePack))
     }
     entities.push(new Entity(standing, 'giant', giantPack))
@@ -68,10 +67,21 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
                 if (player.hanging) player.wallJump()
                 else player.jump()
             }
+            if (key.keyCode === 40) {
+                player.isPressingDown = true
+            }
         }
     }
     document.addEventListener('keydown', onKeyDown)
-
+    const onKeyUp = (key: { keyCode: number }) => {
+        if (useScreen().Screen.value?.stageName === 'actionScreen') {
+            if (key.keyCode === 40) {
+                // If the W key or the Up arrow is pressed, move the player up.
+                player.isPressingDown = false
+            }
+        }
+    }
+    document.addEventListener('keyup', onKeyUp)
     const patrolCheck = (delta: number) => {
         for (let npc of entities) {
             if (npc.name !== 'player') {
