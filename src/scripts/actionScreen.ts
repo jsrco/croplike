@@ -50,7 +50,6 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
     }
     entities.push(new Entity(standing, 'giant', giantPack))
     const onKeyDown = (key: { keyCode: number }) => {
-        console.log(player)
         if (useScreen().Screen.value?.stageName === 'actionScreen') {
             // A Key is 65
             // Left arrow is 37
@@ -75,7 +74,7 @@ PIXI.Assets.load('../assets/ff5x5.json').then(() => {
 
     const patrolCheck = (delta: number) => {
         for (let npc of entities) {
-            if (npc.name !== 'player' && npc.name !== 'giant') {
+            if (npc.name !== 'player') {
                 if (npc.path < 200) {
                     npc.moveLeft()
                     npc.path++

@@ -162,9 +162,10 @@ export class Entity extends PIXI.AnimatedSprite {
         // Replace current texture with approiate animations
         if (this.vx > 0) this.textures = this.texturePack.moveRight
         if (this.vx < 0) this.textures = this.texturePack.moveLeft
-        if (Math.abs(this.vx) < 0.3) this.textures = this.texturePack.standing
         if (this.vy < 0) this.textures = this.texturePack.jumping
         if (this.vy > 0 || this.hanging) this.textures = this.texturePack.hangFall
+        if (Math.abs(this.vx) < 0.3 && Math.abs(this.vy) < 0.9 && !this.hanging) this.textures = this.texturePack.standing
+        if (this.name === 'player') console.log(this.vx, this.vy, this.hanging)
 
         const otherEntity = this.checkEntityCollisions(entities)
         if (otherEntity) {
