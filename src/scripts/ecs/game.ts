@@ -2,13 +2,16 @@ import * as PIXI from 'pixi.js'
 import { RenderingComponent } from './components/component-rendering'
 import { Entity } from "./entities/entity"
 import { System } from "./systems/system"
+import { EntityManager } from './util/entity-manager'
 
 export class Game {
     app: PIXI.Application
+    entityManager: EntityManager
     system: System
   
     constructor(app: PIXI.Application ) {
       this.app = app
+      this.entityManager = new EntityManager()
       this.system = new System()
     }
   
