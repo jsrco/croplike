@@ -7,8 +7,8 @@ export class Game {
     app: PIXI.Application
     system: System
   
-    constructor() {
-      this.app = new PIXI.Application()  
+    constructor(app: PIXI.Application ) {
+      this.app = app
       this.system = new System()
     }
   
