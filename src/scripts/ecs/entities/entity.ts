@@ -2,26 +2,24 @@ import * as PIXI from 'pixi.js'
 import { Component } from '../components/component'
 
 export class Entity extends PIXI.Rectangle {
-    id: number
     components: { [key: string]: Component } = {}
     entityType: string
+    id: number
   
     constructor(type: string, x: number, y: number, width: number, height: number) {
       super(x, y, width, height)
-      this.id = Date.now()
       this.entityType = type
+      this.id = Date.now()
     }
-  
     addComponent(component: Component) {
       this.components[component.name] = component
+      component.owner = this
     }
-  
-    removeComponent(componentName: string) {
-      delete this.components[componentName]
-    }
-  
     getComponent(componentName: string): Component {
       return this.components[componentName]
+    }
+    removeComponent(componentName: string) {
+      delete this.components[componentName]
     }
   }
   

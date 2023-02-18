@@ -2,7 +2,7 @@ import { Entity } from "../entities/entity"
 
 export abstract class Component {
   name: string
-  owner: Entity | undefined
+  owner!: Entity
 
   constructor(name: string) {
     this.name = name
