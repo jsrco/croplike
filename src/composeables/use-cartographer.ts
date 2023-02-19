@@ -1,6 +1,6 @@
 import { Map } from 'rot-js'
 import { ref } from 'vue'
-import { Locals } from '../scripts/storage'
+import { Locals } from '../scripts/util/Storage'
 import useStorage from './use-storage'
 
 

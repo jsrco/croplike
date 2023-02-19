@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import { ref, Ref } from 'vue'
-import { Locals } from "../scripts/storage"
+import { Locals } from "../scripts/util/Storage"
 import useCartographer from '../composeables/use-cartographer'
 import useStorage from '../composeables/use-storage'
 

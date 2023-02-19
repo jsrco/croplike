@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { GameStorage, Locals } from '../scripts/storage'
+import { GameStorage, Locals } from '../scripts/util/Storage'
 import useCartographer from './use-cartographer'
 
 const isActive = ref(false)
