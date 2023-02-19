@@ -13,17 +13,6 @@ class PositionComponent implements Component {
         // Do nothing
     }
 }
-export class SpriteComponent implements Component {
-    public name = "sprite"
-    public sprite: PIXI.Sprite
-
-    constructor(texture: PIXI.Texture) {
-        this.sprite = new PIXI.Sprite(texture)
-    }
-    public update(delta: number): void {
-        // Do nothing
-    }
-}
 export class VelocityComponent implements Component {
     public name = "velocity"
 
