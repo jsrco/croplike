@@ -7,7 +7,7 @@ export class Engine {
     private readonly app: PIXI.Application
     private readonly entityManager: EntityManager
 
-    constructor(app: PIXI.Application, width: number, height: number, backgroundColor: number) {
+    constructor(app: PIXI.Application) {
         this.app = app
 
         this.entityManager = new EntityManager()
