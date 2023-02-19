@@ -1,10 +1,7 @@
 import { Entity } from "../entities/entity"
+import { EventSystem } from "../util/events-system"
 
 export interface System {
-    components: string[]
-    entities: Entity[]
-
-    update(delta: number): void
-    addEntity(entity: Entity): void
-    removeEntity(entity: Entity): void
+    update(delta: number, entities: Entity[]): void
+    updateWithEvents?(delta: number, entities: Entity[], eventSystem: EventSystem): void
 }
