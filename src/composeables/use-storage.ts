@@ -1,6 +1,6 @@
-import { ref } from "vue"
-import { GameStorage, Locals } from "../scripts/storage"
-import useCartographer from "./useCartographer"
+import { ref } from 'vue'
+import { GameStorage, Locals } from '../scripts/storage'
+import useCartographer from './use-cartographer'
 
 const isActive = ref(false)
 const isDev = ref(true)
@@ -27,11 +27,11 @@ const useStorage = () => {
             console.dir('"game-user" test user set')
         }
         if (!storage.value.getType(Locals.Game_MAP)) {
-            const {generateNewMap } = useCartographer()
+            const { generateNewMap } = useCartographer()
             generateNewMap()
             console.dir('"game-map" game map created')
         }
-        checkIfSynched() 
+        checkIfSynched()
         console.dir('account active')
     }
 
