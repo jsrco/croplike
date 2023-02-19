@@ -3,7 +3,7 @@ import { Entity } from "./entities/entity"
 import { System } from "./systems/system"
 import { EntityManager } from "./systems/entity-manager"
 
-export class Engine {
+export class ECS {
     private readonly app: PIXI.Application
     private readonly entityManager: EntityManager
 
