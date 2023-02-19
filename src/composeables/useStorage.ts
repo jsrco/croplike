@@ -1,8 +1,6 @@
 import { ref } from "vue"
 import { GameStorage, Locals } from "../scripts/storage"
-import { startScreen } from "../scripts/startScreen"
 import useCartographer from "./useCartographer"
-import useScreen from "./useScreen"
 
 const isActive = ref(false)
 const isDev = ref(true)
@@ -20,7 +18,6 @@ const useStorage = () => {
     const clearUserStorage = () => {
         storage.value.clearAll()
         checkIfSynched()
-        useScreen(startScreen)
         console.dir('userStorage wiped, account inactive')
     }
 
@@ -34,8 +31,7 @@ const useStorage = () => {
             generateNewMap()
             console.dir('"game-map" game map created')
         }
-        checkIfSynched()        
-        useScreen(startScreen)
+        checkIfSynched() 
         console.dir('account active')
     }
 

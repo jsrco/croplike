@@ -6,14 +6,13 @@
 </template>
 
 <script setup lang="ts">
-import useScreen from '../composeables/useScreen'
 import { onMounted, ref } from 'vue'
-import { startScreen } from '../scripts/startScreen'
 
-const { GameContainerTarget } = useScreen()
-const gameContainer = ref(GameContainerTarget)
+const gameContainer = ref(null)
 
 onMounted(() => {
-    useScreen(startScreen)
+    // this will start the game up and use gameContainer as a ref to the div above
+    // once storage is implmented, start ecs and load game data 
+    console.dir(gameContainer)
 })
 </script>
