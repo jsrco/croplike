@@ -22,7 +22,7 @@ export class Engine {
         richText.y = 10
         this.app.stage.addChild(richText)
 
-        this.app.stage.interactive = true
+        this.app.stage.eventMode = 'static'
         this.app.stage.hitArea = this.app.screen
         this.app.stage.on('pointerup', (event) => {
             //handle event
