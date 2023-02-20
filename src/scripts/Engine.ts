@@ -17,6 +17,18 @@ export class Engine {
         this.player = new Entity('player')
 
     }
+    playerEntityTest() {
+        const position = new PositionComponent(0, 0)
+        this.player.addComponent(position)
+        console.log('player has postion ' + this.player.hasComponent('position')) // true
+        console.log('player has velocity ' + this.player.hasComponent('velocity')) // false
+        const playerPosition = this.player.getComponent('position') as PositionComponent
+        playerPosition.position.x = 10
+        console.log(playerPosition)
+        this.player.removeComponent('position')
+        console.log('player has postion ' + this.player.hasComponent('position')) // false
+        console.dir(this.player)
+    }
     public start(): void {
         const richText = dummyText('a start screen')
         richText.x = 10
@@ -30,20 +42,7 @@ export class Engine {
             console.dir('clicky clicky')
         })
 
-
-        const position = new PositionComponent(0, 0)
-
-        this.player.addComponent(position)
-
-        console.log('player has postion ' + this.player.hasComponent('position')) // true
-        console.log('player has velocity ' + this.player.hasComponent('velocity')) // false
-
-        const playerPosition = this.player.getComponent('position') as PositionComponent
-        console.log(playerPosition)
-
-        this.player.removeComponent('health')
-
-        console.dir(this.player)
+        this.playerEntityTest()
 
         this.app.ticker.add((delta) => {
             this.update(delta)

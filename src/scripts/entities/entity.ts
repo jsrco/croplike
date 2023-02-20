@@ -1,14 +1,14 @@
 import { Component } from "../components/component"
 
 export class Entity {
+  components: Record<string, Component>
   id: number
   name: string
-  components: Record<string, Component>
 
   constructor(name: string) {
+    this.components = {}
     this.id = new Date().getTime()
     this.name = name
-    this.components = {}
   }
 
   addComponent(component: Component): void {
