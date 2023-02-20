@@ -7,12 +7,21 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { Engine } from '../scripts/Engine'
 
-const gameContainer = ref(null)
-
+const gameContainer = ref()
+let game;
 onMounted(() => {
-    // this will start the game up and use gameContainer as a ref to the div above
-    // once storage is implmented, start ecs and load game data 
-    console.dir(gameContainer)
+
+    const PressStart2P = new FontFace(
+        "PixiPressStart2P",
+        "url('./assets/fonts/PressStart2P-Regular.ttf')"
+    )
+    PressStart2P.load().then(function (font) {
+        // with canvas, if this is ommited won't work
+        document.fonts.add(font)
+        game = new Engine(gameContainer.value)
+        game.start()
+    })
 })
 </script>

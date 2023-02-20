@@ -1,53 +1,40 @@
 import * as PIXI from "pixi.js"
-import { Entity } from "./entities/entity"
-import { System } from "./systems/system"
-import { EntityManager } from "./util/EntityManager"
-import { EventSystem } from "./util/EventSystem"
-import { KeyboardController } from "./util/KeyboardController"
 
-export class ECS {
+export class Engine {
     private readonly app: PIXI.Application
-    private readonly entityManager: EntityManager
-    private readonly eventSystem: EventSystem
-    private readonly keyboardController: KeyboardController
 
-    constructor(app: PIXI.Application) {
-        this.app = app
-        // Create the entity manager
-        this.entityManager = new EntityManager()
-        // Create the event system
-        this.eventSystem = new EventSystem()
-        // Create the keyboard controller
-        this.keyboardController = new KeyboardController()
-
-        // Add keyboard event listeners
-        this.keyboardController.addEventListener("keydown", (event) => {
-            this.eventSystem.dispatchEvent("keydown", event)
+    constructor(elementRef: any) {
+        this.app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
+        elementRef.appendChild(this.app.view)
+        window.addEventListener('resize', () => {
+            this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
         })
-
-        this.keyboardController.addEventListener("keyup", (event) => {
-            this.eventSystem.dispatchEvent("keyup", event)
-        })
-    }
-    public addEntity(entity: Entity): void {
-        this.entityManager.addEntity(entity)
-    }
-    public addSystem(system: System): void {
-        this.entityManager.addSystem(system)
-    }
-    public removeEntity(entity: Entity): void {
-        this.entityManager.removeEntity(entity)
-    }
-    public removeSystem(system: System): void {
-        this.entityManager.removeSystem(system)
     }
     public start(): void {
+
+        const style = new PIXI.TextStyle({
+            fontFamily: 'PixiPressStart2P',
+            fontSize: 8,
+            fill: ['#4ade80'],
+        })
+        const richText = new PIXI.Text('a start screen', style)
+        richText.x = 10
+        richText.y = 10
+        this.app.stage.addChild(richText)
+
+        this.app.stage.interactive = true
+        this.app.stage.hitArea = this.app.screen
+        this.app.stage.on('pointerup', (event) => {
+            //handle event
+            console.dir('clicky clicky')
+        })
+
         this.app.ticker.add((delta) => {
             this.update(delta)
         })
     }
     private update(delta: number): void {
-        // Update systems with keyboard events
-        this.entityManager.updateWithEvents(delta, this.eventSystem)
+        // update game logic
+
     }
 }

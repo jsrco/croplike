@@ -1,6 +1,5 @@
 import { ref } from 'vue'
 import { GameStorage, Locals } from '../scripts/util/Storage'
-import useCartographer from './use-cartographer'
 
 const isActive = ref(false)
 const isDev = ref(true)
@@ -12,7 +11,7 @@ const useStorage = () => {
 
     const checkIfSynched = () => {
         storage.value.getType(Locals.Game_USER) ? isActive.value = true : isActive.value = false
-        !storage.value.getType(Locals.Game_MAP) || !storage.value.getType(Locals.Game_USER) ? isOutOfSynch.value = true : isOutOfSynch.value = false
+        !storage.value.getType(Locals.Game_USER) ? isOutOfSynch.value = true : isOutOfSynch.value = false
     }
 
     const clearUserStorage = () => {
@@ -25,11 +24,6 @@ const useStorage = () => {
         if (!storage.value.getType(Locals.Game_USER)) {
             storage.value.setType(Locals.Game_USER, 'testUser')
             console.dir('"game-user" test user set')
-        }
-        if (!storage.value.getType(Locals.Game_MAP)) {
-            const { generateNewMap } = useCartographer()
-            generateNewMap()
-            console.dir('"game-map" game map created')
         }
         checkIfSynched()
         console.dir('account active')

@@ -33,7 +33,6 @@ export abstract class Storage<T extends string> {
 
 // Game Storage
 export enum Locals {
-  Game_MAP = 'game-map',
   Game_USER = 'game-user',
 }
 
@@ -66,6 +65,6 @@ export class GameStorage extends Storage<Locals> {
   }
 
   public clearAll() {
-    this.clearItems([Locals.Game_MAP, Locals.Game_USER])
+    this.clearItems([Locals.Game_USER])
   }
 }

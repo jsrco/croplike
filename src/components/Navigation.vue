@@ -26,7 +26,6 @@
 <script setup lang="ts">
 import { ref, Ref } from 'vue'
 import { Locals } from "../scripts/util/Storage"
-import useCartographer from '../composeables/use-cartographer'
 import useStorage from '../composeables/use-storage'
 
 const { clearUserStorage, isActive, isDev, isOutOfSynch, resetUserStorage, storage } = useStorage()
@@ -36,7 +35,6 @@ const debugList = [
         name: 'console storage',
         operation: () => {
             console.dir(storage.value.getType(Locals.Game_USER))
-            console.dir(storage.value.getType(Locals.Game_MAP))
         }
     },
     {
@@ -46,10 +44,6 @@ const debugList = [
     {
         name: 'reset user storage',
         operation: () => resetUserStorage()
-    },
-    {
-        name: 'reset game map',
-        operation: () => useCartographer().resetMap()
     },
 ]
 
