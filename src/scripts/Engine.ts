@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js"
 import { Entity } from "./entities/entity"
-import { PositionComponent } from "./components/components"
+import { GraphicsComponent, PositionComponent, SizeComponent } from "./components/components"
 
 export class Engine {
     private readonly app: PIXI.Application
@@ -18,15 +18,16 @@ export class Engine {
 
     }
     playerEntityTest() {
-        const position = new PositionComponent(0, 0)
-        this.player.addComponent(position)
+        this.player.addComponent(new PositionComponent())
         console.log('player has postion ' + this.player.hasComponent('position')) // true
         console.log('player has velocity ' + this.player.hasComponent('velocity')) // false
         const playerPosition = this.player.getComponent('position') as PositionComponent
-        playerPosition.position.x = 10
-        console.log(playerPosition)
-        this.player.removeComponent('position')
-        console.log('player has postion ' + this.player.hasComponent('position')) // false
+        playerPosition.x = 10
+        playerPosition.y = 10
+        this.player.addComponent(new SizeComponent(10))
+        const playerSize = this.player.getComponent('size') as SizeComponent
+
+        this.player.addComponent(new GraphicsComponent(playerPosition, playerSize))
         console.dir(this.player)
     }
     public start(): void {
@@ -55,6 +56,12 @@ export class Engine {
         richText.x = 10
         richText.y = 10
         this.app.stage.addChild(richText)
+        const playerGraphic = this.player.getComponent('graphics') as GraphicsComponent
+        const playerPosition = this.player.getComponent('position') as PositionComponent
+        playerPosition.x++
+        playerPosition.y++
+        this.app.stage.addChild(playerGraphic.rectangle)
+        console.log(playerGraphic.rectangle.x, playerPosition.x,)
     }
 }
 
