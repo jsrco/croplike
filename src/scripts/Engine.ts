@@ -57,11 +57,7 @@ export class Engine {
         richText.y = 10
         this.app.stage.addChild(richText)
         const playerGraphic = this.player.getComponent('graphics') as GraphicsComponent
-        const playerPosition = this.player.getComponent('position') as PositionComponent
-        playerPosition.x++
-        playerPosition.y++
         this.app.stage.addChild(playerGraphic.rectangle)
-        console.log(playerGraphic.rectangle.x, playerPosition.x,)
     }
 }
 
