@@ -22,9 +22,9 @@ export class Engine {
         console.log('player has postion ' + this.player.hasComponent('position')) // true
         console.log('player has velocity ' + this.player.hasComponent('velocity')) // false
         const playerPosition = this.player.getComponent('position') as PositionComponent
-        playerPosition.x = 10
-        playerPosition.y = 10
-        this.player.addComponent(new SizeComponent(10))
+        playerPosition.x = 50
+        playerPosition.y = 50
+        this.player.addComponent(new SizeComponent(50))
         const playerSize = this.player.getComponent('size') as SizeComponent
 
         this.player.addComponent(new GraphicsComponent(playerPosition, playerSize))
