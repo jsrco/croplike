@@ -62,8 +62,8 @@ export class Engine {
         const playerGraphic = this.player.getComponent('graphics') as GraphicsComponent
         const playerPosition = this.player.getComponent('position') as PositionComponent
         const playerSize = this.player.getComponent('size') as SizeComponent
-        playerPosition.setPosition(Math.floor(Math.random() * 6) + 1,Math.floor(Math.random() * 6) + 1)
-        playerSize.setSize(Math.floor(Math.random() * 25) + 23)
+        // playerPosition.setPosition(Math.floor(Math.random() * 6) + 1,Math.floor(Math.random() * 6) + 1)
+        // playerSize.setSize(Math.floor(Math.random() * 25) + 23)
         this.app.stage.addChild(playerGraphic.rectangle)
     }
 }
