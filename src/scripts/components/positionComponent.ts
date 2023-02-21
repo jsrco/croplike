@@ -8,17 +8,6 @@ export class PositionComponent extends Component {
     
     constructor(world: World) {
         super(world)
-
-        this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
-    }
-    private onKeyChange(data: any): void {
-        if (data.isDown) {
-            if (data.key === 'ArrowLeft') {
-                this.setPosition(this.x - 1, this.y)
-            } else if (data.key === 'ArrowRight') {
-                this.setPosition(this.x + 1, this.y)
-            }
-        }
     }
     setPosition(x: number, y: number) {
         this.x = x

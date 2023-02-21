@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js"
 import { Entity } from "./entities/Entity"
-import { GraphicsComponent, PositionComponent, SizeComponent } from "./components/index"
+import { GraphicsComponent, PositionComponent, SizeComponent, VelocityComponent } from "./components/index"
+import { MovementSystem } from "./systems/movementSystem"
 import { World } from "./util/World"
 
 export class Engine {
@@ -15,16 +16,15 @@ export class Engine {
         })
         // demo
         this.player = new Entity('player')
+        this.createPlayer()
+        this.world.addEntity(this.player)
+        this.world.addSystem(new MovementSystem(this.world))
 
     }
-    playerEntityTest() {
-        this.player.addComponent(new PositionComponent(this.world))
-        // console.log('player has postion ' + this.player.hasComponent('position')) // true
-        // console.log('player has velocity ' + this.player.hasComponent('velocity')) // false
+    createPlayer() {
+        this.player.addComponents([new PositionComponent(this.world), new SizeComponent(this.world, 10), new VelocityComponent(this.world)])
         const playerPosition = this.player.getComponent('position') as PositionComponent
-        this.player.addComponent(new SizeComponent(this.world, 10))
         const playerSize = this.player.getComponent('size') as SizeComponent
-
         this.player.addComponent(new GraphicsComponent(this.world, playerPosition, playerSize))
     }
     public start(): void {
@@ -32,16 +32,12 @@ export class Engine {
         richText.x = 10
         richText.y = 10
         this.app.stage.addChild(richText)
-
         this.app.stage.eventMode = 'static'
         this.app.stage.hitArea = this.app.screen
         this.app.stage.on('pointerup', (event) => {
             //handle event
             console.dir('clicky clicky')
         })
-
-        this.playerEntityTest()
-
         this.app.ticker.add((delta) => {
             this.update(delta)
         })
@@ -53,11 +49,8 @@ export class Engine {
         richText.x = 10
         richText.y = 10
         this.app.stage.addChild(richText)
+        this.world.update(delta)
         const playerGraphic = this.player.getComponent('graphics') as GraphicsComponent
-        const playerPosition = this.player.getComponent('position') as PositionComponent
-        const playerSize = this.player.getComponent('size') as SizeComponent
-        // playerPosition.setPosition(Math.floor(Math.random() * 6) + 1,Math.floor(Math.random() * 6) + 1)
-        // playerSize.setSize(Math.floor(Math.random() * 25) + 23)
         this.app.stage.addChild(playerGraphic.rectangle)
     }
 }
