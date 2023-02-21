@@ -1,8 +1,6 @@
 import * as PIXI from "pixi.js"
 import { Entity } from "./entities/Entity"
 import { GraphicsComponent, PositionComponent, SizeComponent } from "./components/index"
-import { EventManager } from "./util/EventManager"
-import { KeyboardController } from "./util/KeyboardController"
 import { World } from "./util/World"
 
 export class Engine {
