@@ -10,7 +10,6 @@ export class Entity {
     this.id = new Date().getTime()
     this.name = name
   }
-
   addComponent(component: Component): void {
     this.components[component.type] = component
     component.owner = this

@@ -3,35 +3,31 @@ import { Entity } from "./entities/Entity"
 import { GraphicsComponent, PositionComponent, SizeComponent } from "./components/index"
 import { EventManager } from "./util/EventManager"
 import { KeyboardController } from "./util/KeyboardController"
+import { World } from "./util/World"
 
 export class Engine {
-    private readonly app: PIXI.Application
-    eventManager: EventManager = new EventManager()
-    keyboardController: KeyboardController = new KeyboardController(this.eventManager)
+    app: PIXI.Application
     player: Entity
-
+    world: World = new World()
     constructor(elementRef: any) {
         this.app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
         elementRef.appendChild(this.app.view)
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
         })
-
         // demo
         this.player = new Entity('player')
 
     }
     playerEntityTest() {
-        this.player.addComponent(new PositionComponent(this.eventManager))
+        this.player.addComponent(new PositionComponent(this.world))
         // console.log('player has postion ' + this.player.hasComponent('position')) // true
         // console.log('player has velocity ' + this.player.hasComponent('velocity')) // false
         const playerPosition = this.player.getComponent('position') as PositionComponent
-        playerPosition.x = 10
-        playerPosition.y = 10
-        this.player.addComponent(new SizeComponent(this.eventManager, 10))
+        this.player.addComponent(new SizeComponent(this.world, 10))
         const playerSize = this.player.getComponent('size') as SizeComponent
 
-        this.player.addComponent(new GraphicsComponent(this.eventManager, playerPosition, playerSize))
+        this.player.addComponent(new GraphicsComponent(this.world, playerPosition, playerSize))
     }
     public start(): void {
         const richText = dummyText('a start screen')

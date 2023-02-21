@@ -1,8 +1,8 @@
 import * as PIXI from "pixi.js"
 import { Graphics } from "pixi.js"
 import { Component } from "./Component"
-import { EventManager } from "../util/EventManager"
 import { PositionComponent, SizeComponent } from "./index"
+import { World } from "../util/World"
 
 export class GraphicsComponent extends Component {
     rectangle: Graphics
@@ -10,16 +10,16 @@ export class GraphicsComponent extends Component {
     sizeComponent: SizeComponent
     type: string = 'graphics'
 
-    constructor(eventManager: EventManager, positionComponent: PositionComponent, sizeComponent: SizeComponent, color = 0xFF0000) {
+    constructor(world: World, positionComponent: PositionComponent, sizeComponent: SizeComponent, color = 0xFF0000) {
         const { x, y } = positionComponent
         const { height, width } = sizeComponent
-        super(eventManager)
+        super(world)
         this.rectangle = new PIXI.Graphics().beginFill(color).drawRect(x, y, width, height)
         this.positionComponent = positionComponent
         this.sizeComponent = sizeComponent
 
-        this.eventManager.subscribe('positionChange', this.onPositionChange.bind(this))
-        this.eventManager.subscribe('sizeChange', this.onSizeChange.bind(this))
+        this.world.eventManager.subscribe('positionChange', this.onPositionChange.bind(this))
+        this.world.eventManager.subscribe('sizeChange', this.onSizeChange.bind(this))
 
     }
     private onPositionChange(data: any): void {

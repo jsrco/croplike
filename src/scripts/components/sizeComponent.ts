@@ -1,6 +1,6 @@
 
 import { Component } from "./Component"
-import { EventManager } from "../util/EventManager"
+import { World } from "../util/World"
 
 
 export class SizeComponent extends Component {
@@ -8,16 +8,15 @@ export class SizeComponent extends Component {
     width: number
     type: string = 'size'
 
-    constructor(eventManager: EventManager, x: number, y?: number) {
-        super(eventManager)
+    constructor(world: World, x: number, y?: number) {
+        super(world)
         this.height = y || x
         this.width = x
     }
-
     setSize(x: number, y?: number) {
         this.height = y || x
         this.width = x
-        this.eventManager.dispatch('sizeChange', { entity: this.owner, sizeComponent: this })
+        this.world.eventManager.dispatch('sizeChange', { entity: this.owner, sizeComponent: this })
     }
 }
 

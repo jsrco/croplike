@@ -1,19 +1,18 @@
 import { Component } from "./Component"
-import { EventManager } from "../util/EventManager"
+import { World } from "../util/World"
 
 export class PositionComponent extends Component {
+    type: string = 'position'
     x: number = 0
     y: number = 0
-    type: string = 'position'
-    constructor(eventManager: EventManager) {
-        super(eventManager)
+    
+    constructor(world: World) {
+        super(world)
 
-        this.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
+        this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
     }
-
     private onKeyChange(data: any): void {
         if (data.isDown) {
-            console.log(data)
             if (data.key === 'ArrowLeft') {
                 this.setPosition(this.x - 1, this.y)
             } else if (data.key === 'ArrowRight') {
@@ -21,10 +20,9 @@ export class PositionComponent extends Component {
             }
         }
     }
-
     setPosition(x: number, y: number) {
         this.x = x
         this.y = y
-        this.eventManager.dispatch('positionChange', { entity: this.owner, positionComponent: this })
+        this.world.eventManager.dispatch('positionChange', { entity: this.owner, positionComponent: this })
     }
 }
