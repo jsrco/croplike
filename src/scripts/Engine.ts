@@ -2,10 +2,12 @@ import * as PIXI from "pixi.js"
 import { Entity } from "./entities/Entity"
 import { GraphicsComponent, PositionComponent, SizeComponent } from "./components/index"
 import { EventManager } from "./util/EventManager"
+import { KeyboardController } from "./util/KeyboardController"
 
 export class Engine {
     private readonly app: PIXI.Application
     eventManager: EventManager = new EventManager()
+    keyboardController: KeyboardController = new KeyboardController(this.eventManager)
     player: Entity
 
     constructor(elementRef: any) {

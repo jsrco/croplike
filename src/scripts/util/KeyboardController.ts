@@ -1,6 +1,6 @@
 import { EventManager } from './EventManager'
 
-class KeyboardController {
+export class KeyboardController {
   private eventManager: EventManager
 
   constructor(eventManager: EventManager) {
