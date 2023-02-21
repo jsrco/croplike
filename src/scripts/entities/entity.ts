@@ -13,10 +13,12 @@ export class Entity {
 
   addComponent(component: Component): void {
     this.components[component.type] = component
+    component.owner = this
   }
   addComponents(components: Component[]): void {
     components.forEach((component) => {
       this.addComponent(component)
+      component.owner = this
     })
   }
   getComponent(componentType: string): Component | undefined {

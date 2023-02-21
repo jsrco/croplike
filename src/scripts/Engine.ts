@@ -1,9 +1,11 @@
 import * as PIXI from "pixi.js"
 import { Entity } from "./entities/entity"
-import { GraphicsComponent, PositionComponent, SizeComponent } from "./components/components"
+import { GraphicsComponent, PositionComponent, SizeComponent } from "./components/index"
+import { EventManager } from "./util/EventManager"
 
 export class Engine {
     private readonly app: PIXI.Application
+    eventManager: EventManager = new EventManager()
     player: Entity
 
     constructor(elementRef: any) {
@@ -18,17 +20,16 @@ export class Engine {
 
     }
     playerEntityTest() {
-        this.player.addComponent(new PositionComponent())
-        console.log('player has postion ' + this.player.hasComponent('position')) // true
-        console.log('player has velocity ' + this.player.hasComponent('velocity')) // false
+        this.player.addComponent(new PositionComponent(this.eventManager))
+        // console.log('player has postion ' + this.player.hasComponent('position')) // true
+        // console.log('player has velocity ' + this.player.hasComponent('velocity')) // false
         const playerPosition = this.player.getComponent('position') as PositionComponent
-        playerPosition.x = 50
-        playerPosition.y = 50
-        this.player.addComponent(new SizeComponent(50))
+        playerPosition.x = 10
+        playerPosition.y = 10
+        this.player.addComponent(new SizeComponent(this.eventManager, 10))
         const playerSize = this.player.getComponent('size') as SizeComponent
 
-        this.player.addComponent(new GraphicsComponent(playerPosition, playerSize))
-        console.dir(this.player)
+        this.player.addComponent(new GraphicsComponent(this.eventManager, playerPosition, playerSize))
     }
     public start(): void {
         const richText = dummyText('a start screen')
@@ -57,6 +58,10 @@ export class Engine {
         richText.y = 10
         this.app.stage.addChild(richText)
         const playerGraphic = this.player.getComponent('graphics') as GraphicsComponent
+        const playerPosition = this.player.getComponent('position') as PositionComponent
+        const playerSize = this.player.getComponent('size') as SizeComponent
+        playerPosition.setPosition(Math.floor(Math.random() * 6) + 1,Math.floor(Math.random() * 6) + 1)
+        playerSize.setSize(Math.floor(Math.random() * 25) + 23)
         this.app.stage.addChild(playerGraphic.rectangle)
     }
 }
