@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js"
 import { Graphics } from "pixi.js"
-import { Component } from "./component"
+import { Component } from "./Component"
 import { EventManager } from "../util/EventManager"
 import { PositionComponent, SizeComponent } from "./index"
 

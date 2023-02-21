@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js"
-import { Entity } from "./entities/entity"
+import { Entity } from "./entities/Entity"
 import { GraphicsComponent, PositionComponent, SizeComponent } from "./components/index"
 import { EventManager } from "./util/EventManager"
 

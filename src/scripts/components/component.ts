@@ -1,4 +1,4 @@
-import { Entity } from "../entities/entity"
+import { Entity } from "../entities/Entity"
 import { EventManager } from "../util/EventManager"
 
 export class Component {

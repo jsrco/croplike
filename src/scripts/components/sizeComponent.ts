@@ -1,5 +1,5 @@
 
-import { Component } from "./component"
+import { Component } from "./Component"
 import { EventManager } from "../util/EventManager"
 
 
