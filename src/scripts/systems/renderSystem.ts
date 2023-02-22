@@ -1,14 +1,24 @@
-import { System } from "./index"
+import { System } from "./System"
 import { World } from "../util/World"
+import { GraphicsComponent } from "../components/index"
 
 export class RenderSystem extends System {
-    type: string = 'render'
-
     constructor(world: World) {
         super(world)
+
+        // add subscriber to adding an entity and dispatch in the world for it
+        // the on add can be a private function that adds the entity to the screen if its a renderable
+        const entities = this.world.getEntitiesByComponent('position', 'velocity')
+        for (const entity of entities) {
+            if (entity.hasComponent("graphics")) {
+                const GraphicsComponent = entity.getComponent("graphics") as GraphicsComponent
+                GraphicsComponent.addToStage()
+            }
+        }
     }
+
     update(deltaTime: number): void {
-        // get etities from world that can be rendered by component, then update them
-        // rendering pass into app should be done at component level
+        // handle any sprites here for future
     }
 }
+

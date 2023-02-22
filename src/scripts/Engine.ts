@@ -1,20 +1,20 @@
 import * as PIXI from "pixi.js"
 import { Entity } from "./entities/Entity"
 import { GraphicsComponent, PositionComponent, SizeComponent, VelocityComponent } from "./components/index"
-import { MovementSystem } from "./systems/index"
+import { MovementSystem, RenderSystem } from "./systems/index"
 import { World } from "./util/World"
 
 export class Engine {
-    app: PIXI.Application
+    app: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
     player: Entity
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
         fontSize: 8,
         fill: ['#4ade80'],
     })
-    world: World = new World()
+    textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
+    world: World = new World(this.app)
     constructor(elementRef: any) {
-        this.app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
         elementRef.appendChild(this.app.view)
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
@@ -24,19 +24,14 @@ export class Engine {
         this.createPlayer()
         this.world.addEntity(this.player)
         this.world.addSystem(new MovementSystem(this.world))
+        this.world.addSystem(new RenderSystem(this.world))
 
     }
     createPlayer() {
         this.player.addComponents([new PositionComponent(this.world), new SizeComponent(this.world, 10), new VelocityComponent(this.world)])
-        const playerPosition = this.player.getComponent('position') as PositionComponent
-        const playerSize = this.player.getComponent('size') as SizeComponent
-        this.player.addComponent(new GraphicsComponent(this.world, playerPosition, playerSize))
+        this.player.addComponent(new GraphicsComponent(this.world))
     }
     public start(): void {
-        const richText = dummyText('a start screen', this.textStyle)
-        richText.x = 10
-        richText.y = 10
-        this.app.stage.addChild(richText)
         this.app.stage.eventMode = 'static'
         this.app.stage.hitArea = this.app.screen
         this.app.stage.on('pointerup', (event) => {
@@ -49,14 +44,13 @@ export class Engine {
     }
     private update(delta: number): void {
         // update game logic
-        this.app.stage.removeChildren()
-        const richText = dummyText(`a start screen ${this.app.renderer.width} x ${this.app.renderer.height}`, this.textStyle)
-        richText.x = 10
-        richText.y = 10
-        this.app.stage.addChild(richText)
+        this.app.stage.removeChild(this.textSupport)
+        this.textSupport = dummyText(`a start screen ${this.app.renderer.width} x ${this.app.renderer.height}`, this.textStyle)
+        this.textSupport.x = 10
+        this.textSupport.y = 10
+        this.app.stage.addChild(this.textSupport)
+
         this.world.update(delta)
-        const playerGraphic = this.player.getComponent('graphics') as GraphicsComponent
-        this.app.stage.addChild(playerGraphic.rectangle)
     }
 }
 

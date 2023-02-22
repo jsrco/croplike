@@ -1,26 +1,21 @@
 import * as PIXI from "pixi.js"
 import { Graphics } from "pixi.js"
 import { Component } from "./Component"
-import { PositionComponent, SizeComponent } from "./index"
 import { World } from "../util/World"
 
 export class GraphicsComponent extends Component {
     rectangle: Graphics
-    positionComponent: PositionComponent
-    sizeComponent: SizeComponent
     type: string = 'graphics'
 
-    constructor(world: World, positionComponent: PositionComponent, sizeComponent: SizeComponent, color = 0xFF0000) {
-        const { x, y } = positionComponent
-        const { height, width } = sizeComponent
+    constructor(world: World, color = 0xFF0000) {
         super(world)
-        this.rectangle = new PIXI.Graphics().beginFill(color).drawRect(x, y, width, height)
-        this.positionComponent = positionComponent
-        this.sizeComponent = sizeComponent
+        this.rectangle = new PIXI.Graphics().beginFill(color).drawRect(0,0,10,10)
 
         this.world.eventManager.subscribe('positionChange', this.onPositionChange.bind(this))
         this.world.eventManager.subscribe('sizeChange', this.onSizeChange.bind(this))
-
+    }
+    addToStage() {
+        this.world.app.stage.addChild(this.rectangle)
     }
     private onPositionChange(data: any): void {
         if (data.entity === this.owner) {
@@ -35,5 +30,8 @@ export class GraphicsComponent extends Component {
             this.rectangle.height = sizeComponent.height
             this.rectangle.width = sizeComponent.width
         }
+    }
+    removeFromStage() {
+        this.world.app.stage.removeChild(this.rectangle)
     }
 }

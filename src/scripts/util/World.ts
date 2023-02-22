@@ -1,15 +1,18 @@
+import * as PIXI from "pixi.js"
 import { Entity } from "../entities/Entity"
 import { System } from "../systems/index"
 import { EventManager } from "./EventManager"
 import { KeyboardController } from "./KeyboardController"
 
 export class World {
+    app: PIXI.Application
     private entities: Entity[]
     eventManager: EventManager = new EventManager()
     keyboardController: KeyboardController = new KeyboardController(this.eventManager)
     private systems: System[]
 
-    constructor() {
+    constructor(app: PIXI.Application) {
+        this.app = app
         this.entities = []
         this.systems = []
     }
