@@ -8,6 +8,7 @@ export class RenderSystem extends System {
         super(world)
     }
     update(deltaTime: number): void {
-
+        // get etities from world that can be rendered by component, then update them
+        // rendering pass into app should be done at component level
     }
 }

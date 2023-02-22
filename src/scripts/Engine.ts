@@ -7,6 +7,11 @@ import { World } from "./util/World"
 export class Engine {
     app: PIXI.Application
     player: Entity
+    textStyle: PIXI.TextStyle = new PIXI.TextStyle({
+        fontFamily: 'PixiPressStart2P',
+        fontSize: 8,
+        fill: ['#4ade80'],
+    })
     world: World = new World()
     constructor(elementRef: any) {
         this.app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
@@ -28,7 +33,7 @@ export class Engine {
         this.player.addComponent(new GraphicsComponent(this.world, playerPosition, playerSize))
     }
     public start(): void {
-        const richText = dummyText('a start screen')
+        const richText = dummyText('a start screen', this.textStyle)
         richText.x = 10
         richText.y = 10
         this.app.stage.addChild(richText)
@@ -45,7 +50,7 @@ export class Engine {
     private update(delta: number): void {
         // update game logic
         this.app.stage.removeChildren()
-        const richText = dummyText(`a start screen ${this.app.renderer.width} x ${this.app.renderer.height}`)
+        const richText = dummyText(`a start screen ${this.app.renderer.width} x ${this.app.renderer.height}`, this.textStyle)
         richText.x = 10
         richText.y = 10
         this.app.stage.addChild(richText)
@@ -56,11 +61,6 @@ export class Engine {
 }
 
 
-function dummyText(text: string) {
-    const style = new PIXI.TextStyle({
-        fontFamily: 'PixiPressStart2P',
-        fontSize: 8,
-        fill: ['#4ade80'],
-    })
+function dummyText(text: string, style: PIXI.TextStyle) {
     return new PIXI.Text(text, style)
 }
