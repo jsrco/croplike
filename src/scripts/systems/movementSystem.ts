@@ -1,12 +1,12 @@
 import { PositionComponent, VelocityComponent } from "../components"
-import { System } from "./System"
+import { System } from "./index"
 import { World } from "../util/World"
 
 export class MovementSystem extends System {
+    private acceleration: number
     private keys: Set<string>
     private maxVelocity: number
-    private acceleration: number
-
+    type: string = 'movement'
     constructor(world: World) {
         super(world)
         this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))

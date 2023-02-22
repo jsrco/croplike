@@ -1,5 +1,5 @@
 import { Entity } from "../entities/Entity"
-import { System } from "../systems/System"
+import { System } from "../systems/index"
 import { EventManager } from "./EventManager"
 import { KeyboardController } from "./KeyboardController"
 

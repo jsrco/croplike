@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js"
 import { Entity } from "./entities/Entity"
 import { GraphicsComponent, PositionComponent, SizeComponent, VelocityComponent } from "./components/index"
-import { MovementSystem } from "./systems/movementSystem"
+import { MovementSystem } from "./systems/index"
 import { World } from "./util/World"
 
 export class Engine {

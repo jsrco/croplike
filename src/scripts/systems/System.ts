@@ -1,6 +1,7 @@
 import { World } from "../util/World"
 
 export class System {
+    type!: string
     world: World
 
     constructor(world: World) {
