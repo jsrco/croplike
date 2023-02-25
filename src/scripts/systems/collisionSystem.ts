@@ -33,8 +33,38 @@ export class CollisionSystem extends System {
         return collisionA.rectangle.intersects(collisionB.rectangle)
     }
     private getCollisionSide(entityA: Entity, entityB: Entity): string {
-        // getCollisionSide 
-        return 'side the entity is touching'
+        const positionA = entityA.getComponent('position') as PositionComponent
+        const positionB = entityB.getComponent('position') as PositionComponent
+
+        const previousPositionA = {
+            x: positionA.previousPositionX,
+            y: positionA.previousPositionY
+        }
+        const previousPositionB = {
+            x: positionB.previousPositionX,
+            y: positionB.previousPositionY
+        }
+
+        const sizeA = entityA.getComponent('size') as SizeComponent
+        const sizeB = entityB.getComponent('size') as SizeComponent
+
+        const dx = (previousPositionA.x + sizeA.width / 2) - (previousPositionB.x + sizeB.width / 2)
+        const dy = (previousPositionA.y + sizeA.height / 2) - (previousPositionB.y + sizeB.height / 2)
+
+        const width = (sizeA.width + sizeB.width) / 2
+        const height = (sizeA.height + sizeB.height) / 2
+
+        const crossWidth = width * dy
+        const crossHeight = height * dx
+
+        if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
+            if (crossWidth > crossHeight) {
+                return crossWidth > (-crossHeight) ? 'bottom' : 'left'
+            } else {
+                return crossWidth > (-crossHeight) ? 'right' : 'top'
+            }
+        }
+        return ''
     }
 
     private handleCollision(entityA: Entity, entityB: Entity): void {
