@@ -1,5 +1,5 @@
 import { Entity } from '../entities/Entity'
-import { CollisionComponent, PositionComponent, SizeComponent, VelocityComponent } from '../components'
+import { CollisionComponent, GravityComponent, PositionComponent, SizeComponent, VelocityComponent } from '../components'
 import { System } from './System'
 import { World } from '../util/World'
 
@@ -14,7 +14,6 @@ export class CollisionSystem extends System {
             const entityA = entities[i]
             for (let j = i + 1; j < entities.length; j++) {
                 const entityB = entities[j]
-                const collisionB = entityB.getComponent('collision') as CollisionComponent
                 const check = this.checkCollision(entityA, entityB)
                 if (check[0]) {
                     this.handleCollision(entityA, entityB, check[1])
@@ -42,7 +41,7 @@ export class CollisionSystem extends System {
             const intersectX = Math.abs(deltaX) - (sizeA.width / 2 + sizeB.width / 2)
             const intersectY = Math.abs(deltaY) - (sizeA.height / 2 + sizeB.height / 2)
 
-            if (intersectX < intersectY) {
+            if (intersectX > intersectY) {
                 collisionSide = deltaX > 0 ? 'left' : 'right'
             } else {
                 collisionSide = deltaY > 0 ? 'top' : 'bottom'
@@ -58,6 +57,10 @@ export class CollisionSystem extends System {
             velocityA.setVelocity(0, velocityA.y)
             velocityB.setVelocity(0, velocityB.y)
           } else if (whereItHappened === 'top' || whereItHappened === 'bottom') {
+            if (whereItHappened ==='bottom') {
+                const gravity = entityA.getComponent('gravity') as GravityComponent
+                gravity.setGroundStatus(true)
+            }
             velocityA.setVelocity(velocityA.x, 0)
             velocityB.setVelocity(velocityB.x, 0)
           }

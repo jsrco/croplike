@@ -2,7 +2,8 @@ import { Component } from './Component'
 import { World } from "../util/World"
 
 export class GravityComponent extends Component {
-    public force: number = 0
+    public force: number = 0.6
+    isOnGround: boolean = false
     type = 'gravity'
     
     constructor(world: World) {
@@ -10,6 +11,8 @@ export class GravityComponent extends Component {
     }
     setGravity(x: number) {
         this.force = x
-        this.world.eventManager.dispatch('gravityChange', { entity: this.owner, positionComponent: this })
+    }
+    setGroundStatus(isIt: boolean) {
+        this.isOnGround = isIt
     }
 }

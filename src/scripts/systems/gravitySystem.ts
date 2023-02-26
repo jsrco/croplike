@@ -12,11 +12,12 @@ export class GravitySystem extends System {
 
         for (const entity of entities) {
             const gravityComponent = entity.getComponent('gravity') as GravityComponent
-            const positionComponent = entity.getComponent('position') as PositionComponent
-            const velocityComponent = entity.getComponent('velocity') as VelocityComponent
-           gravityComponent.setGravity(.3)
-           velocityComponent.setVelocity(velocityComponent.x, velocityComponent.y += gravityComponent.force * deltaTime)            
-           positionComponent.setPosition(positionComponent.x, positionComponent.y += velocityComponent.y * deltaTime)
+            if (!gravityComponent.isOnGround) {
+                const positionComponent = entity.getComponent('position') as PositionComponent
+                const velocityComponent = entity.getComponent('velocity') as VelocityComponent
+                velocityComponent.setVelocity(velocityComponent.x, velocityComponent.y += gravityComponent.force * deltaTime)
+                positionComponent.setPosition(positionComponent.x, positionComponent.y += velocityComponent.y * deltaTime)
+            }
         }
     }
 }

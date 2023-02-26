@@ -21,21 +21,23 @@ export class MovementSystem extends System {
             const positionComponent = entity.getComponent('position') as PositionComponent
             const velocityComponent = entity.getComponent('velocity') as VelocityComponent
             // Reset velocity to zero if no keys are pressed
-            if (this.keys.size === 0) {
-                velocityComponent.setVelocity(0, velocityComponent.y)
-            }
-            // Update velocity based on keys pressed
-            if (this.keys.has('ArrowLeft')) {
-                velocityComponent.setVelocity(
-                    Math.max(velocityComponent.x - this.acceleration, -this.maxVelocity),
-                    velocityComponent.y
-                )
-            }
-            if (this.keys.has('ArrowRight')) {
-                velocityComponent.setVelocity(
-                    Math.min(velocityComponent.x + this.acceleration, this.maxVelocity),
-                    velocityComponent.y
-                )
+            if (entity.name === 'player') {
+                if (this.keys.size === 0) {
+                    velocityComponent.setVelocity(0, velocityComponent.y)
+                }
+                // Update velocity based on keys pressed
+                if (this.keys.has('ArrowLeft')) {
+                    velocityComponent.setVelocity(
+                        Math.max(velocityComponent.x - this.acceleration, -this.maxVelocity),
+                        velocityComponent.y
+                    )
+                }
+                if (this.keys.has('ArrowRight')) {
+                    velocityComponent.setVelocity(
+                        Math.min(velocityComponent.x + this.acceleration, this.maxVelocity),
+                        velocityComponent.y
+                    )
+                }
             }
             // Update position based on velocity
             if (velocityComponent.x !== 0 || velocityComponent.y !== 0) {
