@@ -28,7 +28,7 @@ export class CollisionSystem extends System {
         const collisionB = entityB.getComponent('collision') as CollisionComponent
 
         const itDidHappen = collisionA.rectangle.intersects(collisionB.rectangle)
-        const collisionSide: string = 'bottom' || 'left' || 'right' || 'top'
+        let collisionSide: string = ''
 
         if (itDidHappen) {
             const positionA = entityA.getComponent('position') as PositionComponent
@@ -36,6 +36,17 @@ export class CollisionSystem extends System {
             const sizeA = entityA.getComponent('size') as SizeComponent
             const sizeB = entityB.getComponent('size') as SizeComponent
             // implment logic to check which side the collision occured on
+            // Determine direction of collision
+            const deltaX = (positionA.x + sizeA.width / 2) - (positionB.x + sizeB.width / 2)
+            const deltaY = (positionA.y + sizeA.height / 2) - (positionB.y + sizeB.height / 2)
+            const intersectX = Math.abs(deltaX) - (sizeA.width / 2 + sizeB.width / 2)
+            const intersectY = Math.abs(deltaY) - (sizeA.height / 2 + sizeB.height / 2)
+
+            if (intersectX < intersectY) {
+                collisionSide = deltaX > 0 ? 'left' : 'right'
+            } else {
+                collisionSide = deltaY > 0 ? 'top' : 'bottom'
+            }
         }
 
         return [itDidHappen, collisionSide]
@@ -43,7 +54,7 @@ export class CollisionSystem extends System {
     private handleCollision(entityA: Entity, entityB: Entity, whereItHappened: string): void {
         const velocityA = entityA.getComponent('velocity') as VelocityComponent
         const velocityB = entityB.getComponent('velocity') as VelocityComponent
-
+        console.log('collision' + whereItHappened)
         // Implement collision response here
         // handle the collision basesd off whereItHappened
         // collisions on left and right, should set the entity x veloicty to 0 to prevent movement left and right 
