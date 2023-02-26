@@ -54,11 +54,12 @@ export class CollisionSystem extends System {
     private handleCollision(entityA: Entity, entityB: Entity, whereItHappened: string): void {
         const velocityA = entityA.getComponent('velocity') as VelocityComponent
         const velocityB = entityB.getComponent('velocity') as VelocityComponent
-        console.log('collision' + whereItHappened)
-        // Implement collision response here
-        // handle the collision basesd off whereItHappened
-        // collisions on left and right, should set the entity x veloicty to 0 to prevent movement left and right 
-        // collisions on the top and bottom, should set the entity y veloicty to 0 to prevent gravity and jumping. 
-
+        if (whereItHappened === 'left' || whereItHappened === 'right') {
+            velocityA.setVelocity(0, velocityA.y)
+            velocityB.setVelocity(0, velocityB.y)
+          } else if (whereItHappened === 'top' || whereItHappened === 'bottom') {
+            velocityA.setVelocity(velocityA.x, 0)
+            velocityB.setVelocity(velocityB.x, 0)
+          }
     }
 }
