@@ -30,8 +30,8 @@ export class Engine {
         this.world.addEntity(this.block)
         const positionSet = this.block.getComponent('position') as PositionComponent
         const sizeSet = this.block.getComponent('size') as SizeComponent
-        sizeSet.setSize(20, this.app.stage.width)
-        positionSet.setPosition(0, 400)
+        sizeSet.setSize(this.app.renderer.width, 20)
+        positionSet.setPosition(0, this.app.renderer.height - sizeSet.height)
         this.world.addSystem(new CollisionSystem(this.world))
         this.world.addSystem(new GravitySystem(this.world))
         this.world.addSystem(new MovementSystem(this.world))
