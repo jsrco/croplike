@@ -3,6 +3,7 @@ import { System } from './System'
 import { World } from '../util/World'
 
 export class GravitySystem extends System {
+    maxVelocity: number = 4
     constructor(world: World) {
         super(world)
     }
@@ -15,7 +16,7 @@ export class GravitySystem extends System {
             if (!gravityComponent.isOnGround) {
                 const positionComponent = entity.getComponent('position') as PositionComponent
                 const velocityComponent = entity.getComponent('velocity') as VelocityComponent
-                velocityComponent.setVelocity(velocityComponent.x, velocityComponent.y += gravityComponent.force * deltaTime)
+                velocityComponent.setVelocity(velocityComponent.x, Math.min(velocityComponent.y += gravityComponent.force * deltaTime, this.maxVelocity))
                 positionComponent.setPosition(positionComponent.x, positionComponent.y += velocityComponent.y * deltaTime)
             }
         }

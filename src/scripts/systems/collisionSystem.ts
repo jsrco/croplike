@@ -16,19 +16,20 @@ export class CollisionSystem extends System {
                 const entityB = entities[j]
                 const check = this.checkCollision(entityA, entityB)
                 if (check[0]) {
-                    this.handleCollision(entityA, entityB, check[1])
+                    this.handleCollision(entityA, entityB, check)
                 }
             }
         }
 
     }
-    private checkCollision(entityA: Entity, entityB: Entity): [boolean, string] {
+    private checkCollision(entityA: Entity, entityB: Entity): [boolean, string, string] {
         const collisionA = entityA.getComponent('collision') as CollisionComponent
         const collisionB = entityB.getComponent('collision') as CollisionComponent
 
         const itDidHappen = collisionA.rectangle.intersects(collisionB.rectangle)
         let collisionSide: string = ''
-
+        let oppositeSide: string = ''
+        
         if (itDidHappen) {
             const positionA = entityA.getComponent('position') as PositionComponent
             const positionB = entityB.getComponent('position') as PositionComponent
@@ -43,23 +44,48 @@ export class CollisionSystem extends System {
 
             if (intersectX > intersectY) {
                 collisionSide = deltaX > 0 ? 'left' : 'right'
+                oppositeSide = deltaX > 0 ? 'right' : 'left'
             } else {
                 collisionSide = deltaY > 0 ? 'top' : 'bottom'
+                oppositeSide = deltaY > 0 ? 'bottom' : 'top'
             }
         }
-
-        return [itDidHappen, collisionSide]
+        return [itDidHappen, collisionSide, oppositeSide]
     }
-    private handleCollision(entityA: Entity, entityB: Entity, whereItHappened: string): void {
+    private correctCollision(entityA: Entity, entityB: Entity, whereItHappened: string): void {
+        const positionA = entityA.getComponent('position') as PositionComponent
+        const positionB = entityB.getComponent('position') as PositionComponent
+        const sizeA = entityA.getComponent('size') as SizeComponent
+        const sizeB = entityB.getComponent('size') as SizeComponent
+      
+        switch (whereItHappened) {
+          case 'left':
+            positionA.setPosition(positionB.x + sizeB.width, positionA.y)
+            break
+          case 'right':
+            positionA.setPosition(positionB.x - sizeA.width, positionA.y)
+            break
+          case 'top':
+            positionA.setPosition(positionA.x, positionB.y + sizeB.height)
+            break
+          case 'bottom':
+            positionA.setPosition(positionA.x, positionB.y - sizeA.height)
+            break
+        }
+      }      
+    private handleCollision(entityA: Entity, entityB: Entity, check: [boolean,string,string]): void {
+        this.correctCollision(entityA, entityB, check[1])
+        this.correctCollision(entityB, entityA, check[2])
+        
         const velocityA = entityA.getComponent('velocity') as VelocityComponent
         const velocityB = entityB.getComponent('velocity') as VelocityComponent
-        if (whereItHappened === 'left' || whereItHappened === 'right') {
+        if (check[1] === 'left' || check[1] === 'right') {
             velocityA.setVelocity(0, velocityA.y)
             velocityB.setVelocity(0, velocityB.y)
-          } else if (whereItHappened === 'top' || whereItHappened === 'bottom') {
-            if (whereItHappened ==='bottom') {
+          } else if (check[1] === 'top' || check[1] === 'bottom') {
+            if (check[1] ==='bottom') {
                 const gravity = entityA.getComponent('gravity') as GravityComponent
-                gravity.setGroundStatus(true)
+                if (gravity) gravity.setGroundStatus(true)
             }
             velocityA.setVelocity(velocityA.x, 0)
             velocityB.setVelocity(velocityB.x, 0)
