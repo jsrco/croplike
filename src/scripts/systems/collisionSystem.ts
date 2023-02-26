@@ -1,5 +1,5 @@
 import { Entity } from '../entities/Entity'
-import { CollisionComponent, GravityComponent, PositionComponent, SizeComponent, VelocityComponent } from '../components'
+import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent } from '../components'
 import { System } from './System'
 import { World } from '../util/World'
 
@@ -86,6 +86,9 @@ export class CollisionSystem extends System {
             if (check[1] ==='bottom') {
                 const gravity = entityA.getComponent('gravity') as GravityComponent
                 if (gravity) gravity.setGroundStatus(true)
+                const jumping = entityA.getComponent('jump') as JumpComponent
+                if (jumping) jumping.setIsJumping(false)
+                
             }
             velocityA.setVelocity(velocityA.x, 0)
             velocityB.setVelocity(velocityB.x, 0)

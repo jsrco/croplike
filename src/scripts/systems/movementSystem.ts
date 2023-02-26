@@ -1,4 +1,4 @@
-import { PositionComponent, VelocityComponent } from "../components"
+import { GravityComponent, JumpComponent, PositionComponent, VelocityComponent } from "../components"
 import { System } from "./index"
 import { World } from "../util/World"
 
@@ -37,6 +37,12 @@ export class MovementSystem extends System {
                         Math.min(velocityComponent.x + this.acceleration, this.maxVelocity),
                         velocityComponent.y
                     )
+                }
+                const gravity = entity.getComponent('gravity') as GravityComponent
+                if (this.keys.has('ArrowUp') && gravity.isOnGround) {
+                    const jumpComponent = entity.getComponent('jump') as JumpComponent
+                    velocityComponent.setVelocity(velocityComponent.x, velocityComponent.y - jumpComponent.force)
+                    jumpComponent.setIsJumping(true)
                 }
             }
             // Update position based on velocity

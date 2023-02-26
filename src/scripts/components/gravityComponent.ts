@@ -20,5 +20,6 @@ export class GravityComponent extends Component {
     }
     setGroundStatus(isIt: boolean) {
         this.isOnGround = isIt
+        this.world.eventManager.dispatch('gravityChange', { entity: this.owner, gravityComponent: this })
     }
 }

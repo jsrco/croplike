@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js"
 import { Entity } from "./entities/Entity"
-import { CollisionComponent, GraphicsComponent, GravityComponent, PositionComponent, SizeComponent, VelocityComponent } from "./components/index"
+import { CollisionComponent, GraphicsComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent } from "./components/index"
 import { CollisionSystem, GravitySystem, MovementSystem, RenderSystem } from "./systems/index"
 import { World } from "./util/World"
 
@@ -21,6 +21,22 @@ export class Engine {
         elementRef.appendChild(this.app.view)
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
+
+            //temp 
+            const positionSet = this.block.getComponent('position') as PositionComponent
+            const sizeSet = this.block.getComponent('size') as SizeComponent
+            sizeSet.setSize(this.app.renderer.width - 40, 20)
+            positionSet.setPosition(20, this.app.renderer.height - sizeSet.height)
+            
+            const positionSetbl = this.blockLeft.getComponent('position') as PositionComponent
+            const sizeSetbl = this.blockLeft.getComponent('size') as SizeComponent
+            sizeSetbl.setSize(20, this.app.renderer.height)
+            positionSetbl.setPosition(0, 0)
+            
+            const positionSetbr = this.blockRight.getComponent('position') as PositionComponent
+            const sizeSetbr = this.blockRight.getComponent('size') as SizeComponent
+            sizeSetbr.setSize(20, this.app.renderer.height)
+            positionSetbr.setPosition(this.app.renderer.width - sizeSetbr.width, 0)
         })
         // demo
         this.player = new Entity('player')
@@ -66,7 +82,7 @@ export class Engine {
         if (entity.name === 'player') {
             entity.addComponent(new GravityComponent(this.world))
             entity.addComponent(new GraphicsComponent(this.world, 0xFFFFFF))
-
+            entity.addComponent(new JumpComponent(this.world))
         } else entity.addComponent(new GraphicsComponent(this.world, 0x4ade80))
     }
     public start(): void {
