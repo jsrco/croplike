@@ -9,7 +9,7 @@ export class CollisionSystem extends System {
     }
 
     update(deltaTime: number): void {
-        const entities = this.world.getEntitiesByComponent('collision', 'position', 'velocity')
+        const entities = this.world.getEntitiesByComponent('collision')
         for (let i = 0; i < entities.length; i++) {
             const entityA = entities[i]
             for (let j = i + 1; j < entities.length; j++) {
