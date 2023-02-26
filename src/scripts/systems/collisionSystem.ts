@@ -39,9 +39,10 @@ export class CollisionSystem extends System {
         const velocityB = entityB.getComponent('velocity') as VelocityComponent
 
         // Implement collision response here
-        // since both entities have been determined to be colliding, call getCollisionSide
+        // check Collisions have been called determine where the entities have collied by getCollisionSide
         // handle the collision basesd of the entities side
-
+        // collisions on left and right, should set the entity x veloicty to 0 to prevent movement left and right 
+        // collisions on the top and bottom, should set the entity y veloicty to 0 to prevent gravity and jumping. 
 
     }
 }
