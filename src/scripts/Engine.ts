@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js"
 import { Entity } from "./entities/Entity"
-import { CollisionComponent, GraphicsComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent } from "./components/index"
+import { CollisionComponent, GraphicsComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "./components/index"
 import { CollisionSystem, GravitySystem, MovementSystem, RenderSystem } from "./systems/index"
 import { World } from "./util/World"
 
@@ -83,7 +83,8 @@ export class Engine {
             entity.addComponent(new GravityComponent(this.world))
             entity.addComponent(new GraphicsComponent(this.world, 0xFFFFFF))
             entity.addComponent(new JumpComponent(this.world))
-        } else entity.addComponent(new GraphicsComponent(this.world, 0x4ade80))
+            entity.addComponent(new WallCollisionComponent(this.world))
+        } else entity.addComponents([new GraphicsComponent(this.world, 0x4ade80), new WallComponent(this.world)])
     }
     public start(): void {
         this.app.stage.eventMode = 'static'
