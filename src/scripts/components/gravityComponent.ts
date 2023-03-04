@@ -2,9 +2,9 @@ import { Component } from './Component'
 import { World } from "../util/World"
 
 export class GravityComponent extends Component {
-    public force: number = 0.5
+    force: number = 0.5
     isOnGround: boolean = false
-    type = 'gravity'
+    type: string = 'gravity'
     
     constructor(world: World) {
         super(world)

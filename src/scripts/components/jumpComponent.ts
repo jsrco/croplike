@@ -12,9 +12,9 @@ export class JumpComponent extends Component {
   }
   private onGravityChange(data: any): void {
     if (data.entity === this.owner && data.gravityComponent.isOnGround) {
-        this.setIsJumping(false)
+      this.setIsJumping(false)
     }
-}
+  }
   setIsJumping(isIt: boolean) {
     this.isJumping = isIt
     this.world.eventManager.dispatch('jumpChange', { entity: this.owner, jumpComponent: this })
