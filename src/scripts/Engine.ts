@@ -27,12 +27,12 @@ export class Engine {
             const sizeSet = this.block.getComponent('size') as SizeComponent
             sizeSet.setSize(this.app.renderer.width - 40, 20)
             positionSet.setPosition(20, this.app.renderer.height - sizeSet.height)
-            
+
             const positionSetbl = this.blockLeft.getComponent('position') as PositionComponent
             const sizeSetbl = this.blockLeft.getComponent('size') as SizeComponent
             sizeSetbl.setSize(20, this.app.renderer.height)
             positionSetbl.setPosition(0, 0)
-            
+
             const positionSetbr = this.blockRight.getComponent('position') as PositionComponent
             const sizeSetbr = this.blockRight.getComponent('size') as SizeComponent
             sizeSetbr.setSize(20, this.app.renderer.height)
@@ -43,7 +43,7 @@ export class Engine {
         this.createEntity(this.player)
         this.world.addEntity(this.player)
         const position = this.player.getComponent('position') as PositionComponent
-        position.setPosition(30,30)
+        position.setPosition(30, 30)
 
         // dummy level
         this.block = new Entity('block')
@@ -56,17 +56,17 @@ export class Engine {
         this.world.addEntity(this.block)
         this.world.addEntity(this.blockLeft)
         this.world.addEntity(this.blockRight)
-        
+
         const positionSet = this.block.getComponent('position') as PositionComponent
         const sizeSet = this.block.getComponent('size') as SizeComponent
         sizeSet.setSize(this.app.renderer.width - 40, 20)
         positionSet.setPosition(20, this.app.renderer.height - sizeSet.height)
-        
+
         const positionSetbl = this.blockLeft.getComponent('position') as PositionComponent
         const sizeSetbl = this.blockLeft.getComponent('size') as SizeComponent
         sizeSetbl.setSize(20, this.app.renderer.height)
         positionSetbl.setPosition(0, 0)
-        
+
         const positionSetbr = this.blockRight.getComponent('position') as PositionComponent
         const sizeSetbr = this.blockRight.getComponent('size') as SizeComponent
         sizeSetbr.setSize(20, this.app.renderer.height)
