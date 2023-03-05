@@ -1,4 +1,4 @@
-import { GravityComponent, JumpComponent, PositionComponent, VelocityComponent } from "../components"
+import { GravityComponent, JumpComponent, PositionComponent, VelocityComponent, WallCollisionComponent } from "../components"
 import { System } from "./index"
 import { World } from "../util/World"
 
@@ -22,6 +22,8 @@ export class MovementSystem extends System {
             const velocityComponent = entity.getComponent('velocity') as VelocityComponent
             // Reset velocity to zero if no keys are pressed
             if (entity.name === 'player') {
+                const wallCollisionComponent = entity.getComponent('wallCollision') as WallCollisionComponent
+
                 if (this.keys.size === 0) {
                     velocityComponent.setVelocity(0, velocityComponent.y)
                 }
@@ -31,18 +33,28 @@ export class MovementSystem extends System {
                         Math.max(velocityComponent.x - this.acceleration, -this.maxVelocity),
                         velocityComponent.y
                     )
+                    if (wallCollisionComponent.wallDirection === 'right') wallCollisionComponent.setIsSliding(false)
                 }
                 if (this.keys.has('ArrowRight')) {
                     velocityComponent.setVelocity(
                         Math.min(velocityComponent.x + this.acceleration, this.maxVelocity),
                         velocityComponent.y
                     )
+                    if (wallCollisionComponent.wallDirection === 'left') wallCollisionComponent.setIsSliding(false)
                 }
                 const gravity = entity.getComponent('gravity') as GravityComponent
                 if (this.keys.has('ArrowUp') && gravity.isOnGround) {
                     const jumpComponent = entity.getComponent('jump') as JumpComponent
                     velocityComponent.setVelocity(velocityComponent.x, velocityComponent.y - jumpComponent.force)
                     jumpComponent.setIsJumping(true)
+                    wallCollisionComponent.setIsSliding(false)
+                }
+                if (this.keys.has('ArrowUp') && wallCollisionComponent.isSliding) {
+                    const jumpComponent = entity.getComponent('jump') as JumpComponent
+                    const velocityX = wallCollisionComponent.wallDirection === 'left' ? velocityComponent.x += wallCollisionComponent.force : velocityComponent.x -= wallCollisionComponent.force
+                    velocityComponent.setVelocity(velocityX, velocityComponent.y - wallCollisionComponent.force)
+                    jumpComponent.setIsJumping(true)
+                    wallCollisionComponent.setIsSliding(false)
                 }
             }
             // Update position based on velocity

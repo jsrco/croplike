@@ -75,7 +75,9 @@ export class CollisionSystem extends System {
     if (check[1] === 'left' || check[1] === 'right') {
       if (entityA.name === 'player') {
         const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
-        wallCollisionComponent.setIsSliding(true)
+        wallCollisionComponent.setIsSliding(true, check[1])
+        const jumping = entityA.getComponent('jump') as JumpComponent
+        if (jumping) jumping.setIsJumping(false)
       }
       velocityA.setVelocity(0, velocityA.y)
       velocityB.setVelocity(0, velocityB.y)
@@ -86,8 +88,7 @@ export class CollisionSystem extends System {
         const jumping = entityA.getComponent('jump') as JumpComponent
         if (jumping) jumping.setIsJumping(false)
         const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
-        wallCollisionComponent.setIsHanging(false)
-        wallCollisionComponent.setIsSliding(false)
+        if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false)
       }
       velocityA.setVelocity(velocityA.x, 0)
       velocityB.setVelocity(velocityB.x, 0)
