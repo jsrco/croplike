@@ -6,7 +6,7 @@ export class WallCollisionComponent extends Component {
     isHanging: boolean = false
     isSliding: boolean = false
     type: string = 'wallCollision'
-    wallSlideSpeed: number = 2
+    wallSlideSpeed: number = 0.2
 
     constructor(world: World) {
         super(world)

@@ -1,4 +1,4 @@
-import { GravityComponent, PositionComponent, VelocityComponent } from '../components/index'
+import { GravityComponent, PositionComponent, VelocityComponent, WallCollisionComponent } from '../components/index'
 import { System } from './System'
 import { World } from '../util/World'
 
@@ -13,11 +13,17 @@ export class GravitySystem extends System {
 
         for (const entity of entities) {
             const gravityComponent = entity.getComponent('gravity') as GravityComponent
-            if (!gravityComponent.isOnGround) {
+            const wallCollisionComponent = entity.getComponent('wallCollision') as WallCollisionComponent
+            if (!gravityComponent.isOnGround && !wallCollisionComponent.isHanging) {
                 const positionComponent = entity.getComponent('position') as PositionComponent
                 const velocityComponent = entity.getComponent('velocity') as VelocityComponent
-                velocityComponent.setVelocity(velocityComponent.x, Math.min(velocityComponent.y += gravityComponent.force * deltaTime, this.maxVelocity))
-                positionComponent.setPosition(positionComponent.x, positionComponent.y += velocityComponent.y * deltaTime)
+                if (wallCollisionComponent.isSliding) {
+                    velocityComponent.setVelocity(velocityComponent.x, Math.min(velocityComponent.y = wallCollisionComponent.wallSlideSpeed * deltaTime, this.maxVelocity))
+                    positionComponent.setPosition(positionComponent.x, positionComponent.y += velocityComponent.y * deltaTime)
+                } else {
+                    velocityComponent.setVelocity(velocityComponent.x, Math.min(velocityComponent.y += gravityComponent.force * deltaTime, this.maxVelocity))
+                    positionComponent.setPosition(positionComponent.x, positionComponent.y += velocityComponent.y * deltaTime)
+                }
             }
         }
     }

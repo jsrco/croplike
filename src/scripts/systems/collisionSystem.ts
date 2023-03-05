@@ -1,5 +1,5 @@
 import { Entity } from '../entities/Entity'
-import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent } from '../components'
+import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent, WallCollisionComponent } from '../components'
 import { System } from './System'
 import { World } from '../util/World'
 
@@ -73,6 +73,10 @@ export class CollisionSystem extends System {
     const velocityA = entityA.getComponent('velocity') as VelocityComponent
     const velocityB = entityB.getComponent('velocity') as VelocityComponent
     if (check[1] === 'left' || check[1] === 'right') {
+      if (entityA.name === 'player') {
+        const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
+        wallCollisionComponent.setIsSliding(true)
+      }
       velocityA.setVelocity(0, velocityA.y)
       velocityB.setVelocity(0, velocityB.y)
     } else if (check[1] === 'top' || check[1] === 'bottom') {
@@ -81,6 +85,9 @@ export class CollisionSystem extends System {
         if (gravity) gravity.setGroundStatus(true)
         const jumping = entityA.getComponent('jump') as JumpComponent
         if (jumping) jumping.setIsJumping(false)
+        const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
+        wallCollisionComponent.setIsHanging(false)
+        wallCollisionComponent.setIsSliding(false)
       }
       velocityA.setVelocity(velocityA.x, 0)
       velocityB.setVelocity(velocityB.x, 0)
