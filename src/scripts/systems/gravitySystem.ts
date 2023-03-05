@@ -22,6 +22,8 @@ export class GravitySystem extends System {
                     velocityComponent.setVelocity(velocityComponent.x, Math.min(velocityComponent.y = wallCollisionComponent.wallSlideSpeed * deltaTime, this.maxVelocity))
                     positionComponent.setPosition(positionComponent.x, positionComponent.y += velocityComponent.y * deltaTime)
                 } else {
+                    wallCollisionComponent.setWallSlideSpeed(1)
+
                     velocityComponent.setVelocity(velocityComponent.x, Math.min(velocityComponent.y += gravityComponent.force * deltaTime, this.maxVelocity))
                     positionComponent.setPosition(positionComponent.x, positionComponent.y += velocityComponent.y * deltaTime)
                 }

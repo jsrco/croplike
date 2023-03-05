@@ -6,7 +6,7 @@ export class WallCollisionComponent extends Component {
     isSliding: boolean = false
     type: string = 'wallCollision'
     wallDirection: string = ''
-    wallSlideSpeed: number = 0.2
+    wallSlideSpeed: number = 1
 
     constructor(world: World) {
         super(world)
@@ -17,7 +17,7 @@ export class WallCollisionComponent extends Component {
     }
     setWallSlideSpeed(newSpeed: number) {
         if (!this.isSliding) {
-            this.wallSlideSpeed = 0.2
+            this.wallSlideSpeed = 1
         } else this.wallSlideSpeed = Math.max(newSpeed, 0)
     }
 }
