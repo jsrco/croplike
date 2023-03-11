@@ -9,6 +9,7 @@ export class Engine {
     block: Entity
     blockLeft: Entity
     blockRight: Entity
+    platform: Entity
     player: Entity
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
@@ -45,6 +46,13 @@ export class Engine {
         const position = this.player.getComponent('position') as PositionComponent
         position.setPosition(30, 30)
 
+        // demo
+        this.platform = new Entity('platform')
+        this.createEntity(this.platform)
+        this.world.addEntity(this.platform)
+        const platformposition = this.platform.getComponent('position') as PositionComponent
+        platformposition.setPosition(200, 300)
+
         // dummy level
         this.block = new Entity('block')
         this.createEntity(this.block)
@@ -72,6 +80,11 @@ export class Engine {
         sizeSetbr.setSize(20, this.app.renderer.height)
         positionSetbr.setPosition(this.app.renderer.width - sizeSetbr.width, 0)
 
+        const gravityPlatform = this.platform.getComponent('gravity') as GravityComponent
+        gravityPlatform.setGravity(.3)
+        const sizeSetplatform = this.platform.getComponent('size') as SizeComponent
+        sizeSetplatform.setSize(190)
+
         this.world.addSystem(new CollisionSystem(this.world))
         this.world.addSystem(new GravitySystem(this.world))
         this.world.addSystem(new MovementSystem(this.world))
@@ -79,7 +92,7 @@ export class Engine {
     }
     createEntity(entity: Entity) {
         entity.addComponents([new CollisionComponent(this.world), new PositionComponent(this.world), new SizeComponent(this.world, 10), new VelocityComponent(this.world)])
-        if (entity.name === 'player') {
+        if (entity.name === 'player' || entity.name === 'platform') {
             entity.addComponent(new GravityComponent(this.world))
             entity.addComponent(new GraphicsComponent(this.world, 0xFFFFFF))
             entity.addComponent(new JumpComponent(this.world))

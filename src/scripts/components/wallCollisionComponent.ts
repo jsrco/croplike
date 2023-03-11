@@ -2,11 +2,11 @@ import { Component } from './Component'
 import { World } from "../util/World"
 
 export class WallCollisionComponent extends Component {
-    force: number = 3
+    force: number = 5
     isSliding: boolean = false
     type: string = 'wallCollision'
     wallDirection: string = ''
-    wallSlideSpeed: number = 1
+    wallSlideSpeed: number = 0.4
 
     constructor(world: World) {
         super(world)

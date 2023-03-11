@@ -56,6 +56,8 @@ export class MovementSystem extends System {
                     jumpComponent.setIsJumping(true)
                     wallCollisionComponent.setIsSliding(false)
                 }
+            } else if (entity.name === 'platform') {
+                // patrol code update here
             }
             // Update position based on velocity
             if (velocityComponent.x !== 0 || velocityComponent.y !== 0) {
