@@ -79,8 +79,8 @@ export class CollisionSystem extends System {
         const jumping = entityA.getComponent('jump') as JumpComponent
         if (jumping) jumping.setIsJumping(false)
       }
-      velocityA.setVelocity(0, velocityA.y)
-      velocityB.setVelocity(0, velocityB.y)
+      if (entityA.name !== 'platform')velocityA.setVelocity(0, velocityA.y)
+      if (entityB.name !== 'platform') velocityB.setVelocity(0, velocityB.y)
     } else if (check[1] === 'top' || check[1] === 'bottom') {
       if (check[1] === 'bottom') {
         const gravity = entityA.getComponent('gravity') as GravityComponent

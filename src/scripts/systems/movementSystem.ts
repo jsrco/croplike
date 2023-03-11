@@ -56,8 +56,21 @@ export class MovementSystem extends System {
                     jumpComponent.setIsJumping(true)
                     wallCollisionComponent.setIsSliding(false)
                 }
+                if (this.keys.has('ArrowDown')) {
+                    console.log(entity)
+                }
             } else if (entity.name === 'platform') {
-                // patrol code update here
+                if (positionComponent.x <= 50 && velocityComponent.x <= 0) {
+                    velocityComponent.setVelocity(
+                        Math.max(velocityComponent.x + this.acceleration, +2),
+                        velocityComponent.y
+                    )
+                } else if (positionComponent.x >= 350 && velocityComponent.x >= 0) {
+                    velocityComponent.setVelocity(
+                        Math.max(velocityComponent.x - this.acceleration, -2),
+                        velocityComponent.y
+                    )
+                }
             }
             // Update position based on velocity
             if (velocityComponent.x !== 0 || velocityComponent.y !== 0) {

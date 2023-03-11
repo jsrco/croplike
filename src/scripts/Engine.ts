@@ -52,6 +52,9 @@ export class Engine {
         this.world.addEntity(this.platform)
         const platformposition = this.platform.getComponent('position') as PositionComponent
         platformposition.setPosition(200, 300)
+        const velocityPlat = this.platform.getComponent('velocity') as VelocityComponent
+        velocityPlat.setVelocity( -1, velocityPlat.y)
+
 
         // dummy level
         this.block = new Entity('block')
