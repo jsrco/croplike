@@ -22,8 +22,10 @@ export class CollisionSystem extends System {
         }
       }
       if (collision === 0) {
+        const gravity = entityA.getComponent('gravity') as GravityComponent
+        if (gravity) gravity.setGroundStatus(false)
         const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
-        if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false)
+        if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false, '')
       }
     }
   }
@@ -94,7 +96,7 @@ export class CollisionSystem extends System {
         const jumping = entityA.getComponent('jump') as JumpComponent
         if (jumping) jumping.setIsJumping(false)
         const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
-        if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false)
+        if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false, '')
       }
       velocityA.setVelocity(velocityA.x, 0)
       velocityB.setVelocity(velocityB.x, 0)

@@ -13,10 +13,10 @@ export class GravitySystem extends System {
 
         for (const entity of entities) {
             const gravityComponent = entity.getComponent('gravity') as GravityComponent
-            if (!gravityComponent.isOnGround) {
+            const wallCollisionComponent = entity.getComponent('wallCollision') as WallCollisionComponent
+            if (!gravityComponent.isOnGround || wallCollisionComponent.wallDirection === '') {
                 const positionComponent = entity.getComponent('position') as PositionComponent
                 const velocityComponent = entity.getComponent('velocity') as VelocityComponent
-                const wallCollisionComponent = entity.getComponent('wallCollision') as WallCollisionComponent
                 if (wallCollisionComponent.isSliding) {
                     wallCollisionComponent.setWallSlideSpeed(wallCollisionComponent.wallSlideSpeed -= .02)
                     velocityComponent.setVelocity(velocityComponent.x, Math.min(velocityComponent.y = wallCollisionComponent.wallSlideSpeed * deltaTime, this.maxVelocity))
