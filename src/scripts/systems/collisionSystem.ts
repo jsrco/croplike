@@ -12,12 +12,18 @@ export class CollisionSystem extends System {
     const entities = this.world.getEntitiesByComponent('collision')
     for (let i = 0; i < entities.length; i++) {
       const entityA = entities[i]
+      let collision = 0
       for (let j = i + 1; j < entities.length; j++) {
         const entityB = entities[j]
         const check = this.checkCollision(entityA, entityB)
         if (check[0]) {
+          collision+=1
           this.handleCollision(entityA, entityB, check)
         }
+      }
+      if (collision === 0) {
+        const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
+        if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false)
       }
     }
   }
