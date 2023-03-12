@@ -6,14 +6,22 @@
 </template>
 
 <script setup lang="ts">
-import useScreen from '../composeables/useScreen'
 import { onMounted, ref } from 'vue'
-import { startScreen } from '../scripts/startScreen'
+import { Engine } from '../scripts/Engine'
 
-const { GameContainerTarget } = useScreen()
-const gameContainer = ref(GameContainerTarget)
-
+const gameContainer = ref()
+let game;
 onMounted(() => {
-    useScreen(startScreen)
+
+    const PressStart2P = new FontFace(
+        "PixiPressStart2P",
+        "url('./assets/fonts/PressStart2P-Regular.ttf')"
+    )
+    PressStart2P.load().then(function (font) {
+        // with canvas, if this is ommited won't work
+        document.fonts.add(font)
+        game = new Engine(gameContainer.value)
+        game.start()
+    })
 })
 </script>

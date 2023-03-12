@@ -1,8 +1,5 @@
-import { ref } from "vue"
-import { GameStorage, Locals } from "../scripts/storage"
-import { startScreen } from "../scripts/startScreen"
-import useCartographer from "./useCartographer"
-import useScreen from "./useScreen"
+import { ref } from 'vue'
+import { GameStorage, Locals } from '../scripts/util/Storage'
 
 const isActive = ref(false)
 const isDev = ref(true)
@@ -14,13 +11,12 @@ const useStorage = () => {
 
     const checkIfSynched = () => {
         storage.value.getType(Locals.Game_USER) ? isActive.value = true : isActive.value = false
-        !storage.value.getType(Locals.Game_MAP) || !storage.value.getType(Locals.Game_USER) ? isOutOfSynch.value = true : isOutOfSynch.value = false
+        !storage.value.getType(Locals.Game_USER) ? isOutOfSynch.value = true : isOutOfSynch.value = false
     }
 
     const clearUserStorage = () => {
         storage.value.clearAll()
         checkIfSynched()
-        useScreen(startScreen)
         console.dir('userStorage wiped, account inactive')
     }
 
@@ -29,13 +25,7 @@ const useStorage = () => {
             storage.value.setType(Locals.Game_USER, 'testUser')
             console.dir('"game-user" test user set')
         }
-        if (!storage.value.getType(Locals.Game_MAP)) {
-            const {generateNewMap } = useCartographer()
-            generateNewMap()
-            console.dir('"game-map" game map created')
-        }
-        checkIfSynched()        
-        useScreen(startScreen)
+        checkIfSynched()
         console.dir('account active')
     }
 
