@@ -24,9 +24,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, Ref } from 'vue'
+import { ref, Ref } from "vue"
 import { Locals } from "../scripts/util/Storage"
-import useStorage from '../composeables/use-storage'
+import useStorage from "../composeables/use-storage"
 
 const { clearUserStorage, isActive, isDev, isOutOfSynch, resetUserStorage, storage } = useStorage()
 

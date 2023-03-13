@@ -6,8 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { Engine } from '../scripts/Engine'
+import { onMounted, ref } from "vue"
+import { Engine } from "../scripts/Engine"
 
 const gameContainer = ref()
 let game;

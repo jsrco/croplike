@@ -1,5 +1,5 @@
 import { GravityComponent, JumpComponent, PositionComponent, VelocityComponent, WallCollisionComponent } from "../components"
-import { System } from "./index"
+import { System } from "."
 import { World } from "../util/World"
 
 export class MovementSystem extends System {

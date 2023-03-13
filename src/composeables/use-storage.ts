@@ -1,5 +1,5 @@
-import { ref } from 'vue'
-import { GameStorage, Locals } from '../scripts/util/Storage'
+import { ref } from "vue"
+import { GameStorage, Locals } from "../scripts/util/Storage"
 
 const isActive = ref(false)
 const isDev = ref(true)

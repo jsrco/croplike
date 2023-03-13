@@ -1,7 +1,7 @@
-import { Entity } from '../entities/Entity'
-import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent, WallCollisionComponent } from '../components'
-import { System } from './System'
-import { World } from '../util/World'
+import { Entity } from "../entities/Entity"
+import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent, WallCollisionComponent } from "../components"
+import { System } from "."
+import { World } from "../util/World"
 
 export class CollisionSystem extends System {
   constructor(world: World) {
@@ -17,7 +17,7 @@ export class CollisionSystem extends System {
         const entityB = entities[j]
         const check = this.checkCollision(entityA, entityB)
         if (check[0]) {
-          collision+=1
+          collision += 1
           this.handleCollision(entityA, entityB, check)
         }
       }
@@ -87,7 +87,7 @@ export class CollisionSystem extends System {
         const jumping = entityA.getComponent('jump') as JumpComponent
         if (jumping) jumping.setIsJumping(false)
       }
-      if (entityA.name !== 'platform')velocityA.setVelocity(0, velocityA.y)
+      if (entityA.name !== 'platform') velocityA.setVelocity(0, velocityA.y)
       if (entityB.name !== 'platform') velocityB.setVelocity(0, velocityB.y)
     } else if (check[1] === 'top' || check[1] === 'bottom') {
       if (check[1] === 'bottom') {

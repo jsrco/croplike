@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js"
-import { Entity } from "./entities/entity"
-import { CollisionComponent, GraphicsComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "./components/index"
-import { CollisionSystem, GravitySystem, MovementSystem, RenderSystem } from "./systems/index"
+import { Entity } from "./entities/Entity"
+import { CollisionComponent, GraphicsComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "./components"
+import { CollisionSystem, GravitySystem, MovementSystem, RenderSystem } from "./systems"
 import { World } from "./util/World"
 
 export class Engine {
@@ -53,7 +53,7 @@ export class Engine {
         const platformposition = this.platform.getComponent('position') as PositionComponent
         platformposition.setPosition(200, 300)
         const velocityPlat = this.platform.getComponent('velocity') as VelocityComponent
-        velocityPlat.setVelocity( -1, velocityPlat.y)
+        velocityPlat.setVelocity(-1, velocityPlat.y)
 
 
         // dummy level

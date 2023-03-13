@@ -1,11 +1,11 @@
-import { Component } from './Component'
+import { Component } from "."
 import { World } from "../util/World"
 
 export class GravityComponent extends Component {
     force: number = 0.5
     isOnGround: boolean = false
     type: string = 'gravity'
-    
+
     constructor(world: World) {
         super(world)
         this.world.eventManager.subscribe('positionChange', this.onPositionChange.bind(this))

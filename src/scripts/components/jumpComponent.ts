@@ -1,5 +1,5 @@
-import { Component } from './Component'
-import { World } from '../util/World'
+import { Component } from "."
+import { World } from "../util/World"
 
 export class JumpComponent extends Component {
   force: number = 5

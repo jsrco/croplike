@@ -1,5 +1,5 @@
 
-import { Component } from "./Component"
+import { Component } from "."
 import { World } from "../util/World"
 
 
