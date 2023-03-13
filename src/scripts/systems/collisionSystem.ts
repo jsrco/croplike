@@ -9,7 +9,7 @@ export class CollisionSystem extends System {
   }
 
   update(deltaTime: number): void {
-    const entities = this.world.getEntitiesByComponent('collision')
+    const entities = this.getSystemEntitiesByComponent('collision')
     for (let i = 0; i < entities.length; i++) {
       const entityA = entities[i]
       let collision = 0
@@ -95,6 +95,10 @@ export class CollisionSystem extends System {
         if (gravity) gravity.setGroundStatus(true)
         const jumping = entityA.getComponent('jump') as JumpComponent
         if (jumping) jumping.setIsJumping(false)
+        const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
+        if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false, check[1])
+      }
+      if (check[1] === 'top') {
         const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
         if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false, '')
       }

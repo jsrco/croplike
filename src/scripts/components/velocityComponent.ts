@@ -14,4 +14,12 @@ export class VelocityComponent extends Component {
         this.y = y
         this.world.eventManager.dispatch('velocityChange', { entity: this.owner, velocityComponent: this })
     }
+    setVelocityX(x: number) {
+        this.x = x
+        this.world.eventManager.dispatch('velocityChange', { entity: this.owner, velocityComponent: this })
+    }
+    setVelocityY(y: number) {
+        this.y = y
+        this.world.eventManager.dispatch('velocityChange', { entity: this.owner, velocityComponent: this })
+    }
 }

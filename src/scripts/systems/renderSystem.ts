@@ -8,7 +8,7 @@ export class RenderSystem extends System {
 
         // add subscriber to adding an entity and dispatch in the world for it
         // the on add can be a private function that adds the entity to the screen if its a renderable
-        const entities = this.world.getEntitiesByComponent('position', 'velocity')
+        const entities = this.getSystemEntitiesByComponent('position', 'velocity')
         for (const entity of entities) {
             if (entity.hasComponent("graphics")) {
                 const GraphicsComponent = entity.getComponent("graphics") as GraphicsComponent
