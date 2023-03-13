@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js"
-import { Entity } from "./entities/Entity"
+import { Entity } from "./entities/entity"
 import { CollisionComponent, GraphicsComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "./components/index"
 import { CollisionSystem, GravitySystem, MovementSystem, RenderSystem } from "./systems/index"
 import { World } from "./util/World"
