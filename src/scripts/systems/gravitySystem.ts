@@ -9,7 +9,7 @@ export class GravitySystem extends System {
     }
 
     update(deltaTime: number): void {
-        const entities = this.getSystemEntitiesByComponent('gravity', 'position', 'velocity')
+        const entities = this.getEntitiesByComponent('gravity', 'position', 'velocity')
 
         for (const entity of entities) {
             const gravityComponent = entity.getComponent('gravity') as GravityComponent

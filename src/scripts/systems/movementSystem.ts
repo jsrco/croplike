@@ -16,7 +16,7 @@ export class MovementSystem extends System {
     }
 
     update(deltaTime: number): void {
-        const entities = this.getSystemEntitiesByComponent('position', 'velocity')
+        const entities = this.getEntitiesByComponent('position', 'velocity')
         for (const entity of entities) {
             const positionComponent = entity.getComponent('position') as PositionComponent
             const velocityComponent = entity.getComponent('velocity') as VelocityComponent
