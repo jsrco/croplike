@@ -7,8 +7,9 @@ export class PositionComponent extends Component {
     x: number = 0
     y: number = 0
 
-    constructor(world: World) {
+    constructor(world: World, x?: number, y?: number) {
         super(world)
+        if (x && y) this.setPosition(x, y)
         this.previousPosition = { x: this.x, y: this.y }
     }
     setPosition(x: number, y: number) {
