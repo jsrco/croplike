@@ -1,3 +1,5 @@
+import { Entity } from "./Entity"
+
 export type EntityMap = {
     name: string
     componentMap: {
@@ -11,4 +13,10 @@ export type EntityMap = {
         wallCollision: boolean
         wall: boolean
     }
+}
+
+export const CreateEntity = (entityMap: EntityMap): Entity => {
+    const entity = new Entity(entityMap.name)
+    // map components
+    return entity
 }
