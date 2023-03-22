@@ -1,15 +1,11 @@
 import * as PIXI from "pixi.js"
 import { CreateEntity } from "./entities/Create"
-import { Entity } from "./entities/Entity"
-import { VelocityComponent } from "./components"
 import { CollisionSystem, GravitySystem, MovementSystem, RenderSystem } from "./systems"
 import { World } from "./util/World"
 import { ceiling, floor, largeEntity, leftWall, player, rightWall } from "./entities/templates"
 
 export class Engine {
     app: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
-    entity: Entity
-    player: Entity
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
         fontSize: 8,
@@ -22,15 +18,9 @@ export class Engine {
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
         })
-        // demo
-        this.player = CreateEntity({ ...player, options: { graphics: { color: 0xFFFFFF }, position: { x: 30, y: 30 } } }, this.world)
-        this.world.addEntity(this.player)
 
-        // demo large entity
-        this.entity = CreateEntity({ ...largeEntity, options: { gravity: { force: 0.3 }, position: { x: 200, y: 300 }, size: { width: 190 } } }, this.world)
-        this.world.addEntity(this.entity)
-        const velocityPlat = this.entity.getComponent('velocity') as VelocityComponent
-        velocityPlat.setVelocity(-1, velocityPlat.y)
+        this.world.addEntity(CreateEntity( player, this.world))
+        this.world.addEntity(CreateEntity(largeEntity, this.world))
 
         // dummy level
         this.world.addEntity(CreateEntity({ ...leftWall, options: { graphics: { color: 0x4ade80 }, position: { x: 0, y: 0 }, size: { height: this.app.renderer.height, width: 20 } } }, this.world))

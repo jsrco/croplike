@@ -30,6 +30,10 @@ export type EntityMap = {
             height?: number
             width: number
         }
+        velocity?: {
+            x?: number,
+            y?: number
+        }
     }
 }
 
@@ -43,7 +47,7 @@ export const CreateEntity = (entityMap: EntityMap, world: World): Entity => {
     if (entityMap.componentMap.jump) components.push(new JumpComponent(world))
     if (entityMap.componentMap.position) components.push(new PositionComponent(world, entityMap.options?.position?.x || 0, entityMap.options?.position?.y || 0))
     if (entityMap.componentMap.size) components.push(new SizeComponent(world, entityMap.options?.size?.width, entityMap.options?.size?.height))
-    if (entityMap.componentMap.velocity) components.push(new VelocityComponent(world))
+    if (entityMap.componentMap.velocity) components.push(new VelocityComponent(world, entityMap.options?.velocity?.x, entityMap.options?.velocity?.y))
     if (entityMap.componentMap.wallCollision) components.push(new WallCollisionComponent(world))
     if (entityMap.componentMap.wall) components.push(new WallComponent(world))
     

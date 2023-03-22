@@ -41,6 +41,19 @@ export const largeEntity: EntityMap = {
         velocity: true,
         wallCollision: true,
         wall: false,
+    }, options: { 
+        gravity: { 
+            force: 0.3
+        }, 
+        position: { 
+            x: 200, y: 300 
+        }, 
+        size: { 
+            width: 190 
+        }, 
+        velocity: { 
+            x: -1 
+        } 
     }
 }
 export const leftWall: EntityMap = {
@@ -69,6 +82,14 @@ export const player: EntityMap = {
         velocity: true,
         wallCollision: true,
         wall: false,
+    },
+    options: {
+        graphics: {
+            color: 0xFFFFFF
+        },
+        position: {
+            x: 30, y: 30
+        }
     }
 }
 export const rightWall: EntityMap = {

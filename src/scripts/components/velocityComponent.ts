@@ -6,8 +6,10 @@ export class VelocityComponent extends Component {
     x: number = 0
     y: number = 0
 
-    constructor(world: World) {
+    constructor(world: World, x?: number, y?: number) {
         super(world)
+        if (x) this.setVelocityX(x)
+        if (y) this.setVelocityY(y)
     }
     setVelocity(x: number, y: number) {
         this.x = x
