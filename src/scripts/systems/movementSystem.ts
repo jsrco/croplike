@@ -59,7 +59,7 @@ export class MovementSystem extends System {
                 if (this.keys.has('ArrowDown')) {
                     console.log(entity)
                 }
-            } else if (entity.name === 'platform') {
+            } else if (entity.name === 'largeEntity') {
                 if (positionComponent.x <= 50 && velocityComponent.x <= 0) {
                     velocityComponent.setVelocity(
                         Math.max(velocityComponent.x + this.acceleration, +2),

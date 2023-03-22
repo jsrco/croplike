@@ -6,8 +6,9 @@ export class GravityComponent extends Component {
     isOnGround: boolean = false
     type: string = 'gravity'
 
-    constructor(world: World) {
+    constructor(world: World, force?: number) {
         super(world)
+        if (force) this.setGravity(force)
         this.world.eventManager.subscribe('positionChange', this.onPositionChange.bind(this))
     }
     private onPositionChange(data: any): void {

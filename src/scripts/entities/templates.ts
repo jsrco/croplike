@@ -29,20 +29,6 @@ export const floor: EntityMap = {
         wall: true,
     }
 }
-export const leftWall: EntityMap = {
-    name: 'leftWall',
-    componentMap: {
-        collision: true,
-        graphics: true,
-        gravity: false,
-        jump: false,
-        position: true,
-        size: true,
-        velocity: true,
-        wallCollision: false,
-        wall: true,
-    }
-}
 export const largeEntity: EntityMap = {
     name: 'largeEntity',
     componentMap: {
@@ -55,6 +41,20 @@ export const largeEntity: EntityMap = {
         velocity: true,
         wallCollision: true,
         wall: false,
+    }
+}
+export const leftWall: EntityMap = {
+    name: 'leftWall',
+    componentMap: {
+        collision: true,
+        graphics: true,
+        gravity: false,
+        jump: false,
+        position: true,
+        size: true,
+        velocity: true,
+        wallCollision: false,
+        wall: true,
     }
 }
 export const player: EntityMap = {
