@@ -6,12 +6,9 @@ export const ceiling: EntityMap = {
     componentMap: {
         collision: true,
         graphics: true,
-        gravity: false,
-        jump: false,
         position: true,
         size: true,
         velocity: true,
-        wallCollision: false,
         wall: true,
     }
 }
@@ -20,12 +17,9 @@ export const floor: EntityMap = {
     componentMap: {
         collision: true,
         graphics: true,
-        gravity: false,
-        jump: false,
         position: true,
         size: true,
         velocity: true,
-        wallCollision: false,
         wall: true,
     }
 }
@@ -35,13 +29,12 @@ export const largeEntity: EntityMap = {
         collision: true,
         graphics: true,
         gravity: true,
-        jump: false,
         position: true,
         size: true,
         velocity: true,
         wallCollision: true,
-        wall: false,
-    }, options: { 
+    }, 
+    options: { 
         gravity: { 
             force: 0.3
         }, 
@@ -61,12 +54,9 @@ export const leftWall: EntityMap = {
     componentMap: {
         collision: true,
         graphics: true,
-        gravity: false,
-        jump: false,
         position: true,
         size: true,
         velocity: true,
-        wallCollision: false,
         wall: true,
     }
 }
@@ -81,7 +71,6 @@ export const player: EntityMap = {
         size: true,
         velocity: true,
         wallCollision: true,
-        wall: false,
     },
     options: {
         graphics: {
@@ -97,12 +86,9 @@ export const rightWall: EntityMap = {
     componentMap: {
         collision: true,
         graphics: true,
-        gravity: false,
-        jump: false,
         position: true,
         size: true,
         velocity: true,
-        wallCollision: false,
         wall: true,
     }
 }
