@@ -8,7 +8,6 @@ export const ceiling: EntityMap = {
         graphics: true,
         position: true,
         size: true,
-        velocity: true,
         wall: true,
     }
 }
@@ -19,7 +18,6 @@ export const floor: EntityMap = {
         graphics: true,
         position: true,
         size: true,
-        velocity: true,
         wall: true,
     }
 }
@@ -56,7 +54,6 @@ export const leftWall: EntityMap = {
         graphics: true,
         position: true,
         size: true,
-        velocity: true,
         wall: true,
     }
 }
@@ -88,7 +85,6 @@ export const rightWall: EntityMap = {
         graphics: true,
         position: true,
         size: true,
-        velocity: true,
         wall: true,
     }
 }

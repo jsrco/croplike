@@ -9,7 +9,7 @@ export class CollisionSystem extends System {
   }
 
   update(deltaTime: number): void {
-    const entities = this.getEntitiesByComponent('collision', 'position', 'velocity')
+    const entities = this.getEntitiesByComponent('collision', 'position')
     for (let i = 0; i < entities.length; i++) {
       const entityA = entities[i]
       let collision = 0
@@ -87,8 +87,8 @@ export class CollisionSystem extends System {
         const jumping = entityA.getComponent('jump') as JumpComponent
         if (jumping) jumping.setIsJumping(false)
       }
-      if (entityA.name !== 'largeEntity') velocityA.setVelocity(0, velocityA.y)
-      if (entityB.name !== 'largeEntity') velocityB.setVelocity(0, velocityB.y)
+      if (entityA.name !== 'largeEntity' && velocityA) velocityA.setVelocity(0, velocityA.y)
+      if (entityB.name !== 'largeEntity' && velocityB) velocityB.setVelocity(0, velocityB.y)
     } else if (check[1] === 'top' || check[1] === 'bottom') {
       if (check[1] === 'bottom') {
         const gravity = entityA.getComponent('gravity') as GravityComponent
@@ -102,8 +102,8 @@ export class CollisionSystem extends System {
         const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
         if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false, '')
       }
-      velocityA.setVelocity(velocityA.x, 0)
-      velocityB.setVelocity(velocityB.x, 0)
+      if (velocityA) velocityA.setVelocity(velocityA.x, 0)
+      if (velocityB) velocityB.setVelocity(velocityB.x, 0)
     }
   }
 }
