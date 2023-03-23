@@ -4,13 +4,10 @@ import { World } from "../util/World"
 
 export class MovementSystem extends System {
     private acceleration: number
-    private keys: Set<string>
     private maxVelocity: number
     type: string = 'movement'
     constructor(world: World) {
         super(world)
-        this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
-        this.keys = new Set<string>()
         this.maxVelocity = 5
         this.acceleration = 1
     }
@@ -22,9 +19,10 @@ export class MovementSystem extends System {
             const velocityComponent = entity.getComponent('velocity') as VelocityComponent
             // Reset velocity to zero if no keys are pressed
             if (entity.name === 'player') {
+                const gravity = entity.getComponent('gravity') as GravityComponent
                 const wallCollisionComponent = entity.getComponent('wallCollision') as WallCollisionComponent
 
-                if (this.keys.size === 0 || (this.keys.size === 1 && this.keys.has('ArrowUp') && !wallCollisionComponent.isSliding)) {
+                if ((this.keys.size === 0 || (this.keys.size === 1 && this.keys.has('ArrowUp'))) && !wallCollisionComponent.isSliding && !gravity.isRiding) {
                     velocityComponent.setVelocity(0, velocityComponent.y)
                 }
                 // Update velocity based on keys pressed
@@ -42,8 +40,7 @@ export class MovementSystem extends System {
                     )
                     if (wallCollisionComponent.wallDirection === 'left') wallCollisionComponent.setIsSliding(false, '')
                 }
-                const gravity = entity.getComponent('gravity') as GravityComponent
-                if (this.keys.has('ArrowUp') && gravity.isOnGround) {
+                if (this.keys.has('ArrowUp') && (gravity.isOnGround || gravity.isRiding)) {
                     const jumpComponent = entity.getComponent('jump') as JumpComponent
                     velocityComponent.setVelocity(velocityComponent.x, velocityComponent.y - jumpComponent.force)
                     jumpComponent.setIsJumping(true)
@@ -79,15 +76,6 @@ export class MovementSystem extends System {
                     positionComponent.y + velocityComponent.y * deltaTime
                 )
             }
-        }
-    }
-
-    private onKeyChange(data: any): void {
-        const { key, isDown } = data
-        if (isDown) {
-            this.keys.add(key)
-        } else {
-            this.keys.delete(key)
         }
     }
 }

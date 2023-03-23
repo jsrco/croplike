@@ -3,11 +3,14 @@ import { World } from "../util/World"
 
 export class System {
     private componentEntityMap: Map<string, Entity[]> = new Map()
+    keys: Set<string>
     type!: string
     world: World
 
     constructor(world: World) {
+        this.keys = new Set<string>()
         this.world = world
+        this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
     }
     private cacheEntities(componentTypes: string[], entities: Entity[]): void {
         const cacheKey = componentTypes.join(',')
@@ -28,6 +31,14 @@ export class System {
         const newEntities = this.world.getEntitiesByComponent(...componentTypes)
         this.cacheEntities(componentTypes, newEntities)
         return newEntities
+    }
+    private onKeyChange(data: any): void {
+        const { key, isDown } = data
+        if (isDown) {
+            this.keys.add(key)
+        } else {
+            this.keys.delete(key)
+        }
     }
     removeEntityFromCache(entity: Entity): void {
         for (const [cacheKey, entities] of this.componentEntityMap.entries()) {

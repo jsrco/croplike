@@ -1,5 +1,5 @@
 import { Entity } from "../entities/Entity"
-import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent, WallCollisionComponent } from "../components"
+import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "../components"
 import { System } from "."
 import { World } from "../util/World"
 
@@ -24,6 +24,7 @@ export class CollisionSystem extends System {
       if (collision === 0) {
         const gravity = entityA.getComponent('gravity') as GravityComponent
         if (gravity) gravity.setGroundStatus(false)
+        if (gravity) gravity.setRidingStatus(false)
         const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
         if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false, '')
       }
@@ -90,14 +91,22 @@ export class CollisionSystem extends System {
       if (entityA.name !== 'largeEntity' && velocityA) velocityA.setVelocity(0, velocityA.y)
       if (entityB.name !== 'largeEntity' && velocityB) velocityB.setVelocity(0, velocityB.y)
     } else if (check[1] === 'top' || check[1] === 'bottom') {
-      if (check[1] === 'bottom') {
-        // TODO check to see if entity b is a wall, and if it isn't set entityA velocity x to entityB
+      const isWall = entityB.getComponent('wall') as WallComponent
+      if (check[1] === 'bottom') {        
         const gravity = entityA.getComponent('gravity') as GravityComponent
-        if (gravity) gravity.setGroundStatus(true)
+        if (gravity) {
+          if (isWall) gravity.setGroundStatus(true)
+          else gravity.setRidingStatus(true)
+        }
         const jumping = entityA.getComponent('jump') as JumpComponent
         if (jumping) jumping.setIsJumping(false)
         const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
         if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false, check[1])
+        if (entityA.name === 'player' && !isWall && gravity.isRiding && this.keys.size === 0) {
+          if (velocityA && velocityB) {
+            velocityA.setVelocity(velocityB.x, velocityA.y)
+          }
+        }
       }
       if (check[1] === 'top') {
         const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
