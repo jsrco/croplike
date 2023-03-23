@@ -14,7 +14,7 @@ export class GravitySystem extends System {
         for (const entity of entities) {
             const gravityComponent = entity.getComponent('gravity') as GravityComponent
             const wallCollisionComponent = entity.getComponent('wallCollision') as WallCollisionComponent
-            if (!gravityComponent.isOnGround || wallCollisionComponent.wallDirection === '') {
+            if ((!gravityComponent.isOnGround && !gravityComponent.isRiding) || wallCollisionComponent.wallDirection === '') {
                 const positionComponent = entity.getComponent('position') as PositionComponent
                 const velocityComponent = entity.getComponent('velocity') as VelocityComponent
                 if (wallCollisionComponent.isSliding) {

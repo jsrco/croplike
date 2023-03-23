@@ -78,7 +78,7 @@ export class CollisionSystem extends System {
   }
   private handleCollision(entityA: Entity, entityB: Entity, check: [boolean, string, string]): void {
     this.correctCollision(entityA, entityB, check[1])
-    this.correctCollision(entityB, entityA, check[2])
+    //this.correctCollision(entityB, entityA, check[2])
     const velocityA = entityA.getComponent('velocity') as VelocityComponent
     const velocityB = entityB.getComponent('velocity') as VelocityComponent
     if (check[1] === 'left' || check[1] === 'right') {
