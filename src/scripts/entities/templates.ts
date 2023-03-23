@@ -43,7 +43,7 @@ export const largeEntity: EntityMap = {
             width: 190 
         }, 
         velocity: { 
-            x: -1 
+            x: -2 
         } 
     }
 }
