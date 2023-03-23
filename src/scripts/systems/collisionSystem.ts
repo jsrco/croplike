@@ -91,7 +91,7 @@ export class CollisionSystem extends System {
       if (entityB.name !== 'largeEntity' && velocityB) velocityB.setVelocity(0, velocityB.y)
     } else if (check[1] === 'top' || check[1] === 'bottom') {
       if (check[1] === 'bottom') {
-        // check to see if entity b is a wall, and if it isn't set entityA velocity x to entityB
+        // TODO check to see if entity b is a wall, and if it isn't set entityA velocity x to entityB
         const gravity = entityA.getComponent('gravity') as GravityComponent
         if (gravity) gravity.setGroundStatus(true)
         const jumping = entityA.getComponent('jump') as JumpComponent
