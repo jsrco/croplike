@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import { ref, Ref } from "vue"
 import { Locals } from "../scripts/util/Storage"
+import useEngine from "../composeables/use-engine"
 import useStorage from "../composeables/use-storage"
 
 const { clearUserStorage, isActive, isDev, isOutOfSynch, resetUserStorage, storage } = useStorage()
@@ -45,6 +46,14 @@ const debugList = [
         name: 'reset user storage',
         operation: () => resetUserStorage()
     },
+    {
+        name: 'reset largeEntity position',
+        operation: () => useEngine().game.largeEntity.getComponent('position').setPosition(200,30)
+    },
+    {
+        name: 'reset player position',
+        operation: () => useEngine().game.player.getComponent('position').setPosition(30,30)
+    },
 ]
 
 const isInDebug: Ref<Boolean> = ref(false)
@@ -61,4 +70,5 @@ const toggleDebug = () => {
 window.onclick = (e) => {
     if (!e.composedPath().includes(document.querySelector('.dropdown')!) && isInDebug.value === true) toggleDebug()
 }
+
 </script>

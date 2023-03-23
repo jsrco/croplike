@@ -3,9 +3,12 @@ import { CreateEntity } from "./entities/Create"
 import { CollisionSystem, GravitySystem, MovementSystem, RenderSystem } from "./systems"
 import { World } from "./util/World"
 import { ceiling, floor, largeEntity, leftWall, player, rightWall } from "./entities/templates"
+import { Entity } from "./entities/Entity"
 
 export class Engine {
     app: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
+    largeEntity: Entity
+    player: Entity
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
         fontSize: 8,
@@ -18,9 +21,10 @@ export class Engine {
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
         })
-
-        this.world.addEntity(CreateEntity( player, this.world))
-        this.world.addEntity(CreateEntity(largeEntity, this.world))
+        this.player = CreateEntity(player, this.world)
+        this.world.addEntity(this.player)
+        this.largeEntity = CreateEntity(largeEntity, this.world)
+        this.world.addEntity(this.largeEntity)
 
         // dummy level
         this.world.addEntity(CreateEntity({ ...leftWall, options: { graphics: { color: 0x4ade80 }, position: { x: 0, y: 0 }, size: { height: this.app.renderer.height, width: 20 } } }, this.world))
