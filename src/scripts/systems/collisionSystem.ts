@@ -78,7 +78,6 @@ export class CollisionSystem extends System {
   }
   private handleCollision(entityA: Entity, entityB: Entity, check: [boolean, string, string]): void {
     this.correctCollision(entityA, entityB, check[1])
-    //this.correctCollision(entityB, entityA, check[2])
     const velocityA = entityA.getComponent('velocity') as VelocityComponent
     const velocityB = entityB.getComponent('velocity') as VelocityComponent
     if (check[1] === 'left' || check[1] === 'right') {
@@ -88,8 +87,8 @@ export class CollisionSystem extends System {
         const jumping = entityA.getComponent('jump') as JumpComponent
         if (jumping) jumping.setIsJumping(false)
       }
-      if (entityA.name !== 'largeEntity' && velocityA) velocityA.setVelocity(0, velocityA.y)
-      if (entityB.name !== 'largeEntity' && velocityB) velocityB.setVelocity(0, velocityB.y)
+      if (entityA.name !== 'largeEntity' && velocityA) velocityA.setVelocity(velocityB ? velocityB.x : 0, velocityA.y)
+      if (entityB.name !== 'largeEntity' && velocityB) velocityB.setVelocity(velocityA ? velocityA.x : 0, velocityB.y)
     } else if (check[1] === 'top' || check[1] === 'bottom') {
       const isWall = entityB.getComponent('wall') as WallComponent
       if (check[1] === 'bottom') {        
