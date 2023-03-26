@@ -47,6 +47,10 @@ const debugList = [
         operation: () => resetUserStorage()
     },
     {
+        name: 'console.log entities',
+        operation: () => console.log(useEngine().game.world.entities)
+    },
+    {
         name: 'reset largeEntity position',
         operation: () => useEngine().game.largeEntity.getComponent('position').setPosition(200,30)
     },

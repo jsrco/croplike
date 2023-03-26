@@ -53,9 +53,6 @@ export class MovementSystem extends System {
                     jumpComponent.setIsJumping(true)
                     wallCollisionComponent.setIsSliding(false, '')
                 }
-                if (this.keys.has('ArrowDown')) {
-                    console.log(entity)
-                }
             } else if (entity.name === 'largeEntity') {
                 if (positionComponent.x <= 50 && velocityComponent.x <= 0) {
                     velocityComponent.setVelocity(

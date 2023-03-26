@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js"
 import { CreateEntity } from "./entities/Create"
-import { CollisionSystem, GravitySystem, MovementSystem, RenderSystem } from "./systems"
+import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem } from "./systems"
 import { World } from "./util/World"
 import { ceiling, floor, largeEntity, leftWall, player, rightWall } from "./entities/templates"
 import { Entity } from "./entities/Entity"
@@ -35,6 +35,7 @@ export class Engine {
         this.world.addSystem(new CollisionSystem(this.world))
         this.world.addSystem(new GravitySystem(this.world))
         this.world.addSystem(new MovementSystem(this.world))
+        this.world.addSystem(new OutOfBoundsSystem(this.world))
         this.world.addSystem(new RenderSystem(this.world))
     }
     public start(): void {
