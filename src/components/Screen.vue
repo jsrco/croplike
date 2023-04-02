@@ -7,7 +7,6 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
-import { Engine } from "../scripts/Engine"
 import useEngine from "../composeables/use-engine"
 
 const gameContainer = ref()

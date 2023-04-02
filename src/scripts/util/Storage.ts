@@ -1,3 +1,5 @@
+import { World } from "./World"
+
 // Storage
 export interface IStorage {
   getItem(key: string): string | null
@@ -34,9 +36,21 @@ export enum Locals {
 
 export class GameStorage extends Storage<Locals> {
   private static instance?: GameStorage
+  private worlds: Array<World>
 
   private constructor(getStorage?: () => IStorage) {
     super(getStorage)
+    this.worlds = []
+  }
+  public clear(type: Locals) {
+    this.clearItem(type)
+  }
+  public clearAll() {
+    this.clearItems([Locals.Game_USER])
+    this.worlds = []
+  }
+  public clearWorld() {
+    this.worlds = []
   }
   public static getInstance(getStorage?: () => IStorage) {
     if (!this.instance) {
@@ -49,13 +63,14 @@ export class GameStorage extends Storage<Locals> {
     const result = storageType ? JSON.parse(storageType) : undefined
     return result
   }
+
+  public getWorld() {
+    return this.worlds[0]
+  }
   public setType(type: Locals, data: any) {
     this.set(type, JSON.stringify(data))
   }
-  public clear(type: Locals) {
-    this.clearItem(type)
-  }
-  public clearAll() {
-    this.clearItems([Locals.Game_USER])
+  public setWorld(data: any) {
+    this.worlds.push(data)
   }
 }

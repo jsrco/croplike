@@ -13,6 +13,7 @@ export class OutOfBoundsSystem extends System {
             const positionComponent = entity.getComponent('position') as PositionComponent
             if (positionComponent.x < 0 || positionComponent.x > this.world.app.renderer.width || positionComponent.y <  0 || positionComponent.y > this.world.app.renderer.height) {
                 positionComponent.setPosition(30,30)
+                console.log(`${entity.name} is out of bounds`)
             } 
         }
     }
