@@ -74,7 +74,7 @@ export const player: EntityMap = {
             color: 0xFFFFFF
         },
         position: {
-            x: 30, y: 30
+            x: 55, y: 55
         }
     }
 }

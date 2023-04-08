@@ -30,11 +30,11 @@ const debugList = [
     },
     {
         name: 'reset largeEntity position',
-        operation: () => useEngine().game.largeEntity.getComponent('position').setPosition(200,30)
+        operation: () => useEngine().game.largeEntity.getComponent('position').setPosition(200,55)
     },
     {
         name: 'reset player position',
-        operation: () => useEngine().game.player.getComponent('position').setPosition(30,30)
+        operation: () => useEngine().game.player.getComponent('position').setPosition(55,55)
     },
 ]
 

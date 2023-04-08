@@ -18,19 +18,17 @@ export class Engine {
     textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
     world: World = new World(this.app)
 
-    cieling: Entity
-    floor: Entity
-    leftWall: Entity
-    rightWall: Entity
-
+    cieling!: Entity
+    floor!: Entity
+    leftWall!: Entity
+    rightWall!: Entity
+    wallSize: number = 35
+    
     constructor(elementRef: any) {
         elementRef.appendChild(this.app.view)
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
-            this.resetBounds(this.cieling, { x: 21, y: 0 }, { height: 20, width: this.app.renderer.width - 40 })
-            this.resetBounds(this.floor, { x: 20, y: this.app.renderer.height - 20 }, { height: 20, width: this.app.renderer.width - 40 })
-            this.resetBounds(this.leftWall, { x: 0, y: 0 }, { height: this.app.renderer.height, width: 20 })
-            this.resetBounds(this.rightWall, { x: this.app.renderer.width - 20, y: 0 }, { height: this.app.renderer.height, width: 20 })
+            this.resetAllBounds()
         })
         this.player = CreateEntity(player, this.world)
         this.world.addEntity(this.player)
@@ -38,14 +36,7 @@ export class Engine {
         this.world.addEntity(this.largeEntity)
 
         // dummy level
-        this.cieling = CreateEntity({ ...ceiling, options: { graphics: { color: 0x4ade80 }, position: { x: 21, y: 0 }, size: { height: 20, width: this.app.renderer.width - 40 } } }, this.world)
-        this.world.addEntity(this.cieling)
-        this.floor = CreateEntity({ ...floor, options: { graphics: { color: 0x4ade80 }, position: { x: 20, y: this.app.renderer.height - 20 }, size: { height: 20, width: this.app.renderer.width - 40 } } }, this.world)
-        this.world.addEntity(this.floor)
-        this.leftWall = CreateEntity({ ...leftWall, options: { graphics: { color: 0x4ade80 }, position: { x: 0, y: 0 }, size: { height: this.app.renderer.height, width: 20 } } }, this.world)
-        this.world.addEntity(this.leftWall)
-        this.rightWall = CreateEntity({ ...rightWall, options: { graphics: { color: 0x4ade80 }, position: { x: this.app.renderer.width - 20, y: 0 }, size: { height: this.app.renderer.height, width: 20 } } }, this.world)
-        this.world.addEntity(this.rightWall)
+        this.createBounds()
 
         this.world.addSystem(new CollisionSystem(this.world))
         this.world.addSystem(new GravitySystem(this.world))
@@ -74,6 +65,17 @@ export class Engine {
 
         this.world.update(delta)
     }
+    // demo wall
+    createBounds(): void {
+        this.cieling = CreateEntity({ ...ceiling, options: { graphics: { color: 0x4ade80 }, position: { x: this.wallSize, y: 0 }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, this.world)
+        this.world.addEntity(this.cieling)
+        this.floor = CreateEntity({ ...floor, options: { graphics: { color: 0x4ade80 }, position: { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, this.world)
+        this.world.addEntity(this.floor)
+        this.leftWall = CreateEntity({ ...leftWall, options: { graphics: { color: 0x4ade80 }, position: { x: 0, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, this.world)
+        this.world.addEntity(this.leftWall)
+        this.rightWall = CreateEntity({ ...rightWall, options: { graphics: { color: 0x4ade80 }, position: { x: this.app.renderer.width - this.wallSize, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, this.world)
+        this.world.addEntity(this.rightWall)
+    }
     resetBounds(entity: Entity, pos: { x: number, y: number }, dimension: { height: number, width: number }): void {
         const position = entity.getComponent('position') as PositionComponent
         const { x, y } = pos
@@ -81,6 +83,12 @@ export class Engine {
         const size = entity.getComponent('size') as SizeComponent
         const { width, height } = dimension
         size.setSize(width, height)
+    }
+    resetAllBounds(): void {
+        this.resetBounds(this.cieling, { x: this.wallSize, y: 0 }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })
+        this.resetBounds(this.floor, { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })
+        this.resetBounds(this.leftWall, { x: 0, y: 0 }, { height: this.app.renderer.height, width: this.wallSize })
+        this.resetBounds(this.rightWall, { x: this.app.renderer.width - this.wallSize, y: 0 }, { height: this.app.renderer.height, width: this.wallSize })
     }
 }
 
