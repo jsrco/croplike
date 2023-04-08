@@ -4,14 +4,10 @@
         <div class="font-start text-white">
             Croplike
             <span class="cursor-pointer dropdown font-share"
-                :class="{ 'invisible': !isDev, 'text-gray-400': !isInDebug, 'text-white': isInDebug, 'visible': isDev }"
+                :class="{ 'text-gray-400': !isInDebug, 'text-white': isInDebug }"
                 @click="toggleDebug()">
                 {{ `:${isInDebug ? "/" : ""}debug` }}
             </span>
-        </div>
-        <div
-            :class="{ 'text-green-400': isActive && !isOutOfSynch, 'text-red-400': !isActive && isOutOfSynch, 'text-yellow-400': isActive && isOutOfSynch, }">
-            {{ storage.getType(Locals.Game_USER) || 'none' }}
         </div>
     </div>
     <div v-if="isInDebug"
@@ -25,30 +21,12 @@
 
 <script setup lang="ts">
 import { ref, Ref } from "vue"
-import { Locals } from "../scripts/util/Storage"
 import useEngine from "../composeables/use-engine"
-import useStorage from "../composeables/use-storage"
-
-const { clearUserStorage, isActive, isDev, isOutOfSynch, resetUserStorage, storage } = useStorage()
 
 const debugList = [
     {
-        name: 'console storage',
-        operation: () => {
-            console.dir(storage.value.getType(Locals.Game_USER))
-        }
-    },
-    {
-        name: 'clear user storage',
-        operation: () => clearUserStorage()
-    },
-    {
-        name: 'reset user storage',
-        operation: () => resetUserStorage()
-    },
-    {
         name: 'console.log entities',
-        operation: () => console.log(useEngine().game.world.entities)
+        operation: () => console.dir(useEngine().game.world.entities)
     },
     {
         name: 'reset largeEntity position',
