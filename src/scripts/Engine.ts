@@ -59,8 +59,8 @@ export class Engine {
         // update game logic
         this.app.stage.removeChild(this.textSupport)
         this.textSupport = dummyText(`a start screen ${this.app.renderer.width} x ${this.app.renderer.height}`, this.textStyle)
-        this.textSupport.x = 30
-        this.textSupport.y = 30
+        this.textSupport.x = this.wallSize + 5
+        this.textSupport.y = this.wallSize + 5
         this.app.stage.addChild(this.textSupport)
 
         this.world.update(delta)
