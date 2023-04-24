@@ -8,5 +8,5 @@ export class Component {
 
     constructor(world: World) {
         this.world = world
-     }
+    }
 }

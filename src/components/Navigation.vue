@@ -4,14 +4,10 @@
         <div class="font-start text-white">
             Croplike
             <span class="cursor-pointer dropdown font-share"
-                :class="{ 'invisible': !isDev, 'text-gray-400': !isInDebug, 'text-white': isInDebug, 'visible': isDev }"
+                :class="{ 'text-gray-400': !isInDebug, 'text-white': isInDebug }"
                 @click="toggleDebug()">
                 {{ `:${isInDebug ? "/" : ""}debug` }}
             </span>
-        </div>
-        <div
-            :class="{ 'text-green-400': isActive && !isOutOfSynch, 'text-red-400': !isActive && isOutOfSynch, 'text-yellow-400': isActive && isOutOfSynch, }">
-            {{ storage.getType(Locals.Game_USER) || 'none' }}
         </div>
     </div>
     <div v-if="isInDebug"
@@ -24,26 +20,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, Ref } from 'vue'
-import { Locals } from "../scripts/util/Storage"
-import useStorage from '../composeables/use-storage'
-
-const { clearUserStorage, isActive, isDev, isOutOfSynch, resetUserStorage, storage } = useStorage()
+import { ref, Ref } from "vue"
+import useEngine from "../composeables/use-engine"
 
 const debugList = [
     {
-        name: 'console storage',
-        operation: () => {
-            console.dir(storage.value.getType(Locals.Game_USER))
-        }
+        name: 'console.log entities',
+        operation: () => console.dir(useEngine().game.world.entities)
     },
     {
-        name: 'clear user storage',
-        operation: () => clearUserStorage()
+        name: 'reset largeEntity position',
+        operation: () => useEngine().game.largeEntity.getComponent('position').setPosition(200,55)
     },
     {
-        name: 'reset user storage',
-        operation: () => resetUserStorage()
+        name: 'reset player position',
+        operation: () => useEngine().game.player.getComponent('position').setPosition(55,55)
     },
 ]
 
@@ -61,4 +52,5 @@ const toggleDebug = () => {
 window.onclick = (e) => {
     if (!e.composedPath().includes(document.querySelector('.dropdown')!) && isInDebug.value === true) toggleDebug()
 }
+
 </script>

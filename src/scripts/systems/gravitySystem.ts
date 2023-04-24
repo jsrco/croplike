@@ -1,6 +1,6 @@
-import { GravityComponent, PositionComponent, VelocityComponent, WallCollisionComponent } from '../components/index'
-import { System } from './System'
-import { World } from '../util/World'
+import { GravityComponent, PositionComponent, VelocityComponent, WallCollisionComponent } from "../components"
+import { System } from "."
+import { World } from "../util/World"
 
 export class GravitySystem extends System {
     maxVelocity: number = 4
@@ -9,7 +9,7 @@ export class GravitySystem extends System {
     }
 
     update(deltaTime: number): void {
-        const entities = this.world.getEntitiesByComponent('gravity', 'position', 'velocity')
+        const entities = this.getEntitiesByComponent('gravity', 'position', 'velocity')
 
         for (const entity of entities) {
             const gravityComponent = entity.getComponent('gravity') as GravityComponent
@@ -23,7 +23,6 @@ export class GravitySystem extends System {
                     positionComponent.setPosition(positionComponent.x, positionComponent.y += velocityComponent.y * deltaTime)
                 } else {
                     wallCollisionComponent.setWallSlideSpeed(1)
-
                     velocityComponent.setVelocity(velocityComponent.x, Math.min(velocityComponent.y += gravityComponent.force * deltaTime, this.maxVelocity))
                     positionComponent.setPosition(positionComponent.x, positionComponent.y += velocityComponent.y * deltaTime)
                 }

@@ -6,11 +6,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { Engine } from '../scripts/Engine'
+import { onMounted, ref } from "vue"
+import useEngine from "../composeables/use-engine"
 
 const gameContainer = ref()
-let game;
+
 onMounted(() => {
 
     const PressStart2P = new FontFace(
@@ -20,7 +20,7 @@ onMounted(() => {
     PressStart2P.load().then(function (font) {
         // with canvas, if this is ommited won't work
         document.fonts.add(font)
-        game = new Engine(gameContainer.value)
+        const { game } = useEngine(gameContainer.value)
         game.start()
     })
 })

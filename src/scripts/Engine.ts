@@ -1,15 +1,14 @@
 import * as PIXI from "pixi.js"
-import { Entity } from "./entities/Entity"
-import { CollisionComponent, GraphicsComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "./components/index"
-import { CollisionSystem, GravitySystem, MovementSystem, RenderSystem } from "./systems/index"
 import { World } from "./util/World"
+import { ceiling, floor, largeEntity, leftWall, player, rightWall } from "./entities/templates"
+import { CreateEntity } from "./entities/Create"
+import { Entity } from "./entities/Entity"
+import { PositionComponent, SizeComponent } from "./components"
+import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem, SizeSystem } from "./systems"
 
 export class Engine {
     app: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
-    block: Entity
-    blockLeft: Entity
-    blockRight: Entity
-    platform: Entity
+    largeEntity: Entity
     player: Entity
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
@@ -18,89 +17,33 @@ export class Engine {
     })
     textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
     world: World = new World(this.app)
+
+    cieling!: Entity
+    floor!: Entity
+    leftWall!: Entity
+    rightWall!: Entity
+    wallSize: number = 35
+    
     constructor(elementRef: any) {
         elementRef.appendChild(this.app.view)
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
-
-            //temp 
-            const positionSet = this.block.getComponent('position') as PositionComponent
-            const sizeSet = this.block.getComponent('size') as SizeComponent
-            sizeSet.setSize(this.app.renderer.width - 40, 20)
-            positionSet.setPosition(20, this.app.renderer.height - sizeSet.height)
-
-            const positionSetbl = this.blockLeft.getComponent('position') as PositionComponent
-            const sizeSetbl = this.blockLeft.getComponent('size') as SizeComponent
-            sizeSetbl.setSize(20, this.app.renderer.height)
-            positionSetbl.setPosition(0, 0)
-
-            const positionSetbr = this.blockRight.getComponent('position') as PositionComponent
-            const sizeSetbr = this.blockRight.getComponent('size') as SizeComponent
-            sizeSetbr.setSize(20, this.app.renderer.height)
-            positionSetbr.setPosition(this.app.renderer.width - sizeSetbr.width, 0)
+            this.resetAllBounds()
         })
-        // demo
-        this.player = new Entity('player')
-        this.createEntity(this.player)
+        this.player = CreateEntity(player, this.world)
         this.world.addEntity(this.player)
-        const position = this.player.getComponent('position') as PositionComponent
-        position.setPosition(30, 30)
-
-        // demo
-        this.platform = new Entity('platform')
-        this.createEntity(this.platform)
-        this.world.addEntity(this.platform)
-        const platformposition = this.platform.getComponent('position') as PositionComponent
-        platformposition.setPosition(200, 300)
-        const velocityPlat = this.platform.getComponent('velocity') as VelocityComponent
-        velocityPlat.setVelocity( -1, velocityPlat.y)
-
+        this.largeEntity = CreateEntity(largeEntity, this.world)
+        this.world.addEntity(this.largeEntity)
 
         // dummy level
-        this.block = new Entity('block')
-        this.createEntity(this.block)
-        this.blockLeft = new Entity('block')
-        this.createEntity(this.blockLeft)
-        this.blockRight = new Entity('block')
-        this.createEntity(this.blockRight)
-
-        this.world.addEntity(this.block)
-        this.world.addEntity(this.blockLeft)
-        this.world.addEntity(this.blockRight)
-
-        const positionSet = this.block.getComponent('position') as PositionComponent
-        const sizeSet = this.block.getComponent('size') as SizeComponent
-        sizeSet.setSize(this.app.renderer.width - 40, 20)
-        positionSet.setPosition(20, this.app.renderer.height - sizeSet.height)
-
-        const positionSetbl = this.blockLeft.getComponent('position') as PositionComponent
-        const sizeSetbl = this.blockLeft.getComponent('size') as SizeComponent
-        sizeSetbl.setSize(20, this.app.renderer.height)
-        positionSetbl.setPosition(0, 0)
-
-        const positionSetbr = this.blockRight.getComponent('position') as PositionComponent
-        const sizeSetbr = this.blockRight.getComponent('size') as SizeComponent
-        sizeSetbr.setSize(20, this.app.renderer.height)
-        positionSetbr.setPosition(this.app.renderer.width - sizeSetbr.width, 0)
-
-        const gravityPlatform = this.platform.getComponent('gravity') as GravityComponent
-        gravityPlatform.setGravity(.3)
-        const sizeSetplatform = this.platform.getComponent('size') as SizeComponent
-        sizeSetplatform.setSize(190)
+        this.createBounds()
 
         this.world.addSystem(new CollisionSystem(this.world))
         this.world.addSystem(new GravitySystem(this.world))
         this.world.addSystem(new MovementSystem(this.world))
+        this.world.addSystem(new OutOfBoundsSystem(this.world))
         this.world.addSystem(new RenderSystem(this.world))
-    }
-    createEntity(entity: Entity) {
-        entity.addComponents([new CollisionComponent(this.world), new PositionComponent(this.world), new SizeComponent(this.world, 10), new VelocityComponent(this.world)])
-        if (entity.name === 'player' || entity.name === 'platform') {
-            entity.addComponent(new GravityComponent(this.world))
-            entity.addComponent(new GraphicsComponent(this.world, 0xFFFFFF))
-            entity.addComponent(new JumpComponent(this.world))
-            entity.addComponent(new WallCollisionComponent(this.world))
-        } else entity.addComponents([new GraphicsComponent(this.world, 0x4ade80), new WallComponent(this.world)])
+        this.world.addSystem(new SizeSystem(this.world))
     }
     public start(): void {
         this.app.stage.eventMode = 'static'
@@ -117,14 +60,38 @@ export class Engine {
         // update game logic
         this.app.stage.removeChild(this.textSupport)
         this.textSupport = dummyText(`a start screen ${this.app.renderer.width} x ${this.app.renderer.height}`, this.textStyle)
-        this.textSupport.x = 10
-        this.textSupport.y = 10
+        this.textSupport.x = this.wallSize + 5
+        this.textSupport.y = this.wallSize + 5
         this.app.stage.addChild(this.textSupport)
 
         this.world.update(delta)
     }
+    // demo wall
+    createBounds(): void {
+        this.cieling = CreateEntity({ ...ceiling, options: { graphics: { color: 0x4ade80 }, position: { x: this.wallSize, y: 0 }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, this.world)
+        this.world.addEntity(this.cieling)
+        this.floor = CreateEntity({ ...floor, options: { graphics: { color: 0x4ade80 }, position: { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, this.world)
+        this.world.addEntity(this.floor)
+        this.leftWall = CreateEntity({ ...leftWall, options: { graphics: { color: 0x4ade80 }, position: { x: 0, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, this.world)
+        this.world.addEntity(this.leftWall)
+        this.rightWall = CreateEntity({ ...rightWall, options: { graphics: { color: 0x4ade80 }, position: { x: this.app.renderer.width - this.wallSize, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, this.world)
+        this.world.addEntity(this.rightWall)
+    }
+    resetBounds(entity: Entity, pos: { x: number, y: number }, dimension: { height: number, width: number }): void {
+        const position = entity.getComponent('position') as PositionComponent
+        const { x, y } = pos
+        position.setPosition(x, y)
+        const size = entity.getComponent('size') as SizeComponent
+        const { width, height } = dimension
+        size.setSize(width, height)
+    }
+    resetAllBounds(): void {
+        this.resetBounds(this.cieling, { x: this.wallSize, y: 0 }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })
+        this.resetBounds(this.floor, { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })
+        this.resetBounds(this.leftWall, { x: 0, y: 0 }, { height: this.app.renderer.height, width: this.wallSize })
+        this.resetBounds(this.rightWall, { x: this.app.renderer.width - this.wallSize, y: 0 }, { height: this.app.renderer.height, width: this.wallSize })
+    }
 }
-
 
 function dummyText(text: string, style: PIXI.TextStyle) {
     return new PIXI.Text(text, style)

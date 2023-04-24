@@ -1,4 +1,4 @@
-import { Component } from "../components/Component"
+import { Component } from "../components"
 
 export class Entity {
   components: Record<string, Component>

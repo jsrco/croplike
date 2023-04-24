@@ -1,4 +1,4 @@
-import { EventManager } from './EventManager'
+import { EventManager } from "./EventManager"
 
 export class KeyboardController {
   private eventManager: EventManager
