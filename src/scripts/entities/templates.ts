@@ -29,6 +29,7 @@ export const largeEntity: EntityMap = {
         gravity: true,
         position: true,
         size: true,
+        sizeChange: true,
         velocity: true,
         wallCollision: true,
     }, 

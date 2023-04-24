@@ -4,7 +4,7 @@ import { ceiling, floor, largeEntity, leftWall, player, rightWall } from "./enti
 import { CreateEntity } from "./entities/Create"
 import { Entity } from "./entities/Entity"
 import { PositionComponent, SizeComponent } from "./components"
-import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem } from "./systems"
+import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem, SizeSystem } from "./systems"
 
 export class Engine {
     app: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
@@ -43,6 +43,7 @@ export class Engine {
         this.world.addSystem(new MovementSystem(this.world))
         this.world.addSystem(new OutOfBoundsSystem(this.world))
         this.world.addSystem(new RenderSystem(this.world))
+        this.world.addSystem(new SizeSystem(this.world))
     }
     public start(): void {
         this.app.stage.eventMode = 'static'

@@ -45,6 +45,8 @@ export class MovementSystem extends System {
                     velocityComponent.setVelocity(velocityComponent.x, velocityComponent.y - jumpComponent.force)
                     jumpComponent.setIsJumping(true)
                     wallCollisionComponent.setIsSliding(false, '')
+                    if (gravity) gravity.setGroundStatus(false)
+                    if (gravity) gravity.setRidingStatus(false)
                 }
                 if (this.keys.has('ArrowUp') && wallCollisionComponent.isSliding) {
                     const jumpComponent = entity.getComponent('jump') as JumpComponent
@@ -52,6 +54,8 @@ export class MovementSystem extends System {
                     velocityComponent.setVelocity(velocityX, velocityComponent.y - wallCollisionComponent.force)
                     jumpComponent.setIsJumping(true)
                     wallCollisionComponent.setIsSliding(false, '')
+                    if (gravity) gravity.setGroundStatus(false)
+                    if (gravity) gravity.setRidingStatus(false)
                 }
             } else if (entity.name === 'largeEntity') {
                 if (positionComponent.x <= 50 && velocityComponent.x <= 0) {

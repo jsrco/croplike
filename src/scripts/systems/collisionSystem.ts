@@ -1,5 +1,5 @@
 import { Entity } from "../entities/Entity"
-import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "../components"
+import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeChangeComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "../components"
 import { System } from "."
 import { World } from "../util/World"
 
@@ -19,6 +19,16 @@ export class CollisionSystem extends System {
         if (check[0]) {
           collision += 1
           this.handleCollision(entityA, entityB, check)
+          const sizeChangeComponent = entityB.getComponent("sizeChange") as SizeChangeComponent
+          if (sizeChangeComponent) {
+            if (check[1] === 'bottom') {
+              if (sizeChangeComponent) sizeChangeComponent.setIsShrinking(true)
+            } else if (check[1] === 'top') {
+              if (sizeChangeComponent) sizeChangeComponent.setIsShrinking(false)
+              const gravity = entityA.getComponent('gravity') as GravityComponent
+              if (gravity) gravity.setGroundStatus(false)
+            }
+          }
         }
       }
       if (collision === 0) {
@@ -27,6 +37,8 @@ export class CollisionSystem extends System {
         if (gravity) gravity.setRidingStatus(false)
         const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
         if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false, '')
+        const sizeChangeComponent = entityA.getComponent("sizeChange") as SizeChangeComponent
+        if (sizeChangeComponent) sizeChangeComponent.setIsShrinking(false)
       }
     }
   }
@@ -77,7 +89,7 @@ export class CollisionSystem extends System {
     }
   }
   private handleCollision(entityA: Entity, entityB: Entity, check: [boolean, string, string]): void {
-    this.correctCollision(entityA, entityB, check[1]) 
+    this.correctCollision(entityA, entityB, check[1])
     const velocityA = entityA.getComponent('velocity') as VelocityComponent
     const velocityB = entityB.getComponent('velocity') as VelocityComponent
     if (check[1] === 'left' || check[1] === 'right') {
@@ -91,7 +103,7 @@ export class CollisionSystem extends System {
       if (entityB.name !== 'largeEntity' && velocityB) velocityB.setVelocity(velocityA ? velocityA.x : 0, velocityB.y)
     } else if (check[1] === 'top' || check[1] === 'bottom') {
       const isWall = entityB.getComponent('wall') as WallComponent
-      if (check[1] === 'bottom') {        
+      if (check[1] === 'bottom') {
         const gravity = entityA.getComponent('gravity') as GravityComponent
         if (gravity) {
           if (isWall) gravity.setGroundStatus(true)
