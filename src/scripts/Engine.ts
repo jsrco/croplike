@@ -23,13 +23,19 @@ export class Engine {
     leftWall!: Entity
     rightWall!: Entity
     wallSize: number = 35
-    
+    paused: boolean = false
+
     constructor(elementRef: any) {
         elementRef.appendChild(this.app.view)
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
             this.resetAllBounds()
         })
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'p') {
+              this.pause()
+            }
+          })
         this.player = CreateEntity(player, this.world)
         this.world.addEntity(this.player)
         this.largeEntity = CreateEntity(largeEntity, this.world)
@@ -44,6 +50,22 @@ export class Engine {
         this.world.addSystem(new OutOfBoundsSystem(this.world))
         this.world.addSystem(new RenderSystem(this.world))
         this.world.addSystem(new SizeSystem(this.world))
+    }
+    public pause(): void {
+        this.paused = !this.paused
+        console.log('pause', this.paused)
+        if (this.paused) this.pauseTicker()
+        else this.resumeTicker()
+
+    }
+    public pauseTicker(): void {
+        this.app.ticker.stop()
+        console.log('pause tick', this.paused)
+    }
+    public resumeTicker(): void {
+        this.app.ticker.start()
+        console.log('resume tick', this.paused)
+
     }
     public start(): void {
         this.app.stage.eventMode = 'static'
@@ -64,7 +86,7 @@ export class Engine {
         this.textSupport.y = this.wallSize + 5
         this.app.stage.addChild(this.textSupport)
 
-        this.world.update(delta)
+        if (!this.paused) this.world.update(delta)
     }
     // demo wall
     createBounds(): void {

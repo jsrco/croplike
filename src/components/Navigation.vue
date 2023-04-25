@@ -4,8 +4,7 @@
         <div class="font-start text-white">
             Croplike
             <span class="cursor-pointer dropdown font-share"
-                :class="{ 'text-gray-400': !isInDebug, 'text-white': isInDebug }"
-                @click="toggleDebug()">
+                :class="{ 'text-gray-400': !isInDebug, 'text-white': isInDebug }" @click="toggleDebug()">
                 {{ `:${isInDebug ? "/" : ""}debug` }}
             </span>
         </div>
@@ -25,16 +24,22 @@ import useEngine from "../composeables/use-engine"
 
 const debugList = [
     {
+        name: 'pause game',
+        operation: () => {
+            useEngine().game.pause()
+        }
+    },
+    {
         name: 'console.log entities',
         operation: () => console.dir(useEngine().game.world.entities)
     },
     {
         name: 'reset largeEntity position',
-        operation: () => useEngine().game.largeEntity.getComponent('position').setPosition(200,55)
+        operation: () => useEngine().game.largeEntity.getComponent('position').setPosition(200, 55)
     },
     {
         name: 'reset player position',
-        operation: () => useEngine().game.player.getComponent('position').setPosition(55,55)
+        operation: () => useEngine().game.player.getComponent('position').setPosition(55, 55)
     },
 ]
 
