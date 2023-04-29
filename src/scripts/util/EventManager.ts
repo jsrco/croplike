@@ -1,5 +1,5 @@
 export class EventManager {
-  private eventListeners: { [eventType: string]: Function[] } = {};
+  eventListeners: { [eventType: string]: Function[] } = {};
 
   public dispatch(eventType: string, data?: any): void {
     if (!this.eventListeners[eventType]) {

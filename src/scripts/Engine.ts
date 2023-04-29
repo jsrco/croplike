@@ -10,6 +10,7 @@ export class Engine {
     app: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
     largeEntity: Entity
     player: Entity
+    paused: boolean = false
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
         fontSize: 8,
@@ -23,7 +24,6 @@ export class Engine {
     leftWall!: Entity
     rightWall!: Entity
     wallSize: number = 35
-    paused: boolean = false
 
     constructor(elementRef: any) {
         elementRef.appendChild(this.app.view)
@@ -60,11 +60,9 @@ export class Engine {
     }
     public pauseTicker(): void {
         this.app.ticker.stop()
-        console.log('pause tick', this.paused)
     }
     public resumeTicker(): void {
         this.app.ticker.start()
-        console.log('resume tick', this.paused)
 
     }
     public start(): void {
@@ -78,7 +76,7 @@ export class Engine {
             this.update(delta)
         })
     }
-    private update(delta: number): void {
+    update(delta: number): void {
         // update game logic
         this.app.stage.removeChild(this.textSupport)
         this.textSupport = dummyText(`a start screen ${this.app.renderer.width} x ${this.app.renderer.height}`, this.textStyle)

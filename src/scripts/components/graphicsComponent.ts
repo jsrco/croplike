@@ -17,14 +17,14 @@ export class GraphicsComponent extends Component {
     addToStage() {
         this.world.app.stage.addChild(this.rectangle)
     }
-    private onPositionChange(data: any): void {
+    onPositionChange(data: any): void {
         if (data.entity === this.owner) {
             const positionComponent = data.positionComponent
             this.rectangle.x = positionComponent.x
             this.rectangle.y = positionComponent.y
         }
     }
-    private onSizeChange(data: any): void {
+    onSizeChange(data: any): void {
         if (data.entity === this.owner) {
             const sizeComponent = data.sizeComponent
             this.rectangle.height = sizeComponent.height

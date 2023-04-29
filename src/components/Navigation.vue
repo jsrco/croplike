@@ -24,14 +24,18 @@ import useEngine from "../composeables/use-engine"
 
 const debugList = [
     {
+        name: 'console.dir info',
+        operation: () => {
+            console.dir('entities', useEngine().game.world.entities)
+            console.dir('systems', useEngine().game.world.systems)
+            console.dir('world', useEngine().game.world)
+        }
+    },
+    {
         name: 'pause game',
         operation: () => {
             useEngine().game.pause()
         }
-    },
-    {
-        name: 'console.log entities',
-        operation: () => console.dir(useEngine().game.world.entities)
     },
     {
         name: 'reset largeEntity position',

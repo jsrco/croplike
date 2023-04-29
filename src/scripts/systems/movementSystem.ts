@@ -3,8 +3,8 @@ import { System } from "."
 import { World } from "../util/World"
 
 export class MovementSystem extends System {
-    private acceleration: number
-    private maxVelocity: number
+    acceleration: number
+    maxVelocity: number
     type: string = 'movement'
     constructor(world: World) {
         super(world)
