@@ -1,4 +1,4 @@
-import { CollisionComponent, Component, GraphicsComponent, GravityComponent, JumpComponent, PositionComponent, SizeChangeComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "../components"
+import { CollisionComponent, GraphicsComponent, GravityComponent, JumpComponent, PositionComponent, SizeChangeComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "../components"
 import { World } from "../util/World"
 import { Entity } from "./Entity"
 

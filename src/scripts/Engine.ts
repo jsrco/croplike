@@ -67,6 +67,10 @@ export class Engine {
         this.app.ticker.start()
 
     }
+    save(): void {
+        this.world.eventManager.dispatch('save')
+        this.localStorageManager.saveData({test: 'dataChanged', addedProp: 'check'})
+    }
     start(): void {
         this.app.stage.eventMode = 'static'
         this.app.stage.hitArea = this.app.screen
