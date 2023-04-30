@@ -30,7 +30,7 @@ const debugList = [
             //console.dir('entities', useEngine().game.world.entities[0])
             //console.dir('systems', useEngine().game.world.systems)
             //console.dir('world', useEngine().game.world)         
-            useEngine().game.save()
+            useEngine().game.save({test:'data test after position'})
             console.dir(useEngine().game.localStorageManager.getData())
         }
     },

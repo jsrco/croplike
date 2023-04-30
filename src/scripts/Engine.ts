@@ -67,9 +67,9 @@ export class Engine {
         this.app.ticker.start()
 
     }
-    save(): void {
+    save(data: any): void {
         this.world.eventManager.dispatch('save')
-        this.localStorageManager.saveData({test: 'dataChanged', addedProp: 'check'})
+        this.localStorageManager.saveData(data)
     }
     start(): void {
         this.app.stage.eventMode = 'static'
