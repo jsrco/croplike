@@ -5,24 +5,26 @@ import { CreateEntity } from "./entities/Create"
 import { Entity } from "./entities/Entity"
 import { PositionComponent, SizeComponent } from "./components"
 import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem, SizeSystem } from "./systems"
+import { LocalStorageManager } from "./util/LocalStorageManager"
 
 export class Engine {
     app: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
-    largeEntity: Entity
-    player: Entity
+    localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     paused: boolean = false
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
         fontSize: 8,
         fill: ['#4ade80'],
     })
-    textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
     world: World = new World(this.app)
 
     cieling!: Entity
     floor!: Entity
+    largeEntity: Entity
     leftWall!: Entity
+    player: Entity
     rightWall!: Entity
+    textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
     wallSize: number = 35
 
     constructor(elementRef: any) {
@@ -51,21 +53,21 @@ export class Engine {
         this.world.addSystem(new RenderSystem(this.world))
         this.world.addSystem(new SizeSystem(this.world))
     }
-    public pause(): void {
+    pause(): void {
         this.paused = !this.paused
         console.log('pause', this.paused)
         if (this.paused) this.pauseTicker()
         else this.resumeTicker()
 
     }
-    public pauseTicker(): void {
+    pauseTicker(): void {
         this.app.ticker.stop()
     }
-    public resumeTicker(): void {
+    resumeTicker(): void {
         this.app.ticker.start()
 
     }
-    public start(): void {
+    start(): void {
         this.app.stage.eventMode = 'static'
         this.app.stage.hitArea = this.app.screen
         this.app.stage.on('pointerup', (event) => {

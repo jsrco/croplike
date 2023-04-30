@@ -22,13 +22,19 @@
 import { ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
 
+
 const debugList = [
     {
         name: 'console.dir info',
         operation: () => {
-            console.dir('entities', useEngine().game.world.entities)
-            console.dir('systems', useEngine().game.world.systems)
-            console.dir('world', useEngine().game.world)
+            //console.dir('entities', useEngine().game.world.entities)
+            //console.dir('systems', useEngine().game.world.systems)
+            //console.dir('world', useEngine().game.world)
+            useEngine().game.localStorageManager.saveData({test: 'data'})
+            console.dir(useEngine().game.localStorageManager.getData())
+            
+            useEngine().game.localStorageManager.saveData({test: 'dataChanged', addedProp: 'check'})
+            console.dir(useEngine().game.localStorageManager.getData())
         }
     },
     {

@@ -20,7 +20,7 @@ export class KeyboardController {
     const data = { key: event.key, isDown: false }
     this.eventManager.dispatch('keyChange', data)
   }
-  public isKeyDown(key: string): boolean {
+  isKeyDown(key: string): boolean {
     return this.keysDown[key] === true
   }
 }
