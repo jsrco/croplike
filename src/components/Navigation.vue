@@ -38,12 +38,6 @@ const debugList = [
         }
     },
     {
-        name: 'demo load',
-        operation: () => {
-            useEngine().game.load()
-        }
-    },
-    {
         name: 'pause game',
         operation: () => {
             useEngine().game.pause()

@@ -70,9 +70,6 @@ export class Engine {
         this.localStorageManager.saveManager.createAllEntityData(this.world)
         this.localStorageManager.saveData(this.localStorageManager.saveManager.data)
     }
-    load() {      
-        this.localStorageManager.saveManager.loadEntity(this.player, this.localStorageManager.getData() as EntityMap)
-    }
     start(): void {
         this.app.stage.eventMode = 'static'
         this.app.stage.hitArea = this.app.screen
