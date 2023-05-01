@@ -1,10 +1,13 @@
 import { EntityMap } from "../entities/Create"
 import { Entity } from "../entities/Entity"
+import { World } from "./World"
 
 export class SaveManager {
-    data: {}
+    data: any
     constructor() {
-        this.data = {}
+        this.data = {
+            entities: []
+        }
     }
     clearData(): void {
         this.data = {}
@@ -12,6 +15,11 @@ export class SaveManager {
     createData(): void {
         // create all the data for load
     }
+    createAllEntityData(world: World): void {
+        for (const entity in world.entities) {
+            this.data.entities.push(this.createEntityData(world.entities[entity]))   
+        }
+    }  
     createEntityData(entity: Entity): EntityMap {
         const entityMap: any = {
             name: entity.name,
@@ -30,7 +38,7 @@ export class SaveManager {
     }
     loadEntity(entity: Entity, entityMap: EntityMap) {
         if (entityMap.componentMap.collision) entity.components.collision.applyComponentData(entityMap.options?.collision)
-        if (entityMap.componentMap.graphics) entity.components.graphics.applyComponentData(entityMap.options?.graphics)
+        // if (entityMap.componentMap.graphics) entity.components.graphics.applyComponentData(entityMap.options?.graphics) find fix
         if (entityMap.componentMap.gravity) entity.components.gravity.applyComponentData(entityMap.options?.gravity)
         if (entityMap.componentMap.jump) entity.components.jump.applyComponentData(entityMap.options?.jump)
         if (entityMap.componentMap.position) entity.components.position.applyComponentData(entityMap.options?.position)

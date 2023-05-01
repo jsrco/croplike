@@ -67,7 +67,8 @@ export class Engine {
     }
     save(): void {      
         this.localStorageManager.clearData()
-        this.localStorageManager.saveData(this.localStorageManager.saveManager.createEntityData(this.player))
+        this.localStorageManager.saveManager.createAllEntityData(this.world)
+        this.localStorageManager.saveData(this.localStorageManager.saveManager.data)
     }
     load() {      
         this.localStorageManager.saveManager.loadEntity(this.player, this.localStorageManager.getData() as EntityMap)

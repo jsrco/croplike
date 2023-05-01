@@ -27,8 +27,8 @@ const debugList = [
     {
         name: 'console.dir info',
         operation: () => {
-            console.dir('world', useEngine().game.world)
-            //console.dir(useEngine().game.localStorageManager.getData())
+            //console.dir('world', useEngine().game.world)
+            console.dir(useEngine().game.localStorageManager.getData())
         }
     },
     {
