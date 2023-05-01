@@ -16,26 +16,7 @@ export type EntityMap = {
         wallCollision?: boolean
         wall?: boolean
     }
-    options?: {
-        graphics?: {
-            color: number
-        }
-        gravity?: {
-            force: number
-        }
-        position?: {
-            x: number,
-            y: number
-        }
-        size?: {
-            height?: number
-            width: number
-        }
-        velocity?: {
-            x?: number,
-            y?: number
-        }
-    }
+    options?: any
 }
 
 export const CreateEntity = (entityMap: EntityMap, world: World): Entity => {

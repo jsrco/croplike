@@ -27,11 +27,20 @@ const debugList = [
     {
         name: 'console.dir info',
         operation: () => {
-            //console.dir('entities', useEngine().game.world.entities[0])
-            //console.dir('systems', useEngine().game.world.systems)
-            //console.dir('world', useEngine().game.world)         
-            useEngine().game.save({test:'data test after position'})
-            console.dir(useEngine().game.localStorageManager.getData())
+            console.dir('world', useEngine().game.world)
+            //console.dir(useEngine().game.localStorageManager.getData())
+        }
+    },
+    {
+        name: 'demo save',
+        operation: () => {
+            useEngine().game.save()
+        }
+    },
+    {
+        name: 'demo load',
+        operation: () => {
+            useEngine().game.load()
         }
     },
     {

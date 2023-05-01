@@ -1,6 +1,9 @@
+import { SaveManager } from "./SaveManager"
+
 export class LocalStorageManager<T> {
-    localStorageKey: string
     data: T | {}
+    localStorageKey: string
+    saveManager: SaveManager = new SaveManager()
     constructor(localStorageKey: string) {
         this.localStorageKey = localStorageKey
         const storedData = localStorage.getItem(this.localStorageKey)

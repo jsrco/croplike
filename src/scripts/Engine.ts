@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js"
 import { World } from "./util/World"
 import { ceiling, floor, largeEntity, leftWall, player, rightWall } from "./entities/templates"
-import { CreateEntity } from "./entities/Create"
+import { CreateEntity, EntityMap } from "./entities/Create"
 import { Entity } from "./entities/Entity"
 import { PositionComponent, SizeComponent } from "./components"
 import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem, SizeSystem } from "./systems"
@@ -26,7 +26,7 @@ export class Engine {
     rightWall!: Entity
     textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
     wallSize: number = 35
-
+    backup: any = {}
     constructor(elementRef: any) {
         elementRef.appendChild(this.app.view)
         window.addEventListener('resize', () => {
@@ -58,18 +58,19 @@ export class Engine {
         console.log('pause', this.paused)
         if (this.paused) this.pauseTicker()
         else this.resumeTicker()
-
     }
     pauseTicker(): void {
         this.app.ticker.stop()
     }
     resumeTicker(): void {
         this.app.ticker.start()
-
     }
-    save(data: any): void {
-        this.world.eventManager.dispatch('save')
-        this.localStorageManager.saveData(data)
+    save(): void {      
+        this.localStorageManager.clearData()
+        this.localStorageManager.saveData(this.localStorageManager.saveManager.createEntityData(this.player))
+    }
+    load() {      
+        this.localStorageManager.saveManager.loadEntity(this.player, this.localStorageManager.getData() as EntityMap)
     }
     start(): void {
         this.app.stage.eventMode = 'static'

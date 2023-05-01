@@ -11,12 +11,6 @@ export class PositionComponent extends Component {
         super(world)
         this.previousPosition = { x: this.x, y: this.y }
         this.setPosition(x, y)
-        this.world.eventManager.subscribe('save', this.save.bind(this))
-    }
-    save() {
-        // Override this method in each subclass
-        console.dir(`saving ${this.type} component for ${this.owner.name}`)
-        console.dir(this.copyComponentData(this))
     }
     setPosition(x: number, y: number) {
         this.previousPosition = { x: this.x, y: this.y }
