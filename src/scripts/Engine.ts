@@ -6,11 +6,13 @@ import { Entity } from "./entities/Entity"
 import { PositionComponent, SizeComponent } from "./components"
 import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem, SizeSystem } from "./systems"
 import { LocalStorageManager } from "./util/LocalStorageManager"
+import { SaveManager } from "./util/SaveManager"
 
 export class Engine {
     app: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     paused: boolean = false
+    saveManager: SaveManager = new SaveManager()
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
         fontSize: 8,
@@ -67,8 +69,8 @@ export class Engine {
     }
     save(): void {      
         this.localStorageManager.clearData()
-        this.localStorageManager.saveManager.createAllEntityData(this.world)
-        this.localStorageManager.saveData(this.localStorageManager.saveManager.data)
+        this.saveManager.createAllEntityData(this.world)
+        this.localStorageManager.saveData(this.saveManager.data)
     }
     start(): void {
         this.app.stage.eventMode = 'static'
