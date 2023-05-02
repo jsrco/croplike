@@ -1,3 +1,4 @@
+import { Entity } from "../entities/Entity"
 import { Component } from '.'
 import { World } from "../util/World"
 
@@ -8,8 +9,8 @@ export class WallCollisionComponent extends Component {
     wallDirection: string = ''
     wallSlideSpeed: number = 0.4
 
-    constructor(world: World) {
-        super(world)
+    constructor(entity: Entity, world: World) {
+        super(entity, world)
     }
     setIsSliding(isIt: boolean, direction?: string) {
         this.isSliding = isIt

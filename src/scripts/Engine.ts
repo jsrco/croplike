@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js"
 import { World } from "./util/World"
 import { ceiling, floor, largeEntity, leftWall, player, rightWall } from "./entities/templates"
-import { CreateEntity, EntityMap } from "./entities/Create"
+import { CreateEntity } from "./entities/Create"
 import { Entity } from "./entities/Entity"
 import { PositionComponent, SizeComponent } from "./components"
 import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem, SizeSystem } from "./systems"
@@ -67,10 +67,15 @@ export class Engine {
     resumeTicker(): void {
         this.app.ticker.start()
     }
-    save(): void {      
+    save(): void {    
+        this.paused = true  
         this.localStorageManager.clearData()
         this.saveManager.createAllEntityData(this.world)
+        this.paused = false
         this.localStorageManager.saveData(this.saveManager.data)
+    }
+    load(): void {
+        this.saveManager.loadEntity(this.player, this.saveManager.data.entities[0] )
     }
     start(): void {
         this.app.stage.eventMode = 'static'

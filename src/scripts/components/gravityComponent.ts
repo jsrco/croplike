@@ -1,3 +1,4 @@
+import { Entity } from "../entities/Entity"
 import { Component } from "."
 import { World } from "../util/World"
 
@@ -7,8 +8,8 @@ export class GravityComponent extends Component {
     isRiding: boolean = false
     type: string = 'gravity'
 
-    constructor(world: World, force?: number) {
-        super(world)
+    constructor(entity: Entity, world: World, force?: number) {
+        super(entity, world)
         if (force) this.setGravity(force)
     }
     setGravity(x: number) {

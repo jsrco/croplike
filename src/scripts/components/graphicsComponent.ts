@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js"
 import { Graphics } from "pixi.js"
+import { Entity } from "../entities/Entity"
 import { Component } from "."
 import { World } from "../util/World"
 
@@ -7,8 +8,8 @@ export class GraphicsComponent extends Component {
     rectangle: Graphics
     type: string = 'graphics'
 
-    constructor(world: World, color = 0xFF0000) {
-        super(world)
+    constructor(entity: Entity, world: World, color = 0xFF0000) {
+        super(entity, world)
         this.rectangle = new PIXI.Graphics().beginFill(color).drawRect(0, 0, 10, 10)
 
         this.world.eventManager.subscribe('positionChange', this.onPositionChange.bind(this))

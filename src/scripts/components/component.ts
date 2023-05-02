@@ -9,7 +9,8 @@ export class Component {
     type!: string
     world: World
 
-    constructor(world: World) {
+    constructor(entity: Entity, world: World) {
+        this.owner = entity
         this.world = world
     }
     applyComponentData(data: SaveObject): void {
