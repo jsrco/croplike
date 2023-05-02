@@ -71,11 +71,8 @@ export class Engine {
         this.paused = true  
         this.localStorageManager.clearData()
         this.saveManager.createAllEntityData(this.world)
-        this.paused = false
         this.localStorageManager.saveData(this.saveManager.data)
-    }
-    load(): void {
-        this.saveManager.loadEntity(this.player, this.saveManager.data.entities[0] )
+        this.paused = false
     }
     start(): void {
         this.app.stage.eventMode = 'static'

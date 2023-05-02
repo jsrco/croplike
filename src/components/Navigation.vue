@@ -25,12 +25,6 @@ import useEngine from "../composeables/use-engine"
 
 const debugList = [
     {
-        name: 'console.dir player',
-        operation: () => {
-            console.log({x:useEngine().game.player.components.position.x, y: useEngine().game.player.components.position.y, recx: useEngine().game.player.components.collision.rectangle.x, recy: useEngine().game.player.components.collision.rectangle.y, grapx: useEngine().game.player.components.graphics.rectangle.x, grapy: useEngine().game.player.components.graphics.rectangle.y})
-        }
-    },
-    {
         name: 'console.dir info',
         operation: () => {
             //console.dir('world', useEngine().game.world)
@@ -42,12 +36,6 @@ const debugList = [
         name: 'demo save',
         operation: () => {
             useEngine().game.save()
-        }
-    },
-    {
-        name: 'demo load',
-        operation: () => {
-            useEngine().game.load()
         }
     },
     {
