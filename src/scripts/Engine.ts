@@ -29,9 +29,20 @@ export class Engine {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
             this.resetAllBounds()
         })
+        
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'l') {
+              this.load()
+            }
+        })
         window.addEventListener('keydown', (event) => {
             if (event.key === 'p') {
               this.pause()
+            }
+        })
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 's') {
+              this.save()
             }
         })
 
@@ -63,6 +74,7 @@ export class Engine {
             this.saveManager.loadEntity(entity, this.world)
         })
         this.loadSystems(this.world)
+        this.paused = false
     }
     loadEntities(world:World): void {
         world.addEntity(CreateEntity(player, world))
@@ -93,6 +105,7 @@ export class Engine {
     save(): void {    
         this.paused = true  
         this.localStorageManager.clearData()
+        this.saveManager.clearData()
         this.saveManager.createAllEntityData(this.world)
         this.localStorageManager.saveData(this.saveManager.data)
         this.paused = false
@@ -124,7 +137,6 @@ export class Engine {
     }
     resetAllBounds(): void {
         const walls = this.world.getEntitiesByComponent('wall')
-        console.log(walls)
         walls.forEach(wall => {
             if (wall.name === 'ceiling') this.resetBounds(wall, { x: this.wallSize, y: 0 }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })
             if (wall.name === 'floor') this.resetBounds(wall, { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })

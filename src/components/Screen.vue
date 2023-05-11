@@ -1,8 +1,9 @@
 <template>
-    <div ref="gameContainer">
+    <div ref="gameContainer" v-if="!smolScreen()">
         <div v-if="gameContainer === null" class="font-start pt-1 px-3 sm:px-4 lg:px-5 text-sm text-white">loading...
         </div>
     </div>
+    <div v-else class="font-start text-small text-white">Mobile not supported. Yet.</div>
 </template>
 
 <script setup lang="ts">
@@ -10,6 +11,20 @@ import { onMounted, ref } from "vue"
 import useEngine from "../composeables/use-engine"
 
 const gameContainer = ref()
+
+const smolScreen = () => {
+    if (navigator.userAgent.match(/Android/i)
+         || navigator.userAgent.match(/webOS/i)
+         || navigator.userAgent.match(/iPhone/i)
+         || navigator.userAgent.match(/iPad/i)
+         || navigator.userAgent.match(/iPod/i)
+         || navigator.userAgent.match(/BlackBerry/i)
+         || navigator.userAgent.match(/Windows Phone/i)) {
+            return true 
+         } else {
+            return false
+         }
+}
 
 onMounted(() => {
 
@@ -20,8 +35,7 @@ onMounted(() => {
     PressStart2P.load().then(function (font) {
         // with canvas, if this is ommited won't work
         document.fonts.add(font)
-        const { game } = useEngine(gameContainer.value)
-        game.pause()
+        useEngine(gameContainer.value)
     })
 })
 </script>

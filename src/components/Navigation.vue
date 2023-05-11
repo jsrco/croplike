@@ -32,27 +32,27 @@ const debugList = [
         }
     },
     {
-        name: 'demo save',
+        name: 'clear save',
         operation: () => {
-            useEngine().game.save()
+            useEngine().game.localStorageManager.clearData() 
         }
     },
     {
-        name: 'demo load',
+        name: 'load save',
         operation: () => {
             useEngine().game.load()
+        }
+    },
+    {
+        name: 'save',
+        operation: () => {
+            useEngine().game.save()
         }
     },
     {
         name: 'pause game',
         operation: () => {
             useEngine().game.pause()
-        }
-    },
-    {
-        name: 'clear game',
-        operation: () => {
-            useEngine().game.app.renderer.clear()
         }
     },
 ]

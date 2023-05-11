@@ -10,7 +10,9 @@ export class SaveManager {
         }
     }
     clearData(): void {
-        this.data = {}
+        this.data = {
+            entities: []
+        }
     }
     createData(): void {
         // create all the data for load
