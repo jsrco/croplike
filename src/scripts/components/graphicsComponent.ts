@@ -5,12 +5,14 @@ import { Component } from "."
 import { World } from "../util/World"
 
 export class GraphicsComponent extends Component {
+    color: any
     rectangle: Graphics
     type: string = 'graphics'
 
     constructor(entity: Entity, world: World, color = 0xFF0000) {
         super(entity, world)
-        this.rectangle = new PIXI.Graphics().beginFill(color).drawRect(0, 0, 10, 10)
+        this.color = color
+        this.rectangle = new PIXI.Graphics().beginFill(this.color).drawRect(0, 0, 10, 10)
 
         this.world.eventManager.subscribe('positionChange', this.onPositionChange.bind(this))
         this.world.eventManager.subscribe('sizeChange', this.onSizeChange.bind(this))

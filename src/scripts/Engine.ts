@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js"
 import { World } from "./util/World"
 import { ceiling, floor, largeEntity, leftWall, player, rightWall } from "./entities/templates"
-import { CreateEntity } from "./entities/Create"
+import { CreateEntity, EntityMap } from "./entities/Create"
 import { Entity } from "./entities/Entity"
 import { PositionComponent, SizeComponent } from "./components"
 import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem, SizeSystem } from "./systems"
@@ -20,15 +20,9 @@ export class Engine {
     })
     world: World = new World(this.app)
 
-    cieling!: Entity
-    floor!: Entity
-    largeEntity: Entity
-    leftWall!: Entity
-    player: Entity
-    rightWall!: Entity
     textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
     wallSize: number = 35
-    backup: any = {}
+
     constructor(elementRef: any) {
         elementRef.appendChild(this.app.view)
         window.addEventListener('resize', () => {
@@ -39,21 +33,50 @@ export class Engine {
             if (event.key === 'p') {
               this.pause()
             }
-          })
-        this.player = CreateEntity(player, this.world)
-        this.world.addEntity(this.player)
-        this.largeEntity = CreateEntity(largeEntity, this.world)
-        this.world.addEntity(this.largeEntity)
+        })
 
+        // set app
+        this.app.stage.eventMode = 'static'
+        this.app.stage.hitArea = this.app.screen
+        this.app.stage.on('pointerup', (event) => {
+            //handle event
+            console.dir('clicky clicky')
+        })
+        this.app.ticker.add((delta) => {
+            this.update(delta)
+        })
+
+        // load entities
+        this.loadEntities(this.world)
+
+        // load systems
+        this.loadSystems(this.world)
+    }
+    load(): void {
+        this.paused = true  
+        this.app.renderer.clear()  
+        this.app.stage.removeChildren()
+
+        const saveData: any = this.localStorageManager.getData()
+        this.world = new World(this.app)
+        saveData.entities.forEach((entity: EntityMap) => {
+            this.saveManager.loadEntity(entity, this.world)
+        })
+        this.loadSystems(this.world)
+    }
+    loadEntities(world:World): void {
+        world.addEntity(CreateEntity(player, world))
+        world.addEntity(CreateEntity(largeEntity, world))
         // dummy level
-        this.createBounds()
-
-        this.world.addSystem(new CollisionSystem(this.world))
-        this.world.addSystem(new GravitySystem(this.world))
-        this.world.addSystem(new MovementSystem(this.world))
-        this.world.addSystem(new OutOfBoundsSystem(this.world))
-        this.world.addSystem(new RenderSystem(this.world))
-        this.world.addSystem(new SizeSystem(this.world))
+        this.createBounds(world)
+    }
+    loadSystems(world: World):void {
+        world.addSystem(new CollisionSystem(world))
+        world.addSystem(new GravitySystem(world))
+        world.addSystem(new MovementSystem(world))
+        world.addSystem(new OutOfBoundsSystem(world))
+        world.addSystem(new RenderSystem(world))
+        world.addSystem(new SizeSystem(world))
     }
     pause(): void {
         this.paused = !this.paused
@@ -74,17 +97,6 @@ export class Engine {
         this.localStorageManager.saveData(this.saveManager.data)
         this.paused = false
     }
-    start(): void {
-        this.app.stage.eventMode = 'static'
-        this.app.stage.hitArea = this.app.screen
-        this.app.stage.on('pointerup', (event) => {
-            //handle event
-            console.dir('clicky clicky')
-        })
-        this.app.ticker.add((delta) => {
-            this.update(delta)
-        })
-    }
     update(delta: number): void {
         // update game logic
         this.app.stage.removeChild(this.textSupport)
@@ -96,15 +108,11 @@ export class Engine {
         if (!this.paused) this.world.update(delta)
     }
     // demo wall
-    createBounds(): void {
-        this.cieling = CreateEntity({ ...ceiling, options: { graphics: { color: 0x4ade80 }, position: { x: this.wallSize, y: 0 }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, this.world)
-        this.world.addEntity(this.cieling)
-        this.floor = CreateEntity({ ...floor, options: { graphics: { color: 0x4ade80 }, position: { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, this.world)
-        this.world.addEntity(this.floor)
-        this.leftWall = CreateEntity({ ...leftWall, options: { graphics: { color: 0x4ade80 }, position: { x: 0, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, this.world)
-        this.world.addEntity(this.leftWall)
-        this.rightWall = CreateEntity({ ...rightWall, options: { graphics: { color: 0x4ade80 }, position: { x: this.app.renderer.width - this.wallSize, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, this.world)
-        this.world.addEntity(this.rightWall)
+    createBounds(world: World): void {
+        world.addEntity(CreateEntity({ ...ceiling, options: { graphics: { color: 0x4ade80 }, position: { x: this.wallSize, y: 0 }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, world))
+        world.addEntity(CreateEntity({ ...floor, options: { graphics: { color: 0x4ade80 }, position: { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, this.world))
+        world.addEntity(CreateEntity({ ...leftWall, options: { graphics: { color: 0x4ade80 }, position: { x: 0, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, world))
+        world.addEntity(CreateEntity({ ...rightWall, options: { graphics: { color: 0x4ade80 }, position: { x: this.app.renderer.width - this.wallSize, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, world))
     }
     resetBounds(entity: Entity, pos: { x: number, y: number }, dimension: { height: number, width: number }): void {
         const position = entity.getComponent('position') as PositionComponent
@@ -115,10 +123,14 @@ export class Engine {
         size.setSize(width, height)
     }
     resetAllBounds(): void {
-        this.resetBounds(this.cieling, { x: this.wallSize, y: 0 }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })
-        this.resetBounds(this.floor, { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })
-        this.resetBounds(this.leftWall, { x: 0, y: 0 }, { height: this.app.renderer.height, width: this.wallSize })
-        this.resetBounds(this.rightWall, { x: this.app.renderer.width - this.wallSize, y: 0 }, { height: this.app.renderer.height, width: this.wallSize })
+        const walls = this.world.getEntitiesByComponent('wall')
+        console.log(walls)
+        walls.forEach(wall => {
+            if (wall.name === 'ceiling') this.resetBounds(wall, { x: this.wallSize, y: 0 }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })
+            if (wall.name === 'floor') this.resetBounds(wall, { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })
+            if (wall.name === 'leftWall') this.resetBounds(wall, { x: 0, y: 0 }, { height: this.app.renderer.height, width: this.wallSize })
+            if (wall.name === 'rightWall') this.resetBounds(wall, { x: this.app.renderer.width - this.wallSize, y: 0 }, { height: this.app.renderer.height, width: this.wallSize })
+        })
     }
 }
 

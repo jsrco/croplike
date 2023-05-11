@@ -29,7 +29,6 @@ const debugList = [
         operation: () => {
             //console.dir('world', useEngine().game.world)
             console.dir(useEngine().game.localStorageManager.getData())
-            console.dir(useEngine().game.player)
         }
     },
     {
@@ -39,18 +38,22 @@ const debugList = [
         }
     },
     {
+        name: 'demo load',
+        operation: () => {
+            useEngine().game.load()
+        }
+    },
+    {
         name: 'pause game',
         operation: () => {
             useEngine().game.pause()
         }
     },
     {
-        name: 'reset largeEntity position',
-        operation: () => useEngine().game.largeEntity.getComponent('position').setPosition(200, 55)
-    },
-    {
-        name: 'reset player position',
-        operation: () => useEngine().game.player.getComponent('position').setPosition(55, 55)
+        name: 'clear game',
+        operation: () => {
+            useEngine().game.app.renderer.clear()
+        }
     },
 ]
 

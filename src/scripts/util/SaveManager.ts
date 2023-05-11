@@ -1,4 +1,4 @@
-import { EntityMap } from "../entities/Create"
+import { CreateEntity, EntityMap } from "../entities/Create"
 import { Entity } from "../entities/Entity"
 import { World } from "./World"
 
@@ -36,7 +36,9 @@ export class SaveManager {
     getData() {
         return this.data
     }
-    loadEntity(entity: Entity, entityMap: EntityMap) {
+    loadEntity(entityMap: EntityMap, world:World) {
+        const entity = CreateEntity(entityMap, world)
+        world.addEntity(entity)
         if (entityMap.componentMap.collision) entity.components.collision.applyComponentData(entityMap.options?.collision)
         // if (entityMap.componentMap.graphics) entity.components.graphics.applyComponentData(entityMap.options?.graphics) find fix
         if (entityMap.componentMap.gravity) entity.components.gravity.applyComponentData(entityMap.options?.gravity)

@@ -24,6 +24,8 @@ export class Component {
         const saveObject: SaveObject = {}
         for (const key in obj) {
             if (key !== 'world' && key !== 'owner' && this.type !== 'graphics') saveObject[key] = obj[key]
+            if (key === 'color' && this.type === 'graphics') saveObject[key] = obj[key]
+
         }
         return saveObject
     }

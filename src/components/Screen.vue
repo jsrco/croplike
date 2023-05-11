@@ -21,7 +21,7 @@ onMounted(() => {
         // with canvas, if this is ommited won't work
         document.fonts.add(font)
         const { game } = useEngine(gameContainer.value)
-        game.start()
+        game.pause()
     })
 })
 </script>
