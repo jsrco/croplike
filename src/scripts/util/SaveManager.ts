@@ -39,7 +39,7 @@ export class SaveManager {
     loadEntity(entityMap: EntityMap, world:World) {
         const entity = CreateEntity(entityMap, world)
         world.addEntity(entity)
-        if (entityMap.componentMap.collision) entity.components.collision.applyComponentData(entityMap.options?.collision)
+        // if (entityMap.componentMap.collision) entity.components.collision.applyComponentData(entityMap.options?.collision) find fix
         // if (entityMap.componentMap.graphics) entity.components.graphics.applyComponentData(entityMap.options?.graphics) find fix
         if (entityMap.componentMap.gravity) entity.components.gravity.applyComponentData(entityMap.options?.gravity)
         if (entityMap.componentMap.jump) entity.components.jump.applyComponentData(entityMap.options?.jump)

@@ -23,7 +23,7 @@ export class Component {
     copyComponentData(obj: this): SaveObject {
         const saveObject: SaveObject = {}
         for (const key in obj) {
-            if (key !== 'world' && key !== 'owner' && this.type !== 'graphics') saveObject[key] = obj[key]
+            if (key !== 'world' && key !== 'owner' && this.type !== 'graphics' && this.type !== 'collision') saveObject[key] = obj[key]
             if (key === 'color' && this.type === 'graphics') saveObject[key] = obj[key]
 
         }
