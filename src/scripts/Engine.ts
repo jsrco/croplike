@@ -65,7 +65,6 @@ export class Engine {
     }
     load(): void {
         this.paused = true  
-        this.app.renderer.clear()  
         this.app.stage.removeChildren()
 
         const saveData: any = this.localStorageManager.getData()
@@ -98,6 +97,7 @@ export class Engine {
     }
     pauseTicker(): void {
         this.app.ticker.stop()
+        this.app.renderer.clear()  
     }
     resumeTicker(): void {
         this.app.ticker.start()
