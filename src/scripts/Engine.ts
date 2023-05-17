@@ -30,21 +30,31 @@ export class Engine {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
             this.resetAllBounds()
         })
-        
+
         window.addEventListener('keydown', (event) => {
             if (event.key === 'l') {
-              this.load()
+                this.load()
             }
         })
         window.addEventListener('keydown', (event) => {
             if (event.key === 'p') {
-              this.pause()
+                this.pause()
             }
         })
         window.addEventListener('keydown', (event) => {
             if (event.key === 's') {
-              this.save()
+                this.save()
             }
+        })
+
+        window.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === 'hidden') {
+                if (this.paused.value === false) this.pause()
+            }
+        })
+
+        window.addEventListener('blur', () => {
+            if (this.paused.value === false) this.pause()
         })
 
         // set app
@@ -64,11 +74,11 @@ export class Engine {
         // load systems
         this.loadSystems(this.world)
     }
-    appendElement(elementRef: any):void {
+    appendElement(elementRef: any): void {
         elementRef.appendChild(this.app.view)
     }
     load(): void {
-        this.paused.value = true  
+        this.paused.value = true
         this.app.stage.removeChildren()
 
         const saveData: any = this.localStorageManager.getData()
@@ -79,13 +89,13 @@ export class Engine {
         this.loadSystems(this.world)
         this.pause()
     }
-    loadEntities(world:World): void {
+    loadEntities(world: World): void {
         world.addEntity(CreateEntity(player, world))
         world.addEntity(CreateEntity(largeEntity, world))
         // dummy level
         this.createBounds(world)
     }
-    loadSystems(world: World):void {
+    loadSystems(world: World): void {
         world.addSystem(new CollisionSystem(world))
         world.addSystem(new GravitySystem(world))
         world.addSystem(new MovementSystem(world))
@@ -101,13 +111,13 @@ export class Engine {
     }
     pauseTicker(): void {
         this.app.ticker.stop()
-        this.app.renderer.clear()  
+        this.app.renderer.clear()
     }
     resumeTicker(): void {
         this.app.ticker.start()
     }
-    save(): void {    
-        this.paused.value = true  
+    save(): void {
+        this.paused.value = true
         this.localStorageManager.clearData()
         this.saveManager.clearData()
         this.saveManager.createAllEntityData(this.world)
