@@ -9,7 +9,7 @@ export class GraphicsComponent extends Component {
     rectangle: Graphics
     type: string = 'graphics'
 
-    constructor(entity: Entity, world: World, color = 0xFF0000) {
+    constructor(entity: Entity, world: World, color = 0x00000) {
         super(entity, world)
         this.color = color
         this.rectangle = new PIXI.Graphics().beginFill(this.color).drawRect(0, 0, 10, 10)

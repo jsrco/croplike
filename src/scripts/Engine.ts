@@ -11,14 +11,14 @@ import { LocalStorageManager } from "./util/LocalStorageManager"
 import { SaveManager } from "./util/SaveManager"
 
 export class Engine {
-    app: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
+    app: PIXI.Application = new PIXI.Application({ backgroundColor: 0xFFFAFA, width: window.innerWidth, height: window.innerHeight - 36, })
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     paused: Ref<Boolean> = ref(false)
     saveManager: SaveManager = new SaveManager()
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
         fontSize: 8,
-        fill: ['#4ade80'],
+        fill: ['#000000'],
     })
     world: World = new World(this.app)
 
@@ -126,10 +126,10 @@ export class Engine {
     }
     // demo wall
     createBounds(world: World): void {
-        world.addEntity(CreateEntity({ ...ceiling, options: { graphics: { color: 0x4ade80 }, position: { x: this.wallSize, y: 0 }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, world))
-        world.addEntity(CreateEntity({ ...floor, options: { graphics: { color: 0x4ade80 }, position: { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, this.world))
-        world.addEntity(CreateEntity({ ...leftWall, options: { graphics: { color: 0x4ade80 }, position: { x: 0, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, world))
-        world.addEntity(CreateEntity({ ...rightWall, options: { graphics: { color: 0x4ade80 }, position: { x: this.app.renderer.width - this.wallSize, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, world))
+        world.addEntity(CreateEntity({ ...ceiling, options: { graphics: { color: 0x00000 }, position: { x: this.wallSize, y: 0 }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, world))
+        world.addEntity(CreateEntity({ ...floor, options: { graphics: { color: 0x00000 }, position: { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, this.world))
+        world.addEntity(CreateEntity({ ...leftWall, options: { graphics: { color: 0x00000 }, position: { x: 0, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, world))
+        world.addEntity(CreateEntity({ ...rightWall, options: { graphics: { color: 0x00000 }, position: { x: this.app.renderer.width - this.wallSize, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, world))
     }
     resetBounds(entity: Entity, pos: { x: number, y: number }, dimension: { height: number, width: number }): void {
         const position = entity.getComponent('position') as PositionComponent
