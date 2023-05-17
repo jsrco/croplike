@@ -117,7 +117,7 @@ export class Engine {
     update(delta: number): void {
         // update game logic
         this.app.stage.removeChild(this.textSupport)
-        this.textSupport = dummyText(`a start screen ${this.app.renderer.width} x ${this.app.renderer.height}`, this.textStyle)
+        this.textSupport = dummyText(`screen size ${this.app.renderer.width} x ${this.app.renderer.height}\nhit 'p' to pause\nhit 's' to save\nhit 'l' to load`, this.textStyle)
         this.textSupport.x = this.wallSize + 5
         this.textSupport.y = this.wallSize + 5
         this.app.stage.addChild(this.textSupport)
