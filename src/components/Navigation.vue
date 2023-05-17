@@ -22,37 +22,40 @@
 import { ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
 
+const { game } = useEngine()
 
 const debugList = [
     {
         name: 'console.dir info',
         operation: () => {
-            //console.dir('world', useEngine().game.world)
-            console.dir(useEngine().game.localStorageManager.getData())
+            //console.dir('world', game.lworld)
+            console.dir('world', game.paused)
+
+            console.dir(game.localStorageManager.getData())
         }
     },
     {
         name: 'clear save',
         operation: () => {
-            useEngine().game.localStorageManager.clearData() 
+            game.localStorageManager.clearData() 
         }
     },
     {
         name: 'load save',
         operation: () => {
-            useEngine().game.load()
+            game.load()
         }
     },
     {
         name: 'save',
         operation: () => {
-            useEngine().game.save()
+            game.save()
         }
     },
     {
         name: 'pause game',
         operation: () => {
-            useEngine().game.pause()
+            game.pause()
         }
     },
 ]

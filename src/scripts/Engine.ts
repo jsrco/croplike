@@ -1,3 +1,5 @@
+
+import { Ref, ref } from "vue"
 import * as PIXI from "pixi.js"
 import { World } from "./util/World"
 import { ceiling, floor, largeEntity, leftWall, player, rightWall } from "./entities/templates"
@@ -11,7 +13,7 @@ import { SaveManager } from "./util/SaveManager"
 export class Engine {
     app: PIXI.Application = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight - 36, })
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
-    paused: boolean = false
+    paused: Ref<Boolean> = ref(false)
     saveManager: SaveManager = new SaveManager()
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
@@ -23,8 +25,7 @@ export class Engine {
     textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
     wallSize: number = 35
 
-    constructor(elementRef: any) {
-        elementRef.appendChild(this.app.view)
+    constructor() {
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
             this.resetAllBounds()
@@ -63,8 +64,11 @@ export class Engine {
         // load systems
         this.loadSystems(this.world)
     }
+    appendElement(elementRef: any):void {
+        elementRef.appendChild(this.app.view)
+    }
     load(): void {
-        this.paused = true  
+        this.paused.value = true  
         this.app.stage.removeChildren()
 
         const saveData: any = this.localStorageManager.getData()
@@ -73,7 +77,7 @@ export class Engine {
             this.saveManager.loadEntity(entity, this.world)
         })
         this.loadSystems(this.world)
-        this.paused = false
+        this.pause()
     }
     loadEntities(world:World): void {
         world.addEntity(CreateEntity(player, world))
@@ -90,9 +94,9 @@ export class Engine {
         world.addSystem(new SizeSystem(world))
     }
     pause(): void {
-        this.paused = !this.paused
-        console.log('pause', this.paused)
-        if (this.paused) this.pauseTicker()
+        this.paused.value = !this.paused.value
+        console.log('pause', this.paused.value)
+        if (this.paused.value) this.pauseTicker()
         else this.resumeTicker()
     }
     pauseTicker(): void {
@@ -103,12 +107,12 @@ export class Engine {
         this.app.ticker.start()
     }
     save(): void {    
-        this.paused = true  
+        this.paused.value = true  
         this.localStorageManager.clearData()
         this.saveManager.clearData()
         this.saveManager.createAllEntityData(this.world)
         this.localStorageManager.saveData(this.saveManager.data)
-        this.paused = false
+        this.pause()
     }
     update(delta: number): void {
         // update game logic
@@ -118,7 +122,7 @@ export class Engine {
         this.textSupport.y = this.wallSize + 5
         this.app.stage.addChild(this.textSupport)
 
-        if (!this.paused) this.world.update(delta)
+        if (!this.paused.value) this.world.update(delta)
     }
     // demo wall
     createBounds(world: World): void {

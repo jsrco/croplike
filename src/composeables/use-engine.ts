@@ -1,11 +1,11 @@
-import {  Ref } from "vue"
+import { reactive } from "vue"
 import { Engine } from "../scripts/Engine"
 
-let game: any;
-const useEngine = (target?: Ref<any>) => {
-    if (target) game = new Engine(target)
+const game = new Engine()
+
+const useEngine = () => {
     return {
-        game
+        game,
     }
 }
 
