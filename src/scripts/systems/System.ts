@@ -2,7 +2,7 @@ import { Entity } from "../entities/Entity"
 import { World } from "../util/World"
 
 export class System {
-    private componentEntityMap: Map<string, Entity[]> = new Map()
+    componentEntityMap: Map<string, Entity[]> = new Map()
     keys: Set<string>
     type!: string
     world: World
@@ -12,14 +12,14 @@ export class System {
         this.world = world
         this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
     }
-    private cacheEntities(componentTypes: string[], entities: Entity[]): void {
+    cacheEntities(componentTypes: string[], entities: Entity[]): void {
         const cacheKey = componentTypes.join(',')
         this.componentEntityMap.set(cacheKey, entities)
     }
     clearCache(): void {
         this.componentEntityMap.clear()
     }
-    private getCachedEntities(componentTypes: string[]): Entity[] | undefined {
+    getCachedEntities(componentTypes: string[]): Entity[] | undefined {
         const cacheKey = componentTypes.join(',')
         return this.componentEntityMap.get(cacheKey)
     }
@@ -32,7 +32,7 @@ export class System {
         this.cacheEntities(componentTypes, newEntities)
         return newEntities
     }
-    private onKeyChange(data: any): void {
+    onKeyChange(data: any): void {
         const { key, isDown } = data
         if (isDown) {
             this.keys.add(key)

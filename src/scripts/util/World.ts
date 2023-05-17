@@ -6,10 +6,10 @@ import { KeyboardController } from "./KeyboardController"
 
 export class World {
     app: PIXI.Application
-    private entities: Entity[]
+    entities: Entity[]
     eventManager: EventManager = new EventManager()
     keyboardController: KeyboardController = new KeyboardController(this.eventManager)
-    private systems: System[]
+    systems: System[]
 
     constructor(app: PIXI.Application) {
         this.app = app

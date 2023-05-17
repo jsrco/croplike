@@ -1,3 +1,4 @@
+import { Entity } from "../entities/Entity"
 import { Component } from "."
 import { World } from "../util/World"
 
@@ -6,11 +7,11 @@ export class JumpComponent extends Component {
   isJumping: boolean = false
   type = 'jump'
 
-  constructor(world: World) {
-    super(world)
+  constructor(entity: Entity, world: World) {
+    super(entity, world)
     this.world.eventManager.subscribe('gravityChange', this.onGravityChange.bind(this))
   }
-  private onGravityChange(data: any): void {
+  onGravityChange(data: any): void {
     if (data.entity === this.owner && (data.gravityComponent.isOnGround || data.gravityComponent.isRiding)) {
       this.setIsJumping(false)
     }

@@ -72,7 +72,7 @@ export const player: EntityMap = {
     },
     options: {
         graphics: {
-            color: 0xFFFFFF
+            color: 0x00000
         },
         position: {
             x: 55, y: 55

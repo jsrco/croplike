@@ -1,7 +1,7 @@
 export class EventManager {
-  private eventListeners: { [eventType: string]: Function[] } = {};
+  eventListeners: { [eventType: string]: Function[] } = {};
 
-  public dispatch(eventType: string, data?: any): void {
+  dispatch(eventType: string, data?: any): void {
     if (!this.eventListeners[eventType]) {
       return
     }
@@ -9,13 +9,13 @@ export class EventManager {
       listener(data)
     })
   }
-  public subscribe(eventType: string, listener: Function): void {
+  subscribe(eventType: string, listener: Function): void {
     if (!this.eventListeners[eventType]) {
       this.eventListeners[eventType] = []
     }
     this.eventListeners[eventType].push(listener)
   }
-  public unsubscribe(eventType: string, listener: Function): void {
+  unsubscribe(eventType: string, listener: Function): void {
     if (!this.eventListeners[eventType]) {
       return
     }

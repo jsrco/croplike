@@ -42,7 +42,7 @@ export class CollisionSystem extends System {
       }
     }
   }
-  private checkCollision(entityA: Entity, entityB: Entity): [boolean, string, string] {
+  checkCollision(entityA: Entity, entityB: Entity): [boolean, string, string] {
     const collisionA = entityA.getComponent('collision') as CollisionComponent
     const collisionB = entityB.getComponent('collision') as CollisionComponent
     const itDidHappen = collisionA.rectangle.intersects(collisionB.rectangle)
@@ -68,7 +68,7 @@ export class CollisionSystem extends System {
       return [itDidHappen, collisionSide, oppositeSide]
     } else return [itDidHappen, '', '']
   }
-  private correctCollision(entityA: Entity, entityB: Entity, whereItHappened: string): void {
+  correctCollision(entityA: Entity, entityB: Entity, whereItHappened: string): void {
     const positionA = entityA.getComponent('position') as PositionComponent
     const positionB = entityB.getComponent('position') as PositionComponent
     const sizeA = entityA.getComponent('size') as SizeComponent
@@ -88,7 +88,7 @@ export class CollisionSystem extends System {
         break
     }
   }
-  private handleCollision(entityA: Entity, entityB: Entity, check: [boolean, string, string]): void {
+  handleCollision(entityA: Entity, entityB: Entity, check: [boolean, string, string]): void {
     this.correctCollision(entityA, entityB, check[1])
     const velocityA = entityA.getComponent('velocity') as VelocityComponent
     const velocityB = entityB.getComponent('velocity') as VelocityComponent
