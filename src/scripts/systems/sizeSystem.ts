@@ -20,7 +20,7 @@ export class SizeSystem extends System {
                 sizeComponent.setSize(sizeComponent.width, sizeComponent.height - 1)
             } 
             const gravity = entity.getComponent('gravity') as GravityComponent
-            if (gravity.isOnGround && !sizeChangeComponent.isShrinking  && sizeComponent.height < 190) {
+            if (gravity.isOnGround && !sizeChangeComponent.isShrinking  && sizeComponent.height < 125) {
                 sizeComponent.setSize(sizeComponent.width, sizeComponent.height + 1)
             }
 

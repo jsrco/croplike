@@ -66,7 +66,7 @@ export class MovementSystem extends System {
                         Math.max(velocityComponent.x + this.acceleration, +2),
                         velocityComponent.y
                     )
-                } else if (positionComponent.x >= 350 && velocityComponent.x >= 0) {
+                } else if (positionComponent.x >= 200 && velocityComponent.x >= 0) {
                     velocityComponent.setVelocity(
                         Math.max(velocityComponent.x - this.acceleration, -2),
                         velocityComponent.y

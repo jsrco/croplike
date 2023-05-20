@@ -65,11 +65,11 @@ export class Engine {
 
         // set app
         this.app.stage.eventMode = 'static'
-        this.app.stage.hitArea = this.app.screen
-        this.app.stage.on('pointerup', (event) => {
-            //handle event
-            console.dir('clicky clicky')
-        })
+        // this.app.stage.hitArea = this.app.screen
+        // this.app.stage.on('pointerup', (event) => {
+        //     //handle event
+        //     console.dir('clicky clicky')
+        // })
         this.app.ticker.add((delta) => {
             this.update(delta)
         })
@@ -111,7 +111,7 @@ export class Engine {
     }
     pause(): void {
         this.paused.value = !this.paused.value
-        console.log('pause', this.paused.value)
+        // console.log('pause', this.paused.value)
         if (this.paused.value) this.pauseTicker()
         else this.resumeTicker()
     }
@@ -132,26 +132,23 @@ export class Engine {
     }
     update(delta: number): void {
         // update game logic
-        this.app.stage.removeChild(this.textSupport)
-        this.textSupport = dummyText(`screen size ${this.app.renderer.width} x ${this.app.renderer.height}\nhit 'p' to pause\nhit 's' to save\nhit 'l' to load`, this.textStyle)
-        this.textSupport.x = this.wallSize + 5
-        this.textSupport.y = this.wallSize + 5
-        this.app.stage.addChild(this.textSupport)
+        // this.app.stage.removeChild(this.textSupport)
+        // this.textSupport = dummyText(`screen size ${this.app.renderer.width} x ${this.app.renderer.height}\nhit 'p' to pause\nhit 's' to save\nhit 'l' to load`, this.textStyle)
+        // this.textSupport.x = this.wallSize + 5
+        // this.textSupport.y = this.wallSize + 5
+        // this.app.stage.addChild(this.textSupport)
 
         if (!this.paused.value) this.world.update(delta)
     }
     // demo controls
     playerMoveJump() {
         this.playerJ = true
-        console.log('jump')
     }
     playerMoveLeft() {
         this.playerL = true
-        console.log('move left')
     }
     playerMoveRight() {
         this.playerR = true
-        console.log('move right')
     }
     resetMovement() {
         this.playerJ = false
