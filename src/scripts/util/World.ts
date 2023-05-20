@@ -28,6 +28,9 @@ export class World {
             componentTypes.every(type => entity.hasComponent(type))
         )
     }
+    getSystemByType(type: string) {
+        return this.systems.find(system => system.type === type)
+    }
     removeEntity(entity: Entity): void {
         const index = this.entities.indexOf(entity)
         if (index !== -1) {

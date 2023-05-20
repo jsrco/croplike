@@ -28,10 +28,9 @@ const debugList = [
     {
         name: 'console.dir info',
         operation: () => {
-            //console.dir('world', game.lworld)
-            console.dir('world', game.paused)
-
-            console.dir(game.localStorageManager.getData())
+            // console.dir('world', game.lworld)
+            console.log(game.world.getSystemByType('movement'))
+            // console.dir(game.localStorageManager.getData())
         }
     },
     {

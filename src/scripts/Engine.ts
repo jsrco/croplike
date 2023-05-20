@@ -22,8 +22,14 @@ export class Engine {
     })
     world: World = new World(this.app)
 
+    player: Entity = CreateEntity(player, this.world)
+    playerJ: boolean = false
+    playerL: boolean = false
+    playerR: boolean = false
+
+
     textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
-    wallSize: number = 35
+    wallSize: number = 10
 
     constructor() {
         window.addEventListener('resize', () => {
@@ -90,7 +96,7 @@ export class Engine {
         this.pause()
     }
     loadEntities(world: World): void {
-        world.addEntity(CreateEntity(player, world))
+        world.addEntity(this.player)
         world.addEntity(CreateEntity(largeEntity, world))
         // dummy level
         this.createBounds(world)
@@ -98,7 +104,7 @@ export class Engine {
     loadSystems(world: World): void {
         world.addSystem(new CollisionSystem(world))
         world.addSystem(new GravitySystem(world))
-        world.addSystem(new MovementSystem(world))
+        world.addSystem(new MovementSystem(world, this))
         world.addSystem(new OutOfBoundsSystem(world))
         world.addSystem(new RenderSystem(world))
         world.addSystem(new SizeSystem(world))
@@ -133,6 +139,21 @@ export class Engine {
         this.app.stage.addChild(this.textSupport)
 
         if (!this.paused.value) this.world.update(delta)
+    }
+    // demo controls
+    playerMoveLeft() {
+        this.playerL = true
+        console.log('move left')
+    }
+    resetLeftMovement() {
+        this.playerL = false
+    }
+    playerMoveRight() {
+        this.playerR = true
+        console.log('move right')
+    }
+    resetRightMovement() {
+        this.playerR = false
     }
     // demo wall
     createBounds(world: World): void {
