@@ -141,6 +141,10 @@ export class Engine {
         if (!this.paused.value) this.world.update(delta)
     }
     // demo controls
+    playerMoveJump() {
+        this.playerJ = true
+        console.log('jump')
+    }
     playerMoveLeft() {
         this.playerL = true
         console.log('move left')
@@ -150,6 +154,7 @@ export class Engine {
         console.log('move right')
     }
     resetMovement() {
+        this.playerJ = false
         this.playerL = false
         this.playerR = false
     }

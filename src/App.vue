@@ -7,6 +7,12 @@
     <!-- Right div -->
     <div class="w-1/2" @pointerdown="goRight()" @pointerup="game.resetMovement()"></div>
   </div>
+  <div class="z-20 absolute bottom-4 right-4" @pointerdown="goJump()" @pointerup="game.resetMovement()">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+      class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+    </svg>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -16,7 +22,9 @@ import useEngine from "./composeables/use-engine"
 
 const { game } = useEngine()
 
-
+const goJump = () => {
+  if (game.paused.value !== true) game.playerMoveJump()
+}
 const goLeft = () => {
   if (game.paused.value !== true) game.playerMoveLeft()
 }

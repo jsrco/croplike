@@ -43,7 +43,7 @@ export class MovementSystem extends System {
                     )
                     if (wallCollisionComponent.wallDirection === 'left') wallCollisionComponent.setIsSliding(false, '')
                 }
-                if (this.keys.has('ArrowUp') && (gravity.isOnGround || gravity.isRiding)) {
+                if ((this.keys.has('ArrowUp') || this.source.playerJ) && (gravity.isOnGround || gravity.isRiding)) {
                     const jumpComponent = entity.getComponent('jump') as JumpComponent
                     velocityComponent.setVelocity(velocityComponent.x, velocityComponent.y - jumpComponent.force)
                     jumpComponent.setIsJumping(true)
@@ -51,7 +51,7 @@ export class MovementSystem extends System {
                     if (gravity) gravity.setGroundStatus(false)
                     if (gravity) gravity.setRidingStatus(false)
                 }
-                if (this.keys.has('ArrowUp') && wallCollisionComponent.isSliding) {
+                if ((this.keys.has('ArrowUp') || this.source.playerJ)  && wallCollisionComponent.isSliding) {
                     const jumpComponent = entity.getComponent('jump') as JumpComponent
                     const velocityX = wallCollisionComponent.wallDirection === 'left' ? velocityComponent.x += wallCollisionComponent.force : velocityComponent.x -= wallCollisionComponent.force
                     velocityComponent.setVelocity(velocityX, velocityComponent.y - wallCollisionComponent.force)
