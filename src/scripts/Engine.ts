@@ -22,8 +22,14 @@ export class Engine {
     })
     world: World = new World(this.app)
 
+    player: Entity = CreateEntity(player, this.world)
+    playerJ: boolean = false
+    playerL: boolean = false
+    playerR: boolean = false
+
+
     textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
-    wallSize: number = 35
+    wallSize: number = 10
 
     constructor() {
         window.addEventListener('resize', () => {
@@ -59,11 +65,11 @@ export class Engine {
 
         // set app
         this.app.stage.eventMode = 'static'
-        this.app.stage.hitArea = this.app.screen
-        this.app.stage.on('pointerup', (event) => {
-            //handle event
-            console.dir('clicky clicky')
-        })
+        // this.app.stage.hitArea = this.app.screen
+        // this.app.stage.on('pointerup', (event) => {
+        //     //handle event
+        //     console.dir('clicky clicky')
+        // })
         this.app.ticker.add((delta) => {
             this.update(delta)
         })
@@ -90,22 +96,22 @@ export class Engine {
         this.pause()
     }
     loadEntities(world: World): void {
-        world.addEntity(CreateEntity(player, world))
+        world.addEntity(this.player)
         world.addEntity(CreateEntity(largeEntity, world))
         // dummy level
         this.createBounds(world)
     }
     loadSystems(world: World): void {
-        world.addSystem(new CollisionSystem(world))
+        world.addSystem(new CollisionSystem(world, this))
         world.addSystem(new GravitySystem(world))
-        world.addSystem(new MovementSystem(world))
+        world.addSystem(new MovementSystem(world, this))
         world.addSystem(new OutOfBoundsSystem(world))
         world.addSystem(new RenderSystem(world))
         world.addSystem(new SizeSystem(world))
     }
     pause(): void {
         this.paused.value = !this.paused.value
-        console.log('pause', this.paused.value)
+        // console.log('pause', this.paused.value)
         if (this.paused.value) this.pauseTicker()
         else this.resumeTicker()
     }
@@ -126,13 +132,28 @@ export class Engine {
     }
     update(delta: number): void {
         // update game logic
-        this.app.stage.removeChild(this.textSupport)
-        this.textSupport = dummyText(`screen size ${this.app.renderer.width} x ${this.app.renderer.height}\nhit 'p' to pause\nhit 's' to save\nhit 'l' to load`, this.textStyle)
-        this.textSupport.x = this.wallSize + 5
-        this.textSupport.y = this.wallSize + 5
-        this.app.stage.addChild(this.textSupport)
+        // this.app.stage.removeChild(this.textSupport)
+        // this.textSupport = dummyText(`screen size ${this.app.renderer.width} x ${this.app.renderer.height}\nhit 'p' to pause\nhit 's' to save\nhit 'l' to load`, this.textStyle)
+        // this.textSupport.x = this.wallSize + 5
+        // this.textSupport.y = this.wallSize + 5
+        // this.app.stage.addChild(this.textSupport)
 
         if (!this.paused.value) this.world.update(delta)
+    }
+    // demo controls
+    playerMoveJump() {
+        this.playerJ = true
+    }
+    playerMoveLeft() {
+        this.playerL = true
+    }
+    playerMoveRight() {
+        this.playerR = true
+    }
+    resetMovement() {
+        this.playerJ = false
+        this.playerL = false
+        this.playerR = false
     }
     // demo wall
     createBounds(world: World): void {

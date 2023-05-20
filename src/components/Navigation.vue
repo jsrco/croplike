@@ -26,18 +26,23 @@ const { game } = useEngine()
 
 const debugList = [
     {
+        name: 'pause game',
+        operation: () => {
+            game.pause()
+        }
+    },
+    {
         name: 'console.dir info',
         operation: () => {
-            //console.dir('world', game.lworld)
-            console.dir('world', game.paused)
-
-            console.dir(game.localStorageManager.getData())
+            // console.dir('world', game.lworld)
+            console.log(game)
+            // console.dir(game.localStorageManager.getData())
         }
     },
     {
         name: 'clear save',
         operation: () => {
-            game.localStorageManager.clearData() 
+            game.localStorageManager.clearData()
         }
     },
     {
@@ -51,13 +56,7 @@ const debugList = [
         operation: () => {
             game.save()
         }
-    },
-    {
-        name: 'pause game',
-        operation: () => {
-            game.pause()
-        }
-    },
+    }
 ]
 
 const isInDebug: Ref<Boolean> = ref(false)

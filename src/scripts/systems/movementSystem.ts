@@ -1,15 +1,18 @@
 import { GravityComponent, JumpComponent, PositionComponent, VelocityComponent, WallCollisionComponent } from "../components"
 import { System } from "."
 import { World } from "../util/World"
+import { Engine } from "../Engine"
 
 export class MovementSystem extends System {
     acceleration: number
     maxVelocity: number
+    source: Engine
     type: string = 'movement'
-    constructor(world: World) {
+    constructor(world: World, source: Engine) {
         super(world)
-        this.maxVelocity = 5
+        this.maxVelocity = 4
         this.acceleration = 1
+        this.source = source
     }
 
     update(deltaTime: number): void {
@@ -22,25 +25,25 @@ export class MovementSystem extends System {
                 const gravity = entity.getComponent('gravity') as GravityComponent
                 const wallCollisionComponent = entity.getComponent('wallCollision') as WallCollisionComponent
 
-                if ((this.keys.size === 0 || (this.keys.size === 1 && this.keys.has('ArrowUp'))) && !wallCollisionComponent.isSliding && !gravity.isRiding) {
+                if (((this.keys.size === 0 && this.source.playerL === false && this.source.playerR === false) || (this.keys.size === 1 && this.keys.has('ArrowUp'))) && !wallCollisionComponent.isSliding && !gravity.isRiding) {
                     velocityComponent.setVelocity(0, velocityComponent.y)
                 }
                 // Update velocity based on keys pressed
-                if (this.keys.has('ArrowLeft')) {
+                if (this.keys.has('ArrowLeft') || this.source.playerL === true) {
                     velocityComponent.setVelocity(
                         Math.max(velocityComponent.x - this.acceleration, -this.maxVelocity),
                         velocityComponent.y
                     )
                     if (wallCollisionComponent.wallDirection === 'right') wallCollisionComponent.setIsSliding(false, '')
                 }
-                if (this.keys.has('ArrowRight')) {
+                if (this.keys.has('ArrowRight') || this.source.playerR === true) {
                     velocityComponent.setVelocity(
                         Math.min(velocityComponent.x + this.acceleration, this.maxVelocity),
                         velocityComponent.y
                     )
                     if (wallCollisionComponent.wallDirection === 'left') wallCollisionComponent.setIsSliding(false, '')
                 }
-                if (this.keys.has('ArrowUp') && (gravity.isOnGround || gravity.isRiding)) {
+                if ((this.keys.has('ArrowUp') || this.source.playerJ) && (gravity.isOnGround || gravity.isRiding)) {
                     const jumpComponent = entity.getComponent('jump') as JumpComponent
                     velocityComponent.setVelocity(velocityComponent.x, velocityComponent.y - jumpComponent.force)
                     jumpComponent.setIsJumping(true)
@@ -48,7 +51,7 @@ export class MovementSystem extends System {
                     if (gravity) gravity.setGroundStatus(false)
                     if (gravity) gravity.setRidingStatus(false)
                 }
-                if (this.keys.has('ArrowUp') && wallCollisionComponent.isSliding) {
+                if ((this.keys.has('ArrowUp') || this.source.playerJ)  && wallCollisionComponent.isSliding) {
                     const jumpComponent = entity.getComponent('jump') as JumpComponent
                     const velocityX = wallCollisionComponent.wallDirection === 'left' ? velocityComponent.x += wallCollisionComponent.force : velocityComponent.x -= wallCollisionComponent.force
                     velocityComponent.setVelocity(velocityX, velocityComponent.y - wallCollisionComponent.force)
@@ -63,7 +66,7 @@ export class MovementSystem extends System {
                         Math.max(velocityComponent.x + this.acceleration, +2),
                         velocityComponent.y
                     )
-                } else if (positionComponent.x >= 350 && velocityComponent.x >= 0) {
+                } else if (positionComponent.x >= 200 && velocityComponent.x >= 0) {
                     velocityComponent.setVelocity(
                         Math.max(velocityComponent.x - this.acceleration, -2),
                         velocityComponent.y
