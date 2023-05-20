@@ -2,10 +2,13 @@ import { Entity } from "../entities/Entity"
 import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeChangeComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "../components"
 import { System } from "."
 import { World } from "../util/World"
+import { Engine } from "../Engine"
 
 export class CollisionSystem extends System {
-  constructor(world: World) {
+  source: Engine
+  constructor(world: World, source: Engine) {
     super(world)
+    this.source = source
   }
 
   update(deltaTime: number): void {
@@ -113,7 +116,7 @@ export class CollisionSystem extends System {
         if (jumping) jumping.setIsJumping(false)
         const wallCollisionComponent = entityA.getComponent('wallCollision') as WallCollisionComponent
         if (wallCollisionComponent) wallCollisionComponent.setIsSliding(false, check[1])
-        if (entityA.name === 'player' && !isWall && gravity.isRiding && this.keys.size === 0) {
+        if (entityA.name === 'player' && !isWall && gravity.isRiding && (this.keys.size === 0 && this.source.playerL === false && this.source.playerR === false)) {
           if (velocityA && velocityB) {
             velocityA.setVelocity(velocityB.x, velocityA.y)
           }

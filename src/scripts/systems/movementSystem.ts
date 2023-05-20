@@ -25,7 +25,7 @@ export class MovementSystem extends System {
                 const gravity = entity.getComponent('gravity') as GravityComponent
                 const wallCollisionComponent = entity.getComponent('wallCollision') as WallCollisionComponent
 
-                if ((this.keys.size === 0 || (this.keys.size === 1 && this.keys.has('ArrowUp'))) && (this.source.playerL === false && this.source.playerR === false) && !wallCollisionComponent.isSliding && !gravity.isRiding) {
+                if (((this.keys.size === 0 && this.source.playerL === false && this.source.playerR === false) || (this.keys.size === 1 && this.keys.has('ArrowUp'))) && !wallCollisionComponent.isSliding && !gravity.isRiding) {
                     velocityComponent.setVelocity(0, velocityComponent.y)
                 }
                 // Update velocity based on keys pressed

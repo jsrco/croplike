@@ -102,7 +102,7 @@ export class Engine {
         this.createBounds(world)
     }
     loadSystems(world: World): void {
-        world.addSystem(new CollisionSystem(world))
+        world.addSystem(new CollisionSystem(world, this))
         world.addSystem(new GravitySystem(world))
         world.addSystem(new MovementSystem(world, this))
         world.addSystem(new OutOfBoundsSystem(world))
@@ -145,14 +145,12 @@ export class Engine {
         this.playerL = true
         console.log('move left')
     }
-    resetLeftMovement() {
-        this.playerL = false
-    }
     playerMoveRight() {
         this.playerR = true
         console.log('move right')
     }
-    resetRightMovement() {
+    resetMovement() {
+        this.playerL = false
         this.playerR = false
     }
     // demo wall

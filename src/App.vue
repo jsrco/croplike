@@ -3,9 +3,9 @@
   <Screen class="relative" />
   <div class="flex z-10 absolute bottom-0 left-0 controls w-screen">
     <!-- Left div -->
-    <div class="w-1/2" @pointerdown="goLeft()" @pointerup="game.resetLeftMovement()"></div>
+    <div class="w-1/2" @pointerdown="goLeft()" @pointerup="game.resetMovement()"></div>
     <!-- Right div -->
-    <div class="w-1/2" @pointerdown="goRight()" @pointerup="game.resetRightMovement()"></div>
+    <div class="w-1/2" @pointerdown="goRight()" @pointerup="game.resetMovement()"></div>
   </div>
 </template>
 
