@@ -1,6 +1,6 @@
 <template>
     <div v-if="showInfo && !smolScreen()"
-        class="z-30 absolute bottom-0 left-0 info w-screen text text-white bg-dirt pt-4 pl-4 overflow-y-scroll">
+        class="z-30 absolute bottom-0 left-0 h-screen w-screen text text-white bg-dirt pt-8 px-4 overflow-y-scroll">
         <h1 class="pb-4">
             Welcome to Croplike. A project by <a class="text-red-400 font-bold" href="https://www.fatthunder.com"
                 target="_blank">Fat Thunder</a>.<br><br>
@@ -25,13 +25,14 @@
         <p class="text-green-400 font-bold text-xl fixed bottom-0 pb-4 bg-dirt w-full" @click="startGame()">Click here to start the demo!</p>
     </div>
     <div v-if="smolScreen()"
-        class="z-30 absolute top-0 left-0 h-screen w-screen text text-white bg-dirt pt-8 pl-8">
+        class="z-30 absolute top-0 left-0 h-screen w-screen text text-white bg-dirt pt-8 px-4">
             Welcome to Croplike. A project by <a class="text-red-400 font-bold" href="https://www.fatthunder.com"
                 target="_blank">Fat Thunder</a>.<br>
             I see you are on a tablet or mobile device. I am sorry. <span class="font-bold">This won't work right now.</span><br><br>
-            Go get a computer and try again.<br><br>
-            Don't have one? You get to wait. <br><br>
-            You aren't missing anything. Might I recommend you take off your shoes and touch some grass? 
+            Go get something with a keyboard and try again.<br><br>
+            Don't have one? You gotta wait. <br><br>
+            You aren't missing anything. <br><br>
+            Might I recommend you take off your shoes and go touch some grass? 
     </div>
 </template>
   
