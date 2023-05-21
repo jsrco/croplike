@@ -32,13 +32,6 @@ const debugList = [
         }
     },
     {
-        name: 'show info',
-        operation: () => {
-            game.paused.value = true
-            showInfo.value = true
-        }
-    },
-    {
         name: 'console.dir info',
         operation: () => {
             // console.dir('world', game.lworld)
@@ -63,7 +56,14 @@ const debugList = [
         operation: () => {
             game.save()
         }
-    }
+    },
+    {
+        name: 'show info',
+        operation: () => {
+            game.paused.value = true
+            showInfo.value = true
+        }
+    },
 ]
 
 const isInDebug: Ref<Boolean> = ref(false)
