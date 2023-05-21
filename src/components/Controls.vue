@@ -5,7 +5,7 @@
       <!-- Right div -->
       <div class="w-1/2" @pointerdown="goRight()" @pointerup="game.resetMovement()"></div>
     </div>
-    <div v-if="game.paused.value !== true" class="z-20 absolute bottom-4 right-4 font-share" @pointerdown="goJump()" @pointerup="game.resetMovement()">
+    <div v-if="game.paused.value !== true" class="z-20 absolute bottom-4 right-4 font-share text-yellow-400" @pointerdown="goJump()" @pointerup="game.resetMovement()">
       jump
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 48 48" stroke-width="1.5" stroke="currentColor"
         class="w-12 h-12">

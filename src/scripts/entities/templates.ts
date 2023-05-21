@@ -34,6 +34,9 @@ export const largeEntity: EntityMap = {
         wallCollision: true,
     }, 
     options: { 
+        graphics: {
+            color: 0xF8719D,
+        },
         gravity: { 
             force: 0.3
         }, 
@@ -73,7 +76,7 @@ export const player: EntityMap = {
     },
     options: {
         graphics: {
-            color: 0x00000
+            color: 0x4ade80
         },
         position: {
             x: 55, y: 55
