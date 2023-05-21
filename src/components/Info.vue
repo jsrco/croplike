@@ -12,7 +12,7 @@
             return to normal size once the player jumps off.<br><br>
             The demo is at a very basic state. With geometry representing the arena and entities.<br><br>
             You can move with the <span class="font-bold text-yellow-400">left</span> and <span
-                class="font-bold text-yellow-400">right arrow keys</span>.<br>
+                class="font-bold text-yellow-400">right arrow</span> keys.<br>
             If the player moves in the direction of the wall or entity they are sliding down, they can preform a <span
                 class="font-bold">wall hang</span>.<br>
             The player can jump by hitting the <span class="font-bold text-yellow-400">up arrow</span>.<br><br>
