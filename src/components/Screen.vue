@@ -1,5 +1,5 @@
 <template>
-    <div ref="gameContainer" v-show="game.paused.value === false">
+    <div ref="gameContainer" v-show="game.paused.value === false" class="touch-manipulation">
         <div v-if="gameContainer === null" class="font-start pt-1 px-3 sm:px-4 lg:px-5 text-white">loading...
         </div>
     </div>
