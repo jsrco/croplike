@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div v-if="game.paused.value !== true && smolScreen" class="border border-3 rounded-lg border-yellow-400 z-20 absolute bottom-4 right-4 font-share text-yellow-400"
+  <div v-if="game.paused.value !== true && smolScreen()" class="border border-3 rounded-lg border-yellow-400 z-20 absolute bottom-4 right-4 font-share text-yellow-400"
     @pointerdown="goJump()" @pointerup="game.resetMovement()">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
       class="w-12 h-12">
