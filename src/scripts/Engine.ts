@@ -79,6 +79,8 @@ export class Engine {
 
         // load systems
         this.loadSystems(this.world)
+
+        this.pause()
     }
     appendElement(elementRef: any): void {
         elementRef.appendChild(this.app.view)
