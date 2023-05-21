@@ -9,6 +9,8 @@ export class Component {
     type!: string
     world: World
 
+    [key: string]: any // Add index signature
+    
     constructor(entity: Entity, world: World) {
         this.owner = entity
         this.world = world
