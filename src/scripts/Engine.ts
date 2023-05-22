@@ -9,6 +9,7 @@ import { PositionComponent, SizeComponent } from "./components"
 import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem, SizeSystem } from "./systems"
 import { LocalStorageManager } from "./util/LocalStorageManager"
 import { SaveManager } from "./util/SaveManager"
+import { smolScreen } from "./util/Tools"
 
 export class Engine {
     app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: window.innerWidth, height: window.innerHeight - 36, })
@@ -27,6 +28,9 @@ export class Engine {
     playerL: boolean = false
     playerR: boolean = false
 
+    moveLeftButton?: PIXI.Graphics
+    moveRightButton?: PIXI.Graphics
+    jumpButton?: PIXI.Graphics
 
     textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
     wallSize: number = 10
@@ -35,6 +39,12 @@ export class Engine {
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
             this.resetAllBounds()
+            if (smolScreen()) {
+                this.app.stage.removeChild(this.moveLeftButton as PIXI.Graphics)
+                this.app.stage.removeChild(this.moveRightButton as PIXI.Graphics)
+                this.app.stage.removeChild(this.jumpButton as PIXI.Graphics)
+                this.createControls()
+            }
         })
 
         window.addEventListener('keydown', (event) => {
@@ -81,6 +91,10 @@ export class Engine {
         this.loadSystems(this.world)
 
         this.pause()
+
+        if (smolScreen()) {
+            this.createControls()
+        }
     }
     appendElement(elementRef: any): void {
         elementRef.appendChild(this.app.view)
@@ -95,6 +109,9 @@ export class Engine {
             this.saveManager.loadEntity(entity, this.world)
         })
         this.loadSystems(this.world)
+        if (smolScreen()) {
+            this.createControls()
+        }
         this.pause()
     }
     loadEntities(world: World): void {
@@ -143,6 +160,37 @@ export class Engine {
         if (!this.paused.value) this.world.update(delta)
     }
     // demo controls
+    createControls() {
+        this.moveLeftButton = new PIXI.Graphics()
+        this.moveLeftButton.lineStyle(0) // draw a circle, set the lineStyle to zero so the circle doesn't have an outline
+        this.moveLeftButton.beginFill(0xFBBF5D, .5)
+        this.moveLeftButton.drawCircle(25, window.innerHeight - 36 - 30, 25)
+        this.moveLeftButton.endFill()
+        this.app.stage.addChild(this.moveLeftButton)
+        this.moveLeftButton.eventMode = "dynamic"
+        this.moveLeftButton.on('pointerdown', () => this.playerMoveLeft())
+            .on('pointerup', () => this.resetMovement())
+
+        this.moveRightButton = new PIXI.Graphics()
+        this.moveRightButton.lineStyle(0) // draw a circle, set the lineStyle to zero so the circle doesn't have an outline
+        this.moveRightButton.beginFill(0xFBBF5D, .5)
+        this.moveRightButton.drawCircle(75, window.innerHeight - 36 - 30, 25)
+        this.moveRightButton.endFill()
+        this.app.stage.addChild(this.moveRightButton)
+        this.moveRightButton.eventMode = 'dynamic'
+        this.moveRightButton.on('pointerdown', () => this.playerMoveRight())
+            .on('pointerup', () => this.resetMovement())
+
+        this.jumpButton = new PIXI.Graphics()
+        this.jumpButton.lineStyle(0) // draw a circle, set the lineStyle to zero so the circle doesn't have an outline
+        this.jumpButton.beginFill(0xFBBF5D, .5)
+        this.jumpButton.drawCircle(window.innerWidth - 30, window.innerHeight - 36 - 30, 25)
+        this.jumpButton.endFill()
+        this.app.stage.addChild(this.jumpButton)
+        this.jumpButton.eventMode = 'dynamic'
+        this.jumpButton.on('pointerdown', () => this.playerMoveJump())
+            .on('pointerup', () => this.resetMovement())
+    }
     playerMoveJump() {
         this.playerJ = true
     }
