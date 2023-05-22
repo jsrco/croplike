@@ -40,9 +40,9 @@ export class Engine {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
             this.resetAllBounds()
             if (smolScreen()) {
-                this.dummyLeft.moveTo(25, window.innerHeight - 36 - 30)
-                this.dummyRight.moveTo(75, window.innerHeight - 36 - 30)
-                this.dummyJump.moveTo(window.innerWidth - 30, window.innerHeight - 36 - 30)
+                this.dummyLeft.position.set(25, window.innerHeight - 36 - 30)
+                this.dummyRight.position.set(75, window.innerHeight - 36 - 30)
+                this.dummyJump.position.set(window.innerWidth - 30, window.innerHeight - 36 - 30)
             }
         })
 
