@@ -109,6 +109,9 @@ export class Engine {
             this.saveManager.loadEntity(entity, this.world)
         })
         this.loadSystems(this.world)
+        if (smolScreen()) {
+            this.createControls()
+        }
         this.pause()
     }
     loadEntities(world: World): void {
