@@ -9,6 +9,7 @@ import { PositionComponent, SizeComponent } from "./components"
 import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem, SizeSystem } from "./systems"
 import { LocalStorageManager } from "./util/LocalStorageManager"
 import { SaveManager } from "./util/SaveManager"
+import { smolScreen } from "./util/Tools"
 
 export class Engine {
     app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: window.innerWidth, height: window.innerHeight - 36, })
@@ -27,6 +28,9 @@ export class Engine {
     playerL: boolean = false
     playerR: boolean = false
 
+    dummyLeft: PIXI.Graphics = new PIXI.Graphics()
+    dummyRight: PIXI.Graphics = new PIXI.Graphics()
+    dummyJump: PIXI.Graphics = new PIXI.Graphics()
 
     textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
     wallSize: number = 10
@@ -35,6 +39,11 @@ export class Engine {
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
             this.resetAllBounds()
+            if (smolScreen()) {
+                this.dummyLeft.moveTo(25, window.innerHeight - 36 - 30)
+                this.dummyRight.moveTo(75, window.innerHeight - 36 - 30)
+                this.dummyJump.moveTo(window.innerWidth - 30, window.innerHeight - 36 - 30)
+            }
         })
 
         window.addEventListener('keydown', (event) => {
@@ -81,6 +90,36 @@ export class Engine {
         this.loadSystems(this.world)
 
         this.pause()
+
+        if (smolScreen()) {
+
+            this.dummyLeft.lineStyle(0) // draw a circle, set the lineStyle to zero so the circle doesn't have an outline
+            this.dummyLeft.beginFill(0xFBBF5D, .5)
+            this.dummyLeft.drawCircle(25, window.innerHeight - 36 - 30, 25)
+            this.dummyLeft.endFill()
+            this.app.stage.addChild(this.dummyLeft)
+            this.dummyLeft.eventMode = 'static'
+            this.dummyLeft.on('pointerdown', () => this.playerMoveLeft())
+                .on('pointerup', () => this.resetMovement())
+
+            this.dummyRight.lineStyle(0) // draw a circle, set the lineStyle to zero so the circle doesn't have an outline
+            this.dummyRight.beginFill(0xFBBF5D, .5)
+            this.dummyRight.drawCircle(75, window.innerHeight - 36 - 30, 25)
+            this.dummyRight.endFill()
+            this.app.stage.addChild(this.dummyRight)
+            this.dummyRight.eventMode = 'static'
+            this.dummyRight.on('pointerdown', () => this.playerMoveRight())
+                .on('pointerup', () => this.resetMovement())
+
+            this.dummyJump.lineStyle(0) // draw a circle, set the lineStyle to zero so the circle doesn't have an outline
+            this.dummyJump.beginFill(0xFBBF5D, .5)
+            this.dummyJump.drawCircle(window.innerWidth - 30, window.innerHeight - 36 - 30, 25)
+            this.dummyJump.endFill()
+            this.app.stage.addChild(this.dummyJump)
+            this.dummyJump.eventMode = 'static'
+            this.dummyJump.on('pointerdown', () => this.playerMoveJump())
+                .on('pointerup', () => this.resetMovement())
+        }
     }
     appendElement(elementRef: any): void {
         elementRef.appendChild(this.app.view)
