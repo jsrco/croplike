@@ -1,6 +1,6 @@
 <template>
   <div v-if="game.paused.value !== true && smolScreen()"
-       class="absolute bottom-4 left-4 flex flex-row gap-x-2">
+       class="absolute bottom-4 left-4 flex flex-row gap-x-2 touch-none">
     <div class="border border-3 rounded-lg border-yellow-400 z-20 font-share text-yellow-400" @touchstart="goLeft()"
       @touchmove="game.resetMovement()">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
