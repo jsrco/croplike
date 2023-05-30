@@ -8,7 +8,7 @@ export class OutOfBoundsSystem extends System {
     }
 
     update(deltaTime: number): void {
-        const entities = this.getEntitiesByComponent('position')
+        const entities = this.getEntitiesByComponent('outOfBounds', 'position')
         for (const entity of entities) {
             const positionComponent = entity.getComponent('position') as PositionComponent
             if (positionComponent.x < 0 || positionComponent.x > this.world.app.renderer.width || positionComponent.y <  0 || positionComponent.y > this.world.app.renderer.height) {

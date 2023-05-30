@@ -45,6 +45,7 @@ export class SaveManager {
         // if (entityMap.componentMap.graphics) entity.components.graphics.applyComponentData(entityMap.options?.graphics) find fix
         if (entityMap.componentMap.gravity) entity.components.gravity.applyComponentData(entityMap.options?.gravity)
         if (entityMap.componentMap.jump) entity.components.jump.applyComponentData(entityMap.options?.jump)
+        if (entityMap.componentMap.outOfBounds) entity.components.position.applyComponentData(entityMap.options?.outOfBounds)
         if (entityMap.componentMap.position) entity.components.position.applyComponentData(entityMap.options?.position)
         if (entityMap.componentMap.size) entity.components.size.applyComponentData(entityMap.options?.size)
         if (entityMap.componentMap.sizeChange) entity.components.sizeChange.applyComponentData(entityMap.options?.sizeChange)
