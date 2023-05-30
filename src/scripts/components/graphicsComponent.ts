@@ -18,7 +18,7 @@ export class GraphicsComponent extends Component {
         this.world.eventManager.subscribe('sizeChange', this.onSizeChange.bind(this))
     }
     addToStage() {
-        this.world.app.stage.addChild(this.rectangle)
+        this.world.stage.addChild(this.rectangle)
     }
     onPositionChange(data: any): void {
         if (data.entity === this.owner) {
