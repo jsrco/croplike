@@ -5,6 +5,7 @@ import { World } from "../util/World"
 export class SizeChangeComponent extends Component {
     isShrinking: boolean = false
     isSizeChanger: boolean = true
+    maxHeight: number = 200
     type: string = 'sizeChange'
 
     constructor(entity: Entity, world: World) {

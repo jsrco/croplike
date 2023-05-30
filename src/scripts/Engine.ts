@@ -12,7 +12,7 @@ import { SaveManager } from "./util/SaveManager"
 import { smolScreen } from "./util/Tools"
 
 export class Engine {
-    app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: window.innerWidth, height: window.innerHeight - 36, })
+    app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: window.innerWidth + 200, height: window.innerHeight + 200, })
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     paused: Ref<Boolean> = ref(false)
     saveManager: SaveManager = new SaveManager()
@@ -33,7 +33,7 @@ export class Engine {
     jumpButton?: PIXI.Graphics
 
     textSupport: PIXI.Text = dummyText('a start screen', this.textStyle)
-    wallSize: number = 10
+    wallSize: number = 60
 
     constructor() {
         window.addEventListener('resize', () => {
@@ -83,6 +83,7 @@ export class Engine {
         this.app.ticker.add((delta) => {
             this.update(delta)
         })
+
 
         // load entities
         this.loadEntities(this.world)
@@ -156,8 +157,21 @@ export class Engine {
         // this.textSupport.x = this.wallSize + 5
         // this.textSupport.y = this.wallSize + 5
         // this.app.stage.addChild(this.textSupport)
+        // Update app.stage position
 
         if (!this.paused.value) this.world.update(delta)
+        // Calculate the player center
+        const playerPosition = this.player.getComponent('position') as PositionComponent
+        const playerSize = this.player.getComponent('size') as SizeComponent
+        const playerCenterX = playerPosition.x + playerSize.width / 2
+        const playerCenterY = playerPosition.y + playerSize.height / 2
+
+        // Calculate the stage position relative to the player
+        const stageX = playerCenterX - this.app.renderer.width / 2
+        const stageY = playerCenterY - this.app.renderer.height / 2
+
+        // Update the stage position
+        this.app.stage.position.set(-stageX, -stageY)
     }
     // demo controls
     createControls() {

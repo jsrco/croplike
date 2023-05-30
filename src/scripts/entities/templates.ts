@@ -45,8 +45,8 @@ export const largeEntity: EntityMap = {
             x: 200, y: 300 
         }, 
         size: { 
-            height: 125,
-            width: 125 
+            height: 200,
+            width: 200 
         }, 
         velocity: { 
             x: -2 
@@ -84,7 +84,7 @@ export const player: EntityMap = {
             x: 55, y: 55
         },
         size: { 
-            width: 20 
+            width: 10 
         }, 
     }
 }

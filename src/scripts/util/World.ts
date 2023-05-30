@@ -9,15 +9,11 @@ export class World {
     entities: Entity[]
     eventManager: EventManager = new EventManager()
     keyboardController: KeyboardController = new KeyboardController(this.eventManager)
-    stage: PIXI.Container = new PIXI.Container()
     systems: System[]
 
     constructor(app: PIXI.Application) {
         this.app = app
-        this.stage.height = 2000
-        this.stage.width = 2000
-        
-        this.app.stage.addChild(this.stage)
+
         this.entities = []
         this.systems = []
     }

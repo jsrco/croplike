@@ -61,12 +61,12 @@ export class MovementSystem extends System {
                     if (gravity) gravity.setRidingStatus(false)
                 }
             } else if (entity.name === 'largeEntity') {
-                if (positionComponent.x <= 50 && velocityComponent.x <= 0) {
+                if (positionComponent.x <= 100 && velocityComponent.x <= 0) {
                     velocityComponent.setVelocity(
                         Math.max(velocityComponent.x + this.acceleration, +2),
                         velocityComponent.y
                     )
-                } else if (positionComponent.x >= 200 && velocityComponent.x >= 0) {
+                } else if (positionComponent.x >= 300 && velocityComponent.x >= 0) {
                     velocityComponent.setVelocity(
                         Math.max(velocityComponent.x - this.acceleration, -2),
                         velocityComponent.y
