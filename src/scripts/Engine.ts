@@ -175,8 +175,19 @@ export class Engine {
         const stageX = Math.max(0, playerCenterX - this.app.renderer.width / 2)
         const stageY = Math.max(0, playerCenterY - this.app.renderer.height / 2)
 
-        // Update the stage position
-        this.app.stage.position.set(-stageX, -stageY)
+        const maxStageX = this.appSize.width - window.innerWidth
+        const maxStageY = this.appSize.height - window.innerHeight + 36
+        if (stageX > maxStageX) {
+            this.app.stage.position.x = -maxStageX
+        } else {
+            this.app.stage.position.x = -stageX
+        }
+    
+        if (stageY > maxStageY) {
+            this.app.stage.position.y = -maxStageY
+        } else {
+            this.app.stage.position.y = -stageY
+        }
     }
     // demo controls
     createControls() {
