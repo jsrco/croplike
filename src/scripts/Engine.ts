@@ -12,7 +12,12 @@ import { SaveManager } from "./util/SaveManager"
 import { smolScreen } from "./util/Tools"
 
 export class Engine {
-    app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: window.innerWidth + 200, height: window.innerHeight + 200, })
+    appSize = {
+        height: 1500,
+        width: 2000
+    }
+
+    app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: this.appSize.width, height: this.appSize.height })
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     paused: Ref<Boolean> = ref(false)
     saveManager: SaveManager = new SaveManager()
@@ -167,8 +172,8 @@ export class Engine {
         const playerCenterY = playerPosition.y + playerSize.height / 2
 
         // Calculate the stage position relative to the player
-        const stageX = playerCenterX - this.app.renderer.width / 2
-        const stageY = playerCenterY - this.app.renderer.height / 2
+        const stageX = Math.max(0, playerCenterX - this.app.renderer.width / 2)
+        const stageY = Math.max(0, playerCenterY - this.app.renderer.height / 2)
 
         // Update the stage position
         this.app.stage.position.set(-stageX, -stageY)
