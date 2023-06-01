@@ -1,3 +1,4 @@
+import { Engine } from "../Engine"
 import { CreateEntity, EntityMap } from "../entities/Create"
 import { Entity } from "../entities/Entity"
 import { World } from "./World"
@@ -38,7 +39,7 @@ export class SaveManager {
     getData() {
         return this.data
     }
-    loadEntity(entityMap: EntityMap, world:World) {
+    loadEntity(entityMap: EntityMap, world:World, engine: Engine) {
         const entity = CreateEntity(entityMap, world)
         world.addEntity(entity)
         // if (entityMap.componentMap.collision) entity.components.collision.applyComponentData(entityMap.options?.collision) find fix
@@ -52,5 +53,7 @@ export class SaveManager {
         if (entityMap.componentMap.velocity) entity.components.velocity.applyComponentData(entityMap.options?.velocity)
         if (entityMap.componentMap.wallCollision) entity.components.wallCollision.applyComponentData(entityMap.options?.wallCollision)
         if (entityMap.componentMap.wall) entity.components.wall.applyComponentData(entityMap.options?.wall)
+
+        if (entity.name === 'player') engine.player = entity
     }
 }

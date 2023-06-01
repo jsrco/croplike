@@ -112,7 +112,7 @@ export class Engine {
         const saveData: any = this.localStorageManager.getData()
         this.world = new World(this.app)
         saveData.entities.forEach((entity: EntityMap) => {
-            this.saveManager.loadEntity(entity, this.world)
+            this.saveManager.loadEntity(entity, this.world, this)
         })
         this.loadSystems(this.world)
         if (smolScreen()) {
