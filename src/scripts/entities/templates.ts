@@ -42,7 +42,7 @@ export const largeEntity: EntityMap = {
             force: 0.3
         }, 
         position: { 
-            x: 200, y: 300 
+            x: 250, y: 1440 - 200 
         }, 
         size: { 
             height: 200,
@@ -81,7 +81,7 @@ export const player: EntityMap = {
             color: 0x4ade80
         },
         position: {
-            x: 55, y: 55
+            x: 60, y: 1440 - 10
         },
         size: { 
             width: 10 
