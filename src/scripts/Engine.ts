@@ -5,19 +5,13 @@ import { World } from "./util/World"
 import { ceiling, floor, largeEntity, leftWall, player, rightWall } from "./entities/templates"
 import { CreateEntity, EntityMap } from "./entities/Create"
 import { Entity } from "./entities/Entity"
-import { PositionComponent, SizeComponent } from "./components"
-import { CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem, SizeSystem } from "./systems"
+import { CameraSystem, CollisionSystem, GravitySystem, MovementSystem, OutOfBoundsSystem, RenderSystem, SizeSystem } from "./systems"
 import { LocalStorageManager } from "./util/LocalStorageManager"
 import { SaveManager } from "./util/SaveManager"
 import { smolScreen } from "./util/Tools"
 
 export class Engine {
-    appSize = {
-        height: 1500,
-        width: 2000
-    }
-
-    app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: this.appSize.width, height: this.appSize.height })
+    app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: 2000, height: 1500 })
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     paused: Ref<Boolean> = ref(false)
     saveManager: SaveManager = new SaveManager()
@@ -43,7 +37,6 @@ export class Engine {
     constructor() {
         window.addEventListener('resize', () => {
             this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
-            this.resetAllBounds()
             if (smolScreen()) {
                 this.app.stage.removeChild(this.moveLeftButton as PIXI.Graphics)
                 this.app.stage.removeChild(this.moveRightButton as PIXI.Graphics)
@@ -89,7 +82,6 @@ export class Engine {
             this.update(delta)
         })
 
-
         // load entities
         this.loadEntities(this.world)
 
@@ -127,6 +119,7 @@ export class Engine {
         this.createBounds(world)
     }
     loadSystems(world: World): void {
+        world.addSystem(new CameraSystem(world, this.player))
         world.addSystem(new CollisionSystem(world, this))
         world.addSystem(new GravitySystem(world))
         world.addSystem(new MovementSystem(world, this))
@@ -136,7 +129,6 @@ export class Engine {
     }
     pause(): void {
         this.paused.value = !this.paused.value
-        // console.log('pause', this.paused.value)
         if (this.paused.value) this.pauseTicker()
         else this.resumeTicker()
     }
@@ -156,38 +148,7 @@ export class Engine {
         this.pause()
     }
     update(delta: number): void {
-        // update game logic
-        // this.app.stage.removeChild(this.textSupport)
-        // this.textSupport = dummyText(`screen size ${this.app.renderer.width} x ${this.app.renderer.height}\nhit 'p' to pause\nhit 's' to save\nhit 'l' to load`, this.textStyle)
-        // this.textSupport.x = this.wallSize + 5
-        // this.textSupport.y = this.wallSize + 5
-        // this.app.stage.addChild(this.textSupport)
-        // Update app.stage position
-
         if (!this.paused.value) this.world.update(delta)
-        // Calculate the player center
-        const playerPosition = this.player.getComponent('position') as PositionComponent
-        const playerSize = this.player.getComponent('size') as SizeComponent
-        const playerCenterX = playerPosition.x + playerSize.width / 2
-        const playerCenterY = playerPosition.y + playerSize.height / 2
-
-        // Calculate the stage position relative to the player
-        const stageX = Math.max(0, playerCenterX - this.app.renderer.width / 2)
-        const stageY = Math.max(0, playerCenterY - this.app.renderer.height / 2)
-
-        const maxStageX = this.appSize.width - window.innerWidth
-        const maxStageY = this.appSize.height - window.innerHeight + 36
-        if (stageX > maxStageX) {
-            this.app.stage.position.x = -maxStageX
-        } else {
-            this.app.stage.position.x = -stageX
-        }
-    
-        if (stageY > maxStageY) {
-            this.app.stage.position.y = -maxStageY
-        } else {
-            this.app.stage.position.y = -stageY
-        }
     }
     // demo controls
     createControls() {
@@ -241,23 +202,6 @@ export class Engine {
         world.addEntity(CreateEntity({ ...floor, options: { graphics: { color: 0x60A5FA }, position: { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, size: { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 } } }, this.world))
         world.addEntity(CreateEntity({ ...leftWall, options: { graphics: { color: 0x60A5FA }, position: { x: 0, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, world))
         world.addEntity(CreateEntity({ ...rightWall, options: { graphics: { color: 0x60A5FA }, position: { x: this.app.renderer.width - this.wallSize, y: 0 }, size: { height: this.app.renderer.height, width: this.wallSize } } }, world))
-    }
-    resetBounds(entity: Entity, pos: { x: number, y: number }, dimension: { height: number, width: number }): void {
-        const position = entity.getComponent('position') as PositionComponent
-        const { x, y } = pos
-        position.setPosition(x, y)
-        const size = entity.getComponent('size') as SizeComponent
-        const { width, height } = dimension
-        size.setSize(width, height)
-    }
-    resetAllBounds(): void {
-        const walls = this.world.getEntitiesByComponent('wall')
-        walls.forEach(wall => {
-            if (wall.name === 'ceiling') this.resetBounds(wall, { x: this.wallSize, y: 0 }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })
-            if (wall.name === 'floor') this.resetBounds(wall, { x: this.wallSize, y: this.app.renderer.height - this.wallSize }, { height: this.wallSize, width: this.app.renderer.width - this.wallSize * 2 })
-            if (wall.name === 'leftWall') this.resetBounds(wall, { x: 0, y: 0 }, { height: this.app.renderer.height, width: this.wallSize })
-            if (wall.name === 'rightWall') this.resetBounds(wall, { x: this.app.renderer.width - this.wallSize, y: 0 }, { height: this.app.renderer.height, width: this.wallSize })
-        })
     }
 }
 
