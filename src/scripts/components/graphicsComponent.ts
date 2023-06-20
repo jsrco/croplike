@@ -1,12 +1,11 @@
 import * as PIXI from "pixi.js"
-import { Graphics } from "pixi.js"
 import { Entity } from "../entities/Entity"
 import { Component } from "."
 import { World } from "../util/World"
 
 export class GraphicsComponent extends Component {
     color: any
-    sprite: Sprite
+    sprite: PIXI.Sprite
     type: string = 'graphics'
 
     constructor(entity: Entity, world: World, color = 0x00000) {
