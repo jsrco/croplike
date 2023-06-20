@@ -36,7 +36,6 @@ export class Engine {
 
     constructor() {
         window.addEventListener('resize', () => {
-            this.app.renderer.resize(window.innerWidth, window.innerHeight - 36)
             if (smolScreen()) {
                 this.app.stage.removeChild(this.moveLeftButton as PIXI.Graphics)
                 this.app.stage.removeChild(this.moveRightButton as PIXI.Graphics)
