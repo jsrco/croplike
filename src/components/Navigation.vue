@@ -24,7 +24,7 @@ import useEngine from "../composeables/use-engine"
 
 const { game, showInfo } = useEngine()
 
-const debugList = [
+const debugList = game.name === 'action' ? [
     {
         name: 'pause game',
         operation: () => {
@@ -62,6 +62,13 @@ const debugList = [
         operation: () => {
             game.paused.value = true
             showInfo.value = true
+        }
+    },
+] : [
+    {
+        name: 'console.dir info',
+        operation: () => {
+            console.log(game)
         }
     },
 ]

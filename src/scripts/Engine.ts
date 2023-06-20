@@ -11,6 +11,8 @@ import { SaveManager } from "./util/SaveManager"
 import { smolScreen } from "./util/Tools"
 
 export class Engine {
+    name: String = 'action'
+
     app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: 2000, height: 1500 })
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     paused: Ref<Boolean> = ref(false)
