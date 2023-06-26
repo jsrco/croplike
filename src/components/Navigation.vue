@@ -24,7 +24,7 @@ import useEngine from "../composeables/use-engine"
 
 const { game, showInfo } = useEngine()
 
-const debugList = game.name === 'action' ? [
+const debugList = game.name === 'Croplike' ? [
     {
         name: 'pause game',
         operation: () => {
