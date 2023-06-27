@@ -8,16 +8,15 @@ import { BoxGeometry, Color, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, 
 
 const screenContainer = ref()
 
-
 // Sizes
 const sizes = {
-    width: 800,
-    height: 600
+    width: window.innerWidth,
+    height: window.innerHeight
 }
 
 // Scene
 const scene = new Scene()
-scene.background = new Color('#1d1d1d'); // Set black background color
+scene.background = new Color('#1d1d1d') // Set black background color
 // Object
 const cubeGeometry = new BoxGeometry(1, 1, 1)
 const cubeMaterial = new MeshBasicMaterial({
@@ -31,13 +30,27 @@ const camera = new PerspectiveCamera(75, sizes.width / sizes.height)
 camera.position.z = 3
 scene.add(camera)
 
+let renderer: WebGLRenderer
+
 onMounted(() => {
     // Renderer
-    const renderer = new WebGLRenderer({
+    renderer = new WebGLRenderer({
         canvas: screenContainer.value
     })
-    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.render(scene, camera)
+})
 
+window.addEventListener('resize', () => {
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
+    // Update camera
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.render(scene, camera)
 })
 </script>

@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
-import { AxesHelper, BoxGeometry, Color, Group, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
+import { AxesHelper, BoxGeometry, Clock, Color, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
 
 const screenContainer = ref()
 
@@ -22,34 +22,8 @@ const cubeGeometry = new BoxGeometry(1, 1, 1)
 const cubeMaterial = new MeshBasicMaterial({
     color: '#ff0000'
 })
-/**
- * Objects
- */
- const group = new Group()
-group.scale.y = 2
-group.rotation.y = 0.2
-scene.add(group)
-
-const cube1 = new Mesh(
-    new BoxGeometry(1, 1, 1),
-    new MeshBasicMaterial({ color: 0xff0000 })
-)
-cube1.position.x = - 1.5
-group.add(cube1)
-
-const cube2 = new Mesh(
-    new BoxGeometry(1, 1, 1),
-    new MeshBasicMaterial({ color: 0xff0ff0 })
-)
-cube2.position.x = 0
-group.add(cube2)
-
-const cube3 = new Mesh(
-    new BoxGeometry(1, 1, 1),
-    new MeshBasicMaterial({ color: 0xffff00 })
-)
-cube3.position.x = 1.5
-group.add(cube3)
+const cubeMesh = new Mesh(cubeGeometry, cubeMaterial)
+scene.add(cubeMesh)
 
 /**
  * Axes Helper
@@ -57,9 +31,10 @@ group.add(cube3)
 const axesHelper = new AxesHelper(2)
 scene.add(axesHelper)
 
+
 // Camera
 const camera = new PerspectiveCamera(75, sizes.width / sizes.height)
-camera.position.set(1, 1, 4)
+camera.position.z = 3
 scene.add(camera)
 
 let renderer: WebGLRenderer
@@ -70,7 +45,27 @@ onMounted(() => {
         canvas: screenContainer.value
     })
     renderer.setSize(sizes.width, sizes.height)
-    renderer.render(scene, camera)
+
+    /**
+     * Animate
+     */
+    const clock = new Clock()
+    const tick = () => {
+        // Time
+        const elapsedTime = clock.getElapsedTime()
+        // Update objects
+        cubeMesh.rotation.y = elapsedTime
+
+        // Update objects
+        camera.position.x = Math.cos(elapsedTime)
+        camera.position.y = Math.sin(elapsedTime)
+        camera.lookAt(cubeMesh.position)
+        // Render
+        renderer.render(scene, camera)
+        // Call tick again on the next frame
+        window.requestAnimationFrame(tick)
+    }
+    tick()
 })
 
 window.addEventListener('resize', () => {
@@ -83,6 +78,6 @@ window.addEventListener('resize', () => {
     // Update renderer
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-    renderer.render(scene, camera)
 })
+
 </script>

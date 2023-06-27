@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "lil-gui": "^0.18.2",
     "pixi.js": "^7.2.0-beta",
     "rot-js": "^2.2.0",
     "three": "^0.153.0",
