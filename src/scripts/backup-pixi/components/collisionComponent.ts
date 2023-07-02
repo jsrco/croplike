@@ -1,8 +1,8 @@
 import * as PIXI from "pixi.js"
 import { Rectangle } from "pixi.js"
-import { Entity } from "../entities/Entity"
 import { Component } from "."
-import { World } from "../util/World"
+import { World } from "../../util/World"
+import { Entity } from "../entities/Entity"
 
 export class CollisionComponent extends Component {
     rectangle: Rectangle

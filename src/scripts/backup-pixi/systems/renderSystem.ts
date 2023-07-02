@@ -1,6 +1,6 @@
-import { GraphicsComponent } from "../components"
 import { System } from "."
-import { World } from "../util/World"
+import { World } from "../../util/World"
+import { GraphicsComponent } from "../components"
 
 export class RenderSystem extends System {
     constructor(world: World) {

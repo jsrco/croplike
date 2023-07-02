@@ -1,6 +1,6 @@
-import { GravityComponent, PositionComponent, VelocityComponent, WallCollisionComponent } from "../components"
 import { System } from "."
-import { World } from "../util/World"
+import { World } from "../../util/World"
+import { GravityComponent, PositionComponent, VelocityComponent, WallCollisionComponent } from "../components"
 
 export class GravitySystem extends System {
     maxVelocity: number = 4

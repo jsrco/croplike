@@ -1,6 +1,6 @@
-import { PositionComponent } from "../components"
 import { System } from "."
-import { World } from "../util/World"
+import { World } from "../../util/World"
+import { PositionComponent } from "../components"
 
 export class OutOfBoundsSystem extends System {
     constructor(world: World) {

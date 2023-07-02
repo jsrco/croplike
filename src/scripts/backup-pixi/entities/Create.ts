@@ -1,6 +1,6 @@
+import { World } from "../../util/World"
 import { CollisionComponent, GraphicsComponent, GravityComponent, JumpComponent, PositionComponent, SizeChangeComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "../components"
 import { OutOfBoundsComponent } from "../components/outOfBoundsComponent"
-import { World } from "../util/World"
 import { Entity } from "./Entity"
 
 export type EntityMap = {

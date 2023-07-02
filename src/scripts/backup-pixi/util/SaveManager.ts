@@ -1,7 +1,7 @@
+import { World } from "../../util/World"
 import { Engine } from "../Engine"
 import { CreateEntity, EntityMap } from "../entities/Create"
 import { Entity } from "../entities/Entity"
-import { World } from "./World"
 
 export class SaveManager {
     data: any

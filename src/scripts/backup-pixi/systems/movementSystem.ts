@@ -1,7 +1,7 @@
-import { GravityComponent, JumpComponent, PositionComponent, VelocityComponent, WallCollisionComponent } from "../components"
 import { System } from "."
-import { World } from "../util/World"
+import { World } from "../../util/World"
 import { Engine } from "../Engine"
+import { GravityComponent, JumpComponent, PositionComponent, VelocityComponent, WallCollisionComponent } from "../components"
 
 export class MovementSystem extends System {
     acceleration: number

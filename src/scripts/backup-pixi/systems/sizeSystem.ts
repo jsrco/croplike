@@ -1,6 +1,6 @@
-import { GravityComponent, SizeChangeComponent, SizeComponent } from "../components"
 import { System } from "."
-import { World } from "../util/World"
+import { World } from "../../util/World"
+import { GravityComponent, SizeChangeComponent, SizeComponent } from "../components"
 
 export class SizeSystem extends System {
     constructor(world: World) {

@@ -1,6 +1,6 @@
-import { Entity } from "../entities/Entity"
 import { Component } from "."
-import { World } from "../util/World"
+import { World } from "../../util/World"
+import { Entity } from "../entities/Entity"
 
 export class GravityComponent extends Component {
     force: number = 0.5

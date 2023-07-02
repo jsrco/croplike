@@ -1,7 +1,7 @@
-import { Entity } from "../entities/Entity"
-import { PositionComponent, SizeComponent } from "../components"
 import { System } from "."
-import { World } from "../util/World"
+import { World } from "../../util/World"
+import { PositionComponent, SizeComponent } from "../components"
+import { Entity } from "../entities/Entity"
 
 export class CameraSystem extends System {
     target: Entity

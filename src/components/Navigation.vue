@@ -22,53 +22,13 @@
 import { ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
 
-const { game, showInfo } = useEngine()
+const { game } = useEngine()
 
-const debugList = game.name === 'Croplike' ? [
-    {
-        name: 'pause game',
-        operation: () => {
-            game.pause()
-        }
-    },
+const debugList = [
     {
         name: 'console.dir info',
         operation: () => {
-            // console.dir('world', game.lworld)
-            console.log(game)
-            // console.dir(game.localStorageManager.getData())
-        }
-    },
-    {
-        name: 'clear save',
-        operation: () => {
-            game.localStorageManager.clearData()
-        }
-    },
-    {
-        name: 'load save',
-        operation: () => {
-            game.load()
-        }
-    },
-    {
-        name: 'save',
-        operation: () => {
-            game.save()
-        }
-    },
-    {
-        name: 'show info',
-        operation: () => {
-            game.paused.value = true
-            showInfo.value = true
-        }
-    },
-] : [
-    {
-        name: 'console.dir info',
-        operation: () => {
-            console.log(game)
+            console.dir(game)
         }
     },
 ]

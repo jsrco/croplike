@@ -1,8 +1,8 @@
-import { Entity } from "../entities/Entity"
-import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeChangeComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "../components"
 import { System } from "."
-import { World } from "../util/World"
+import { World } from "../../util/World"
 import { Engine } from "../Engine"
+import { CollisionComponent, GravityComponent, JumpComponent, PositionComponent, SizeChangeComponent, SizeComponent, VelocityComponent, WallCollisionComponent, WallComponent } from "../components"
+import { Entity } from "../entities/Entity"
 
 export class CollisionSystem extends System {
   source: Engine
