@@ -1,5 +1,5 @@
 <template>
-  <Lesson19/>
+  <Lesson/>
   <!--
   <Navigation />
   <Screen />
@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import Info from "./components/Info.vue"
-import Lesson19 from "./components/lessons/Lesson19.vue"
+import Lesson from "./components/Lesson.vue"
 import Navigation from "./components/Navigation.vue"
 import Screen from "./components/Screen.vue"
 </script>

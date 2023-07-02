@@ -35,8 +35,8 @@ onMounted(() => {
     parameters.spin = 1
     parameters.insideColor = '#ff6030'
     parameters.outsideColor = '#1b3984'
-    let geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes> | null | undefined = null
-    let material: THREE.PointsMaterial | null | undefined = null
+    let geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes>
+    let material: THREE.PointsMaterial
     let points: THREE.Object3D<THREE.Event> | null = null
 
     const generateGalaxy = () => {
