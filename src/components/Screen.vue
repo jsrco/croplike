@@ -20,7 +20,7 @@ onMounted(() => {
     PressStart2P.load().then(function (font) {
         // with canvas, if this is ommited won't work
         document.fonts.add(font)
-        game.appendElement(gameContainer.value)
+        game.addCanvas(gameContainer.value)
     })
 })
 </script>
