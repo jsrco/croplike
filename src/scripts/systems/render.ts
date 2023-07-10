@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { GraphicsComponent } from "../components/graphics"
 import { System } from "./System"
 import { World } from "../util/World"
 import { Engine } from "../Engine"
@@ -14,6 +15,7 @@ export class RenderSystem extends System {
         }
     aspectRatio: number = this.aspects.width / this.aspects.height
     camera: THREE.OrthographicCamera
+    cameraTarget!: THREE.Mesh
     engine: Engine
     renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer()
     type: string = 'render'
@@ -24,6 +26,17 @@ export class RenderSystem extends System {
         this.camera = new THREE.OrthographicCamera(-1 * this.aspectRatio, 1 * this.aspectRatio, 1, -1, 0, 100)
         this.renderer.setSize(this.aspects.width, this.aspects.height)
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+        
+        // Entities
+        const entities = this.getEntitiesByComponent('graphics')
+        for (const entity of entities) {
+            const GraphicsComponent = entity.getComponent("graphics") as GraphicsComponent
+            GraphicsComponent.addToScene()
+            if (GraphicsComponent.owner.name = 'player') {
+                this.cameraTarget = GraphicsComponent.threeObject
+            }
+        }
+
         // Resize Event
         window.addEventListener('resize', () => {
             // Update sizes
@@ -47,8 +60,8 @@ export class RenderSystem extends System {
 
     update(deltaTime: number): void {
         this.renderer.render(this.engine.scene, this.camera)
-        // Call update again on the next frame
-        window.requestAnimationFrame(this.update.bind(this))
+        if (this.world.engine.player) this.camera.position.copy(this.cameraTarget.position) 
+        // handle the logic to clamp to scene here
     }
 
 }

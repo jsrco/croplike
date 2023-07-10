@@ -1,6 +1,9 @@
 import * as THREE from 'three'
-import { ColorSwatch } from './util/ColorSwatch'
+import { Entity } from './entities/Entity'
+import { CreateEntity } from './entities/Create'
+import { player } from './entities/templates'
 import { RenderSystem } from './systems/render'
+import { ColorSwatch } from './util/ColorSwatch'
 import { World } from './util/World'
 
 export class Engine {
@@ -9,19 +12,19 @@ export class Engine {
     name: String = 'Croplike'
     scene: THREE.Scene = new THREE.Scene()
     world: World = new World(this)
-    
-// Temps
+
+    // Temps
+    player: Entity
 
     constructor() {
         console.log("three.js engine running")
         this.scene.background = new THREE.Color(ColorSwatch.bgDark) // Set background color
-        // Object
-        const cubeGeometry = new THREE.PlaneGeometry(.05, .05, 1)
-        const cubeMaterial = new THREE.MeshBasicMaterial({
-            color: '#ff0000'
-        })
-        const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial)
-        this.scene.add(cubeMesh)
+        
+        this.player = CreateEntity(player, this.world)
+        const axesHelper = new THREE.AxesHelper( 5 )
+        this.scene.add( axesHelper )
+        
+        this.world.addEntity(this.player)
 
         this.loadSystems(this.world)
 
@@ -31,9 +34,9 @@ export class Engine {
     }
 
     addCanvas(elementRef: HTMLElement) {
-       const render = this.world.getSystemByType('render') as RenderSystem
-       if (render) render.appendElement(elementRef)
-       else console.log("still loading.")
+        const render = this.world.getSystemByType('render') as RenderSystem
+        if (render) render.appendElement(elementRef)
+        else console.log("still loading.")
     }
 
     loadSystems(world: World): void {
@@ -43,6 +46,10 @@ export class Engine {
     update() {
         const elapsedTime = this.clock.getElapsedTime()
         this.world.update(elapsedTime)
+        // this.player.scale.x = this.player.scale.x += .1
+        // this.player.scale.y = this.player.scale.y += .1
+        // Call update again on the next frame
+        window.requestAnimationFrame(this.update.bind(this))
+        // this.player.position.setX(this.player.position.x + (.3 * elapsedTime / 1000));
     }
-
 }
