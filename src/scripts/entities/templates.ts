@@ -7,6 +7,7 @@ export const player: EntityMap = {
         graphics: true,
         position: true,
         size: true,
+        velocity: true,
     },
     options: {
         graphics: {
@@ -16,7 +17,7 @@ export const player: EntityMap = {
             x: 0, y: 0
         },
         size: { 
-            width: 0.03 
+            width: 0.25 
         }, 
     }
 }
