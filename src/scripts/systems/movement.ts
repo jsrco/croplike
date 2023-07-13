@@ -11,11 +11,25 @@ export class MovementSystem extends System {
     maxVelocity: number
     type: string = 'movement'
     
-    constructor(world: World, engine: Engine) {
+    constructor(world: World) {
         super(world)
         this.engine = this.world.engine
         this.acceleration = .002
         this.maxVelocity = .008
+    }
+
+    moveLeft(component: VelocityComponent): void {
+        component.setVelocity(
+            Math.max(component.x - this.acceleration, -this.maxVelocity),
+            component.y
+        )
+    }
+
+    moveRight(component: VelocityComponent): void {
+        component.setVelocity(
+            Math.min(component.x + this.acceleration, this.maxVelocity),
+            component.y
+        )
     }
 
     update(deltaTime: number): void {
@@ -31,16 +45,10 @@ export class MovementSystem extends System {
             if (entity.name === 'player') {
                 // Update velocity based on keys pressed
                 if (this.keys.has('ArrowLeft')) {
-                    velocityComponent.setVelocity(
-                        Math.max(velocityComponent.x - this.acceleration, -this.maxVelocity),
-                        velocityComponent.y
-                    )
+                    this.moveLeft(velocityComponent)
                 }
                 if (this.keys.has('ArrowRight')) {
-                    velocityComponent.setVelocity(
-                        Math.min(velocityComponent.x + this.acceleration, this.maxVelocity),
-                        velocityComponent.y
-                    )
+                    this.moveRight(velocityComponent)
                 }
             }
             // Update position based on velocity

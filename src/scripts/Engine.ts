@@ -48,10 +48,7 @@ export class Engine {
     update() {
         const elapsedTime = this.clock.getElapsedTime()
         this.world.update(elapsedTime)
-        // this.player.scale.x = this.player.scale.x += .1
-        // this.player.scale.y = this.player.scale.y += .1
         // Call update again on the next frame
         window.requestAnimationFrame(this.update.bind(this))
-        // this.player.position.setX(this.player.position.x + (.3 * elapsedTime / 1000));
     }
 }
