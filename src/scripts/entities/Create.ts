@@ -1,9 +1,10 @@
-import { World } from "../util/World"
+import { Entity } from "./Entity"
 import { GraphicsComponent } from "../components/graphics"
 import { PositionComponent } from "../components/position"
 import { SizeComponent } from "../components/size"
 import { VelocityComponent } from "../components/velocity"
-import { Entity } from "./Entity"
+import { World } from "../util/World"
+
 
 export type EntityMap = {
     name: string

@@ -21,10 +21,10 @@ export class Engine {
         console.log("three.js engine running")
         this.scene.background = new THREE.Color(ColorSwatch.bgDark) // Set background color
         
+        this.world.addEntity(CreateEntity(demoEntity, this.world))
         this.player = CreateEntity(player, this.world)
         this.world.addEntity(this.player)
 
-        this.world.addEntity(CreateEntity(demoEntity, this.world))
 
         const axesHelper = new THREE.AxesHelper( 5 )
         this.scene.add( axesHelper )
@@ -53,5 +53,5 @@ export class Engine {
         // Call update again on the next frame
         window.requestAnimationFrame(this.update.bind(this))
     }
-    
+
 }
