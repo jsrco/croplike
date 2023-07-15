@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { GraphicsComponent } from "../components/graphics"
 import { System } from "./System"
 import { World } from "../util/World"
-import { Engine } from "../Engine"
 
 export class RenderSystem extends System {
 
@@ -16,13 +15,11 @@ export class RenderSystem extends System {
     aspectRatio: number = this.aspects.width / this.aspects.height
     camera: THREE.OrthographicCamera
     cameraTarget!: THREE.Mesh
-    engine: Engine
     renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer()
     type: string = 'render'
 
     constructor(world: World) {
         super(world)
-        this.engine = this.world.engine
         this.camera = new THREE.OrthographicCamera(-1 * this.aspectRatio, 1 * this.aspectRatio, 1, -1, 0, 100)
         this.renderer.setSize(this.aspects.width, this.aspects.height)
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -32,7 +29,7 @@ export class RenderSystem extends System {
         for (const entity of entities) {
             const GraphicsComponent = entity.getComponent("graphics") as GraphicsComponent
             GraphicsComponent.addToScene()
-            if (GraphicsComponent.owner.name = 'player') {
+            if (GraphicsComponent.owner.name === 'player') {
                 this.cameraTarget = GraphicsComponent.threeObject
             }
         }

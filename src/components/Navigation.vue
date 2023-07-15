@@ -31,6 +31,12 @@ const debugList = [
             console.dir(game)
         }
     },
+    {
+        name: 'console.dir entities',
+        operation: () => {
+            console.dir(game.world.entities)
+        }
+    },
 ]
 
 const isInDebug: Ref<Boolean> = ref(false)

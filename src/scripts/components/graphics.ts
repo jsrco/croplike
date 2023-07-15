@@ -4,6 +4,7 @@ import { World } from "../util/World"
 import { Entity } from "../entities/Entity"
 
 export class GraphicsComponent extends Component {
+
     color: any
     threeObject: THREE.Mesh
     type: string = 'graphics'
@@ -19,9 +20,11 @@ export class GraphicsComponent extends Component {
         this.world.eventManager.subscribe('positionChange', this.onPositionChange.bind(this))
         this.world.eventManager.subscribe('sizeChange', this.onSizeChange.bind(this))
     }
+
     addToScene() {
         this.world.engine.scene.add(this.threeObject)
     }
+
     onPositionChange(data: any): void {
         if (data.entity === this.owner) {
             const positionComponent = data.positionComponent
@@ -29,6 +32,7 @@ export class GraphicsComponent extends Component {
             this.threeObject.position.y = positionComponent.y
         }
     }
+
     onSizeChange(data: any): void {
         if (data.entity === this.owner) {
             const sizeComponent = data.sizeComponent
@@ -36,7 +40,9 @@ export class GraphicsComponent extends Component {
             this.threeObject.scale.y = sizeComponent.height
         }
     }
+
     removeFromStage() {
         this.world.engine.scene.remove(this.threeObject)
     }
+
 }

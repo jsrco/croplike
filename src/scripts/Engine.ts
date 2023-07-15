@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { Entity } from './entities/Entity'
 import { CreateEntity } from './entities/Create'
-import { player } from './entities/templates'
+import { demoEntity, player } from './entities/templates'
 import { MovementSystem } from './systems/movement'
 import { RenderSystem } from './systems/render'
 import { ColorSwatch } from './util/ColorSwatch'
@@ -22,10 +22,12 @@ export class Engine {
         this.scene.background = new THREE.Color(ColorSwatch.bgDark) // Set background color
         
         this.player = CreateEntity(player, this.world)
+        this.world.addEntity(this.player)
+
+        this.world.addEntity(CreateEntity(demoEntity, this.world))
+
         const axesHelper = new THREE.AxesHelper( 5 )
         this.scene.add( axesHelper )
-        
-        this.world.addEntity(this.player)
 
         this.loadSystems(this.world)
 
@@ -51,4 +53,5 @@ export class Engine {
         // Call update again on the next frame
         window.requestAnimationFrame(this.update.bind(this))
     }
+    
 }

@@ -2,18 +2,15 @@ import { PositionComponent } from "../components/position"
 import { VelocityComponent } from "../components/velocity"
 import { System } from "./System"
 import { World } from "../util/World"
-import { Engine } from "../Engine"
 
 export class MovementSystem extends System {
 
     acceleration: number
-    engine: Engine
     maxVelocity: number
     type: string = 'movement'
-    
+
     constructor(world: World) {
         super(world)
-        this.engine = this.world.engine
         this.acceleration = .002
         this.maxVelocity = .008
     }
@@ -54,10 +51,11 @@ export class MovementSystem extends System {
             // Update position based on velocity
             if (velocityComponent.x !== 0 || velocityComponent.y !== 0) {
                 positionComponent.setPosition(
-                    positionComponent.x + velocityComponent.x, // * deltaTime
-                    positionComponent.y + velocityComponent.y  // * deltaTime 
+                    positionComponent.x + velocityComponent.x, // * deltaTime,
+                    positionComponent.y + velocityComponent.y, // * deltaTime, 
                 )
             }
         }
     }
+
 }

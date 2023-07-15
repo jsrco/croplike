@@ -1,14 +1,17 @@
-import { World } from "../util/World"
 import { Entity } from "../entities/Entity"
+import { World } from "../util/World"
+import { Engine } from "../Engine"
 
 export class System {
 
     componentEntityMap: Map<string, Entity[]> = new Map()
+    engine: Engine
     keys: Set<string>
     type!: string
     world: World
 
     constructor(world: World) {
+        this.engine = world.engine
         this.keys = new Set<string>()
         this.world = world
         this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
