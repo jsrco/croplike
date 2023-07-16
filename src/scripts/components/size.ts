@@ -6,8 +6,8 @@ import { World } from "../util/World"
 
 export class SizeComponent extends Component {
 
-    height: number = 10
-    width: number = 10
+    height: number = 1
+    width: number = 1
     type: string = 'size'
 
     constructor(entity: Entity, world: World, x?: number, y?: number) {

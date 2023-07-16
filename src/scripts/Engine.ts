@@ -18,7 +18,6 @@ export class Engine {
     player: Entity
 
     constructor() {
-        console.log("three.js engine running")
         this.scene.background = new THREE.Color(ColorSwatch.bgDark) // Set background color
         
         this.world.addEntity(CreateEntity(demoEntity, this.world))
@@ -32,7 +31,6 @@ export class Engine {
         this.loadSystems(this.world)
 
         // Start Engine
-        console.log("starting update")
         this.update()
     }
 

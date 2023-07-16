@@ -15,12 +15,13 @@ export class RenderSystem extends System {
     aspectRatio: number = this.aspects.width / this.aspects.height
     camera: THREE.OrthographicCamera
     cameraTarget!: THREE.Mesh
+    frustum: number = 15
     renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer()
     type: string = 'render'
 
     constructor(world: World) {
         super(world)
-        this.camera = new THREE.OrthographicCamera(-1 * this.aspectRatio, 1 * this.aspectRatio, 1, -1, 0, 100)
+        this.camera = new THREE.OrthographicCamera(-this.frustum * this.aspectRatio, this.frustum * this.aspectRatio, this.frustum, -this.frustum, 0, 100)
         this.renderer.setSize(this.aspects.width, this.aspects.height)
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
         
@@ -52,7 +53,6 @@ export class RenderSystem extends System {
 
     appendElement(elementRef: HTMLElement): void {
         elementRef.appendChild(this.renderer.domElement)
-        console.log("canvas appended to element", elementRef)
     }
 
     update(deltaTime: number): void {

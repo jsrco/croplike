@@ -15,10 +15,10 @@ export const demoEntity: EntityMap = {
             color: ColorSwatch.red[3]
         },
         position: {
-            x: 1, y: 0
+            x: 5, y: 0
         },
         size: { 
-            width: 0.25 
+            width: 1
         }, 
     }
 }
@@ -39,7 +39,7 @@ export const player: EntityMap = {
             x: 0, y: 0
         },
         size: { 
-            width: 0.25 
+            width: 1 
         }, 
     }
 }

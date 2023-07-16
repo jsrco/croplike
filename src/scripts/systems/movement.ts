@@ -11,8 +11,8 @@ export class MovementSystem extends System {
 
     constructor(world: World) {
         super(world)
-        this.acceleration = .002
-        this.maxVelocity = .008
+        this.acceleration = .02
+        this.maxVelocity = .08
     }
 
     moveLeft(component: VelocityComponent): void {

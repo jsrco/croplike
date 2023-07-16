@@ -12,7 +12,7 @@ export class GraphicsComponent extends Component {
     constructor(entity: Entity, world: World, color = 0xffffff) {
         super(entity, world)
         this.color = color
-        const cubeGeometry = new THREE.PlaneGeometry(.25, .25, 1)
+        const cubeGeometry = new THREE.PlaneGeometry()
         const cubeMaterial = new THREE.MeshBasicMaterial({
             color: color,
         })
