@@ -1,7 +1,7 @@
 import * as THREE from 'three'
+import { Entity } from "../entities/Entity"
 import { Component } from "./Component"
 import { World } from "../util/World"
-import { Entity } from "../entities/Entity"
 
 export class GraphicsComponent extends Component {
 
