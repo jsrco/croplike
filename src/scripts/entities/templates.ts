@@ -5,6 +5,7 @@ import { ColorSwatch } from '../util/ColorSwatch'
 export const demoEntity: EntityMap = {
     name: 'demo',
     componentMap: {
+        collision: true,
         graphics: true,
         position: true,
         size: true,
@@ -26,6 +27,7 @@ export const demoEntity: EntityMap = {
 export const player: EntityMap = {
     name: 'player',
     componentMap: {
+        collision: true,
         graphics: true,
         position: true,
         size: true,

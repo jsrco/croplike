@@ -42,8 +42,8 @@ export class RenderSystem extends System {
             this.aspects.width = window.innerWidth
             this.aspectRatio = this.aspects.width / this.aspects.height
             // Update camera
-            this.camera.left = -1 * this.aspectRatio
-            this.camera.right = 1 * this.aspectRatio
+            this.camera.left = -this.frustum * this.aspectRatio
+            this.camera.right = this.frustum * this.aspectRatio
             this.camera.updateProjectionMatrix()
             // Update renderer
             this.renderer.setSize(this.aspects.width, this.aspects.height)

@@ -9,23 +9,23 @@ export class CollisionComponent extends Component {
     collider: RAPIER.Collider
     type: string = 'collision'
 
-    constructor(entity: Entity, world: World) {
+    constructor(entity: Entity, world: World, x: number, y: number) {
         super(entity, world)
         const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic()
+        rigidBodyDesc.setTranslation(x, y)
         this.body = this.world.physicsWorld.createRigidBody(rigidBodyDesc)
-        const colliderDesc = RAPIER.ColliderDesc.cuboid(1, 1)
+        const colliderDesc = RAPIER.ColliderDesc.cuboid(.5, .5)
         this.collider = this.world.physicsWorld.createCollider(colliderDesc, this.body)
-        // this.world.eventManager.subscribe('positionChange', this.onPositionChange.bind(this))
+        this.world.eventManager.subscribe('velocityChange', this.onVelocityChange.bind(this))
         // this.world.eventManager.subscribe('sizeChange', this.onSizeChange.bind(this))
     }
 
-    // onPositionChange(data: any): void {
-    //     if (data.entity === this.owner) {
-    //         const positionComponent = data.positionComponent
-    //         this.rectangle.x = positionComponent.x
-    //         this.rectangle.y = positionComponent.y
-    //     }
-    // }
+    onVelocityChange(data: any): void {
+        if (data.entity === this.owner) {
+            const velocityComponent = data.velocityComponent
+            this.body.setLinvel({ x: velocityComponent.x, y: velocityComponent.y}, true)
+        }
+    }
 
     // onSizeChange(data: any): void {
     //     if (data.entity === this.owner) {

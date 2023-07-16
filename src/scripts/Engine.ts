@@ -3,6 +3,7 @@ import { Entity } from './entities/Entity'
 import { CreateEntity } from './entities/Create'
 import { demoEntity, player } from './entities/templates'
 import { MovementSystem } from './systems/movement'
+import { PhysicsSystem } from './systems/physics'
 import { RenderSystem } from './systems/render'
 import { ColorSwatch } from './util/ColorSwatch'
 import { World } from './util/World'
@@ -42,6 +43,7 @@ export class Engine {
 
     loadSystems(world: World): void {
         world.addSystem(new MovementSystem(world))
+        world.addSystem(new PhysicsSystem(world))
         world.addSystem(new RenderSystem(world))
     }
 

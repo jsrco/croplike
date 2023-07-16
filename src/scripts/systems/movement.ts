@@ -11,8 +11,8 @@ export class MovementSystem extends System {
 
     constructor(world: World) {
         super(world)
-        this.acceleration = .02
-        this.maxVelocity = .08
+        this.acceleration = 2
+        this.maxVelocity = 8
     }
 
     moveLeft(component: VelocityComponent): void {
@@ -32,7 +32,6 @@ export class MovementSystem extends System {
     update(deltaTime: number): void {
         const entities = this.getEntitiesByComponent('position', 'velocity')
         for (const entity of entities) {
-            const positionComponent = entity.getComponent('position') as PositionComponent
             const velocityComponent = entity.getComponent('velocity') as VelocityComponent
             // Reset velocity to zero if no keys are pressed
             if (this.keys.size === 0) {
@@ -47,13 +46,6 @@ export class MovementSystem extends System {
                 if (this.keys.has('ArrowRight')) {
                     this.moveRight(velocityComponent)
                 }
-            }
-            // Update position based on velocity
-            if (velocityComponent.x !== 0 || velocityComponent.y !== 0) {
-                positionComponent.setPosition(
-                    positionComponent.x + velocityComponent.x, // * deltaTime,
-                    positionComponent.y + velocityComponent.y, // * deltaTime, 
-                )
             }
         }
     }
