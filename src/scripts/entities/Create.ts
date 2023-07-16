@@ -22,10 +22,10 @@ export type EntityMap = {
 export const CreateEntity = (entityMap: EntityMap, world: World): Entity => {
     const entity = new Entity(entityMap.name)
     const components = []
-    
-    if (entityMap.componentMap.collision) components.push(new CollisionComponent(entity, world,  entityMap.options?.position?.x || 0, entityMap.options?.position?.y || 0))
+
+    if (entityMap.componentMap.collision) components.push(new CollisionComponent(entity, world, { x: entityMap.options?.collision?.x || 0, y: entityMap.options?.collision?.y || 0 }))
     if (entityMap.componentMap.graphics) components.push(new GraphicsComponent(entity, world, entityMap.options?.graphics?.color))
-    if (entityMap.componentMap.position) components.push(new PositionComponent(entity, world, entityMap.options?.position?.x || 0, entityMap.options?.position?.y || 0))
+    if (entityMap.componentMap.position) components.push(new PositionComponent(entity, world))
     if (entityMap.componentMap.size) components.push(new SizeComponent(entity, world, entityMap.options?.size?.width, entityMap.options?.size?.height))
     if (entityMap.componentMap.velocity) components.push(new VelocityComponent(entity, world, entityMap.options?.velocity?.x, entityMap.options?.velocity?.y))
 

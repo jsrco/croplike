@@ -12,11 +12,11 @@ export const demoEntity: EntityMap = {
         velocity: true,
     },
     options: {
+        collision: {
+            x: 5, y: 0
+        },
         graphics: {
             color: ColorSwatch.red[3]
-        },
-        position: {
-            x: 5, y: 0
         },
         size: { 
             width: 1
@@ -34,11 +34,11 @@ export const player: EntityMap = {
         velocity: true,
     },
     options: {
+        collision: {
+            x: 0, y: 0
+        },
         graphics: {
             color: ColorSwatch.green[3]
-        },
-        position: {
-            x: 0, y: 0
         },
         size: { 
             width: 1 

@@ -9,10 +9,10 @@ export class CollisionComponent extends Component {
     collider: RAPIER.Collider
     type: string = 'collision'
 
-    constructor(entity: Entity, world: World, x: number, y: number) {
+    constructor(entity: Entity, world: World, options: { x: number, y: number }) {
         super(entity, world)
         const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic()
-        rigidBodyDesc.setTranslation(x, y)
+        rigidBodyDesc.setTranslation(options.x, options.y)
         this.body = this.world.physicsWorld.createRigidBody(rigidBodyDesc)
         const colliderDesc = RAPIER.ColliderDesc.cuboid(.5, .5)
         this.collider = this.world.physicsWorld.createCollider(colliderDesc, this.body)
@@ -30,8 +30,8 @@ export class CollisionComponent extends Component {
     // onSizeChange(data: any): void {
     //     if (data.entity === this.owner) {
     //         const sizeComponent = data.sizeComponent
-    //         this.rectangle.height = sizeComponent.height
-    //         this.rectangle.width = sizeComponent.width
+    //         console.log(sizeComponent)
+    //         this.collider.setHalfExtents({ x: sizeComponent.x, y: sizeComponent.y })
     //     }
     // }
 

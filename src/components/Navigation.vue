@@ -37,6 +37,12 @@ const debugList = [
             console.dir(game.world.entities)
         }
     },
+    {
+        name: 'change size test',
+        operation: () => {
+            game.world.entities[0].components.size.setSize(2) 
+        }
+    },
 ]
 
 const isInDebug: Ref<Boolean> = ref(false)
