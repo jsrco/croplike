@@ -45,6 +45,7 @@ export const floor: EntityMap = {
 export const player: EntityMap = {
     name: 'player',
     componentMap: {
+        jump: true,
         rapier: true,
         three: true,
     },

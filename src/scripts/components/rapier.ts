@@ -21,6 +21,7 @@ export class RapierComponent extends Component {
         
         const colliderDesc = RAPIER.ColliderDesc.cuboid(size.width / 2, size.height / 2)
         this.collider = this.world.physicsWorld.createCollider(colliderDesc, this.body)
+        if (this.owner.name === 'player') this.collider.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS)
     }
 
     setVelocity(velocity: { x: number, y: number }) {

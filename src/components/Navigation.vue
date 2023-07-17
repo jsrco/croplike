@@ -38,9 +38,9 @@ const debugList = [
         }
     },
     {
-        name: 'change size test',
+        name: 'console.dir rapier',
         operation: () => {
-            game.world.entities[0].components.size.setSize(2) 
+            console.dir(game.world.physicsWorld) 
         }
     },
 ]
