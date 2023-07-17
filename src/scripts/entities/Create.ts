@@ -1,20 +1,13 @@
-import { Entity } from "./Entity"
-import { CollisionComponent } from "../components/collision"
-import { GraphicsComponent } from "../components/graphics"
-import { PositionComponent } from "../components/position"
-import { SizeComponent } from "../components/size"
-import { VelocityComponent } from "../components/velocity"
+import { RapierComponent } from "../components/rapier"
+import { ThreeComponent } from "../components/three"
 import { World } from "../util/World"
-
+import { Entity } from "./Entity"
 
 export type EntityMap = {
     name: string
     componentMap: {
-        collision?: boolean
-        graphics?: boolean
-        position?: boolean
-        size?: boolean
-        velocity?: boolean
+        rapier?: boolean
+        three?: boolean
     }
     options?: any
 }
@@ -23,11 +16,14 @@ export const CreateEntity = (entityMap: EntityMap, world: World): Entity => {
     const entity = new Entity(entityMap.name)
     const components = []
 
-    if (entityMap.componentMap.collision) components.push(new CollisionComponent(entity, world, { x: entityMap.options?.collision?.x || 0, y: entityMap.options?.collision?.y || 0 }))
-    if (entityMap.componentMap.graphics) components.push(new GraphicsComponent(entity, world, entityMap.options?.graphics?.color))
-    if (entityMap.componentMap.position) components.push(new PositionComponent(entity, world))
-    if (entityMap.componentMap.size) components.push(new SizeComponent(entity, world, entityMap.options?.size?.width, entityMap.options?.size?.height))
-    if (entityMap.componentMap.velocity) components.push(new VelocityComponent(entity, world, entityMap.options?.velocity?.x, entityMap.options?.velocity?.y))
+    if (entityMap.componentMap.rapier)
+        components.push(
+            new RapierComponent(entity, world, entityMap.options)
+        )
+    if (entityMap.componentMap.three)
+        components.push(
+            new ThreeComponent(entity, world, entityMap.options)
+        )
 
     entity.addComponents(components)
 

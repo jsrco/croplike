@@ -1,7 +1,7 @@
 import * as THREE from 'three'
-import { GraphicsComponent } from "../components/graphics"
-import { System } from "./System"
+import { ThreeComponent } from "../components/three"
 import { World } from "../util/World"
+import { System } from "./System"
 
 export class RenderSystem extends System {
 
@@ -24,14 +24,14 @@ export class RenderSystem extends System {
         this.camera = new THREE.OrthographicCamera(-this.frustum * this.aspectRatio, this.frustum * this.aspectRatio, this.frustum, -this.frustum, 0, 100)
         this.renderer.setSize(this.aspects.width, this.aspects.height)
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-        
+
         // Entities
-        const entities = this.getEntitiesByComponent('graphics')
+        const entities = this.getEntitiesByComponent('three')
         for (const entity of entities) {
-            const GraphicsComponent = entity.getComponent("graphics") as GraphicsComponent
-            GraphicsComponent.addToScene()
-            if (GraphicsComponent.owner.name === 'player') {
-                this.cameraTarget = GraphicsComponent.threeObject
+            const threeComponent = entity.getComponent('three') as ThreeComponent
+            threeComponent.addToScene()
+            if (threeComponent.owner.name === 'player') {
+                this.cameraTarget = threeComponent.threeObject
             }
         }
 
@@ -57,7 +57,7 @@ export class RenderSystem extends System {
 
     update(deltaTime: number): void {
         this.renderer.render(this.engine.scene, this.camera)
-        if (this.world.engine.player) this.camera.position.copy(this.cameraTarget.position) 
+        if (this.world.engine.player) this.camera.position.copy(this.cameraTarget.position)
         // handle the logic to clamp to scene here
     }
 

@@ -17,7 +17,7 @@ export class World {
     constructor(engine: Engine) {
         this.engine = engine
         this.entities = []
-        this.physicsWorld = new RAPIER.World({ x: 0.0, y: 0.0 })
+        this.physicsWorld = new RAPIER.World({ x: 0.0, y: -50.0 })
         this.systems = []
     }
 

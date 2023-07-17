@@ -1,7 +1,7 @@
-import { CollisionComponent } from "../components/collision"
-import { PositionComponent } from "../components/position"
-import { System } from "./System"
+import { RapierComponent } from "../components/rapier"
+import { ThreeComponent } from "../components/three"
 import { World } from "../util/World"
+import { System } from "./System"
 
 export class PhysicsSystem extends System {
 
@@ -13,16 +13,13 @@ export class PhysicsSystem extends System {
   update(deltaTime: number): void {
     this.world.physicsWorld.step()
 
-    const entities = this.getEntitiesByComponent('collision', 'position')
+    const entities = this.getEntitiesByComponent('rapier', 'three')
     for (const entity of entities) {
-      const collisionComponent = entity.getComponent('collision') as CollisionComponent
-      const positionComponent = entity.getComponent('position') as PositionComponent
+      const rapierComponent = entity.getComponent('rapier') as RapierComponent
+      const threeComponent = entity.getComponent('three') as ThreeComponent
       // Update position based on body translation
-      const position = collisionComponent.body.translation()
-      positionComponent.setPosition(
-        position.x, // * deltaTime,
-        position.y, // * deltaTime, 
-      )
+      const position = rapierComponent.body.translation()
+      threeComponent.setPosition(position)
     }
   }
 
