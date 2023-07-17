@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { Entity } from './entities/Entity'
 import { CreateEntity } from './entities/Create'
-import { demoEntity, floor, player } from './entities/templates'
+import { bigDemoEntity, demoEntity, floor, player } from './entities/templates'
 import { MovementSystem } from './systems/movement'
 import { PhysicsSystem } from './systems/physics'
 import { RenderSystem } from './systems/render'
@@ -21,6 +21,7 @@ export class Engine {
     constructor() {
         this.scene.background = new THREE.Color(ColorSwatch.bgDark) // Set background color
         
+        this.world.addEntity(CreateEntity(bigDemoEntity, this.world))
         this.world.addEntity(CreateEntity(demoEntity, this.world))
         this.world.addEntity(CreateEntity(floor, this.world))
         this.player = CreateEntity(player, this.world)

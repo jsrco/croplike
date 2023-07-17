@@ -50,6 +50,8 @@ export class MovementSystem extends System {
                 }
                 if (this.keys.has('ArrowUp')) {
                     console.log("jump")
+                    // check in unit is touching ground or another unit.
+                    
                 }
             }
         }

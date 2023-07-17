@@ -11,13 +11,13 @@ export class World {
     entities: Entity[]
     eventManager: EventManager = new EventManager()
     keyboardController: KeyboardController = new KeyboardController(this.eventManager)
-    physicsWorld: RAPIER.World
+    physicsWorld: RAPIER.World = new RAPIER.World({ x: 0.0, y: -50.0 })
+    physicsWorldEventQueue: RAPIER.EventQueue = new RAPIER.EventQueue(true)
     systems: System[]
 
     constructor(engine: Engine) {
         this.engine = engine
         this.entities = []
-        this.physicsWorld = new RAPIER.World({ x: 0.0, y: -50.0 })
         this.systems = []
     }
 

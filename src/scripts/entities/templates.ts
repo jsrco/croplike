@@ -2,6 +2,26 @@ import { EntityMap } from "./Create"
 import { ColorSwatch } from '../util/ColorSwatch'
 
 
+export const bigDemoEntity: EntityMap = {
+    name: 'demo',
+    componentMap: {
+        rapier: true,
+        three: true,
+    },
+    options: {
+        color: ColorSwatch.red[3],
+        position: {
+            x: -5,
+            y: 10,
+        },
+        size: {
+            height: 2,
+            width: 2,
+        },
+        type: 'dynamic',
+    }
+}
+
 export const demoEntity: EntityMap = {
     name: 'demo',
     componentMap: {
@@ -12,7 +32,7 @@ export const demoEntity: EntityMap = {
         color: ColorSwatch.red[3],
         position: {
             x: 5,
-            y: 5,
+            y: 8,
         },
         size: {
             height: 1,
@@ -53,7 +73,7 @@ export const player: EntityMap = {
         color: ColorSwatch.green[3],
         position: {
             x: 0,
-            y: 5,
+            y: 4,
         },
         size: {
             width: 1,
