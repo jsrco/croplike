@@ -1,6 +1,6 @@
 import * as THREE from 'three'
-import { Entity } from './entities/Entity'
 import { CreateEntity } from './entities/Create'
+import { Entity } from './entities/Entity'
 import { bigDemoEntity, demoEntity, floor, player } from './entities/templates'
 import { MovementSystem } from './systems/movement'
 import { PhysicsSystem } from './systems/physics'
@@ -20,7 +20,7 @@ export class Engine {
 
     constructor() {
         this.scene.background = new THREE.Color(ColorSwatch.bgDark) // Set background color
-        
+
         this.world.addEntity(CreateEntity(bigDemoEntity, this.world))
         this.world.addEntity(CreateEntity(demoEntity, this.world))
         this.world.addEntity(CreateEntity(floor, this.world))
@@ -28,8 +28,8 @@ export class Engine {
         this.world.addEntity(this.player)
 
 
-        const axesHelper = new THREE.AxesHelper( 5 )
-        this.scene.add( axesHelper )
+        const axesHelper = new THREE.AxesHelper(5)
+        this.scene.add(axesHelper)
 
         this.loadSystems(this.world)
 

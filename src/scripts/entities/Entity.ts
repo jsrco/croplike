@@ -3,6 +3,7 @@ import { Component } from "../components/Component"
 export class Entity {
 
   components: Record<string, Component>
+  handle!: number
   id: number
   name: string
 

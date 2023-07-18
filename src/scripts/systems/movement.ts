@@ -49,9 +49,10 @@ export class MovementSystem extends System {
                     this.moveRight(rapierComponent)
                 }
                 if (this.keys.has('ArrowUp')) {
-                    console.log("jump")
                     // check in unit is touching ground or another unit.
-                    
+                    // demo jump for testing normal value
+                    const currentVelocity = rapierComponent.body.linvel()
+                    rapierComponent.setVelocity({ x: currentVelocity.x, y: 10 })
                 }
             }
         }

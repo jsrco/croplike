@@ -1,8 +1,8 @@
 import RAPIER from "@dimforge/rapier2d"
 import { Entity } from "../entities/Entity"
 import { System } from "../systems/System"
-import { EventManager } from "../backup-pixi/util/EventManager"
-import { KeyboardController } from "../backup-pixi/util/KeyboardController"
+import { EventManager } from "../util/EventManager"
+import { KeyboardController } from "../util/KeyboardController"
 import { Engine } from "../Engine"
 
 export class World {
@@ -33,6 +33,10 @@ export class World {
         return this.entities.filter(entity =>
             componentTypes.every(type => entity.hasComponent(type))
         )
+    }
+
+    getEntityByHandle(handle: number): Entity | undefined {
+        return this.entities.find(entity => entity.handle === handle)
     }
 
     getSystemByType(type: string) {

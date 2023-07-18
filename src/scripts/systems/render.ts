@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { ThreeComponent } from "../components/three"
-import { World } from "../util/World"
 import { System } from "./System"
+import { World } from "../util/World"
 
 export class RenderSystem extends System {
 

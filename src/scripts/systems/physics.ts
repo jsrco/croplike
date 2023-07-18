@@ -1,11 +1,9 @@
-import RAPIER from "@dimforge/rapier2d"
 import { RapierComponent } from "../components/rapier"
 import { ThreeComponent } from "../components/three"
-import { World } from "../util/World"
 import { System } from "./System"
+import { World } from "../util/World"
 
 export class PhysicsSystem extends System {
-
 
   constructor(world: World) {
     super(world)
@@ -16,11 +14,10 @@ export class PhysicsSystem extends System {
 
     this.world.physicsWorldEventQueue.drainCollisionEvents((handle1, handle2, started) => {
       /* Handle the collision event. */
-      const collider1 = this.world.physicsWorld.getCollider(handle1)
-      const collider2 = this.world.physicsWorld.getCollider(handle2)
-      this.world.physicsWorld.contactPair(collider1, collider2, (manifold, flipped) => {
-        console.log(manifold)
-
+      this.world.physicsWorld.narrowPhase.contactPair(handle1, handle2, (manifold, flipped) => {
+        // Contact information can be read from `manifold`. 
+        console.log(this.world.getEntityByHandle(handle1)?.name + ' normal', manifold.localNormal1())
+        console.log(this.world.getEntityByHandle(handle2)?.name + ' normal', manifold.localNormal2())
       })
     })
 
