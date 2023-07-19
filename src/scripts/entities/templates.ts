@@ -15,7 +15,7 @@ export const bigDemoEntity: EntityMap = {
             y: 10,
         },
         size: {
-            height: 2,
+            height: 9,
             width: 2,
         },
         type: 'dynamic',

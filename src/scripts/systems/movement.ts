@@ -35,7 +35,7 @@ export class MovementSystem extends System {
         for (const entity of entities) {
             const rapierComponent = entity.getComponent('rapier') as RapierComponent
             // Reset velocity to zero if no keys are pressed
-            if (this.keys.size === 0) {
+            if (this.keys.size === 0 && entity.name === 'player') {
                 const currentVelocity = rapierComponent.body.linvel()
                 rapierComponent.setVelocity({ x: 0, y: currentVelocity.y })
             }
@@ -48,11 +48,12 @@ export class MovementSystem extends System {
                 if (this.keys.has('ArrowRight')) {
                     this.moveRight(rapierComponent)
                 }
-                if (this.keys.has('ArrowUp')) {
+                if (this.keys.has('ArrowUp') && rapierComponent.isOnGround) {
                     // check in unit is touching ground or another unit.
                     // demo jump for testing normal value
                     const currentVelocity = rapierComponent.body.linvel()
-                    rapierComponent.setVelocity({ x: currentVelocity.x, y: 10 })
+                    rapierComponent.setVelocity({ x: currentVelocity.x, y: 20 })
+                    rapierComponent.setIsOnGround(false)
                 }
             }
         }

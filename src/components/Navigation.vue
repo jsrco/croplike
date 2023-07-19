@@ -43,6 +43,12 @@ const debugList = [
             console.dir(game.world.physicsWorld) 
         }
     },
+    {
+        name: 'console.dir rapier',
+        operation: () => {
+            console.dir(game.player.components.rapier.body.linvel()) 
+        }
+    },
 ]
 
 const isInDebug: Ref<Boolean> = ref(false)
