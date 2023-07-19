@@ -48,11 +48,18 @@ export class MovementSystem extends System {
                 if (this.keys.has('ArrowRight')) {
                     this.moveRight(rapierComponent)
                 }
-                if (this.keys.has('ArrowUp') && rapierComponent.isOnGround) {
+                if (this.keys.has('ArrowUp') && (rapierComponent.isOnGround)) {
                     // check in unit is touching ground or another unit.
                     // demo jump for testing normal value
                     const currentVelocity = rapierComponent.body.linvel()
-                    rapierComponent.setVelocity({ x: currentVelocity.x, y: 20 })
+                    rapierComponent.setVelocity({ x: currentVelocity.x, y: 15})
+                    rapierComponent.setIsOnGround(false)
+                }
+                if (this.keys.has('ArrowUp') && !rapierComponent.isOnGround && rapierComponent.body.linvel().y === 0) {
+                    // check in unit is touching ground or another unit.
+                    // demo jump for testing normal value
+                    const currentVelocity = rapierComponent.body.linvel()
+                    rapierComponent.setVelocity({ x: -(currentVelocity.x*6), y: 15 })
                     rapierComponent.setIsOnGround(false)
                 }
             }

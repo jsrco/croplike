@@ -17,7 +17,7 @@ export class RapierComponent extends Component {
 
         const rigidBodyDesc = type === 'dynamic' ? RAPIER.RigidBodyDesc.dynamic() : RAPIER.RigidBodyDesc.fixed()
         rigidBodyDesc.setTranslation(position.x, position.y)
-        rigidBodyDesc.setCanSleep(false)
+        rigidBodyDesc.setCanSleep(false).lockRotations()
         this.body = this.world.physicsWorld.createRigidBody(rigidBodyDesc)
 
         const colliderDesc = RAPIER.ColliderDesc.cuboid(size.width / 2, size.height / 2)

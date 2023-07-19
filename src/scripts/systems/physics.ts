@@ -24,8 +24,8 @@ export class PhysicsSystem extends System {
           const normal2 = manifold.localNormal2()
 
           // Check if collision occurred on the bottom of either entity
-          const bottomCollision1 = normal1.y < 0 
-          const bottomCollision2 = normal2.y < 0 
+          const bottomCollision1 = normal1.y < 0 || normal1.y < normal2.y
+          const bottomCollision2 = normal2.y < 0 || normal2.y < normal1.y
 
           if (bottomCollision1) {
             const rapierComponent = entity1.getComponent('rapier') as RapierComponent
