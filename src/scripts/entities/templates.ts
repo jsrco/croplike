@@ -5,18 +5,18 @@ import { ColorSwatch } from '../util/ColorSwatch'
 export const bigDemoEntity: EntityMap = {
     name: 'demo',
     componentMap: {
+        pixi: true,
         rapier: true,
-        three: true,
     },
     options: {
         color: ColorSwatch.red[3],
         position: {
-            x: -5,
+            x: 305,
             y: 10,
         },
         size: {
-            height: 9,
-            width: 2,
+            height: 90,
+            width: 20,
         },
         type: 'dynamic',
     }
@@ -25,18 +25,18 @@ export const bigDemoEntity: EntityMap = {
 export const demoEntity: EntityMap = {
     name: 'demo',
     componentMap: {
+        pixi: true,
         rapier: true,
-        three: true,
     },
     options: {
         color: ColorSwatch.red[3],
         position: {
-            x: 5,
-            y: 8,
+            x: 225,
+            y: 10,
         },
         size: {
-            height: 1,
-            width: 1,
+            height: 10,
+            width: 10,
         },
         type: 'dynamic',
     }
@@ -45,18 +45,18 @@ export const demoEntity: EntityMap = {
 export const floor: EntityMap = {
     name: 'floor',
     componentMap: {
+        pixi: true,
         rapier: true,
-        three: true,
     },
     options: {
         color: ColorSwatch.blue[3],
         position: {
-            x: -20,
-            y: 0,
+            x: 200,
+            y: 300,
         },
         size: {
-            height: 1,
-            width: 60,
+            height: 10,
+            width: 250,
         },
         type: 'fixed',
     },
@@ -65,18 +65,19 @@ export const floor: EntityMap = {
 export const player: EntityMap = {
     name: 'player',
     componentMap: {
+        pixi: true,
         rapier: true,
-        three: true,
     },
     options: {
         color: ColorSwatch.green[3],
         position: {
-            x: 0,
-            y: 4,
+            x: 250,
+            y: 10,
         },
         size: {
-            width: 1,
-            height: 1
+            height: 10,
+            width: 10,
+
         },
         type: 'dynamic',
     }

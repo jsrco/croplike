@@ -38,15 +38,11 @@ const debugList = [
         }
     },
     {
-        name: 'console.dir rapier',
+        name: 'console.dir entity info',
         operation: () => {
-            console.dir(game.world.physicsWorld) 
-        }
-    },
-    {
-        name: 'console.dir rapier',
-        operation: () => {
-            console.dir(game.player.components.rapier.body.linvel()) 
+            for (const entity of game.world.entities) {
+                console.dir(entity.components.rapier.isOnGround) 
+            }
         }
     },
 ]

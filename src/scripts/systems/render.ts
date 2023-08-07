@@ -1,64 +1,62 @@
-import * as THREE from 'three'
-import { ThreeComponent } from "../components/three"
-import { System } from "./System"
+import { PixiComponent } from "../components/pixi"
 import { World } from "../util/World"
+import { System } from "./System"
+import { Entity } from "../entities/Entity"
 
 export class RenderSystem extends System {
 
-    aspects: {
-        height: number,
-        width: number
-    } = {
-            height: window.innerHeight,
-            width: window.innerWidth
-        }
-    aspectRatio: number = this.aspects.width / this.aspects.height
-    camera: THREE.OrthographicCamera
-    cameraTarget!: THREE.Mesh
-    frustum: number = 15
-    renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer()
+    target: Entity
+    targetInfo: PixiComponent
     type: string = 'render'
 
     constructor(world: World) {
         super(world)
-        this.camera = new THREE.OrthographicCamera(-this.frustum * this.aspectRatio, this.frustum * this.aspectRatio, this.frustum, -this.frustum, 0, 100)
-        this.renderer.setSize(this.aspects.width, this.aspects.height)
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+        this.target = this.world.engine.player
+        this.targetInfo = this.target.getComponent('pixi') as PixiComponent
         // Entities
-        const entities = this.getEntitiesByComponent('three')
+        const entities = this.getEntitiesByComponent('pixi')
         for (const entity of entities) {
-            const threeComponent = entity.getComponent('three') as ThreeComponent
-            threeComponent.addToScene()
-            if (threeComponent.owner.name === 'player') {
-                this.cameraTarget = threeComponent.threeObject
-            }
+            const pixiComponent = entity.getComponent('pixi') as PixiComponent
+            pixiComponent.addToStage()
         }
-
-        // Resize Event
-        window.addEventListener('resize', () => {
-            // Update sizes
-            this.aspects.height = window.innerHeight
-            this.aspects.width = window.innerWidth
-            this.aspectRatio = this.aspects.width / this.aspects.height
-            // Update camera
-            this.camera.left = -this.frustum * this.aspectRatio
-            this.camera.right = this.frustum * this.aspectRatio
-            this.camera.updateProjectionMatrix()
-            // Update renderer
-            this.renderer.setSize(this.aspects.width, this.aspects.height)
-            this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-        })
     }
 
-    appendElement(elementRef: HTMLElement): void {
-        elementRef.appendChild(this.renderer.domElement)
+    appendElement(elementRef: any): void {
+        elementRef.appendChild(this.world.engine.app.view)
     }
 
     update(deltaTime: number): void {
-        this.renderer.render(this.engine.scene, this.camera)
-        if (this.world.engine.player) this.camera.position.copy(this.cameraTarget.position)
-        // handle the logic to clamp to scene here
+        // Camera
+        const stageCenterX = window.innerWidth / 2 // Assuming the stage width is the same as the window width
+        const stageCenterY = window.innerHeight / 2 // Assuming the stage height is the same as the window height
+
+        const targetCenterX = this.targetInfo.sprite.x + this.targetInfo.sprite.width / 2
+        const targetCenterY = this.targetInfo.sprite.y + this.targetInfo.sprite.height / 2
+
+        const left = 0
+        const top = 0
+        const right = this.world.engine.app.renderer.width
+        const bottom = this.world.engine.app.renderer.height
+
+        let stagePositionX = stageCenterX - targetCenterX
+        let stagePositionY = stageCenterY - targetCenterY
+
+        if (stagePositionX > left) {
+            stagePositionX = left
+        } else if (stagePositionX + right < window.innerWidth) {
+            stagePositionX = window.innerWidth - right
+        }
+
+        if (stagePositionY > top) {
+            stagePositionY = top
+        } else if (stagePositionY + bottom < window.innerHeight - 36) {
+            stagePositionY = window.innerHeight - 36 - bottom
+        }
+
+        this.world.engine.app.stage.position.set(stagePositionX, stagePositionY)
+
+        // handle any sprites here for future        
     }
 
 }

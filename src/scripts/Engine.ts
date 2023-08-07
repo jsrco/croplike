@@ -1,25 +1,34 @@
-import * as THREE from 'three'
+import * as PIXI from "pixi.js"
+import { Ref, ref } from "vue"
 import { CreateEntity } from './entities/Create'
 import { Entity } from './entities/Entity'
 import { bigDemoEntity, demoEntity, floor, player } from './entities/templates'
 import { MovementSystem } from './systems/movement'
 import { PhysicsSystem } from './systems/physics'
 import { RenderSystem } from './systems/render'
-import { ColorSwatch } from './util/ColorSwatch'
 import { World } from './util/World'
 
 export class Engine {
 
-    clock: THREE.Clock = new THREE.Clock()
+    app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: 2000, height: 1500 })
     name: String = 'Croplike'
-    scene: THREE.Scene = new THREE.Scene()
+    paused: Ref<Boolean> = ref(false)
+    textStyle: PIXI.TextStyle = new PIXI.TextStyle({
+        fontFamily: 'PixiPressStart2P',
+        fontSize: 8,
+        fill: ['#000000'],
+    })
     world: World = new World(this)
 
     // Temps
     player: Entity
 
     constructor() {
-        this.scene.background = new THREE.Color(ColorSwatch.bgDark) // Set background color
+        // set app
+        this.app.stage.eventMode = 'static'
+        this.app.ticker.add((delta) => {
+            this.update(delta)
+        })
 
         this.world.addEntity(CreateEntity(bigDemoEntity, this.world))
         this.world.addEntity(CreateEntity(demoEntity, this.world))
@@ -27,14 +36,7 @@ export class Engine {
         this.player = CreateEntity(player, this.world)
         this.world.addEntity(this.player)
 
-
-        const axesHelper = new THREE.AxesHelper(5)
-        this.scene.add(axesHelper)
-
         this.loadSystems(this.world)
-
-        // Start Engine
-        this.update()
     }
 
     addCanvas(elementRef: HTMLElement) {
@@ -49,11 +51,8 @@ export class Engine {
         world.addSystem(new RenderSystem(world))
     }
 
-    update() {
-        const elapsedTime = this.clock.getElapsedTime()
-        this.world.update(elapsedTime)
-        // Call update again on the next frame
-        window.requestAnimationFrame(this.update.bind(this))
+    update(delta: number) {
+        this.world.update(delta)
     }
 
 }

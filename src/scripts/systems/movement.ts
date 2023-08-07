@@ -10,8 +10,8 @@ export class MovementSystem extends System {
 
     constructor(world: World) {
         super(world)
-        this.acceleration = 2
-        this.maxVelocity = 12
+        this.acceleration = 10
+        this.maxVelocity = 40
     }
 
     moveLeft(component: RapierComponent): void {
@@ -52,14 +52,14 @@ export class MovementSystem extends System {
                     // check in unit is touching ground or another unit.
                     // demo jump for testing normal value
                     const currentVelocity = rapierComponent.body.linvel()
-                    rapierComponent.setVelocity({ x: currentVelocity.x, y: 15})
+                    rapierComponent.setVelocity({ x: currentVelocity.x, y: -35 })
                     rapierComponent.setIsOnGround(false)
                 }
                 if (this.keys.has('ArrowUp') && !rapierComponent.isOnGround && rapierComponent.body.linvel().y === 0) {
                     // check in unit is touching ground or another unit.
                     // demo jump for testing normal value
                     const currentVelocity = rapierComponent.body.linvel()
-                    rapierComponent.setVelocity({ x: -(currentVelocity.x*6), y: 15 })
+                    rapierComponent.setVelocity({ x: -(currentVelocity.x*6), y: -35 })
                     rapierComponent.setIsOnGround(false)
                 }
             }
