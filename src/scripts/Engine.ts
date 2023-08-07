@@ -37,6 +37,22 @@ export class Engine {
         this.world.addEntity(this.player)
 
         this.loadSystems(this.world)
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'p') {
+                this.pause()
+            }
+        })
+        
+        window.addEventListener('blur', () => {
+            if (this.paused.value === false) this.pause()
+        })
+        
+        window.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === 'hidden') {
+                if (this.paused.value === false) this.pause()
+            }
+        })
     }
 
     addCanvas(elementRef: HTMLElement) {
@@ -51,8 +67,23 @@ export class Engine {
         world.addSystem(new RenderSystem(world))
     }
 
+    pause(): void {
+        this.paused.value = !this.paused.value
+        if (this.paused.value) this.pauseTicker()
+        else this.resumeTicker()
+    }
+
+    pauseTicker(): void {
+        this.app.ticker.stop()
+        this.app.renderer.clear()
+    }
+
+    resumeTicker(): void {
+        this.app.ticker.start()
+    }
+
     update(delta: number) {
-        this.world.update(delta)
+        if (!this.paused.value) this.world.update(delta)
     }
 
 }

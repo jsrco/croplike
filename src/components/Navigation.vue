@@ -38,11 +38,9 @@ const debugList = [
         }
     },
     {
-        name: 'console.dir entity info',
+        name: 'pause game',
         operation: () => {
-            for (const entity of game.world.entities) {
-                console.dir(entity.components.rapier.isOnGround) 
-            }
+            game.pause()
         }
     },
 ]

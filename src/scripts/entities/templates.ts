@@ -75,8 +75,8 @@ export const player: EntityMap = {
             y: 10,
         },
         size: {
-            height: 10,
-            width: 10,
+            height: 20,
+            width: 20,
 
         },
         type: 'dynamic',
