@@ -43,6 +43,7 @@ export class PhysicsSystem extends System {
       const colliderInfo = rapierComponent.collider.shape as RAPIER.Cuboid
       rapierComponent.updateGraphics()
       const position = rapierComponent.body.translation()
+      // Pixi renders the sprites starting from the center of the collider
       position.x -= colliderInfo.halfExtents.x 
       position.y -= colliderInfo.halfExtents.y
       pixiComponent.setPosition(position)
