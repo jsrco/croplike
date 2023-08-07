@@ -7,7 +7,6 @@ import { World } from "../util/World"
 export class RapierComponent extends Component {
 
     body: RAPIER.RigidBody
-    bodyGraphics: PIXI.Graphics
     collider: RAPIER.Collider
     colliderGraphics: PIXI.Graphics
     isOnGround: boolean = false
@@ -29,12 +28,8 @@ export class RapierComponent extends Component {
 
         this.owner.handle = this.collider.handle
 
-        this.bodyGraphics = new PIXI.Graphics()
-        this.world.engine.app.stage.addChild(this.bodyGraphics)
         this.colliderGraphics = new PIXI.Graphics()
         this.world.engine.app.stage.addChild(this.colliderGraphics)
-        this.updateGraphics()
-
     }
 
     setIsOnGround(isIt: boolean) {
@@ -45,14 +40,14 @@ export class RapierComponent extends Component {
         this.body.setLinvel(velocity, true)
     }
 
-        // Add this method to update the collider visualization based on the current state
-        updateGraphics() {
-            const { x, y } = this.body.translation()
-            const { halfExtents } = this.collider.shape as RAPIER.Cuboid
-            // Clear previous graphics and draw the new shape
-            this.colliderGraphics.clear();
-            this.colliderGraphics.lineStyle(2, 0xFFFFFF); // Set line color and width
-            this.colliderGraphics.drawRect(x - halfExtents.x, y - halfExtents.y, halfExtents.x * 2, halfExtents.y * 2);
-        }
+    // Add this method to update the collider visualization based on the current state
+    updateGraphics() {
+        const { x, y } = this.body.translation()
+        const { halfExtents } = this.collider.shape as RAPIER.Cuboid
+        // Clear previous graphics and draw the new shape
+        this.colliderGraphics.clear()
+        this.colliderGraphics.lineStyle(2, 0xFFFFFF) // Set line color and width
+        this.colliderGraphics.drawRect(x - halfExtents.x, y - halfExtents.y, halfExtents.x * 2, halfExtents.y * 2)
+    }
 
 }

@@ -1,3 +1,4 @@
+import RAPIER from "@dimforge/rapier2d"
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
 import { World } from "../util/World"
@@ -39,8 +40,11 @@ export class PhysicsSystem extends System {
       const pixiComponent = entity.getComponent('pixi') as PixiComponent
       const rapierComponent = entity.getComponent('rapier') as RapierComponent
       // Update position based on body translation
+      const colliderInfo = rapierComponent.collider.shape as RAPIER.Cuboid
       rapierComponent.updateGraphics()
       const position = rapierComponent.body.translation()
+      position.x -= colliderInfo.halfExtents.x 
+      position.y -= colliderInfo.halfExtents.y
       pixiComponent.setPosition(position)
     }
   }

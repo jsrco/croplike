@@ -11,7 +11,7 @@ export class World {
     entities: Entity[]
     eventManager: EventManager = new EventManager()
     keyboardController: KeyboardController = new KeyboardController(this.eventManager)
-    physicsWorld: RAPIER.World = new RAPIER.World({ x: 0.0, y: 100.0 })
+    physicsWorld: RAPIER.World = new RAPIER.World({ x: 0.0, y: 600.0 })
     physicsWorldEventQueue: RAPIER.EventQueue = new RAPIER.EventQueue(true)
     systems: System[]
 

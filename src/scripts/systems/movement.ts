@@ -52,14 +52,14 @@ export class MovementSystem extends System {
                     // check in unit is touching ground or another unit.
                     // demo jump for testing normal value
                     const currentVelocity = rapierComponent.body.linvel()
-                    rapierComponent.setVelocity({ x: currentVelocity.x, y: -35 })
+                    rapierComponent.setVelocity({ x: currentVelocity.x, y: -150 })
                     rapierComponent.setIsOnGround(false)
                 }
                 if (this.keys.has('ArrowUp') && !rapierComponent.isOnGround && rapierComponent.body.linvel().y === 0) {
                     // check in unit is touching ground or another unit.
                     // demo jump for testing normal value
                     const currentVelocity = rapierComponent.body.linvel()
-                    rapierComponent.setVelocity({ x: -(currentVelocity.x*6), y: -35 })
+                    rapierComponent.setVelocity({ x: -(currentVelocity.x*20), y: -150 })
                     rapierComponent.setIsOnGround(false)
                 }
             }
