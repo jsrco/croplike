@@ -5,6 +5,8 @@ import { Entity } from "../entities/Entity"
 
 export class RenderSystem extends System {
 
+    stageCenterX: number = window.innerWidth / 2 // Assuming the stage width is the same as the window width
+    stageCenterY: number = window.innerHeight / 2 // Assuming the stage height is the same as the window height
     target: Entity
     targetInfo: PixiComponent
     type: string = 'render'
@@ -20,6 +22,32 @@ export class RenderSystem extends System {
             const pixiComponent = entity.getComponent('pixi') as PixiComponent
             pixiComponent.addToStage()
         }
+        window.addEventListener('resize', () => {
+            this.stageCenterX = window.innerWidth / 2
+            this.stageCenterY = window.innerHeight / 2
+        })
+    }
+
+    adjustCamera(): void {
+        const targetCenterX = this.targetInfo.sprite.x + this.targetInfo.sprite.width / 2
+        const targetCenterY = this.targetInfo.sprite.y + this.targetInfo.sprite.height / 2
+        const left = 0
+        const top = 0
+        const right = this.world.engine.app.renderer.width
+        const bottom = this.world.engine.app.renderer.height
+        let stagePositionX = this.stageCenterX - targetCenterX
+        let stagePositionY = this.stageCenterY - targetCenterY
+        if (stagePositionX > left) {
+            stagePositionX = left
+        } else if (stagePositionX + right < window.innerWidth) {
+            stagePositionX = window.innerWidth - right
+        }
+        if (stagePositionY > top) {
+            stagePositionY = top
+        } else if (stagePositionY + bottom < window.innerHeight - 36) {
+            stagePositionY = window.innerHeight - 36 - bottom
+        }
+        this.world.engine.app.stage.position.set(stagePositionX, stagePositionY)
     }
 
     appendElement(elementRef: any): void {
@@ -28,34 +56,7 @@ export class RenderSystem extends System {
 
     update(deltaTime: number): void {
         // Camera
-        const stageCenterX = window.innerWidth / 2 // Assuming the stage width is the same as the window width
-        const stageCenterY = window.innerHeight / 2 // Assuming the stage height is the same as the window height
-
-        const targetCenterX = this.targetInfo.sprite.x + this.targetInfo.sprite.width / 2
-        const targetCenterY = this.targetInfo.sprite.y + this.targetInfo.sprite.height / 2
-
-        const left = 0
-        const top = 0
-        const right = this.world.engine.app.renderer.width
-        const bottom = this.world.engine.app.renderer.height
-
-        let stagePositionX = stageCenterX - targetCenterX
-        let stagePositionY = stageCenterY - targetCenterY
-
-        if (stagePositionX > left) {
-            stagePositionX = left
-        } else if (stagePositionX + right < window.innerWidth) {
-            stagePositionX = window.innerWidth - right
-        }
-
-        if (stagePositionY > top) {
-            stagePositionY = top
-        } else if (stagePositionY + bottom < window.innerHeight - 36) {
-            stagePositionY = window.innerHeight - 36 - bottom
-        }
-
-        this.world.engine.app.stage.position.set(stagePositionX, stagePositionY)
-
+        this.adjustCamera()
         // handle any sprites here for future        
     }
 

@@ -11,7 +11,7 @@ export class MovementSystem extends System {
     constructor(world: World) {
         super(world)
         this.acceleration = 20
-        this.maxVelocity = 80
+        this.maxVelocity = 100
     }
 
     moveLeft(component: RapierComponent): void {
