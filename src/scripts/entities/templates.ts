@@ -9,6 +9,7 @@ export const bigDemoEntity: EntityMap = {
         rapier: true,
     },
     options: {
+        bodyType: 'dynamic',
         color: ColorSwatch.red[3],
         position: {
             x: 60,
@@ -18,7 +19,6 @@ export const bigDemoEntity: EntityMap = {
             height: 90,
             width: 20,
         },
-        type: 'dynamic',
     }
 }
 
@@ -29,6 +29,7 @@ export const demoEntity: EntityMap = {
         rapier: true,
     },
     options: {
+        bodyType: 'dynamic',
         color: ColorSwatch.red[3],
         position: {
             x: 225,
@@ -38,7 +39,6 @@ export const demoEntity: EntityMap = {
             height: 10,
             width: 10,
         },
-        type: 'dynamic',
     }
 }
 
@@ -49,7 +49,9 @@ export const floor: EntityMap = {
         rapier: true,
     },
     options: {
+        bodyType: 'fixed',
         color: ColorSwatch.blue[3],
+        isOnGround: true,
         position: {
             x: 550,
             y: 300,
@@ -58,7 +60,6 @@ export const floor: EntityMap = {
             height: 10,
             width: 1000,
         },
-        type: 'fixed',
     },
 }
 
@@ -69,6 +70,7 @@ export const player: EntityMap = {
         rapier: true,
     },
     options: {
+        bodyType: 'dynamic',
         color: ColorSwatch.green[3],
         position: {
             x: 250,
@@ -79,6 +81,5 @@ export const player: EntityMap = {
             width: 20,
 
         },
-        type: 'dynamic',
     }
 }

@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import { ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
+import { PhysicsSystem } from "../scripts/systems/physics"
 
 const { game } = useEngine()
 
@@ -35,6 +36,12 @@ const debugList = [
         name: 'clear save',
         operation: () => {
             game.localStorageManager.clearData()
+        }
+    },
+    {
+        name: 'console.dir save',
+        operation: () => {
+            console.dir(game.localStorageManager.getData())
         }
     },
     {
@@ -53,6 +60,16 @@ const debugList = [
         name: 'save',
         operation: () => {
             game.save()
+        }
+    },
+    {
+        name: 'trigger collider bounds',
+        operation: () => {
+            const physics = game.world.getSystemByType('physics') as PhysicsSystem
+            if (physics) { 
+                console.log('ran')
+                physics.triggerShowColliderBounds()
+            }
         }
     },
 ]

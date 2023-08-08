@@ -6,9 +6,14 @@ import { System } from "./System"
 
 export class PhysicsSystem extends System {
 
+  showColliderBounds: boolean = true
+  type: string = 'physics'
+
   constructor(world: World) {
     super(world)
   }
+
+  triggerShowColliderBounds(): void { this.showColliderBounds = !this.showColliderBounds }
 
   update(deltaTime: number): void {
     this.world.physicsWorld.step(this.world.physicsWorldEventQueue)
@@ -41,7 +46,8 @@ export class PhysicsSystem extends System {
       const rapierComponent = entity.getComponent('rapier') as RapierComponent
       // Update position based on body translation
       const colliderInfo = rapierComponent.collider.shape as RAPIER.Cuboid
-      rapierComponent.updateGraphics()
+      if (this.showColliderBounds) rapierComponent.updateGraphics()
+      else if (!rapierComponent.cleared) rapierComponent.clearColliderGraphics()
       const position = rapierComponent.body.translation()
       // Pixi renders the sprites starting from the center of the collider
       position.x -= colliderInfo.halfExtents.x 

@@ -42,8 +42,20 @@ export class Engine {
         this.loadSystems(this.world)
 
         window.addEventListener('keydown', (event) => {
+            if (event.key === 'l') {
+                this.load()
+            }
+        })
+        
+        window.addEventListener('keydown', (event) => {
             if (event.key === 'p') {
                 this.pause()
+            }
+        })
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 's') {
+                this.save()
             }
         })
         
