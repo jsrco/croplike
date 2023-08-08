@@ -32,15 +32,27 @@ const debugList = [
         }
     },
     {
-        name: 'console.dir entities',
+        name: 'clear save',
         operation: () => {
-            console.dir(game.world.entities)
+            game.localStorageManager.clearData()
+        }
+    },
+    {
+        name: 'load save',
+        operation: () => {
+            game.load()
         }
     },
     {
         name: 'pause game',
         operation: () => {
             game.pause()
+        }
+    },
+    {
+        name: 'save',
+        operation: () => {
+            game.save()
         }
     },
 ]

@@ -15,17 +15,14 @@ export type EntityMap = {
 export const CreateEntity = (entityMap: EntityMap, world: World): Entity => {
     const entity = new Entity(entityMap.name)
     const components = []
-
     if (entityMap.componentMap.pixi)
-    components.push(
-        new PixiComponent(entity, world, entityMap.options)
-    )
+        components.push(
+            new PixiComponent(entity, world, entityMap.options)
+        )
     if (entityMap.componentMap.rapier)
         components.push(
             new RapierComponent(entity, world, entityMap.options)
         )
-
     entity.addComponents(components)
-
     return entity
 }
