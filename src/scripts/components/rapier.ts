@@ -46,7 +46,7 @@ export class RapierComponent extends Component {
         const { halfExtents } = this.collider.shape as RAPIER.Cuboid
         // Clear previous graphics and draw the new shape
         this.colliderGraphics.clear()
-        this.colliderGraphics.lineStyle(2, 0xFFFFFF) // Set line color and width
+        this.colliderGraphics.lineStyle(4, 0xFFFFFF) // Set line color and width
         this.colliderGraphics.drawRect(x - halfExtents.x, y - halfExtents.y, halfExtents.x * 2, halfExtents.y * 2)
     }
 

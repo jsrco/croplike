@@ -11,8 +11,8 @@ export const bigDemoEntity: EntityMap = {
     options: {
         color: ColorSwatch.red[3],
         position: {
-            x: 305,
-            y: 10,
+            x: 60,
+            y: 200,
         },
         size: {
             height: 90,
@@ -51,12 +51,12 @@ export const floor: EntityMap = {
     options: {
         color: ColorSwatch.blue[3],
         position: {
-            x: 200,
+            x: 550,
             y: 300,
         },
         size: {
             height: 10,
-            width: 250,
+            width: 1000,
         },
         type: 'fixed',
     },
