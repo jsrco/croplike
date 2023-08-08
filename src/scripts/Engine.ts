@@ -46,7 +46,7 @@ export class Engine {
                 this.load()
             }
         })
-        
+
         window.addEventListener('keydown', (event) => {
             if (event.key === 'p') {
                 this.pause()
@@ -58,11 +58,11 @@ export class Engine {
                 this.save()
             }
         })
-        
+
         window.addEventListener('blur', () => {
             if (this.paused.value === false) this.pause()
         })
-        
+
         window.addEventListener("visibilitychange", () => {
             if (document.visibilityState === 'hidden') {
                 if (this.paused.value === false) this.pause()
@@ -77,15 +77,17 @@ export class Engine {
     }
 
     load(): void {
-        this.paused.value = true
-        this.app.stage.removeChildren()
         const saveData: any = this.localStorageManager.getData()
-        this.world = new World(this)
-        saveData.entities.forEach((entity: EntityMap) => {
-            this.saveManager.loadEntity(entity, this.world)
-        })
-        this.loadSystems(this.world)
-        this.pause()
+        if (Object.keys(saveData).length !== 0) {
+            this.paused.value = true
+            this.app.stage.removeChildren()
+            this.world = new World(this)
+            saveData.entities.forEach((entity: EntityMap) => {
+                this.saveManager.loadEntity(entity, this.world)
+            })
+            this.loadSystems(this.world)
+            this.pause()
+        } else console.log('no saved data')
     }
 
     loadSystems(world: World): void {

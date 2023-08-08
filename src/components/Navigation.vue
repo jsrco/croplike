@@ -39,12 +39,6 @@ const debugList = [
         }
     },
     {
-        name: 'console.dir save',
-        operation: () => {
-            console.dir(game.localStorageManager.getData())
-        }
-    },
-    {
         name: 'load save',
         operation: () => {
             game.load()

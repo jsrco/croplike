@@ -6,7 +6,7 @@ import { System } from "./System"
 
 export class PhysicsSystem extends System {
 
-  showColliderBounds: boolean = true
+  showColliderBounds: boolean = false
   type: string = 'physics'
 
   constructor(world: World) {

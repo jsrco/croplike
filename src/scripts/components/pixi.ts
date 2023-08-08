@@ -29,6 +29,7 @@ export class PixiComponent extends Component {
         this.sprite.x = position.x
         this.sprite.y = position.y
 
+        // Adjust for on save / load, Rapier RigidBody starting from the center of the collider
         position.x += (this.sprite.width / 2) 
         position.y += (this.sprite.height / 2)  
         this.position = position
