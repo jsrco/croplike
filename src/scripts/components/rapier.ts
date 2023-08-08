@@ -11,14 +11,16 @@ export class RapierComponent extends Component {
     cleared: boolean = false
     collider: RAPIER.Collider
     colliderGraphics: PIXI.Graphics
+    dominance: object = { isIt: false, group: 0 }
+    isColliding: boolean = false
     isOnGround: boolean = false
     type: string = 'rapier'
     velocity: RAPIER.Vector = { x: 0, y: 0 }
 
-    constructor(entity: Entity, world: World, options: { bodyType: string, isOnGround?: boolean, position: { x: number, y: number }, size: { height: number, width: number }, velocity?: { x: number, y: number }, }) {
+    constructor(entity: Entity, world: World, options: { bodyType: string, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, position: { x: number, y: number }, size: { height: number, width: number }, velocity?: { x: number, y: number }, }) {
         super(entity, world)
 
-        const { bodyType, isOnGround, position, size, velocity } = options
+        const { bodyType, dominance, isColliding, isOnGround, position, size, velocity } = options
 
         const rigidBodyDesc = bodyType === 'dynamic' ? RAPIER.RigidBodyDesc.dynamic() : RAPIER.RigidBodyDesc.fixed()
         rigidBodyDesc.setTranslation(position.x, position.y)
@@ -34,7 +36,9 @@ export class RapierComponent extends Component {
         this.world.engine.app.stage.addChild(this.colliderGraphics)
 
         this.owner.handle = this.collider.handle
-
+        
+        if (dominance && dominance.isIt) this.setDominance(dominance)
+        if (isColliding) this.setIsColliding(isColliding)
         if (isOnGround) this.setIsOnGround(isOnGround)
         if (velocity) this.setVelocity(velocity)
     }
@@ -42,6 +46,15 @@ export class RapierComponent extends Component {
     clearColliderGraphics(): void { 
         this.cleared = true
         this.colliderGraphics.clear()
+    }
+
+    setDominance(dominance: { isIt: boolean, group: number }): void {
+        this.body.setDominanceGroup(dominance.group)
+        this.dominance = dominance
+    }
+    
+    setIsColliding(isIt: boolean) {
+        this.isColliding = isIt
     }
 
     setIsOnGround(isIt: boolean) {

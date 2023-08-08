@@ -55,6 +55,13 @@ export class MovementSystem extends System {
                     rapierComponent.setVelocity({ x: currentVelocity.x, y: -200 })
                     rapierComponent.setIsOnGround(false)
                 }
+                if (this.keys.has('ArrowUp') && rapierComponent.isColliding && (rapierComponent.body.linvel().y >= 0 && rapierComponent.body.linvel().y <= 0.01)) {
+                    // check in unit is touching ground or another unit.
+                    // demo jump for testing normal value
+                    const currentVelocity = rapierComponent.body.linvel()
+                    rapierComponent.setVelocity({ x: -(currentVelocity.x*4), y: -175 })
+                    rapierComponent.setIsOnGround(false)
+                }
             }
         }
     }

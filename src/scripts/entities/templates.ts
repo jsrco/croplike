@@ -11,6 +11,10 @@ export const bigDemoEntity: EntityMap = {
     options: {
         bodyType: 'dynamic',
         color: ColorSwatch.red[3],
+        dominance: {
+            isIt: true,
+            group: 1
+        },
         position: {
             x: 60,
             y: 200,

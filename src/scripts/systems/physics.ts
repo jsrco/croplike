@@ -53,6 +53,17 @@ export class PhysicsSystem extends System {
       position.x -= colliderInfo.halfExtents.x 
       position.y -= colliderInfo.halfExtents.y
       pixiComponent.setPosition(position)
+
+      // Check if unit is in contact and setIsOnGround if not
+      const contacts = []
+      this.world.physicsWorld.contactsWith(rapierComponent.collider, (otherCollider) => {
+        contacts.push(otherCollider)
+      })
+      if (contacts.length === 0) {
+        rapierComponent.setIsColliding(false)
+        rapierComponent.setIsOnGround(false)
+      }
+      if (contacts.length > 0) rapierComponent.setIsColliding(true)
     }
   }
 
