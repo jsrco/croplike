@@ -29,12 +29,14 @@ export class PhysicsSystem extends System {
           // Check if collision occurred on the bottom of either entity
           const bottomCollision1 = normal1.y > 0 || normal1.y > normal2.y
           const bottomCollision2 = normal2.y > 0 || normal2.y > normal1.y
+          const rapierComponent1 = entity1.getComponent('rapier') as RapierComponent
+          const rapierComponent2 = entity2.getComponent('rapier') as RapierComponent
           if (bottomCollision1) {
-            const rapierComponent = entity1.getComponent('rapier') as RapierComponent
-            rapierComponent.setIsOnGround(true)
+            rapierComponent1.setIsOnGround(true)
+            rapierComponent2.setIsStoodOn(true)
           } else if (bottomCollision2) {
-            const rapierComponent = entity2.getComponent('rapier') as RapierComponent
-            rapierComponent.setIsOnGround(true)
+            rapierComponent2.setIsOnGround(true)
+            rapierComponent1.setIsStoodOn(true)
           }
         }
       })
@@ -62,8 +64,12 @@ export class PhysicsSystem extends System {
       if (contacts.length === 0) {
         rapierComponent.setIsColliding(false)
         rapierComponent.setIsOnGround(false)
+        rapierComponent.setIsStoodOn(false)
       }
       if (contacts.length > 0) rapierComponent.setIsColliding(true)
+      if (contacts.length > 0 && rapierComponent.isStoodOn) {
+        console.log(rapierComponent.owner.name + ' stood on')
+      }
     }
   }
 

@@ -8,13 +8,13 @@ export class PixiComponent extends Component {
 
     color: string
     position: RAPIER.Vector = { x: 0, y: 0 }
-    size: object = { height: 0, width: 0 }
+    size: RAPIER.Vector = { x: 0, y: 0 }
     sprite: PIXI.Sprite
     type: string = 'pixi'
 
-    constructor(entity: Entity, world: World, options: { color: string | '#ffffff',  position: { x: number, y: number }, size: { height: number, width: number } }) {
+    constructor(entity: Entity, world: World, options: { color: string | '#ffffff', size: RAPIER.Vector }) {
         super(entity, world)
-        const { color, position, size } = options
+        const { color, size } = options
         this.color = color
         this.sprite = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.sprite.tint = this.color
@@ -25,7 +25,7 @@ export class PixiComponent extends Component {
         this.world.engine.app.stage.addChild(this.sprite)
     }
 
-    setPosition(position: { x: number, y: number }): void {
+    setPosition(position: RAPIER.Vector): void {
         this.sprite.x = position.x
         this.sprite.y = position.y
 
@@ -35,9 +35,9 @@ export class PixiComponent extends Component {
         this.position = position
     }
 
-    setSize(size: { height: number, width: number }): void {
-        this.sprite.height = size.height
-        this.sprite.width = size.width
+    setSize(size: RAPIER.Vector): void {
+        this.sprite.width = size.x
+        this.sprite.height = size.y
         this.size = size
     }
 

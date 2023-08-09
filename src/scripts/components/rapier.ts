@@ -14,13 +14,14 @@ export class RapierComponent extends Component {
     dominance: object = { isIt: false, group: 0 }
     isColliding: boolean = false
     isOnGround: boolean = false
+    isStoodOn: boolean = false
     type: string = 'rapier'
     velocity: RAPIER.Vector = { x: 0, y: 0 }
 
-    constructor(entity: Entity, world: World, options: { bodyType: string, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, position: { x: number, y: number }, size: { height: number, width: number }, velocity?: { x: number, y: number }, }) {
+    constructor(entity: Entity, world: World, options: { bodyType: string, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, isStoodOn: boolean, position: RAPIER.Vector, size: RAPIER.Vector, velocity?: RAPIER.Vector, }) {
         super(entity, world)
 
-        const { bodyType, dominance, isColliding, isOnGround, position, size, velocity } = options
+        const { bodyType, dominance, isColliding, isOnGround, isStoodOn, position, size, velocity } = options
 
         const rigidBodyDesc = bodyType === 'dynamic' ? RAPIER.RigidBodyDesc.dynamic() : RAPIER.RigidBodyDesc.fixed()
         rigidBodyDesc.setTranslation(position.x, position.y)
@@ -28,7 +29,7 @@ export class RapierComponent extends Component {
         this.body = this.world.physicsWorld.createRigidBody(rigidBodyDesc)
         this.bodyType = bodyType
 
-        const colliderDesc = RAPIER.ColliderDesc.cuboid(size.width / 2, size.height / 2)
+        const colliderDesc = RAPIER.ColliderDesc.cuboid(size.x / 2, size.y / 2)
         this.collider = this.world.physicsWorld.createCollider(colliderDesc, this.body)
         this.collider.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS)
 
@@ -40,6 +41,7 @@ export class RapierComponent extends Component {
         if (dominance && dominance.isIt) this.setDominance(dominance)
         if (isColliding) this.setIsColliding(isColliding)
         if (isOnGround) this.setIsOnGround(isOnGround)
+        if (isStoodOn) this.setIsStoodOn(isStoodOn)
         if (velocity) this.setVelocity(velocity)
     }
 
@@ -61,7 +63,11 @@ export class RapierComponent extends Component {
         this.isOnGround = isIt
     }
 
-    setVelocity(velocity: { x: number, y: number }) {
+    setIsStoodOn(isIt: boolean) {
+        this.isStoodOn = isIt
+    }
+
+    setVelocity(velocity: RAPIER.Vector) {
         this.body.setLinvel(velocity, true)
         this.velocity = velocity
     }

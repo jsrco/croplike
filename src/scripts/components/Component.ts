@@ -28,7 +28,7 @@ export class Component {
     copyComponentData(obj: this): SaveObject {
         const saveObject: SaveObject = {}
         for (const key in obj) {
-            if (key === 'bodyType' || key === 'color' || key === 'dominance' || key === 'isColliding' || key === 'isOnGround' || key === 'position' || key === 'size' || key === 'velocity') saveObject[key] = obj[key]
+            if (key !== 'body' && key !== 'cleared' && key !== 'collider' && key !== 'colliderGraphics' && key !== 'owner'  && key !== 'sprite' && key !== 'type' && key !== 'world') saveObject[key] = obj[key]
         }
         return saveObject
     }

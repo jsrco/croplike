@@ -20,8 +20,8 @@ export const bigDemoEntity: EntityMap = {
             y: 200,
         },
         size: {
-            height: 90,
-            width: 20,
+            x: 20,
+            y: 90,
         },
     }
 }
@@ -40,8 +40,8 @@ export const demoEntity: EntityMap = {
             y: 10,
         },
         size: {
-            height: 10,
-            width: 10,
+            x: 10,
+            y: 10,
         },
     }
 }
@@ -61,8 +61,8 @@ export const floor: EntityMap = {
             y: 300,
         },
         size: {
-            height: 10,
-            width: 1000,
+            x: 1000,
+            y: 10,
         },
     },
 }
@@ -81,9 +81,8 @@ export const player: EntityMap = {
             y: 10,
         },
         size: {
-            height: 20,
-            width: 20,
-
+            x: 20,
+            y: 20,
         },
     }
 }
