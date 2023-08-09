@@ -64,7 +64,7 @@ export class PhysicsSystem extends System {
         // shrink or grow logic here
         // get new half extent
         // get new adjusted position based off pixiComponent position
-        // set collider half extents, position of body / collider
+        // set collider half extents, position of body
         // set pixiComponent size
         // position is updated below
       }
