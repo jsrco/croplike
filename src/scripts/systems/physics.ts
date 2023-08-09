@@ -46,16 +46,8 @@ export class PhysicsSystem extends System {
     for (const entity of entities) {
       const pixiComponent = entity.getComponent('pixi') as PixiComponent
       const rapierComponent = entity.getComponent('rapier') as RapierComponent
-      // Update position based on body translation
       const colliderInfo = rapierComponent.collider.shape as RAPIER.Cuboid
-      if (this.showColliderBounds) rapierComponent.updateGraphics()
-      else if (!rapierComponent.cleared) rapierComponent.clearColliderGraphics()
-      const position = rapierComponent.body.translation()
-      // Pixi renders the sprites starting from the center of the collider
-      position.x -= colliderInfo.halfExtents.x 
-      position.y -= colliderInfo.halfExtents.y
-      pixiComponent.setPosition(position)
-
+      
       // Check if unit is in contact and setIsOnGround if not
       const contacts = []
       this.world.physicsWorld.contactsWith(rapierComponent.collider, (otherCollider) => {
@@ -69,7 +61,21 @@ export class PhysicsSystem extends System {
       if (contacts.length > 0) rapierComponent.setIsColliding(true)
       if (contacts.length > 0 && rapierComponent.isStoodOn) {
         console.log(rapierComponent.owner.name + ' stood on')
+        // shrink or grow logic here
+        // get new half extent
+        // get new adjusted position based off pixiComponent position
+        // set collider half extents, position of body / collider
+        // set pixiComponent size
+        // position is updated below
       }
+
+      if (this.showColliderBounds) rapierComponent.updateGraphics()
+      else if (!rapierComponent.cleared) rapierComponent.clearColliderGraphics()
+      const position = rapierComponent.body.translation()
+      // Pixi renders the sprites starting from the center of the collider
+      position.x -= colliderInfo.halfExtents.x 
+      position.y -= colliderInfo.halfExtents.y
+      pixiComponent.setPosition(position)
     }
   }
 
