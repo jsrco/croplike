@@ -8,6 +8,7 @@ export class RapierComponent extends Component {
 
     body: RAPIER.RigidBody
     bodyType: string
+    canGrow: boolean = false
     cleared: boolean = false
     collider: RAPIER.Collider
     colliderGraphics: PIXI.Graphics
@@ -18,10 +19,10 @@ export class RapierComponent extends Component {
     type: string = 'rapier'
     velocity: RAPIER.Vector = { x: 0, y: 0 }
 
-    constructor(entity: Entity, world: World, options: { bodyType: string, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, isStoodOn: boolean, position: RAPIER.Vector, size: RAPIER.Vector, velocity?: RAPIER.Vector, }) {
+    constructor(entity: Entity, world: World, options: { bodyType: string, canGrow?: boolean, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, isStoodOn: boolean, position: RAPIER.Vector, size: RAPIER.Vector, velocity?: RAPIER.Vector, }) {
         super(entity, world)
 
-        const { bodyType, dominance, isColliding, isOnGround, isStoodOn, position, size, velocity } = options
+        const { bodyType, canGrow, dominance, isColliding, isOnGround, isStoodOn, position, size, velocity } = options
 
         const rigidBodyDesc = bodyType === 'dynamic' ? RAPIER.RigidBodyDesc.dynamic() : RAPIER.RigidBodyDesc.fixed()
         rigidBodyDesc.setTranslation(position.x, position.y)
@@ -38,6 +39,7 @@ export class RapierComponent extends Component {
 
         this.owner.handle = this.collider.handle
         
+        if (canGrow) this.canGrow = canGrow
         if (dominance && dominance.isIt) this.setDominance(dominance)
         if (isColliding) this.setIsColliding(isColliding)
         if (isOnGround) this.setIsOnGround(isOnGround)

@@ -6,7 +6,7 @@ import { System } from "./System"
 
 export class PhysicsSystem extends System {
 
-  showColliderBounds: boolean = false
+  showColliderBounds: boolean = true
   type: string = 'physics'
 
   constructor(world: World) {
@@ -59,8 +59,28 @@ export class PhysicsSystem extends System {
         rapierComponent.setIsStoodOn(false)
       }
       if (contacts.length > 0) rapierComponent.setIsColliding(true)
-      if (contacts.length > 0 && rapierComponent.isStoodOn) {
-        console.log(rapierComponent.owner.name + ' stood on')
+      if (contacts.length > 0) {
+        if(colliderInfo.halfExtents.y > 10 && rapierComponent.isStoodOn) {
+          console.log('should shrink')
+          colliderInfo.halfExtents.y -= .5
+          rapierComponent.collider.setHalfExtents(colliderInfo.halfExtents)
+          const newPixiSize = { x: colliderInfo.halfExtents.x * 2, y: colliderInfo.halfExtents.y * 2}
+          pixiComponent.setSize(newPixiSize)
+          
+          const position = rapierComponent.body.translation()
+          position.y += 1
+          rapierComponent.body.setTranslation(position,true)
+        }
+        if(colliderInfo.halfExtents.y < 45 && !rapierComponent.isStoodOn && rapierComponent.canGrow) {
+          console.log('should grow')
+          colliderInfo.halfExtents.y += .5
+          rapierComponent.collider.setHalfExtents(colliderInfo.halfExtents)
+          const newPixiSize = { x: colliderInfo.halfExtents.x * 2, y: colliderInfo.halfExtents.y * 2}
+          pixiComponent.setSize(newPixiSize)
+          const position = rapierComponent.body.translation()
+          position.y -= 1
+          rapierComponent.body.setTranslation(position,true)
+        }
         // shrink or grow logic here
         // get new half extent
         // get new adjusted position based off pixiComponent position

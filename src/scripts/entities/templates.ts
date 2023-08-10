@@ -3,13 +3,14 @@ import { ColorSwatch } from '../util/ColorSwatch'
 
 
 export const bigDemoEntity: EntityMap = {
-    name: 'demo',
+    name: 'bigDemo',
     componentMap: {
         pixi: true,
         rapier: true,
     },
     options: {
         bodyType: 'dynamic',
+        canGrow: true,
         color: ColorSwatch.red[3],
         dominance: {
             isIt: true,

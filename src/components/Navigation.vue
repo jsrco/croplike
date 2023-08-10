@@ -30,6 +30,7 @@ const debugList = [
         name: 'console.dir info',
         operation: () => {
             console.dir(game)
+            console.dir(game.world.entities)
         }
     },
     {
