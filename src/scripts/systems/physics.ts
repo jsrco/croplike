@@ -19,10 +19,18 @@ export class PhysicsSystem extends System {
     this.world.physicsWorld.step(this.world.physicsWorldEventQueue)
     this.world.physicsWorldEventQueue.drainCollisionEvents((handle1, handle2, started) => {
       /* Handle the collision event. */
+      const entity1 = this.world.getEntityByHandle(handle1)
+      const entity2 = this.world.getEntityByHandle(handle2)
+      
+      if (!started) {
+        const rapierComponent1 = entity1?.getComponent('rapier') as RapierComponent
+        const rapierComponent2 = entity2?.getComponent('rapier') as RapierComponent
+        if (rapierComponent1) rapierComponent1.setIsStoodOn(false)
+        if (rapierComponent2) rapierComponent2.setIsStoodOn(false)
+      }
+
       this.world.physicsWorld.narrowPhase.contactPair(handle1, handle2, (manifold, flipped) => {
         // Contact information can be read from `manifold`.
-        const entity1 = this.world.getEntityByHandle(handle1)
-        const entity2 = this.world.getEntityByHandle(handle2)
         if (entity1 && entity2) {
           const normal1 = manifold.localNormal1()
           const normal2 = manifold.localNormal2()
@@ -48,7 +56,7 @@ export class PhysicsSystem extends System {
       const rapierComponent = entity.getComponent('rapier') as RapierComponent
       const colliderInfo = rapierComponent.collider.shape as RAPIER.Cuboid
       
-      // Check if unit is in contact and setIsOnGround if not
+      // Check if unit is in contact
       const contacts = []
       this.world.physicsWorld.contactsWith(rapierComponent.collider, (otherCollider) => {
         contacts.push(otherCollider)
@@ -81,12 +89,6 @@ export class PhysicsSystem extends System {
           position.y -= 1
           rapierComponent.body.setTranslation(position,true)
         }
-        // shrink or grow logic here
-        // get new half extent
-        // get new adjusted position based off pixiComponent position
-        // set collider half extents, position of body
-        // set pixiComponent size
-        // position is updated below
       }
 
       if (this.showColliderBounds) rapierComponent.updateGraphics()

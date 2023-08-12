@@ -14,6 +14,12 @@ export class MovementSystem extends System {
         this.maxVelocity = 160
     }
 
+    jump(component: RapierComponent): void {
+        const currentVelocity = component.body.linvel()
+        component.setVelocity({ x: currentVelocity.x, y: -200 })
+        component.setIsOnGround(false)
+    }
+
     moveLeft(component: RapierComponent): void {
         const currentVelocity = component.body.linvel()
         component.setVelocity({
@@ -28,6 +34,12 @@ export class MovementSystem extends System {
             x: Math.min(currentVelocity.x + this.acceleration, this.maxVelocity),
             y: currentVelocity.y
         })
+    }
+
+    wallJump(component: RapierComponent): void {
+        const currentVelocity = component.body.linvel()
+        component.setVelocity({ x: -(currentVelocity.x >= 0 ? 120 : -120), y: -175 })
+        component.setIsOnGround(false)
     }
 
     update(deltaTime: number): void {
@@ -49,18 +61,10 @@ export class MovementSystem extends System {
                     this.moveRight(rapierComponent)
                 }
                 if (this.keys.has('ArrowUp') && (rapierComponent.isOnGround)) {
-                    // check in unit is touching ground or another unit.
-                    // demo jump for testing normal value
-                    const currentVelocity = rapierComponent.body.linvel()
-                    rapierComponent.setVelocity({ x: currentVelocity.x, y: -200 })
-                    rapierComponent.setIsOnGround(false)
+                    this.jump(rapierComponent)
                 }
                 if (this.keys.has('ArrowUp') && rapierComponent.isColliding && (rapierComponent.body.linvel().y >= 0 && rapierComponent.body.linvel().y <= 0.01)) {
-                    // check in unit is touching ground or another unit.
-                    // demo jump for testing normal value
-                    const currentVelocity = rapierComponent.body.linvel()
-                    rapierComponent.setVelocity({ x: -(currentVelocity.x*4), y: -175 })
-                    rapierComponent.setIsOnGround(false)
+                    this.wallJump(rapierComponent)
                 }
             }
         }

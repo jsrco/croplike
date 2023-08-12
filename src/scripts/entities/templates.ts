@@ -17,7 +17,7 @@ export const bigDemoEntity: EntityMap = {
             group: 1
         },
         position: {
-            x: 60,
+            x: 100,
             y: 200,
         },
         size: {
