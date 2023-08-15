@@ -1,15 +1,16 @@
+import { v4 as uuidv4 } from 'uuid'
 import { Component } from "../components/component"
 
 export class Entity {
 
   components: Record<string, Component>
   handle!: number
-  id: number
+  id: string
   name: string
 
-  constructor(name: string) {
+  constructor(name: string, id?: string) {
     this.components = {}
-    this.id = new Date().getTime()
+    this.id = id ? id : uuidv4()
     this.name = name
   }
 

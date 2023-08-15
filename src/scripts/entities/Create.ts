@@ -4,6 +4,7 @@ import { RapierComponent } from "../components/rapier"
 import { World } from "../util/world"
 
 export type EntityMap = {
+    id?: string
     name: string
     componentMap: {
         pixi?: boolean
@@ -13,7 +14,7 @@ export type EntityMap = {
 }
 
 export const CreateEntity = (entityMap: EntityMap, world: World): Entity => {
-    const entity = new Entity(entityMap.name)
+    const entity = new Entity(entityMap.name, entityMap.id)
     const components = []
     if (entityMap.componentMap.pixi)
         components.push(

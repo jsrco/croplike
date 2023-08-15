@@ -26,6 +26,7 @@ export class SaveManager {
 
     createEntityData(entity: Entity): EntityMap {
         const entityMap: any = {
+            id: entity.id,
             name: entity.name,
             componentMap: {},
             options: {},
