@@ -4,6 +4,6 @@
 </template>
 
 <script setup lang="ts">
-import Navigation from "./components/navigation.vue"
-import Screen from "./components/screen.vue"
+import Navigation from "./components/Navigation.vue"
+import Screen from "./components/Screen.vue"
 </script>
