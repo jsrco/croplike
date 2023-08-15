@@ -67,7 +67,7 @@ export class PhysicsSystem extends System {
         rapierComponent.setIsStoodOn(false)
       }
       if (contacts.length > 0) rapierComponent.setIsColliding(true)
-      if (contacts.length > 0) {
+      if (contacts.length > 0 && entity.name === 'bigDemo') {
         if(colliderInfo.halfExtents.y > 10 && rapierComponent.isStoodOn) {
           colliderInfo.halfExtents.y -= .5
           rapierComponent.collider.setHalfExtents(colliderInfo.halfExtents)

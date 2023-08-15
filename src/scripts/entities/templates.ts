@@ -18,7 +18,7 @@ export const bigDemoEntity: EntityMap = {
         },
         position: {
             x: 100,
-            y: 200,
+            y: 1400,
         },
         size: {
             x: 20,
@@ -38,7 +38,7 @@ export const demoEntity: EntityMap = {
         color: ColorSwatch.red[3],
         position: {
             x: 225,
-            y: 10,
+            y: 1400,
         },
         size: {
             x: 10,
@@ -58,12 +58,12 @@ export const floor: EntityMap = {
         color: ColorSwatch.blue[3],
         isOnGround: true,
         position: {
-            x: 550,
-            y: 300,
+            x: 900,
+            y: 1490,
         },
         size: {
-            x: 1000,
-            y: 10,
+            x: 1800,
+            y: 30,
         },
     },
 }
@@ -79,7 +79,7 @@ export const player: EntityMap = {
         color: ColorSwatch.green[3],
         position: {
             x: 250,
-            y: 10,
+            y: 1400,
         },
         size: {
             x: 20,

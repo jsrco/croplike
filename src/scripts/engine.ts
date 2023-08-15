@@ -11,7 +11,7 @@ import { SaveManager } from "./util/save-manager"
 import { World } from './util/world'
 export class Engine {
 
-    app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: 2000, height: 1500 })
+    app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: 1800, height: 1500 })
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     name: String = 'Croplike'
     paused: Ref<Boolean> = ref(false)
