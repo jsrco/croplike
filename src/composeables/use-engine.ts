@@ -1,4 +1,4 @@
-import { Engine } from "../scripts/Engine"
+import { Engine } from "../scripts/engine"
 
 const game = new Engine()
 const useEngine = () => {

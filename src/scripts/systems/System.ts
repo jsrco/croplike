@@ -1,6 +1,6 @@
-import { Entity } from "../entities/Entity"
-import { World } from "../util/World"
-import { Engine } from "../Engine"
+import { Entity } from "../entities/entity"
+import { World } from "../util/world"
+import { Engine } from "../engine"
 
 export class System {
 

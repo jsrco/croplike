@@ -1,9 +1,9 @@
 import RAPIER from "@dimforge/rapier2d"
-import { Entity } from "../entities/Entity"
-import { System } from "../systems/System"
-import { EventManager } from "../util/EventManager"
-import { KeyboardController } from "../util/KeyboardController"
-import { Engine } from "../Engine"
+import { Entity } from "../entities/entity"
+import { System } from "../systems/system"
+import { EventManager } from "../util/event-manager"
+import { KeyboardController } from "../util/keyboard-controller"
+import { Engine } from "../engine"
 
 export class World {
 

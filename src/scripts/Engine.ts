@@ -1,14 +1,14 @@
 import * as PIXI from "pixi.js"
 import { Ref, ref } from "vue"
-import { CreateEntity, EntityMap } from './entities/Create'
-import { Entity } from './entities/Entity'
+import { CreateEntity, EntityMap } from './entities/create'
+import { Entity } from './entities/entity'
 import { bigDemoEntity, demoEntity, floor, player } from './entities/templates'
 import { MovementSystem } from './systems/movement'
 import { PhysicsSystem } from './systems/physics'
 import { RenderSystem } from './systems/render'
-import { LocalStorageManager } from "./util/LocalStorageManager"
-import { SaveManager } from "./util/SaveManager"
-import { World } from './util/World'
+import { LocalStorageManager } from "./util/local-storage-manager"
+import { SaveManager } from "./util/save-manager"
+import { World } from './util/world'
 export class Engine {
 
     app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: 2000, height: 1500 })

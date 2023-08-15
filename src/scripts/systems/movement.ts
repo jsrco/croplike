@@ -1,6 +1,6 @@
 import { RapierComponent } from "../components/rapier"
-import { System } from "./System"
-import { World } from "../util/World"
+import { System } from "./system"
+import { World } from "../util/world"
 
 export class MovementSystem extends System {
 

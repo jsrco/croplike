@@ -1,6 +1,6 @@
-import { CreateEntity, EntityMap } from "../entities/Create"
-import { Entity } from "../entities/Entity"
-import { World } from "./World"
+import { CreateEntity, EntityMap } from "../entities/create"
+import { Entity } from "../entities/entity"
+import { World } from "./world"
 
 export class SaveManager {
 

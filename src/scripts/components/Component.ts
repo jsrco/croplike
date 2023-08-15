@@ -1,5 +1,5 @@
-import { Entity } from "../entities/Entity"
-import { World } from "../util/World"
+import { Entity } from "../entities/entity"
+import { World } from "../util/world"
 
 interface SaveObject {
     [key: string]: any

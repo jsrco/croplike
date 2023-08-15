@@ -1,7 +1,7 @@
 import { PixiComponent } from "../components/pixi"
-import { World } from "../util/World"
-import { System } from "./System"
-import { Entity } from "../entities/Entity"
+import { Entity } from "../entities/entity"
+import { System } from "./system"
+import { World } from "../util/world"
 
 export class RenderSystem extends System {
 

@@ -1,8 +1,8 @@
 import RAPIER from "@dimforge/rapier2d"
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
-import { World } from "../util/World"
-import { System } from "./System"
+import { System } from "./system"
+import { World } from "../util/world"
 
 export class PhysicsSystem extends System {
 
@@ -69,7 +69,6 @@ export class PhysicsSystem extends System {
       if (contacts.length > 0) rapierComponent.setIsColliding(true)
       if (contacts.length > 0) {
         if(colliderInfo.halfExtents.y > 10 && rapierComponent.isStoodOn) {
-          console.log('should shrink')
           colliderInfo.halfExtents.y -= .5
           rapierComponent.collider.setHalfExtents(colliderInfo.halfExtents)
           const newPixiSize = { x: colliderInfo.halfExtents.x * 2, y: colliderInfo.halfExtents.y * 2}
@@ -80,7 +79,6 @@ export class PhysicsSystem extends System {
           rapierComponent.body.setTranslation(position,true)
         }
         if(colliderInfo.halfExtents.y < 45 && !rapierComponent.isStoodOn && rapierComponent.canGrow) {
-          console.log('should grow')
           colliderInfo.halfExtents.y += .5
           rapierComponent.collider.setHalfExtents(colliderInfo.halfExtents)
           const newPixiSize = { x: colliderInfo.halfExtents.x * 2, y: colliderInfo.halfExtents.y * 2}
