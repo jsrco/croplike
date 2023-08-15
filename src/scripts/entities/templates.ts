@@ -47,27 +47,6 @@ export const demoEntity: EntityMap = {
     }
 }
 
-export const floor: EntityMap = {
-    name: 'floor',
-    componentMap: {
-        pixi: true,
-        rapier: true,
-    },
-    options: {
-        bodyType: 'fixed',
-        color: ColorSwatch.blue[3],
-        isOnGround: true,
-        position: {
-            x: 900,
-            y: 1490,
-        },
-        size: {
-            x: 1800,
-            y: 30,
-        },
-    },
-}
-
 export const player: EntityMap = {
     name: 'player',
     componentMap: {
@@ -86,4 +65,25 @@ export const player: EntityMap = {
             y: 20,
         },
     }
+}
+
+export const wall: EntityMap = {
+    name: 'wall',
+    componentMap: {
+        pixi: true,
+        rapier: true,
+    },
+    options: {
+        bodyType: 'fixed',
+        color: ColorSwatch.blue[3],
+        isOnGround: true,
+        position: {
+            x: 0,
+            y: 0,
+        },
+        size: {
+            x: 0,
+            y: 0,
+        },
+    },
 }

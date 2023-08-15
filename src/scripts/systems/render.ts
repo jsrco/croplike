@@ -6,7 +6,7 @@ import { World } from "../util/world"
 export class RenderSystem extends System {
 
     stageCenterX: number = window.innerWidth / 2 // Assuming the stage width is the same as the window width
-    stageCenterY: number = window.innerHeight / 2 // Assuming the stage height is the same as the window height
+    stageCenterY: number = (window.innerHeight - 36) / 2 // Assuming the stage height is the same as the window height
     target: Entity
     targetInfo: PixiComponent
     type: string = 'render'
