@@ -137,7 +137,7 @@ export class Engine {
         this.setBounds(wall, this.appDimensions.x - (this.wallThickness / 2), (this.appDimensions.y / 2), this.wallThickness, this.appDimensions.y - (this.wallThickness * 2))
         world.addEntity(CreateEntity(wall, world))
         // ceiling
-        this.setBounds(wall, this.appDimensions.x / 2, 1200, this.appDimensions.x, this.wallThickness)
+        this.setBounds(wall, this.appDimensions.x / 2, this.wallThickness/2, this.appDimensions.x, this.wallThickness)
         world.addEntity(CreateEntity(wall, world))
     }
     setBounds(entity: EntityMap, positionX: number, positionY: number, sizeX: number, sizeY: number): void {

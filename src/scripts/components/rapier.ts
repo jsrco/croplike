@@ -19,7 +19,7 @@ export class RapierComponent extends Component {
     type: string = 'rapier'
     velocity: RAPIER.Vector = { x: 0, y: 0 }
 
-    constructor(entity: Entity, world: World, options: { bodyType: string, canGrow?: boolean, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, isStoodOn: boolean, position: RAPIER.Vector, size: RAPIER.Vector, velocity?: RAPIER.Vector, }) {
+    constructor(entity: Entity, world: World, options: { bodyType: string, canGrow?: boolean, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, isStoodOn?: boolean, position: RAPIER.Vector, size: RAPIER.Vector, velocity?: RAPIER.Vector, }) {
         super(entity, world)
 
         const { bodyType, canGrow, dominance, isColliding, isOnGround, isStoodOn, position, size, velocity } = options
@@ -81,7 +81,7 @@ export class RapierComponent extends Component {
         // Clear previous graphics and draw the new shape
         this.cleared = false
         this.colliderGraphics.clear()
-        this.colliderGraphics.lineStyle(4, 0xFFFFFF) // Set line color and width
+        this.colliderGraphics.lineStyle(6, 0xFFFFFF) // Set line color and width
         this.colliderGraphics.drawRect(x - halfExtents.x, y - halfExtents.y, halfExtents.x * 2, halfExtents.y * 2)
     }
 

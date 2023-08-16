@@ -17,12 +17,12 @@ export const bigDemoEntity: EntityMap = {
             group: 1
         },
         position: {
-            x: 100,
+            x: 275,
             y: 1400,
         },
         size: {
-            x: 20,
-            y: 90,
+            x: 90,
+            y: 200,
         },
     }
 }
@@ -37,7 +37,7 @@ export const demoEntity: EntityMap = {
         bodyType: 'dynamic',
         color: ColorSwatch.red[3],
         position: {
-            x: 225,
+            x: 150,
             y: 1400,
         },
         size: {
@@ -57,8 +57,8 @@ export const player: EntityMap = {
         bodyType: 'dynamic',
         color: ColorSwatch.green[3],
         position: {
-            x: 250,
-            y: 1400,
+            x: 100,
+            y: 1450,
         },
         size: {
             x: 20,

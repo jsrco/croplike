@@ -1,6 +1,6 @@
 import { RapierComponent } from "../components/rapier"
-import { System } from "./system"
 import { World } from "../util/world"
+import { System } from "./system"
 
 export class MovementSystem extends System {
 
@@ -46,6 +46,7 @@ export class MovementSystem extends System {
         const entities = this.getEntitiesByComponent('rapier')
         for (const entity of entities) {
             const rapierComponent = entity.getComponent('rapier') as RapierComponent
+            
             // Reset velocity to zero if no keys are pressed
             if (this.keys.size === 0 && entity.name === 'player') {
                 const currentVelocity = rapierComponent.body.linvel()
@@ -60,10 +61,10 @@ export class MovementSystem extends System {
                 if (this.keys.has('ArrowRight')) {
                     this.moveRight(rapierComponent)
                 }
-                if (this.keys.has('ArrowUp') && (rapierComponent.isOnGround)) {
+                if (this.keys.has('ArrowUp') && rapierComponent.isOnGround && !rapierComponent.isStoodOn) {
                     this.jump(rapierComponent)
                 }
-                if (this.keys.has('ArrowUp') && rapierComponent.isColliding && (rapierComponent.body.linvel().y >= 0 && rapierComponent.body.linvel().y <= 0.01)) {
+                if (this.keys.has('ArrowUp') && rapierComponent.isColliding && !rapierComponent.isStoodOn && (rapierComponent.body.linvel().y >= 0 && rapierComponent.body.linvel().y <= 0.01)) {
                     this.wallJump(rapierComponent)
                 }
             }

@@ -25,8 +25,8 @@ export class PhysicsSystem extends System {
       if (!started) {
         const rapierComponent1 = entity1?.getComponent('rapier') as RapierComponent
         const rapierComponent2 = entity2?.getComponent('rapier') as RapierComponent
-        if (rapierComponent1) rapierComponent1.setIsStoodOn(false)
-        if (rapierComponent2) rapierComponent2.setIsStoodOn(false)
+        if (rapierComponent1) rapierComponent1.setIsColliding(false)
+        if (rapierComponent2) rapierComponent2.setIsColliding(false)
       }
 
       this.world.physicsWorld.narrowPhase.contactPair(handle1, handle2, (manifold, flipped) => {
@@ -41,10 +41,17 @@ export class PhysicsSystem extends System {
           const rapierComponent2 = entity2.getComponent('rapier') as RapierComponent
           if (bottomCollision1) {
             rapierComponent1.setIsOnGround(true)
+            if (entity2.name !== 'wall') rapierComponent1.setVelocity({ x: rapierComponent2.velocity.x === 0 ? rapierComponent1.velocity.x : rapierComponent2.velocity.x, y: rapierComponent1.velocity.y,})
             rapierComponent2.setIsStoodOn(true)
           } else if (bottomCollision2) {
             rapierComponent2.setIsOnGround(true)
+            if (entity1.name !== 'wall') rapierComponent2.setVelocity({ x: rapierComponent1.velocity.x === 0 ? rapierComponent2.velocity.x : rapierComponent1.velocity.x, y: rapierComponent2.velocity.y,})
             rapierComponent1.setIsStoodOn(true)
+          } else if (!bottomCollision1 && !bottomCollision2) {
+            rapierComponent1.setIsOnGround(false)
+            rapierComponent1.setIsStoodOn(false)
+            rapierComponent2.setIsOnGround(false)
+            rapierComponent2.setIsStoodOn(false)
           }
         }
       })
@@ -73,12 +80,12 @@ export class PhysicsSystem extends System {
           rapierComponent.collider.setHalfExtents(colliderInfo.halfExtents)
           const newPixiSize = { x: colliderInfo.halfExtents.x * 2, y: colliderInfo.halfExtents.y * 2}
           pixiComponent.setSize(newPixiSize)
-          
           const position = rapierComponent.body.translation()
           position.y += 1
           rapierComponent.body.setTranslation(position,true)
         }
-        if(colliderInfo.halfExtents.y < 45 && !rapierComponent.isStoodOn && rapierComponent.canGrow) {
+
+        if(colliderInfo.halfExtents.y < pixiComponent.maxSize / 2 && !rapierComponent.isStoodOn && rapierComponent.canGrow) {
           colliderInfo.halfExtents.y += .5
           rapierComponent.collider.setHalfExtents(colliderInfo.halfExtents)
           const newPixiSize = { x: colliderInfo.halfExtents.x * 2, y: colliderInfo.halfExtents.y * 2}

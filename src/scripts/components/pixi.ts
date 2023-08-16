@@ -7,6 +7,7 @@ import { World } from "../util/world"
 export class PixiComponent extends Component {
 
     color: string
+    maxSize: number
     position: RAPIER.Vector = { x: 0, y: 0 }
     size: RAPIER.Vector = { x: 0, y: 0 }
     sprite: PIXI.Sprite
@@ -16,6 +17,7 @@ export class PixiComponent extends Component {
         super(entity, world)
         const { color, size } = options
         this.color = color
+        this.maxSize = size.y
         this.sprite = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.sprite.tint = this.color
         this.setSize(size)
