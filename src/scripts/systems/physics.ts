@@ -67,6 +67,10 @@ export class PhysicsSystem extends System {
       const contacts = []
       this.world.physicsWorld.contactsWith(rapierComponent.collider, (otherCollider) => {
         contacts.push(otherCollider)
+
+        // this.world.physicsWorld.contactPair(rapierComponent.collider, otherCollider,  (manifold, flipped) => {
+        //   console.log('detect collision type and then correct status', manifold.localNormal1())
+        // })
       })
       if (contacts.length === 0) {
         rapierComponent.setIsColliding(false)
@@ -74,7 +78,7 @@ export class PhysicsSystem extends System {
         rapierComponent.setIsStoodOn(false)
       }
       if (contacts.length > 0) rapierComponent.setIsColliding(true)
-      if (contacts.length > 0 && entity.name === 'bigDemo') {
+      if (contacts.length > 0 && rapierComponent.canGrow) {
         if(colliderInfo.halfExtents.y > 10 && rapierComponent.isStoodOn) {
           colliderInfo.halfExtents.y -= .5
           rapierComponent.collider.setHalfExtents(colliderInfo.halfExtents)

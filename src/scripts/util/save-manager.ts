@@ -20,26 +20,29 @@ export class SaveManager {
 
     createAllEntityData(world: World): void {
         for (const entity in world.entities) {
-            this.data.entities.push(this.createEntityData(world.entities[entity]))
+            const data = this.createEntityData(world.entities[entity])
+            if (data) this.data.entities.push(data)
         }
     }
 
-    createEntityData(entity: Entity): EntityMap {
-        const entityMap: any = {
-            id: entity.id,
-            name: entity.name,
-            componentMap: {},
-            options: {},
-        }
-        for (const compontent in entity.components) {
-            const targetComponent = entity.components[compontent]
-            entityMap.componentMap[targetComponent.type] = true
-            entityMap.options = {
-                ...entityMap.options,
-                ...targetComponent.copyComponentData(targetComponent)
+    createEntityData(entity: Entity): EntityMap | undefined {
+        if (entity.name !== 'wall') {
+            const entityMap: any = {
+                id: entity.id,
+                name: entity.name,
+                componentMap: {},
+                options: {},
             }
+            for (const compontent in entity.components) {
+                const targetComponent = entity.components[compontent]
+                entityMap.componentMap[targetComponent.type] = true
+                entityMap.options = {
+                    ...entityMap.options,
+                    ...targetComponent.copyComponentData(targetComponent)
+                }
+            }
+            return entityMap
         }
-        return entityMap
     }
 
     getData() {

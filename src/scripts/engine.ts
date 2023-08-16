@@ -84,6 +84,7 @@ export class Engine {
             this.paused.value = true
             this.app.stage.removeChildren()
             this.world = new World(this)
+            this.createBounds(this.world)
             saveData.entities.forEach((entity: EntityMap) => {
                 this.saveManager.loadEntity(entity, this.world)
             })
@@ -128,16 +129,16 @@ export class Engine {
 
     createBounds(world: World): void {
         // floor
-        this.setBounds(wall, this.appDimensions.x / 2, this.appDimensions.y - (this.wallThickness/2), this.appDimensions.x, this.wallThickness)
+        this.setBounds(wall, this.appDimensions.x / 2, this.appDimensions.y - (this.wallThickness / 2), this.appDimensions.x, this.wallThickness)
         world.addEntity(CreateEntity(wall, world))
         // leftWall
-        this.setBounds(wall, this.wallThickness/2, (this.appDimensions.y / 2), this.wallThickness, this.appDimensions.y - (this.wallThickness * 2))
+        this.setBounds(wall, this.wallThickness / 2, (this.appDimensions.y / 2), this.wallThickness, this.appDimensions.y - (this.wallThickness * 2))
         world.addEntity(CreateEntity(wall, world))
         // rightWall
         this.setBounds(wall, this.appDimensions.x - (this.wallThickness / 2), (this.appDimensions.y / 2), this.wallThickness, this.appDimensions.y - (this.wallThickness * 2))
         world.addEntity(CreateEntity(wall, world))
         // ceiling
-        this.setBounds(wall, this.appDimensions.x / 2, this.wallThickness/2, this.appDimensions.x, this.wallThickness)
+        this.setBounds(wall, this.appDimensions.x / 2, this.wallThickness / 2, this.appDimensions.x, this.wallThickness)
         world.addEntity(CreateEntity(wall, world))
     }
     setBounds(entity: EntityMap, positionX: number, positionY: number, sizeX: number, sizeY: number): void {
