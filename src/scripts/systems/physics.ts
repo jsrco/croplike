@@ -84,8 +84,10 @@ export class PhysicsSystem extends System {
         else rapierComponent.setIsStoodOn(false)
       }
       if (rapierComponent.canGrow) {
+        const halfExtentsGrowth = 0.2
+        const positionAdjust = 0.1
         if (colliderInfo.halfExtents.y > 10 && CollisionStatus.top) {
-          const newSizeY = colliderInfo.halfExtents.y - 0.2
+          const newSizeY = colliderInfo.halfExtents.y - halfExtentsGrowth
           if (newSizeY >= 10) {
             // Reduce size and update physics properties gradually
             const newSize = { ...colliderInfo.halfExtents }
@@ -97,13 +99,13 @@ export class PhysicsSystem extends System {
 
             // Gradually update position
             const position = rapierComponent.body.translation()
-            position.y += 0.1 // Adjust the step size as needed
+            position.y += positionAdjust // Adjust the step size as needed
             rapierComponent.body.setTranslation(position, true)
           }
         }
 
         if (colliderInfo.halfExtents.y < pixiComponent.maxSize / 2 && !CollisionStatus.top) {
-          const newSizeY = colliderInfo.halfExtents.y + 0.2
+          const newSizeY = colliderInfo.halfExtents.y + halfExtentsGrowth
           if (newSizeY <= pixiComponent.maxSize / 2) {
             // Increase size and update physics properties gradually
             const newSize = { ...colliderInfo.halfExtents }
@@ -115,7 +117,7 @@ export class PhysicsSystem extends System {
 
             // Gradually update position
             const position = rapierComponent.body.translation()
-            position.y -= 0.1 // Adjust the step size as needed
+            position.y -= positionAdjust // Adjust the step size as needed
             rapierComponent.body.setTranslation(position, true)
           }
         }
