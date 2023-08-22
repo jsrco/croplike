@@ -1,3 +1,4 @@
+import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
 import { World } from "../util/world"
 import { System } from "./system"
@@ -46,9 +47,9 @@ export class MovementSystem extends System {
         const entities = this.getEntitiesByComponent('rapier')
         for (const entity of entities) {
             const rapierComponent = entity.getComponent('rapier') as RapierComponent
-            
+
             // Reset velocity to zero if no keys are pressed
-            if (this.keys.size === 0 && entity.name === 'player') {
+            if (this.keys.size === 0 && entity.name === 'player' && !rapierComponent.isRiding) {
                 const currentVelocity = rapierComponent.body.linvel()
                 rapierComponent.setVelocity({ x: 0, y: currentVelocity.y })
             }
@@ -66,6 +67,29 @@ export class MovementSystem extends System {
                 }
                 if (this.keys.has('ArrowUp') && rapierComponent.isColliding && !rapierComponent.isStoodOn && (rapierComponent.body.linvel().y >= 0 && rapierComponent.body.linvel().y <= 0.01)) {
                     this.wallJump(rapierComponent)
+                }
+            }
+
+            if (entity.name === 'bigDemo') {
+                const pixiComponent = entity.getComponent('pixi') as PixiComponent
+                if (pixiComponent.position.x <= 300) {
+                    pixiComponent.moveLeft = false
+                    pixiComponent.moveRight = true
+                } else if (pixiComponent.position.x >= 800) {
+                    pixiComponent.moveLeft = true
+                    pixiComponent.moveRight = false
+                }
+                if (pixiComponent.moveLeft === true) {
+                    rapierComponent.setVelocity({
+                        x: -60,
+                        y: rapierComponent.velocity.y
+                    })
+                }
+                if (pixiComponent.moveRight === true) {
+                    rapierComponent.setVelocity({
+                        x: 60,
+                        y: rapierComponent.velocity.y
+                    })
                 }
             }
         }

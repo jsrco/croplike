@@ -13,14 +13,22 @@ export class PixiComponent extends Component {
     sprite: PIXI.Sprite
     type: string = 'pixi'
 
-    constructor(entity: Entity, world: World, options: { color: string | '#ffffff', size: RAPIER.Vector }) {
+    moveLeft: boolean = false
+    moveRight: boolean = false
+
+    constructor(entity: Entity, world: World, options: { color: string | '#ffffff', moveLeft?: boolean, moveRight?: boolean, size: RAPIER.Vector }) {
         super(entity, world)
-        const { color, size } = options
+        const { color, moveLeft, moveRight, size } = options
         this.color = color
         this.maxSize = size.y
         this.sprite = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.sprite.tint = this.color
         this.setSize(size)
+
+        if (moveLeft && moveRight) {
+            this.moveLeft = moveLeft
+            this.moveRight = moveRight
+        }
     }
 
     addToStage() {

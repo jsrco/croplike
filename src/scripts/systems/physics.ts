@@ -7,6 +7,8 @@ import { World } from "../util/world"
 export type Collision = {
   bottom: boolean
   left: boolean
+  rider?: RapierComponent
+  riding: boolean
   right: boolean
   top: boolean
 }
@@ -32,6 +34,8 @@ export class PhysicsSystem extends System {
       const CollisionStatus: Collision = {
         bottom: false,
         left: false,
+        rider: undefined,
+        riding: false,
         right: false,
         top: false,
       }
@@ -42,6 +46,8 @@ export class PhysicsSystem extends System {
 
         this.world.physicsWorld.contactPair(rapierComponent.collider, otherCollider, (manifold, flipped) => {
           const localNormal = flipped ? manifold.localNormal2() : manifold.localNormal1()
+          const otherEntity = this.world.getEntityByHandle(otherCollider.handle)
+          const otherRaiperComponent = otherEntity?.getComponent('rapier') as RapierComponent
 
           // Define the world up vector for a 2D game
           const upVector = { x: 0, y: 1 }
@@ -58,8 +64,15 @@ export class PhysicsSystem extends System {
             // Vertical collision
             if (localNormal.y > 0) {
               CollisionStatus.bottom = true
+              if (otherEntity?.name !== 'wall') {
+                CollisionStatus.riding = true
+                rapierComponent.setIsRiding(true)
+                const offset = 0.4
+                rapierComponent.setVelocity({ x: otherRaiperComponent.velocity.x , y: rapierComponent.velocity.y })
+              }
             } else if (localNormal.y < 0) {
               CollisionStatus.top = true
+              CollisionStatus.rider = otherRaiperComponent
             }
           } else if (Math.abs(crossProductZ) < horizontalThreshold) {
             // Horizontal collision
@@ -74,12 +87,18 @@ export class PhysicsSystem extends System {
       if (contacts.length === 0) {
         rapierComponent.setIsColliding(false)
         rapierComponent.setIsOnGround(false)
+        rapierComponent.setIsRiding(false)
         rapierComponent.setIsStoodOn(false)
       }
       if (contacts.length > 0) {
         rapierComponent.setIsColliding(true)
-        if (CollisionStatus.bottom) rapierComponent.setIsOnGround(true)
-        else rapierComponent.setIsOnGround(false)
+        if (CollisionStatus.bottom) {
+          rapierComponent.setIsOnGround(true)
+        } else {
+          rapierComponent.setIsOnGround(false)
+        }
+        if (CollisionStatus.riding) rapierComponent.setIsRiding(true)
+        else rapierComponent.setIsRiding(false)
         if (CollisionStatus.top) rapierComponent.setIsStoodOn(true)
         else rapierComponent.setIsStoodOn(false)
       }
@@ -101,6 +120,13 @@ export class PhysicsSystem extends System {
             const position = rapierComponent.body.translation()
             position.y += positionAdjust // Adjust the step size as needed
             rapierComponent.body.setTranslation(position, true)
+            // Gradually update rider position
+            if (CollisionStatus.rider) {
+              const riderPosition = CollisionStatus.rider.body.translation()
+              riderPosition.y += positionAdjust // Adjust the step size as needed
+              CollisionStatus.rider.body.setTranslation(riderPosition, true)
+
+            }
           }
         }
 
@@ -121,9 +147,8 @@ export class PhysicsSystem extends System {
             rapierComponent.body.setTranslation(position, true)
           }
         }
-
-        // Make sure to handle other collision status updates here
       }
+
 
       if (this.showColliderBounds) rapierComponent.updateGraphics()
       else if (!rapierComponent.cleared) rapierComponent.clearColliderGraphics()

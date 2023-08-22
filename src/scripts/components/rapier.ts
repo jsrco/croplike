@@ -15,14 +15,15 @@ export class RapierComponent extends Component {
     dominance: object = { isIt: false, group: 0 }
     isColliding: boolean = false
     isOnGround: boolean = false
+    isRiding: boolean = false
     isStoodOn: boolean = false
     type: string = 'rapier'
     velocity: RAPIER.Vector = { x: 0, y: 0 }
 
-    constructor(entity: Entity, world: World, options: { bodyType: string, canGrow?: boolean, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, isStoodOn?: boolean, position: RAPIER.Vector, size: RAPIER.Vector, velocity?: RAPIER.Vector, }) {
+    constructor(entity: Entity, world: World, options: { bodyType: string, canGrow?: boolean, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, isRiding?: boolean, isStoodOn?: boolean, position: RAPIER.Vector, size: RAPIER.Vector, velocity?: RAPIER.Vector, }) {
         super(entity, world)
 
-        const { bodyType, canGrow, dominance, isColliding, isOnGround, isStoodOn, position, size, velocity } = options
+        const { bodyType, canGrow, dominance, isColliding, isOnGround, isRiding, isStoodOn, position, size, velocity } = options
 
         const rigidBodyDesc = bodyType === 'dynamic' ? RAPIER.RigidBodyDesc.dynamic() : RAPIER.RigidBodyDesc.fixed()
         rigidBodyDesc.setTranslation(position.x, position.y)
@@ -43,6 +44,7 @@ export class RapierComponent extends Component {
         if (dominance && dominance.isIt) this.setDominance(dominance)
         if (isColliding) this.setIsColliding(isColliding)
         if (isOnGround) this.setIsOnGround(isOnGround)
+        if (isRiding) this.setIsRiding(isRiding)
         if (isStoodOn) this.setIsStoodOn(isStoodOn)
         if (velocity) this.setVelocity(velocity)
     }
@@ -57,25 +59,29 @@ export class RapierComponent extends Component {
         this.dominance = dominance
     }
     
-    setIsColliding(isIt: boolean) {
+    setIsColliding(isIt: boolean):void {
         this.isColliding = isIt
     }
 
-    setIsOnGround(isIt: boolean) {
+    setIsOnGround(isIt: boolean):void {
         this.isOnGround = isIt
     }
 
-    setIsStoodOn(isIt: boolean) {
+    setIsRiding(isIt: boolean):void {
+        this.isRiding = isIt
+    }
+
+    setIsStoodOn(isIt: boolean):void {
         this.isStoodOn = isIt
     }
 
-    setVelocity(velocity: RAPIER.Vector) {
+    setVelocity(velocity: RAPIER.Vector):void {
         this.body.setLinvel(velocity, true)
         this.velocity = velocity
     }
 
     // Add this method to update the collider visualization based on the current state
-    updateGraphics() {
+    updateGraphics():void {
         const { x, y } = this.body.translation()
         const { halfExtents } = this.collider.shape as RAPIER.Cuboid
         // Clear previous graphics and draw the new shape
