@@ -25,7 +25,7 @@ export class RapierComponent extends Component {
 
         const { bodyType, canGrow, dominance, isColliding, isOnGround, isRiding, isStoodOn, position, size, velocity } = options
 
-        const rigidBodyDesc = bodyType === 'dynamic' ? RAPIER.RigidBodyDesc.dynamic() : RAPIER.RigidBodyDesc.fixed()
+        let rigidBodyDesc = this.getRigidBodyDesc(bodyType)
         rigidBodyDesc.setTranslation(position.x, position.y)
         rigidBodyDesc.setCanSleep(false).lockRotations()
         this.body = this.world.physicsWorld.createRigidBody(rigidBodyDesc)
@@ -52,6 +52,12 @@ export class RapierComponent extends Component {
     clearColliderGraphics(): void { 
         this.cleared = true
         this.colliderGraphics.clear()
+    }
+
+    getRigidBodyDesc(string: string): RAPIER.RigidBodyDesc {
+        if (string === 'fixed') return RAPIER.RigidBodyDesc.fixed()
+        if (string === 'KinematicVelocityBased') return RAPIER.RigidBodyDesc.kinematicVelocityBased()
+        return RAPIER.RigidBodyDesc.dynamic()
     }
 
     setDominance(dominance: { isIt: boolean, group: number }): void {

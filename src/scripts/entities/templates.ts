@@ -9,7 +9,7 @@ export const bigDemoEntity: EntityMap = {
         rapier: true,
     },
     options: {
-        bodyType: 'dynamic',
+        bodyType: 'KinematicVelocityBased',
         canGrow: true,
         color: ColorSwatch.red[3],
         dominance: {
