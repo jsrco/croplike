@@ -10,7 +10,6 @@ export const bigDemoEntity: EntityMap = {
     },
     options: {
         bodyType: 'KinematicVelocityBased',
-        canGrow: true,
         color: ColorSwatch.red[3],
         dominance: {
             isIt: true,
@@ -48,6 +47,35 @@ export const demoEntity: EntityMap = {
             x: 10,
             y: 10,
         },
+    }
+}
+
+export const growthDemoEntity: EntityMap = {
+    name: 'growthDemo',
+    componentMap: {
+        pixi: true,
+        rapier: true,
+    },
+    options: {
+        bodyType: 'dynamic',
+        canGrow: true,
+        color: ColorSwatch.orange[3],
+        dominance: {
+            isIt: true,
+            group: 1
+        },
+        position: {
+            x: 950,
+            y: 1360,
+        },
+        size: {
+            x: 90,
+            y: 200,
+        },
+        velocity: {
+            x: 0,
+            y: 0,
+        }
     }
 }
 

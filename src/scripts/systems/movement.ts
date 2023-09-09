@@ -12,7 +12,7 @@ export class MovementSystem extends System {
     constructor(world: World) {
         super(world)
         this.acceleration = 20
-        this.maxVelocity = 160
+        this.maxVelocity = 260
     }
 
     jump(component: RapierComponent): void {
@@ -39,7 +39,7 @@ export class MovementSystem extends System {
 
     wallJump(component: RapierComponent): void {
         const currentVelocity = component.body.linvel()
-        component.setVelocity({ x: -(currentVelocity.x >= 0 ? 120 : -120), y: -175 })
+        component.setVelocity({ x: -(currentVelocity.x >= 0 ? 140 : -140), y: -175 })
         component.setIsOnGround(false)
     }
 

@@ -3,7 +3,7 @@ import RAPIER from "@dimforge/rapier2d"
 import { Ref, ref } from "vue"
 import { CreateEntity, EntityMap } from './entities/create'
 import { Entity } from './entities/entity'
-import { bigDemoEntity, demoEntity, player, wall } from './entities/templates'
+import { bigDemoEntity, demoEntity, growthDemoEntity, player, wall } from './entities/templates'
 import { MovementSystem } from './systems/movement'
 import { PhysicsSystem } from './systems/physics'
 import { RenderSystem } from './systems/render'
@@ -38,6 +38,7 @@ export class Engine {
 
         this.world.addEntity(CreateEntity(bigDemoEntity, this.world))
         this.world.addEntity(CreateEntity(demoEntity, this.world))
+        this.world.addEntity(CreateEntity(growthDemoEntity, this.world))
         this.player = CreateEntity(player, this.world)
         this.world.addEntity(this.player)
         this.createBounds(this.world)
