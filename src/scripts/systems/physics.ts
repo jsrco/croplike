@@ -1,8 +1,8 @@
 import RAPIER from "@dimforge/rapier2d"
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
-import { System } from "./system"
 import { World } from "../util/world"
+import { System } from "./system"
 
 export type Collision = {
   bottom: boolean
@@ -31,48 +31,49 @@ export class PhysicsSystem extends System {
 
   entityGrowth(colliderInfo: RAPIER.Cuboid, pixiComponent: PixiComponent, rapierComponent: RapierComponent, collisionStatus: Collision): void {
     const halfExtentsGrowth = 0.2
-        const positionAdjust = 0.2
-        if (colliderInfo.halfExtents.y > 10 && collisionStatus.top) {
-          const newSizeY = colliderInfo.halfExtents.y - halfExtentsGrowth
-          if (newSizeY >= 10) {
-            // Reduce size and update physics properties gradually
-            const newSize = { ...colliderInfo.halfExtents }
-            newSize.y = newSizeY
-            colliderInfo.halfExtents = newSize
-            rapierComponent.collider.setHalfExtents(newSize)
-            const newPixiSize = { x: newSize.x * 2, y: newSize.y * 2 }
-            pixiComponent.setSize(newPixiSize)
+    const positionAdjust = 0.2
+    if (colliderInfo.halfExtents.y > 10 && collisionStatus.top) {
+      const newSizeY = colliderInfo.halfExtents.y - halfExtentsGrowth
+      if (newSizeY >= 10) {
+        // Reduce size and update physics properties gradually
+        const newSize = { ...colliderInfo.halfExtents }
+        newSize.y = newSizeY
+        colliderInfo.halfExtents = newSize
+        rapierComponent.collider.setHalfExtents(newSize)
+        const newPixiSize = { x: newSize.x * 2, y: newSize.y * 2 }
+        pixiComponent.setSize(newPixiSize)
 
-            // Gradually update position
-            const position = rapierComponent.body.translation()
-            position.y += positionAdjust // Adjust the step size as needed
-            rapierComponent.body.setTranslation(position, true)
-            // Gradually update rider position
-            if (collisionStatus.rider) {
-              const riderPosition = collisionStatus.rider.body.translation()
-              riderPosition.y += positionAdjust // Adjust the step size as needed
-              collisionStatus.rider.body.setTranslation(riderPosition, true)
-            }
-          }
+        // Gradually update rider position
+        if (collisionStatus.rider) {
+          const riderPosition = collisionStatus.rider.body.translation()
+          riderPosition.y += positionAdjust // Adjust the step size as needed
+          collisionStatus.rider.body.setTranslation(riderPosition, true)
         }
 
-        if (colliderInfo.halfExtents.y < pixiComponent.maxSize / 2 && !collisionStatus.top) {
-          const newSizeY = colliderInfo.halfExtents.y + halfExtentsGrowth
-          if (newSizeY <= pixiComponent.maxSize / 2) {
-            // Increase size and update physics properties gradually
-            const newSize = { ...colliderInfo.halfExtents }
-            newSize.y = newSizeY
-            colliderInfo.halfExtents = newSize
-            rapierComponent.collider.setHalfExtents(newSize)
-            const newPixiSize = { x: newSize.x * 2, y: newSize.y * 2 }
-            pixiComponent.setSize(newPixiSize)
+        // Gradually update position
+        const position = rapierComponent.body.translation()
+        position.y += positionAdjust // Adjust the step size as needed
+        rapierComponent.body.setTranslation(position, true)
+      }
+    }
 
-            // Gradually update position
-            const position = rapierComponent.body.translation()
-            position.y -= positionAdjust // Adjust the step size as needed
-            rapierComponent.body.setTranslation(position, true)
-          }
-        }
+    if (colliderInfo.halfExtents.y < pixiComponent.maxSize / 2 && !collisionStatus.top) {
+      const newSizeY = colliderInfo.halfExtents.y + halfExtentsGrowth
+      if (newSizeY <= pixiComponent.maxSize / 2) {
+        // Increase size and update physics properties gradually
+        const newSize = { ...colliderInfo.halfExtents }
+        newSize.y = newSizeY
+        colliderInfo.halfExtents = newSize
+        rapierComponent.collider.setHalfExtents(newSize)
+        const newPixiSize = { x: newSize.x * 2, y: newSize.y * 2 }
+        pixiComponent.setSize(newPixiSize)
+
+        // Gradually update position
+        const position = rapierComponent.body.translation()
+        position.y -= positionAdjust // Adjust the step size as needed
+        rapierComponent.body.setTranslation(position, true)
+      }
+    }
   }
 
   gatherContactsInfo(contacts: Array<RAPIER.Collider | undefined>, rapierComponent: RapierComponent, collisionStatus: Collision): void {
@@ -167,7 +168,7 @@ export class PhysicsSystem extends System {
       if (rapierComponent.canGrow) this.entityGrowth(colliderInfo, pixiComponent, rapierComponent, collisionStatus)
 
       this.adjustPosition(colliderInfo, pixiComponent, rapierComponent)
-      
+
       if (this.showColliderBounds) rapierComponent.updateGraphics()
       else if (!rapierComponent.cleared) rapierComponent.clearColliderGraphics()
     }
