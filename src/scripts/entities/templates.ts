@@ -18,7 +18,7 @@ export const bigDemoEntity: EntityMap = {
         },
         position: {
             x: 149,
-            y: 1400,
+            y: 1360,
         },
         size: {
             x: 90,
