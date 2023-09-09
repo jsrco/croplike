@@ -5,14 +5,13 @@ import { System } from "./system"
 
 export class MovementSystem extends System {
 
-    acceleration: number
-    maxVelocity: number
+    acceleration: number = 20
+    maxRidingVelocity: number = 120 
+    maxVelocity: number = 260
     type: string = 'movement'
 
     constructor(world: World) {
         super(world)
-        this.acceleration = 20
-        this.maxVelocity = 260
     }
 
     jump(component: RapierComponent): void {
@@ -23,16 +22,18 @@ export class MovementSystem extends System {
 
     moveLeft(component: RapierComponent): void {
         const currentVelocity = component.body.linvel()
+        const maxCheck = component.isRiding ? this.maxRidingVelocity : this.maxVelocity
         component.setVelocity({
-            x: Math.max(currentVelocity.x - this.acceleration, -this.maxVelocity),
+            x: Math.max(currentVelocity.x - this.acceleration, -maxCheck),
             y: currentVelocity.y
         })
     }
 
     moveRight(component: RapierComponent): void {
         const currentVelocity = component.body.linvel()
+        const maxCheck = component.isRiding ? this.maxRidingVelocity : this.maxVelocity
         component.setVelocity({
-            x: Math.min(currentVelocity.x + this.acceleration, this.maxVelocity),
+            x: Math.min(currentVelocity.x + this.acceleration, maxCheck),
             y: currentVelocity.y
         })
     }
