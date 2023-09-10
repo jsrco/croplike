@@ -30,7 +30,12 @@ const debugList = [
         name: 'console.dir info',
         operation: () => {
             console.dir(game)
-            console.dir(game.room.entities)
+        }
+    },
+    {
+        name: 'console.dir save',
+        operation: () => {
+            console.dir(game.localStorageManager.getData())
         }
     },
     {
