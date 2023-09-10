@@ -1,5 +1,6 @@
 import { CreateEntity, EntityMap } from "../entities/create-entity"
 import { Entity } from "../entities/entity"
+import { SystemMap } from "./create-room"
 import { Room } from "./room"
 
 export class SaveManager {
@@ -8,24 +9,19 @@ export class SaveManager {
 
     constructor() {
         this.data = {
-            entities: []
+            entities: [],
+            systems: {}
         }
     }
 
     clearData(): void {
         this.data = {
-            entities: []
+            entities: [],
+            systems: {}
         }
     }
 
-    createAllEntityData(room: Room): void {
-        for (const entity in room.entities) {
-            const data = this.createEntityData(room.entities[entity])
-            if (data) this.data.entities.push(data)
-        }
-    }
-
-    createEntityData(entity: Entity): EntityMap | undefined {
+    createEntityMap(entity: Entity): EntityMap | undefined {
         if (entity.name !== 'wall') {
             const entityMap: any = {
                 id: entity.id,
@@ -45,13 +41,28 @@ export class SaveManager {
         }
     }
 
+    createRoomData(room: Room): void {
+        for (const entity in room.entities) {
+            const data = this.createEntityMap(room.entities[entity])
+            if (data) this.data.entities.push(data)
+        }
+        this.data.systemMap = this.createSystemsMap(room)
+    }
+
+    createSystemsMap(room: Room): SystemMap {
+        const systemMap = {
+            movement: false,
+            physics: false,
+            render: false,
+        }
+        if (room.getSystemByType('movement')) systemMap.movement = true
+        if (room.getSystemByType('physics')) systemMap.physics = true
+        if (room.getSystemByType('render')) systemMap.render = true
+        return systemMap
+    }
+
     getData() {
         return this.data
     }
-
-    loadEntity(entityMap: EntityMap, room: Room) {
-        const entity = CreateEntity(entityMap, room)
-        room.addEntity(entity)
-        if (entity.name === 'player') room.engine.player = entity
-    }
+    
 }

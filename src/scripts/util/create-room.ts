@@ -9,32 +9,27 @@ import { Room } from "../util/room"
 const wallThickness: number = 40
 
 export type RoomMap = {
-    entityCountMap: {
-        bigDemoEntity?: number
-        demoEntity?: number
-        growthDemoEntity?: number
-    }
-    systemMap: {
-        movement?: boolean,
-        physics?: boolean,
-        render?: boolean, 
-    }
+    entities: Array<EntityMap>
+    systemMap: SystemMap
     options?: any
+}
+
+export type SystemMap = {
+    movement?: boolean,
+    physics?: boolean,
+    render?: boolean, 
 }
 
 export const createRoom = (engine: Engine, roomMap: RoomMap): Room => {
     const room = new Room(engine)
-    
-    engine.player = CreateEntity(player, room)
-    room.addEntity(engine.player)
-
+   
     createEntities(engine, room, roomMap)
     loadSystems(room, roomMap)
 
     return room
 }
 
-function createBounds(engine: Engine, room: Room): void {
+const createBounds = (engine: Engine, room: Room): void => {
     // floor
     setBounds(wall, engine.appDimensions.x / 2, engine.appDimensions.y - (wallThickness / 2), engine.appDimensions.x, wallThickness)
     room.addEntity(CreateEntity(wall, room))
@@ -49,20 +44,26 @@ function createBounds(engine: Engine, room: Room): void {
     room.addEntity(CreateEntity(wall, room))
 }
 
-function createEntities(engine: Engine, room: Room, roomMap: RoomMap) {
-    if (roomMap.entityCountMap.bigDemoEntity) room.addEntity(CreateEntity(bigDemoEntity, room))
-    if (roomMap.entityCountMap.demoEntity) room.addEntity(CreateEntity(demoEntity, room))
-    if (roomMap.entityCountMap.growthDemoEntity) room.addEntity(CreateEntity(growthDemoEntity, room))
+const createEntities = (engine: Engine, room: Room, roomMap: RoomMap): void => {
+    for (let index = 0; index < roomMap.entities.length; index++ ) {
+        if (roomMap.entities[index].name === 'player')  {
+            engine.player = CreateEntity(roomMap.entities[index], room)
+            room.addEntity(engine.player)
+        }
+        if (roomMap.entities[index].name === 'bigDemo') room.addEntity(CreateEntity(roomMap.entities[index], room))
+        if (roomMap.entities[index].name === 'demo') room.addEntity(CreateEntity(roomMap.entities[index], room))
+        if (roomMap.entities[index].name === 'growthDemo') room.addEntity(CreateEntity(roomMap.entities[index], room))
+    }
     createBounds(engine, room)
 }
 
-function loadSystems(room: Room, roomMap: RoomMap): void {
+const loadSystems = (room: Room, roomMap: RoomMap): void => {
     if (roomMap.systemMap.movement) room.addSystem(new MovementSystem(room))
     if (roomMap.systemMap.physics) room.addSystem(new PhysicsSystem(room))
     if (roomMap.systemMap.render) room.addSystem(new RenderSystem(room))
 }
 
-function setBounds(entity: EntityMap, positionX: number, positionY: number, sizeX: number, sizeY: number): void {
+const setBounds = (entity: EntityMap, positionX: number, positionY: number, sizeX: number, sizeY: number): void => {
     const { position, size } = entity.options
     position.x = positionX
     position.y = positionY

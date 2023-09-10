@@ -74,12 +74,7 @@ export class Engine {
         if (Object.keys(saveData).length !== 0) {
             this.paused.value = true
             this.app.stage.removeChildren()
-            this.room = new Room(this)
-            this.createBounds(this.room)
-            saveData.entities.forEach((entity: EntityMap) => {
-                this.saveManager.loadEntity(entity, this.room)
-            })
-            this.loadSystems(this.room)
+            this.room = createRoom(this, saveData)
             this.pause()
         } else console.log('no saved data')
     }
@@ -103,7 +98,7 @@ export class Engine {
         this.paused.value = true
         this.localStorageManager.clearData()
         this.saveManager.clearData()
-        this.saveManager.createAllEntityData(this.room)
+        this.saveManager.createRoomData(this.room)
         this.localStorageManager.saveData(this.saveManager.data)
         this.pause()
     }

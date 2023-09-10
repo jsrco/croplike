@@ -1,11 +1,8 @@
+import { bigDemoEntity, demoEntity, growthDemoEntity, player } from "../entities/templates-entity"
 import { RoomMap } from "./create-room"
 
 export const demoRoom: RoomMap = {
-        entityCountMap: {
-            bigDemoEntity: 1,
-            demoEntity: 1,
-            growthDemoEntity: 1,
-        },
+        entities: [ bigDemoEntity, demoEntity, growthDemoEntity, player],
         systemMap: {
             movement: true,
             physics: true,
