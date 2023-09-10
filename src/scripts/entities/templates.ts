@@ -1,98 +1,121 @@
-import { EntityMap } from "./Create"
+import { EntityMap } from "./create"
+import { ColorSwatch } from '../util/color-swatch'
 
 
-export const ceiling: EntityMap = {
-    name: 'ceiling',
+export const bigDemoEntity: EntityMap = {
+    name: 'bigDemo',
     componentMap: {
-        collision: true,
-        graphics: true,
-        position: true,
-        size: true,
-        wall: true,
-    }
-}
-export const floor: EntityMap = {
-    name: 'floor',
-    componentMap: {
-        collision: true,
-        graphics: true,
-        position: true,
-        size: true,
-        wall: true,
-    }
-}
-export const largeEntity: EntityMap = {
-    name: 'largeEntity',
-    componentMap: {
-        collision: true,
-        graphics: true,
-        gravity: true,
-        position: true,
-        size: true,
-        sizeChange: true,
-        velocity: true,
-        wallCollision: true,
-    }, 
-    options: { 
-        graphics: {
-            color: 0xF8719D,
+        pixi: true,
+        rapier: true,
+    },
+    options: {
+        bodyType: 'KinematicVelocityBased',
+        color: ColorSwatch.red[3],
+        dominance: {
+            isIt: true,
+            group: 1
         },
-        gravity: { 
-            force: 0.3
-        }, 
-        position: { 
-            x: 200, y: 300 
-        }, 
-        size: { 
-            height: 125,
-            width: 125 
-        }, 
-        velocity: { 
-            x: -2 
-        } 
+        position: {
+            x: 149,
+            y: 1360,
+        },
+        size: {
+            x: 90,
+            y: 200,
+        },
+        velocity: {
+            x: -12,
+            y: 0,
+        }
     }
 }
-export const leftWall: EntityMap = {
-    name: 'leftWall',
+
+export const demoEntity: EntityMap = {
+    name: 'demo',
     componentMap: {
-        collision: true,
-        graphics: true,
-        position: true,
-        size: true,
-        wall: true,
+        pixi: true,
+        rapier: true,
+    },
+    options: {
+        bodyType: 'dynamic',
+        color: ColorSwatch.red[3],
+        position: {
+            x: 90,
+            y: 1400,
+        },
+        size: {
+            x: 10,
+            y: 10,
+        },
     }
 }
+
+export const growthDemoEntity: EntityMap = {
+    name: 'growthDemo',
+    componentMap: {
+        pixi: true,
+        rapier: true,
+    },
+    options: {
+        bodyType: 'dynamic',
+        canGrow: true,
+        color: ColorSwatch.orange[3],
+        dominance: {
+            isIt: true,
+            group: 1
+        },
+        position: {
+            x: 950,
+            y: 1360,
+        },
+        size: {
+            x: 90,
+            y: 200,
+        },
+        velocity: {
+            x: 0,
+            y: 0,
+        }
+    }
+}
+
 export const player: EntityMap = {
     name: 'player',
     componentMap: {
-        collision: true,
-        graphics: true,
-        gravity: true,
-        jump: true,
-        position: true,
-        size: true,
-        velocity: true,
-        wallCollision: true,
+        pixi: true,
+        rapier: true,
     },
     options: {
-        graphics: {
-            color: 0x4ade80
-        },
+        bodyType: 'dynamic',
+        color: ColorSwatch.green[3],
         position: {
-            x: 55, y: 55
+            x: 60,
+            y: 1450,
         },
-        size: { 
-            width: 20 
-        }, 
+        size: {
+            x: 20,
+            y: 20,
+        },
     }
 }
-export const rightWall: EntityMap = {
-    name: 'rightWall',
+
+export const wall: EntityMap = {
+    name: 'wall',
     componentMap: {
-        collision: true,
-        graphics: true,
-        position: true,
-        size: true,
-        wall: true,
-    }
+        pixi: true,
+        rapier: true,
+    },
+    options: {
+        bodyType: 'fixed',
+        color: ColorSwatch.blue[3],
+        isOnGround: true,
+        position: {
+            x: 0,
+            y: 0,
+        },
+        size: {
+            x: 0,
+            y: 0,
+        },
+    },
 }

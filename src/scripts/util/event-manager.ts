@@ -1,5 +1,6 @@
 export class EventManager {
-  eventListeners: { [eventType: string]: Function[] } = {};
+
+  eventListeners: { [eventType: string]: Function[] } = {}
 
   dispatch(eventType: string, data?: any): void {
     if (!this.eventListeners[eventType]) {
@@ -9,12 +10,14 @@ export class EventManager {
       listener(data)
     })
   }
+
   subscribe(eventType: string, listener: Function): void {
     if (!this.eventListeners[eventType]) {
       this.eventListeners[eventType] = []
     }
     this.eventListeners[eventType].push(listener)
   }
+
   unsubscribe(eventType: string, listener: Function): void {
     if (!this.eventListeners[eventType]) {
       return
@@ -24,4 +27,5 @@ export class EventManager {
       this.eventListeners[eventType].splice(index, 1)
     }
   }
+
 }

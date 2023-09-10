@@ -1,28 +1,36 @@
-import { Entity } from "../entities/Entity"
-import { World } from "../util/World"
+import { Entity } from "../entities/entity"
+import { World } from "../util/world"
+import { Engine } from "../engine"
 
 export class System {
+
     componentEntityMap: Map<string, Entity[]> = new Map()
+    engine: Engine
     keys: Set<string>
     type!: string
     world: World
 
     constructor(world: World) {
+        this.engine = world.engine
         this.keys = new Set<string>()
         this.world = world
         this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
     }
+
     cacheEntities(componentTypes: string[], entities: Entity[]): void {
         const cacheKey = componentTypes.join(',')
         this.componentEntityMap.set(cacheKey, entities)
     }
+
     clearCache(): void {
         this.componentEntityMap.clear()
     }
+
     getCachedEntities(componentTypes: string[]): Entity[] | undefined {
         const cacheKey = componentTypes.join(',')
         return this.componentEntityMap.get(cacheKey)
     }
+
     getEntitiesByComponent(...componentTypes: string[]): Entity[] {
         const cachedEntities = this.getCachedEntities(componentTypes)
         if (cachedEntities) {
@@ -32,6 +40,7 @@ export class System {
         this.cacheEntities(componentTypes, newEntities)
         return newEntities
     }
+
     onKeyChange(data: any): void {
         const { key, isDown } = data
         if (isDown) {
@@ -40,6 +49,7 @@ export class System {
             this.keys.delete(key)
         }
     }
+
     removeEntityFromCache(entity: Entity): void {
         for (const [cacheKey, entities] of this.componentEntityMap.entries()) {
             if (cacheKey.split(',').every(type => entity.hasComponent(type))) {
@@ -51,7 +61,9 @@ export class System {
             }
         }
     }
+
     update(deltaTime: number): void {
         // Override this method in each subclass
     }
+
 }

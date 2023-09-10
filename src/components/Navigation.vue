@@ -21,22 +21,16 @@
 <script setup lang="ts">
 import { ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
+import { PhysicsSystem } from "../scripts/systems/physics"
 
-const { game, showInfo } = useEngine()
+const { game } = useEngine()
 
 const debugList = [
     {
-        name: 'pause game',
-        operation: () => {
-            game.pause()
-        }
-    },
-    {
         name: 'console.dir info',
         operation: () => {
-            // console.dir('world', game.lworld)
-            console.log(game)
-            // console.dir(game.localStorageManager.getData())
+            console.dir(game)
+            console.dir(game.world.entities)
         }
     },
     {
@@ -52,16 +46,25 @@ const debugList = [
         }
     },
     {
+        name: 'pause game',
+        operation: () => {
+            game.pause()
+        }
+    },
+    {
         name: 'save',
         operation: () => {
             game.save()
         }
     },
     {
-        name: 'show info',
+        name: 'trigger collider bounds',
         operation: () => {
-            game.paused.value = true
-            showInfo.value = true
+            const physics = game.world.getSystemByType('physics') as PhysicsSystem
+            if (physics) { 
+                console.log('ran')
+                physics.triggerShowColliderBounds()
+            }
         }
     },
 ]

@@ -1,12 +1,9 @@
-import { ref } from "vue"
-import { Engine } from "../scripts/Engine"
+import { Engine } from "../scripts/engine"
 
 const game = new Engine()
-const showInfo = ref(true)
 const useEngine = () => {
     return {
         game,
-        showInfo
     }
 }
 
