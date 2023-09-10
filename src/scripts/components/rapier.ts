@@ -1,8 +1,8 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Entity } from "../entities/entity"
-import { Room } from "../util/room"
 import { Component } from "./component"
+import { Room } from "../util/room"
 
 export class RapierComponent extends Component {
 

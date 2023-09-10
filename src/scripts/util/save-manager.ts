@@ -1,4 +1,4 @@
-import { CreateEntity, EntityMap } from "../entities/create"
+import { CreateEntity, EntityMap } from "../entities/createEntity"
 import { Entity } from "../entities/entity"
 import { Room } from "./room"
 

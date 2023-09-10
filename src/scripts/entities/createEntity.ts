@@ -1,7 +1,7 @@
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
-import { Room } from "../util/room"
 import { Entity } from "./entity"
+import { Room } from "../util/room"
 
 export type EntityMap = {
     id?: string

@@ -1,7 +1,7 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Ref, ref } from "vue"
-import { CreateEntity, EntityMap } from './entities/create'
+import { CreateEntity, EntityMap } from './entities/createEntity'
 import { Entity } from './entities/entity'
 import { bigDemoEntity, demoEntity, growthDemoEntity, player, wall } from './entities/templates'
 import { MovementSystem } from './systems/movement'

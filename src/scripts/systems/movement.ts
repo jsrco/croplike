@@ -1,7 +1,7 @@
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
-import { Room } from "../util/room"
 import { System } from "./system"
+import { Room } from "../util/room"
 
 export class MovementSystem extends System {
 
