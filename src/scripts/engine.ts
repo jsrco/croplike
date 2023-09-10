@@ -1,5 +1,5 @@
-import * as PIXI from "pixi.js"
 import RAPIER from "@dimforge/rapier2d"
+import * as PIXI from "pixi.js"
 import { Ref, ref } from "vue"
 import { CreateEntity, EntityMap } from './entities/create'
 import { Entity } from './entities/entity'
@@ -8,8 +8,8 @@ import { MovementSystem } from './systems/movement'
 import { PhysicsSystem } from './systems/physics'
 import { RenderSystem } from './systems/render'
 import { LocalStorageManager } from "./util/local-storage-manager"
+import { Room } from './util/room'
 import { SaveManager } from "./util/save-manager"
-import { World } from './util/world'
 export class Engine {
 
     appDimensions: RAPIER.Vector2 = { x: 1800, y: 1500 }
@@ -23,7 +23,7 @@ export class Engine {
         fontSize: 8,
         fill: ['#000000'],
     })
-    world: World = new World(this)
+    room: Room = new Room(this)
 
     // Temps
     player: Entity
@@ -36,13 +36,13 @@ export class Engine {
             this.update(delta)
         })
 
-        this.world.addEntity(CreateEntity(bigDemoEntity, this.world))
-        this.world.addEntity(CreateEntity(demoEntity, this.world))
-        this.world.addEntity(CreateEntity(growthDemoEntity, this.world))
-        this.player = CreateEntity(player, this.world)
-        this.world.addEntity(this.player)
-        this.createBounds(this.world)
-        this.loadSystems(this.world)
+        this.room.addEntity(CreateEntity(bigDemoEntity, this.room))
+        this.room.addEntity(CreateEntity(demoEntity, this.room))
+        this.room.addEntity(CreateEntity(growthDemoEntity, this.room))
+        this.player = CreateEntity(player, this.room)
+        this.room.addEntity(this.player)
+        this.createBounds(this.room)
+        this.loadSystems(this.room)
 
         window.addEventListener('keydown', (event) => {
             if (event.key === 'l') {
@@ -74,7 +74,7 @@ export class Engine {
     }
 
     addCanvas(elementRef: HTMLElement) {
-        const render = this.world.getSystemByType('render') as RenderSystem
+        const render = this.room.getSystemByType('render') as RenderSystem
         if (render) render.appendElement(elementRef)
         else console.log("still loading.")
     }
@@ -84,20 +84,20 @@ export class Engine {
         if (Object.keys(saveData).length !== 0) {
             this.paused.value = true
             this.app.stage.removeChildren()
-            this.world = new World(this)
-            this.createBounds(this.world)
+            this.room = new Room(this)
+            this.createBounds(this.room)
             saveData.entities.forEach((entity: EntityMap) => {
-                this.saveManager.loadEntity(entity, this.world)
+                this.saveManager.loadEntity(entity, this.room)
             })
-            this.loadSystems(this.world)
+            this.loadSystems(this.room)
             this.pause()
         } else console.log('no saved data')
     }
 
-    loadSystems(world: World): void {
-        world.addSystem(new MovementSystem(world))
-        world.addSystem(new PhysicsSystem(world))
-        world.addSystem(new RenderSystem(world))
+    loadSystems(room: Room): void {
+        room.addSystem(new MovementSystem(room))
+        room.addSystem(new PhysicsSystem(room))
+        room.addSystem(new RenderSystem(room))
     }
 
     pause(): void {
@@ -119,28 +119,28 @@ export class Engine {
         this.paused.value = true
         this.localStorageManager.clearData()
         this.saveManager.clearData()
-        this.saveManager.createAllEntityData(this.world)
+        this.saveManager.createAllEntityData(this.room)
         this.localStorageManager.saveData(this.saveManager.data)
         this.pause()
     }
 
     update(delta: number) {
-        if (!this.paused.value) this.world.update(delta)
+        if (!this.paused.value) this.room.update(delta)
     }
 
-    createBounds(world: World): void {
+    createBounds(room: Room): void {
         // floor
         this.setBounds(wall, this.appDimensions.x / 2, this.appDimensions.y - (this.wallThickness / 2), this.appDimensions.x, this.wallThickness)
-        world.addEntity(CreateEntity(wall, world))
+        room.addEntity(CreateEntity(wall, room))
         // leftWall
         this.setBounds(wall, this.wallThickness / 2, (this.appDimensions.y / 2), this.wallThickness, this.appDimensions.y - (this.wallThickness * 2))
-        world.addEntity(CreateEntity(wall, world))
+        room.addEntity(CreateEntity(wall, room))
         // rightWall
         this.setBounds(wall, this.appDimensions.x - (this.wallThickness / 2), (this.appDimensions.y / 2), this.wallThickness, this.appDimensions.y - (this.wallThickness * 2))
-        world.addEntity(CreateEntity(wall, world))
+        room.addEntity(CreateEntity(wall, room))
         // ceiling
         this.setBounds(wall, this.appDimensions.x / 2, this.wallThickness / 2, this.appDimensions.x, this.wallThickness)
-        world.addEntity(CreateEntity(wall, world))
+        room.addEntity(CreateEntity(wall, room))
     }
     setBounds(entity: EntityMap, positionX: number, positionY: number, sizeX: number, sizeY: number): void {
         const { position, size } = entity.options

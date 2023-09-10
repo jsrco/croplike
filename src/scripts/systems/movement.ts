@@ -1,6 +1,6 @@
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
-import { World } from "../util/world"
+import { Room } from "../util/room"
 import { System } from "./system"
 
 export class MovementSystem extends System {
@@ -10,8 +10,8 @@ export class MovementSystem extends System {
     maxVelocity: number = 260
     type: string = 'movement'
 
-    constructor(world: World) {
-        super(world)
+    constructor(room: Room) {
+        super(room)
     }
 
     jump(component: RapierComponent): void {

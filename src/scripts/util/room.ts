@@ -1,11 +1,11 @@
 import RAPIER from "@dimforge/rapier2d"
+import { Engine } from "../engine"
 import { Entity } from "../entities/entity"
 import { System } from "../systems/system"
-import { EventManager } from "../util/event-manager"
-import { KeyboardController } from "../util/keyboard-controller"
-import { Engine } from "../engine"
+import { EventManager } from "./event-manager"
+import { KeyboardController } from "./keyboard-controller"
 
-export class World {
+export class Room {
 
     engine: Engine
     entities: Entity[]

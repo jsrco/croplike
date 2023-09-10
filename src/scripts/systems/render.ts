@@ -1,7 +1,7 @@
 import { PixiComponent } from "../components/pixi"
 import { Entity } from "../entities/entity"
+import { Room } from "../util/room"
 import { System } from "./system"
-import { World } from "../util/world"
 
 export class RenderSystem extends System {
 
@@ -11,10 +11,10 @@ export class RenderSystem extends System {
     targetInfo: PixiComponent
     type: string = 'render'
 
-    constructor(world: World) {
-        super(world)
+    constructor(room: Room) {
+        super(room)
 
-        this.target = this.world.engine.player
+        this.target = this.room.engine.player
         this.targetInfo = this.target.getComponent('pixi') as PixiComponent
         // Entities
         const entities = this.getEntitiesByComponent('pixi')
@@ -33,8 +33,8 @@ export class RenderSystem extends System {
         const targetCenterY = this.targetInfo.sprite.y + this.targetInfo.sprite.height / 2
         const left = 0
         const top = 0
-        const right = this.world.engine.app.renderer.width
-        const bottom = this.world.engine.app.renderer.height
+        const right = this.room.engine.app.renderer.width
+        const bottom = this.room.engine.app.renderer.height
         let stagePositionX = this.stageCenterX - targetCenterX
         let stagePositionY = this.stageCenterY - targetCenterY
         if (stagePositionX > left) {
@@ -47,11 +47,11 @@ export class RenderSystem extends System {
         } else if (stagePositionY + bottom < window.innerHeight - 36) {
             stagePositionY = window.innerHeight - 36 - bottom
         }
-        this.world.engine.app.stage.position.set(stagePositionX, stagePositionY)
+        this.room.engine.app.stage.position.set(stagePositionX, stagePositionY)
     }
 
     appendElement(elementRef: any): void {
-        elementRef.appendChild(this.world.engine.app.view)
+        elementRef.appendChild(this.room.engine.app.view)
     }
 
     update(deltaTime: number): void {

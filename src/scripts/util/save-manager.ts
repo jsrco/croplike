@@ -1,6 +1,6 @@
 import { CreateEntity, EntityMap } from "../entities/create"
 import { Entity } from "../entities/entity"
-import { World } from "./world"
+import { Room } from "./room"
 
 export class SaveManager {
 
@@ -18,9 +18,9 @@ export class SaveManager {
         }
     }
 
-    createAllEntityData(world: World): void {
-        for (const entity in world.entities) {
-            const data = this.createEntityData(world.entities[entity])
+    createAllEntityData(room: Room): void {
+        for (const entity in room.entities) {
+            const data = this.createEntityData(room.entities[entity])
             if (data) this.data.entities.push(data)
         }
     }
@@ -49,9 +49,9 @@ export class SaveManager {
         return this.data
     }
 
-    loadEntity(entityMap: EntityMap, world: World) {
-        const entity = CreateEntity(entityMap, world)
-        world.addEntity(entity)
-        if (entity.name === 'player') world.engine.player = entity
+    loadEntity(entityMap: EntityMap, room: Room) {
+        const entity = CreateEntity(entityMap, room)
+        room.addEntity(entity)
+        if (entity.name === 'player') room.engine.player = entity
     }
 }

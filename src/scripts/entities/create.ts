@@ -1,7 +1,7 @@
-import { Entity } from "./entity"
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
-import { World } from "../util/world"
+import { Room } from "../util/room"
+import { Entity } from "./entity"
 
 export type EntityMap = {
     id?: string
@@ -13,16 +13,16 @@ export type EntityMap = {
     options?: any
 }
 
-export const CreateEntity = (entityMap: EntityMap, world: World): Entity => {
+export const CreateEntity = (entityMap: EntityMap, room: Room): Entity => {
     const entity = new Entity(entityMap.name, entityMap.id)
     const components = []
     if (entityMap.componentMap.pixi)
         components.push(
-            new PixiComponent(entity, world, entityMap.options)
+            new PixiComponent(entity, room, entityMap.options)
         )
     if (entityMap.componentMap.rapier)
         components.push(
-            new RapierComponent(entity, world, entityMap.options)
+            new RapierComponent(entity, room, entityMap.options)
         )
     entity.addComponents(components)
     return entity
