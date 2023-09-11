@@ -59,6 +59,7 @@ export const growthDemoEntity: EntityMap = {
         bodyType: 'dynamic',
         canGrow: true,
         color: ColorSwatch.orange[3],
+        maxSize: 300,
         position: {
             x: 950,
             y: 1360,

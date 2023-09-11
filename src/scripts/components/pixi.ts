@@ -16,11 +16,11 @@ export class PixiComponent extends Component {
     moveLeft: boolean = false
     moveRight: boolean = false
 
-    constructor(entity: Entity, room: Room, options: { color: string | '#ffffff', moveLeft?: boolean, moveRight?: boolean, size: RAPIER.Vector }) {
+    constructor(entity: Entity, room: Room, options: { color: string | '#ffffff', maxSize?: number, moveLeft?: boolean, moveRight?: boolean, size: RAPIER.Vector }) {
         super(entity, room)
-        const { color, moveLeft, moveRight, size } = options
+        const { color, maxSize, moveLeft, moveRight, size } = options
         this.color = color
-        this.maxSize = size.y
+        this.maxSize = maxSize || 200
         this.sprite = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.sprite.tint = this.color
         this.setSize(size)

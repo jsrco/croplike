@@ -1,4 +1,4 @@
-import { CreateEntity, EntityMap } from "../entities/create-entity"
+import { EntityMap } from "../entities/create-entity"
 import { Entity } from "../entities/entity"
 import { SystemMap } from "./create-room"
 import { Room } from "./room"
@@ -10,14 +10,14 @@ export class SaveManager {
     constructor() {
         this.data = {
             entities: [],
-            systems: {}
+            systemMap: {}
         }
     }
 
     clearData(): void {
         this.data = {
             entities: [],
-            systems: {}
+            systemMap: {}
         }
     }
 
