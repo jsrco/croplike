@@ -30,7 +30,12 @@ const debugList = [
         name: 'console.dir info',
         operation: () => {
             console.dir(game)
-            console.dir(game.world.entities)
+        }
+    },
+    {
+        name: 'console.dir save',
+        operation: () => {
+            console.dir(game.localStorageManager.getData())
         }
     },
     {
@@ -60,7 +65,7 @@ const debugList = [
     {
         name: 'trigger collider bounds',
         operation: () => {
-            const physics = game.world.getSystemByType('physics') as PhysicsSystem
+            const physics = game.room.getSystemByType('physics') as PhysicsSystem
             if (physics) { 
                 console.log('ran')
                 physics.triggerShowColliderBounds()

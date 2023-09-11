@@ -1,6 +1,5 @@
-import { EntityMap } from "./create"
 import { ColorSwatch } from '../util/color-swatch'
-
+import { EntityMap } from "./create-entity"
 
 export const bigDemoEntity: EntityMap = {
     name: 'bigDemo',
@@ -60,10 +59,7 @@ export const growthDemoEntity: EntityMap = {
         bodyType: 'dynamic',
         canGrow: true,
         color: ColorSwatch.orange[3],
-        dominance: {
-            isIt: true,
-            group: 1
-        },
+        maxSize: 300,
         position: {
             x: 950,
             y: 1360,

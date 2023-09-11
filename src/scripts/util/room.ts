@@ -1,11 +1,12 @@
 import RAPIER from "@dimforge/rapier2d"
+import { PixiComponent } from "../components/pixi"
+import { Engine } from "../engine"
 import { Entity } from "../entities/entity"
 import { System } from "../systems/system"
-import { EventManager } from "../util/event-manager"
-import { KeyboardController } from "../util/keyboard-controller"
-import { Engine } from "../engine"
+import { EventManager } from "./event-manager"
+import { KeyboardController } from "./keyboard-controller"
 
-export class World {
+export class Room {
 
     engine: Engine
     entities: Entity[]
@@ -22,7 +23,7 @@ export class World {
     }
 
     addEntity(entity: Entity): void {
-        this.entities.push(entity)
+        if (!this.isTouching(entity, this.entities)) this.entities.push(entity)
     }
 
     addSystem(system: System): void {
@@ -41,6 +42,35 @@ export class World {
 
     getSystemByType(type: string) {
         return this.systems.find(system => system.type === type)
+    }
+
+    isTouching(entity: Entity, entities: Array<Entity>): boolean {
+        // Extract the position and size of the given entity
+        const pixiComponent = entity.getComponent('pixi') as PixiComponent
+
+        // Loop through the array of entities
+        for (const otherEntity of entities) {
+            // Skip the current entity itself
+            if (otherEntity === entity) {
+                continue
+            }
+
+            const otherPixiComponent = otherEntity.getComponent('pixi') as PixiComponent
+
+            // Check for overlap between the two entities
+            if (
+                pixiComponent.position.x > otherPixiComponent.position.x + otherPixiComponent.size.x && // left
+                pixiComponent.position.x + pixiComponent.size.x < otherPixiComponent.position.x && // right
+                pixiComponent.position.y + pixiComponent.size.y < otherPixiComponent.position.y && // bottom
+                pixiComponent.position.y > otherPixiComponent.position.y + otherPixiComponent.size.y // top
+            ) {
+                // Collision detected
+                console.log(`Entity ${entity.name} is overlaps Entity ${otherEntity.name}`)
+                return true
+            }
+        }
+        // No collision detected
+        return false
     }
 
     removeEntity(entity: Entity): void {

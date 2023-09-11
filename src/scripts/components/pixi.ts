@@ -1,8 +1,8 @@
-import * as PIXI from "pixi.js"
 import RAPIER from "@dimforge/rapier2d"
+import * as PIXI from "pixi.js"
 import { Entity } from "../entities/entity"
 import { Component } from "./component"
-import { World } from "../util/world"
+import { Room } from "../util/room"
 
 export class PixiComponent extends Component {
 
@@ -16,11 +16,11 @@ export class PixiComponent extends Component {
     moveLeft: boolean = false
     moveRight: boolean = false
 
-    constructor(entity: Entity, world: World, options: { color: string | '#ffffff', moveLeft?: boolean, moveRight?: boolean, size: RAPIER.Vector }) {
-        super(entity, world)
-        const { color, moveLeft, moveRight, size } = options
+    constructor(entity: Entity, room: Room, options: { color: string | '#ffffff', maxSize?: number, moveLeft?: boolean, moveRight?: boolean, size: RAPIER.Vector }) {
+        super(entity, room)
+        const { color, maxSize, moveLeft, moveRight, size } = options
         this.color = color
-        this.maxSize = size.y
+        this.maxSize = maxSize || 200
         this.sprite = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.sprite.tint = this.color
         this.setSize(size)
@@ -32,7 +32,7 @@ export class PixiComponent extends Component {
     }
 
     addToStage() {
-        this.world.engine.app.stage.addChild(this.sprite)
+        this.room.engine.app.stage.addChild(this.sprite)
     }
 
     setPosition(position: RAPIER.Vector): void {
@@ -52,7 +52,7 @@ export class PixiComponent extends Component {
     }
 
     removeFromStage() {
-        this.world.engine.app.stage.removeChild(this.sprite)
+        this.room.engine.app.stage.removeChild(this.sprite)
     }
     
 }

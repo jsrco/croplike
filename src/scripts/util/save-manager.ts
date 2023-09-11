@@ -1,6 +1,7 @@
-import { CreateEntity, EntityMap } from "../entities/create"
+import { EntityMap } from "../entities/create-entity"
 import { Entity } from "../entities/entity"
-import { World } from "./world"
+import { SystemMap } from "./create-room"
+import { Room } from "./room"
 
 export class SaveManager {
 
@@ -8,24 +9,19 @@ export class SaveManager {
 
     constructor() {
         this.data = {
-            entities: []
+            entities: [],
+            systemMap: {}
         }
     }
 
     clearData(): void {
         this.data = {
-            entities: []
+            entities: [],
+            systemMap: {}
         }
     }
 
-    createAllEntityData(world: World): void {
-        for (const entity in world.entities) {
-            const data = this.createEntityData(world.entities[entity])
-            if (data) this.data.entities.push(data)
-        }
-    }
-
-    createEntityData(entity: Entity): EntityMap | undefined {
+    createEntityMap(entity: Entity): EntityMap | undefined {
         if (entity.name !== 'wall') {
             const entityMap: any = {
                 id: entity.id,
@@ -45,13 +41,28 @@ export class SaveManager {
         }
     }
 
+    createRoomData(room: Room): void {
+        for (const entity in room.entities) {
+            const data = this.createEntityMap(room.entities[entity])
+            if (data) this.data.entities.push(data)
+        }
+        this.data.systemMap = this.createSystemsMap(room)
+    }
+
+    createSystemsMap(room: Room): SystemMap {
+        const systemMap = {
+            movement: false,
+            physics: false,
+            render: false,
+        }
+        if (room.getSystemByType('movement')) systemMap.movement = true
+        if (room.getSystemByType('physics')) systemMap.physics = true
+        if (room.getSystemByType('render')) systemMap.render = true
+        return systemMap
+    }
+
     getData() {
         return this.data
     }
-
-    loadEntity(entityMap: EntityMap, world: World) {
-        const entity = CreateEntity(entityMap, world)
-        world.addEntity(entity)
-        if (entity.name === 'player') world.engine.player = entity
-    }
+    
 }

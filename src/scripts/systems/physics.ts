@@ -1,8 +1,8 @@
 import RAPIER from "@dimforge/rapier2d"
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
-import { World } from "../util/world"
 import { System } from "./system"
+import { Room } from "../util/room"
 
 export type Collision = {
   bottom: boolean
@@ -17,8 +17,8 @@ export class PhysicsSystem extends System {
   showColliderBounds: boolean = true
   type: string = 'physics'
 
-  constructor(world: World) {
-    super(world)
+  constructor(room: Room) {
+    super(room)
   }
 
   adjustPosition(colliderInfo: RAPIER.Cuboid, pixiComponent: PixiComponent, rapierComponent: RapierComponent) {
@@ -77,18 +77,18 @@ export class PhysicsSystem extends System {
   }
 
   gatherContactsInfo(contacts: Array<RAPIER.Collider | undefined>, rapierComponent: RapierComponent, collisionStatus: Collision): void {
-    this.world.physicsWorld.contactsWith(rapierComponent.collider, (otherCollider) => {
+    this.room.physicsWorld.contactsWith(rapierComponent.collider, (otherCollider) => {
       contacts.push(otherCollider)
 
-      this.world.physicsWorld.contactPair(rapierComponent.collider, otherCollider, (manifold, flipped) => {
+      this.room.physicsWorld.contactPair(rapierComponent.collider, otherCollider, (manifold, flipped) => {
         const localNormal = flipped ? manifold.localNormal2() : manifold.localNormal1()
-        const otherEntity = this.world.getEntityByHandle(otherCollider.handle)
+        const otherEntity = this.room.getEntityByHandle(otherCollider.handle)
         const otherRaiperComponent = otherEntity?.getComponent('rapier') as RapierComponent
 
-        // Define the world up vector for a 2D game
+        // Define the room up vector for a 2D game
         const upVector = { x: 0, y: 1 }
 
-        // Calculate the cross product (z component) between the contact normal and the world up vector
+        // Calculate the cross product (z component) between the contact normal and the room up vector
         const crossProductZ = localNormal.x * upVector.y - localNormal.y * upVector.x
 
         // Define thresholds for identifying collision sides
@@ -144,7 +144,7 @@ export class PhysicsSystem extends System {
   triggerShowColliderBounds(): void { this.showColliderBounds = !this.showColliderBounds }
 
   update(deltaTime: number): void {
-    this.world.physicsWorld.step(this.world.physicsWorldEventQueue)
+    this.room.physicsWorld.step(this.room.physicsWorldEventQueue)
 
     const entities = this.getEntitiesByComponent('rapier', 'pixi')
     for (const entity of entities) {
