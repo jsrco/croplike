@@ -1,15 +1,17 @@
-import { Engine } from "../engine"
+import RAPIER from "@dimforge/rapier2d"
 import { CreateEntity, EntityMap } from "../entities/create-entity"
-import { bigDemoEntity, demoEntity, growthDemoEntity, player, wall } from "../entities/templates-entity"
+import { wall } from "../entities/templates-entity"
 import { MovementSystem } from "../systems/movement"
 import { PhysicsSystem } from "../systems/physics"
 import { RenderSystem } from "../systems/render"
 import { Room } from "../util/room"
+import { Engine } from "../engine"
 
 const wallThickness: number = 40
 
 export type RoomMap = {
     entities: Array<EntityMap>
+    roomDimensions: RAPIER.Vector2
     systemMap: SystemMap
     options?: any
 }
@@ -21,7 +23,8 @@ export type SystemMap = {
 }
 
 export const createRoom = (engine: Engine, roomMap: RoomMap): Room => {
-    const room = new Room(engine)
+    const { roomDimensions } = roomMap
+    const room = new Room(engine, { roomDimensions })
    
     createEntities(engine, room, roomMap)
     loadSystems(room, roomMap)
@@ -29,32 +32,35 @@ export const createRoom = (engine: Engine, roomMap: RoomMap): Room => {
     return room
 }
 
-const createBounds = (engine: Engine, room: Room): void => {
+const createBounds = (room: Room, roomMap: RoomMap): void => {
+    const { roomDimensions } = roomMap
     // floor
-    setBounds(wall, engine.appDimensions.x / 2, engine.appDimensions.y - (wallThickness / 2), engine.appDimensions.x, wallThickness)
+    setBounds(wall, roomDimensions.x / 2, roomDimensions.y - (wallThickness / 2), roomDimensions.x, wallThickness)
     room.addEntity(CreateEntity(wall, room))
     // leftWall
-    setBounds(wall, wallThickness / 2, (engine.appDimensions.y / 2), wallThickness, engine.appDimensions.y - (wallThickness * 2))
+    setBounds(wall, wallThickness / 2, (roomDimensions.y / 2), wallThickness, roomDimensions.y - (wallThickness * 2))
     room.addEntity(CreateEntity(wall, room))
     // rightWall
-    setBounds(wall, engine.appDimensions.x - (wallThickness / 2), (engine.appDimensions.y / 2), wallThickness, engine.appDimensions.y - (wallThickness * 2))
+    setBounds(wall, roomDimensions.x - (wallThickness / 2), (roomDimensions.y / 2), wallThickness, roomDimensions.y - (wallThickness * 2))
     room.addEntity(CreateEntity(wall, room))
     // ceiling
-    setBounds(wall, engine.appDimensions.x / 2, wallThickness / 2, engine.appDimensions.x, wallThickness)
+    setBounds(wall, roomDimensions.x / 2, wallThickness / 2, roomDimensions.x, wallThickness)
     room.addEntity(CreateEntity(wall, room))
 }
 
 const createEntities = (engine: Engine, room: Room, roomMap: RoomMap): void => {
-    for (let index = 0; index < roomMap.entities.length; index++ ) {
-        if (roomMap.entities[index].name === 'player')  {
-            engine.player = CreateEntity(roomMap.entities[index], room)
+    const { entities } = roomMap
+
+    for (let index = 0; index < entities.length; index++ ) {
+        if (entities[index].name === 'player')  {
+            engine.player = CreateEntity(entities[index], room)
             room.addEntity(engine.player)
         }
-        if (roomMap.entities[index].name === 'bigDemo') room.addEntity(CreateEntity(roomMap.entities[index], room))
-        if (roomMap.entities[index].name === 'demo') room.addEntity(CreateEntity(roomMap.entities[index], room))
-        if (roomMap.entities[index].name === 'growthDemo') room.addEntity(CreateEntity(roomMap.entities[index], room))
+        if (entities[index].name === 'bigDemo') room.addEntity(CreateEntity(entities[index], room))
+        if (entities[index].name === 'demo') room.addEntity(CreateEntity(entities[index], room))
+        if (entities[index].name === 'growthDemo') room.addEntity(CreateEntity(entities[index], room))
     }
-    createBounds(engine, room)
+    createBounds(room, roomMap)
 }
 
 const loadSystems = (room: Room, roomMap: RoomMap): void => {

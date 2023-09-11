@@ -1,9 +1,7 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Ref, ref } from "vue"
-import { CreateEntity, EntityMap } from './entities/create-entity'
 import { Entity } from './entities/entity'
-import { player } from './entities/templates-entity'
 import { RenderSystem } from './systems/render'
 import { createRoom } from "./util/create-room"
 import { demoRoom } from "./util/templates-room"
@@ -12,7 +10,7 @@ import { Room } from './util/room'
 import { SaveManager } from "./util/save-manager"
 export class Engine {
 
-    appDimensions: RAPIER.Vector2 = { x: 1800, y: 1500 }
+    appDimensions: RAPIER.Vector2 = { x: 3000, y: 1500 }
     app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: this.appDimensions.x, height: this.appDimensions.y })
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     name: String = 'Croplike'

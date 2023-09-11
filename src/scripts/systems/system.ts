@@ -1,6 +1,6 @@
-import { Engine } from "../engine"
 import { Entity } from "../entities/entity"
 import { Room } from "../util/room"
+import { Engine } from "../engine"
 
 export class System {
 

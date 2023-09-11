@@ -45,13 +45,13 @@ const debugList = [
         }
     },
     {
-        name: 'load save',
+        name: 'load',
         operation: () => {
             game.load()
         }
     },
     {
-        name: 'pause game',
+        name: 'pause',
         operation: () => {
             game.pause()
         }
@@ -63,7 +63,7 @@ const debugList = [
         }
     },
     {
-        name: 'trigger collider bounds',
+        name: 'trigger collider borders',
         operation: () => {
             const physics = game.room.getSystemByType('physics') as PhysicsSystem
             if (physics) { 
