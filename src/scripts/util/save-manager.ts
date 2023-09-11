@@ -10,6 +10,7 @@ export class SaveManager {
     constructor() {
         this.data = {
             entities: [],
+            roomDimensions: {},
             systemMap: {}
         }
     }
@@ -17,6 +18,7 @@ export class SaveManager {
     clearData(): void {
         this.data = {
             entities: [],
+            roomDimensions: {},
             systemMap: {}
         }
     }
@@ -42,10 +44,12 @@ export class SaveManager {
     }
 
     createRoomData(room: Room): void {
-        for (const entity in room.entities) {
-            const data = this.createEntityMap(room.entities[entity])
+        const { entities, roomDimensions } = room
+        for (const entity in entities) {
+            const data = this.createEntityMap(entities[entity])
             if (data) this.data.entities.push(data)
         }
+        this.data.roomDimensions = roomDimensions
         this.data.systemMap = this.createSystemsMap(room)
     }
 
