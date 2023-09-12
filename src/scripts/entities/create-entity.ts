@@ -21,8 +21,6 @@ export const CreateEntity = (entityMap: EntityMap, room: Room): Entity => {
             new PixiComponent(entity, room, entityMap.options)
         )
     if (entityMap.componentMap.rapier)
-        // check for position and adjust here
-        // const yPos = position.y && position.y + size.y / 2 <= this.room.roomDimensions.y ? position.y : this.room.roomDimensions.y - this.room.wallSize - (size.y / 2)
         components.push(
             new RapierComponent(entity, room, entityMap.options)
         )

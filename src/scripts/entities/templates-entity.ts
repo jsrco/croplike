@@ -86,7 +86,7 @@ export const player: EntityMap = {
         color: ColorSwatch.green[3],
         position: {
             x: 60,
-            // y: 1450,
+            y: 1450,
         },
         size: {
             x: 20,

@@ -30,6 +30,8 @@ export class Room {
 
     addEntity(entity: Entity): void {
         if (!this.isTouching(entity, this.entities)) this.entities.push(entity)
+        // else find new spot
+        // also check that entity is in bounds
     }
 
     addSystem(system: System): void {
