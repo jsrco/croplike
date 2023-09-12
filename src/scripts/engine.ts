@@ -21,6 +21,8 @@ export class Engine {
         fontSize: 8,
         fill: ['#000000'],
     })
+
+    currentRoom!: Room
     room: Room = createRoom(this, demoRoom)
 
     player!: Entity
@@ -28,6 +30,7 @@ export class Engine {
     constructor() {
         // set app
         this.app.stage.eventMode = 'static'
+        this.switchRoom()
         this.app.ticker.add((delta) => {
             this.update(delta)
         })
@@ -101,8 +104,13 @@ export class Engine {
         this.pause()
     }
 
+    switchRoom(): void {
+        this.currentRoom = this.room
+        this.app.renderer.resize(this.currentRoom.roomDimensions.x, this.currentRoom.roomDimensions.y)
+    }
+
     update(delta: number) {
-        if (!this.paused.value) this.room.update(delta)
+        if (!this.paused.value) this.currentRoom.update(delta)
     }
 
 }
