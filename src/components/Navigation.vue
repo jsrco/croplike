@@ -25,7 +25,17 @@ import { PhysicsSystem } from "../scripts/systems/physics"
 
 const { game } = useEngine()
 
+const switchRoom = ref(0)
+
 const debugList = [
+    {
+        name: 'switch room demo',
+        operation: () => {
+            if (switchRoom.value === 0) switchRoom.value = 1
+            else switchRoom.value = 0
+            game.switchRoom(switchRoom.value, game.player)
+        }
+    },
     {
         name: 'console.dir info',
         operation: () => {

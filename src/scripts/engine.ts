@@ -1,10 +1,12 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Ref, ref } from "vue"
+import { EntityMap } from "./entities/create-entity"
 import { Entity } from './entities/entity'
+import { player } from "./entities/templates-entity"
 import { RenderSystem } from './systems/render'
-import { createRoom } from "./util/create-room"
-import { demoRoom } from "./util/templates-room"
+import { CreateRoom, RoomMap } from "./util/create-room"
+import { demoRoom, secondRoom, startRoom } from "./util/templates-room"
 import { LocalStorageManager } from "./util/local-storage-manager"
 import { Room } from './util/room'
 import { SaveManager } from "./util/save-manager"
@@ -22,15 +24,19 @@ export class Engine {
         fill: ['#000000'],
     })
 
-    currentRoom!: Room
-    room: Room = createRoom(this, demoRoom)
+    room!: Room
+    roomIndex: number = 0
+    rooms: Array<RoomMap>
 
     player!: Entity
 
     constructor() {
         // set app
         this.app.stage.eventMode = 'static'
-        this.switchRoom()
+
+        this.rooms = [demoRoom, secondRoom, startRoom]
+        this.switchRoom(2)
+
         this.app.ticker.add((delta) => {
             this.update(delta)
         })
@@ -74,8 +80,11 @@ export class Engine {
         const saveData: any = this.localStorageManager.getData()
         if (Object.keys(saveData).length !== 0) {
             this.paused.value = true
+            this.roomIndex = saveData.room
+            this.rooms = saveData.rooms
             this.app.stage.removeChildren()
-            this.room = createRoom(this, saveData)
+            this.room = CreateRoom(this, this.rooms[this.roomIndex])
+            this.app.renderer.resize(this.room.roomDimensions.x, this.room.roomDimensions.y)
             this.pause()
         } else console.log('no saved data')
     }
@@ -99,18 +108,43 @@ export class Engine {
         this.paused.value = true
         this.localStorageManager.clearData()
         this.saveManager.clearData()
-        this.saveManager.createRoomData(this.room)
+        this.rooms[this.roomIndex] = this.saveManager.createRoomMap(this.room)
+        this.saveManager.setData(this.roomIndex, this.rooms)
         this.localStorageManager.saveData(this.saveManager.data)
         this.pause()
     }
 
-    switchRoom(): void {
-        this.currentRoom = this.room
-        this.app.renderer.resize(this.currentRoom.roomDimensions.x, this.currentRoom.roomDimensions.y)
+    switchEntityToRoom(targetIndex: number, targetEntity: Entity): void {
+        const entities = this.rooms[this.roomIndex].entities
+        for (let index = 0; index < entities.length; index++) {
+            const entity = entities[index]
+            if (entity.id === targetEntity.id) {
+                entities.splice(index, 1)
+                break
+            }
+        }
+        const entityInfo = this.saveManager.createEntityMap(targetEntity)
+        this.rooms[targetIndex].entities.push(entityInfo as EntityMap)
+    }
+
+    switchRoom(targetIndex: number, targetEntity?: Entity): void {
+        this.pause()
+        if (this.room && targetEntity) {
+            this.room.removeEntity(targetEntity)
+        }
+        this.app.stage.removeChildren()
+        // if target entity add it to the room data
+        if (targetEntity) {
+            this.switchEntityToRoom(targetIndex, targetEntity)
+        }
+        this.room = CreateRoom(this, this.rooms[targetIndex])
+        this.roomIndex = targetIndex
+        this.app.renderer.resize(this.room.roomDimensions.x, this.room.roomDimensions.y)
+        this.pause()
     }
 
     update(delta: number) {
-        if (!this.paused.value) this.currentRoom.update(delta)
+        if (!this.paused.value) this.room.update(delta)
     }
 
 }

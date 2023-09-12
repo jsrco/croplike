@@ -36,8 +36,7 @@ export class RapierComponent extends Component {
         this.collider.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS)
 
         this.colliderGraphics = new PIXI.Graphics()
-        this.room.engine.app.stage.addChild(this.colliderGraphics)
-
+        this.addColliderGraphics()
         this.owner.handle = this.collider.handle
         
         if (canGrow) this.canGrow = canGrow
@@ -49,15 +48,23 @@ export class RapierComponent extends Component {
         if (velocity) this.setVelocity(velocity)
     }
 
+    addColliderGraphics(): void {
+        this.room.engine.app.stage.addChild(this.colliderGraphics)
+    }
+
     clearColliderGraphics(): void { 
         this.cleared = true
         this.colliderGraphics.clear()
     }
-
+    
     getRigidBodyDesc(string: string): RAPIER.RigidBodyDesc {
         if (string === 'fixed') return RAPIER.RigidBodyDesc.fixed()
         if (string === 'KinematicVelocityBased') return RAPIER.RigidBodyDesc.kinematicVelocityBased()
         return RAPIER.RigidBodyDesc.dynamic()
+    }
+
+    removeColliderGraphics(): void {
+        this.room.engine.app.stage.removeChild(this.colliderGraphics)
     }
 
     setDominance(dominance: { isIt: boolean, group: number }): void {

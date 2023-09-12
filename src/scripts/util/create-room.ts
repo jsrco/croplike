@@ -22,16 +22,6 @@ export type SystemMap = {
     render?: boolean, 
 }
 
-export const createRoom = (engine: Engine, roomMap: RoomMap): Room => {
-    const { roomDimensions } = roomMap
-    const room = new Room(engine, { roomDimensions })
-   
-    createEntities(engine, room, roomMap)
-    loadSystems(room, roomMap)
-
-    return room
-}
-
 const createBounds = (room: Room, roomMap: RoomMap): void => {
     const { roomDimensions } = roomMap
     // floor
@@ -61,6 +51,16 @@ const createEntities = (engine: Engine, room: Room, roomMap: RoomMap): void => {
         if (entities[index].name === 'growthDemo') room.addEntity(CreateEntity(entities[index], room))
     }
     createBounds(room, roomMap)
+}
+
+export const CreateRoom = (engine: Engine, roomMap: RoomMap): Room => {
+    const { roomDimensions } = roomMap
+    const room = new Room(engine, { roomDimensions })
+   
+    createEntities(engine, room, roomMap)
+    loadSystems(room, roomMap)
+
+    return room
 }
 
 const loadSystems = (room: Room, roomMap: RoomMap): void => {
