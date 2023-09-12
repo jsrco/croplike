@@ -1,23 +1,25 @@
 import { EntityMap } from "../entities/create-entity"
 import { Entity } from "../entities/entity"
-import { SystemMap } from "./create-room"
+import { RoomMap, SystemMap } from "./create-room"
 import { Room } from "./room"
 
 export class SaveManager {
 
-    data: any
-
+    data: {
+        room: number
+        rooms: Array<RoomMap>
+    }
     constructor() {
         this.data = {
-            entities: [],
-            systemMap: {}
+            room: 0,
+            rooms: []
         }
     }
 
     clearData(): void {
         this.data = {
-            entities: [],
-            systemMap: {}
+            room: 0,
+            rooms: []
         }
     }
 
@@ -41,12 +43,24 @@ export class SaveManager {
         }
     }
 
-    createRoomData(room: Room): void {
-        for (const entity in room.entities) {
-            const data = this.createEntityMap(room.entities[entity])
-            if (data) this.data.entities.push(data)
+    createRoomMap(room: Room): RoomMap {
+        let roomData: RoomMap = {
+            entities: [],
+            roomDimensions: { x:0, y:0 },
+            systemMap: {
+                movement: false,
+                physics: false,
+                render: false
+            }
         }
-        this.data.systemMap = this.createSystemsMap(room)
+        const { entities, roomDimensions } = room
+        for (const entity in entities) {
+            const data = this.createEntityMap(entities[entity])
+            if (data) roomData.entities.push(data)
+        }
+        roomData.roomDimensions = roomDimensions
+        roomData.systemMap = this.createSystemsMap(room)
+        return roomData
     }
 
     createSystemsMap(room: Room): SystemMap {
@@ -63,6 +77,11 @@ export class SaveManager {
 
     getData() {
         return this.data
+    }
+
+    setData(room: number, rooms: Array<RoomMap>):void {
+        this.data.room = room
+        this.data.rooms = rooms
     }
     
 }

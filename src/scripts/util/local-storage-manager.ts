@@ -5,12 +5,7 @@ export class LocalStorageManager<T> {
 
     constructor(localStorageKey: string) {
         this.localStorageKey = localStorageKey
-        const storedData = localStorage.getItem(this.localStorageKey)
-        if (storedData) {
-            this.data = JSON.parse(storedData)
-        } else {
-            this.data = {}
-        }
+        this.data = this.getData()
     }
 
     clearData(): void {
@@ -19,6 +14,12 @@ export class LocalStorageManager<T> {
     }
 
     getData(): T | {} {
+        const storedData = localStorage.getItem(this.localStorageKey)
+        if (storedData) {
+            this.data = JSON.parse(storedData)
+        } else {
+            this.data = {}
+        }
         return this.data
     }
     

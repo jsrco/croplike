@@ -1,10 +1,11 @@
 import RAPIER from "@dimforge/rapier2d"
-import { PixiComponent } from "../components/pixi"
-import { Engine } from "../engine"
 import { Entity } from "../entities/entity"
+import { PixiComponent } from "../components/pixi"
+import { RapierComponent } from "../components/rapier"
 import { System } from "../systems/system"
 import { EventManager } from "./event-manager"
 import { KeyboardController } from "./keyboard-controller"
+import { Engine } from "../engine"
 
 export class Room {
 
@@ -14,16 +15,23 @@ export class Room {
     keyboardController: KeyboardController = new KeyboardController(this.eventManager)
     physicsWorld: RAPIER.World = new RAPIER.World({ x: 0.0, y: 500.0 })
     physicsWorldEventQueue: RAPIER.EventQueue = new RAPIER.EventQueue(true)
+    roomDimensions: RAPIER.Vector2
     systems: System[]
+    wallSize: number = 40
 
-    constructor(engine: Engine) {
+    constructor(engine: Engine, options: { roomDimensions: RAPIER.Vector }) {
+        const { roomDimensions } = options
+
         this.engine = engine
         this.entities = []
+        this.roomDimensions = roomDimensions
         this.systems = []
     }
 
     addEntity(entity: Entity): void {
         if (!this.isTouching(entity, this.entities)) this.entities.push(entity)
+        // else find new spot
+        // also check that entity is in bounds
     }
 
     addSystem(system: System): void {
@@ -78,6 +86,10 @@ export class Room {
         if (index !== -1) {
             this.entities.splice(index, 1)
         }
+        const pixiComponent = entity.getComponent('pixi') as PixiComponent
+        if (pixiComponent) pixiComponent.removeFromStage()
+        const rapierComponent = entity.getComponent('rapier') as RapierComponent
+        if (rapierComponent) rapierComponent.removeColliderGraphics()
     }
 
     removeSystem(system: System): void {

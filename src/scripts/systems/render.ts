@@ -31,22 +31,23 @@ export class RenderSystem extends System {
     adjustCamera(): void {
         const targetCenterX = this.targetInfo.sprite.x + this.targetInfo.sprite.width / 2
         const targetCenterY = this.targetInfo.sprite.y + this.targetInfo.sprite.height / 2
+        const roomWidth = this.room.roomDimensions.x
+        const roomHeight = this.room.roomDimensions.y
         const left = 0
         const top = 0
-        const right = this.room.engine.app.renderer.width
-        const bottom = this.room.engine.app.renderer.height
+        const right = roomWidth
+        const bottom = roomHeight
         let stagePositionX = this.stageCenterX - targetCenterX
         let stagePositionY = this.stageCenterY - targetCenterY
-        if (stagePositionX > left) {
-            stagePositionX = left
-        } else if (stagePositionX + right < window.innerWidth) {
-            stagePositionX = window.innerWidth - right
-        }
-        if (stagePositionY > top) {
-            stagePositionY = top
-        } else if (stagePositionY + bottom < window.innerHeight - 36) {
-            stagePositionY = window.innerHeight - 36 - bottom
-        }
+
+        // Calculate the maximum allowable stage positions
+        const maxStagePositionX = Math.min(left, window.innerWidth - right)
+        const maxStagePositionY = Math.min(top, window.innerHeight - 36 - bottom)
+
+        // Ensure stagePositionX and stagePositionY stay within the boundaries
+        stagePositionX = Math.max(maxStagePositionX, Math.min(stagePositionX, 0))
+        stagePositionY = Math.max(maxStagePositionY, Math.min(stagePositionY, 0))
+
         this.room.engine.app.stage.position.set(stagePositionX, stagePositionY)
     }
 

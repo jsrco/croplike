@@ -1,8 +1,8 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Entity } from "../entities/entity"
-import { Component } from "./component"
 import { Room } from "../util/room"
+import { Component } from "./component"
 
 export class RapierComponent extends Component {
 
@@ -36,10 +36,9 @@ export class RapierComponent extends Component {
         this.collider.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS)
 
         this.colliderGraphics = new PIXI.Graphics()
-        this.room.engine.app.stage.addChild(this.colliderGraphics)
-
+        this.addColliderGraphics()
         this.owner.handle = this.collider.handle
-        
+
         if (canGrow) this.canGrow = canGrow
         if (dominance && dominance.isIt) this.setDominance(dominance)
         if (isColliding) this.setIsColliding(isColliding)
@@ -49,7 +48,11 @@ export class RapierComponent extends Component {
         if (velocity) this.setVelocity(velocity)
     }
 
-    clearColliderGraphics(): void { 
+    addColliderGraphics(): void {
+        this.room.engine.app.stage.addChild(this.colliderGraphics)
+    }
+
+    clearColliderGraphics(): void {
         this.cleared = true
         this.colliderGraphics.clear()
     }
@@ -60,34 +63,38 @@ export class RapierComponent extends Component {
         return RAPIER.RigidBodyDesc.dynamic()
     }
 
+    removeColliderGraphics(): void {
+        this.room.engine.app.stage.removeChild(this.colliderGraphics)
+    }
+
     setDominance(dominance: { isIt: boolean, group: number }): void {
         this.body.setDominanceGroup(dominance.group)
         this.dominance = dominance
     }
-    
-    setIsColliding(isIt: boolean):void {
+
+    setIsColliding(isIt: boolean): void {
         this.isColliding = isIt
     }
 
-    setIsOnGround(isIt: boolean):void {
+    setIsOnGround(isIt: boolean): void {
         this.isOnGround = isIt
     }
 
-    setIsRiding(isIt: boolean):void {
+    setIsRiding(isIt: boolean): void {
         this.isRiding = isIt
     }
 
-    setIsStoodOn(isIt: boolean):void {
+    setIsStoodOn(isIt: boolean): void {
         this.isStoodOn = isIt
     }
 
-    setVelocity(velocity: RAPIER.Vector):void {
+    setVelocity(velocity: RAPIER.Vector): void {
         this.body.setLinvel(velocity, true)
         this.velocity = velocity
     }
 
     // Add this method to update the collider visualization based on the current state
-    updateGraphics():void {
+    updateGraphics(): void {
         const { x, y } = this.body.translation()
         const { halfExtents } = this.collider.shape as RAPIER.Cuboid
         // Clear previous graphics and draw the new shape

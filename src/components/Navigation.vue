@@ -25,7 +25,17 @@ import { PhysicsSystem } from "../scripts/systems/physics"
 
 const { game } = useEngine()
 
+const switchRoom = ref(0)
+
 const debugList = [
+    {
+        name: 'switch room demo',
+        operation: () => {
+            if (switchRoom.value === 0) switchRoom.value = 1
+            else switchRoom.value = 0
+            game.switchRoom(switchRoom.value, game.player)
+        }
+    },
     {
         name: 'console.dir info',
         operation: () => {
@@ -45,13 +55,13 @@ const debugList = [
         }
     },
     {
-        name: 'load save',
+        name: 'load',
         operation: () => {
             game.load()
         }
     },
     {
-        name: 'pause game',
+        name: 'pause',
         operation: () => {
             game.pause()
         }
@@ -63,7 +73,7 @@ const debugList = [
         }
     },
     {
-        name: 'trigger collider bounds',
+        name: 'trigger collider borders',
         operation: () => {
             const physics = game.room.getSystemByType('physics') as PhysicsSystem
             if (physics) { 
