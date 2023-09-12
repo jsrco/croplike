@@ -17,6 +17,7 @@ export class Room {
     physicsWorldEventQueue: RAPIER.EventQueue = new RAPIER.EventQueue(true)
     roomDimensions: RAPIER.Vector2
     systems: System[]
+    wallSize: number = 40
 
     constructor(engine: Engine, options: { roomDimensions: RAPIER.Vector }) {
         const { roomDimensions } = options

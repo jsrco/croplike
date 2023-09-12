@@ -7,8 +7,6 @@ import { RenderSystem } from "../systems/render"
 import { Room } from "../util/room"
 import { Engine } from "../engine"
 
-const wallThickness: number = 40
-
 export type RoomMap = {
     entities: Array<EntityMap>
     roomDimensions: RAPIER.Vector2
@@ -25,16 +23,16 @@ export type SystemMap = {
 const createBounds = (room: Room, roomMap: RoomMap): void => {
     const { roomDimensions } = roomMap
     // floor
-    setBounds(wall, roomDimensions.x / 2, roomDimensions.y - (wallThickness / 2), roomDimensions.x, wallThickness)
+    setBounds(wall, roomDimensions.x / 2, roomDimensions.y - (room.wallSize / 2), roomDimensions.x, room.wallSize)
     room.addEntity(CreateEntity(wall, room))
     // leftWall
-    setBounds(wall, wallThickness / 2, (roomDimensions.y / 2), wallThickness, roomDimensions.y - (wallThickness * 2))
+    setBounds(wall, room.wallSize / 2, (roomDimensions.y / 2), room.wallSize, roomDimensions.y - (room.wallSize * 2))
     room.addEntity(CreateEntity(wall, room))
     // rightWall
-    setBounds(wall, roomDimensions.x - (wallThickness / 2), (roomDimensions.y / 2), wallThickness, roomDimensions.y - (wallThickness * 2))
+    setBounds(wall, roomDimensions.x - (room.wallSize / 2), (roomDimensions.y / 2), room.wallSize, roomDimensions.y - (room.wallSize * 2))
     room.addEntity(CreateEntity(wall, room))
     // ceiling
-    setBounds(wall, roomDimensions.x / 2, wallThickness / 2, roomDimensions.x, wallThickness)
+    setBounds(wall, roomDimensions.x / 2, room.wallSize / 2, roomDimensions.x, room.wallSize)
     room.addEntity(CreateEntity(wall, room))
 }
 

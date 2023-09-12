@@ -13,7 +13,7 @@ export const demoRoom: RoomMap = {
 
 export const secondRoom: RoomMap = {
     entities: [ bigDemoEntity, demoEntity, growthDemoEntity ],
-    roomDimensions:  { x: 1200, y: 1500 },
+    roomDimensions:  { x: 1200, y: 500 },
     systemMap: {
         movement: true,
         physics: true,
