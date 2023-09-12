@@ -34,8 +34,9 @@ export class Engine {
         // set app
         this.app.stage.eventMode = 'static'
 
+        this.roomIndex = 2
         this.rooms = [demoRoom, secondRoom, startRoom]
-        this.switchRoom(2)
+        this.switchRoom(this.roomIndex)
 
         this.app.ticker.add((delta) => {
             this.update(delta)
@@ -81,11 +82,11 @@ export class Engine {
         if (Object.keys(saveData).length !== 0) {
             this.paused.value = true
             this.roomIndex = saveData.room
+            this.rooms = []
             this.rooms = saveData.rooms
             this.app.stage.removeChildren()
-            this.room = CreateRoom(this, this.rooms[this.roomIndex])
+            this.switchRoom(this.roomIndex)
             this.app.renderer.resize(this.room.roomDimensions.x, this.room.roomDimensions.y)
-            this.pause()
         } else console.log('no saved data')
     }
 
@@ -128,12 +129,11 @@ export class Engine {
     }
 
     switchRoom(targetIndex: number, targetEntity?: Entity): void {
-        this.pause()
+        this.paused.value = true
         if (this.room && targetEntity) {
             this.room.removeEntity(targetEntity)
         }
         this.app.stage.removeChildren()
-        // if target entity add it to the room data
         if (targetEntity) {
             this.switchEntityToRoom(targetIndex, targetEntity)
         }
