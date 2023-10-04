@@ -3,7 +3,6 @@ import * as PIXI from "pixi.js"
 import { Ref, ref } from "vue"
 import { EntityMap } from "./entities/create-entity"
 import { Entity } from './entities/entity'
-import { player } from "./entities/templates-entity"
 import { RenderSystem } from './systems/render'
 import { CreateRoom, RoomMap } from "./util/create-room"
 import { demoRoom, secondRoom, startRoom } from "./util/templates-room"
