@@ -5,10 +5,10 @@ import { EntityMap } from "./entities/create-entity"
 import { Entity } from './entities/entity'
 import { RenderSystem } from './systems/render'
 import { CreateRoom, RoomMap } from "./util/create-room"
-import { demoRoom, secondRoom, startRoom } from "./util/templates-room"
 import { LocalStorageManager } from "./util/local-storage-manager"
 import { Room } from './util/room'
 import { SaveManager } from "./util/save-manager"
+import { demoRoom, secondRoom, startRoom } from "./util/templates-room"
 export class Engine {
 
     appDimensions: RAPIER.Vector2 = { x: 3000, y: 1500 }

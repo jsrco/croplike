@@ -1,9 +1,12 @@
-import { Engine } from "../scripts/rt/engine"
+import { Engine as RTEngine } from "../scripts/rt/engine"
+import { Engine as TBEngine } from "../scripts/tb/engine"
 
-const game = new Engine()
+const RTGame = new RTEngine()
+const TBGame = new TBEngine()
 const useEngine = () => {
     return {
-        game,
+        RTGame,
+        TBGame,
     }
 }
 

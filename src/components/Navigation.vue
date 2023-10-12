@@ -23,59 +23,59 @@ import { ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
 import { PhysicsSystem } from "../scripts/rt/systems/physics"
 
-const { game } = useEngine()
+const { RTGame, TBGame } = useEngine()
 
 const switchRoom = ref(0)
 
-const debugList = [
+const croplike = [
     {
         name: 'switch room demo',
         operation: () => {
             if (switchRoom.value === 0) switchRoom.value = 1
             else switchRoom.value = 0
-            game.switchRoom(switchRoom.value, game.player)
+            RTGame.switchRoom(switchRoom.value, RTGame.player)
         }
     },
     {
         name: 'console.dir info',
         operation: () => {
-            console.dir(game)
+            console.dir(RTGame)
         }
     },
     {
         name: 'console.dir save',
         operation: () => {
-            console.dir(game.localStorageManager.getData())
+            console.dir(RTGame.localStorageManager.getData())
         }
     },
     {
         name: 'clear save',
         operation: () => {
-            game.localStorageManager.clearData()
+            RTGame.localStorageManager.clearData()
         }
     },
     {
         name: 'load',
         operation: () => {
-            game.load()
+            RTGame.load()
         }
     },
     {
         name: 'pause',
         operation: () => {
-            game.pause()
+            RTGame.pause()
         }
     },
     {
         name: 'save',
         operation: () => {
-            game.save()
+            RTGame.save()
         }
     },
     {
         name: 'trigger collider borders',
         operation: () => {
-            const physics = game.room.getSystemByType('physics') as PhysicsSystem
+            const physics = RTGame.room.getSystemByType('physics') as PhysicsSystem
             if (physics) { 
                 console.log('ran')
                 physics.triggerShowColliderBounds()
@@ -83,6 +83,18 @@ const debugList = [
         }
     },
 ]
+
+const fields = [
+    {
+        name: 'console.dir info',
+        operation: () => {
+            console.dir(TBGame)
+        }
+    },
+]
+
+// const debugList = RTGame.name === 'Croplike' ?  croplike : fields
+const debugList = TBGame.name === 'Croplike' ?  croplike : fields
 
 const isInDebug: Ref<Boolean> = ref(false)
 
