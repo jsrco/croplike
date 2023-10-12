@@ -14,7 +14,7 @@ import { onMounted, ref } from "vue"
 import useEngine from "../composeables/use-engine"
 
 const gameContainer = ref()
-const { TBGame } = useEngine()
+const { RTGame, TBGame } = useEngine()
 
 onMounted(() => {
     const PressStart2P = new FontFace(

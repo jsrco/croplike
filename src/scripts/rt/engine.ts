@@ -1,11 +1,11 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Ref, ref } from "vue"
+import { Entity } from '../shared/entities/entity'
+import { LocalStorageManager } from "../shared/util/local-storage-manager"
 import { EntityMap } from "./entities/create-entity"
-import { Entity } from './entities/entity'
 import { RenderSystem } from './systems/render'
 import { CreateRoom, RoomMap } from "./util/create-room"
-import { LocalStorageManager } from "./util/local-storage-manager"
 import { Room } from './util/room'
 import { SaveManager } from "./util/save-manager"
 import { demoRoom, secondRoom, startRoom } from "./util/templates-room"

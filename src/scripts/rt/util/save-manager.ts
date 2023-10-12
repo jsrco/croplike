@@ -1,5 +1,5 @@
+import { Entity } from "../../shared/entities/entity"
 import { EntityMap } from "../entities/create-entity"
-import { Entity } from "../entities/entity"
 import { RoomMap, SystemMap } from "./create-room"
 import { Room } from "./room"
 

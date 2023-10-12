@@ -1,11 +1,13 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Ref, ref } from "vue"
+import { LocalStorageManager } from "../shared/util/local-storage-manager"
 
 export class Engine {
 
     appDimensions: RAPIER.Vector2 = { x: 3000, y: 1500 }
     app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: this.appDimensions.x, height: this.appDimensions.y })
+    localStorageManager = new LocalStorageManager('field-v0-game-data')
     name: String = 'Fields'
     paused: Ref<Boolean> = ref(false)
     shifting: Ref<Boolean> = ref(false)

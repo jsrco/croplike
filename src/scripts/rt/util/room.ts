@@ -1,10 +1,10 @@
 import RAPIER from "@dimforge/rapier2d"
-import { Entity } from "../entities/entity"
+import { Entity } from "../../shared/entities/entity"
+import { System } from "../../shared/systems/system"
+import { EventManager } from "../../shared/util/event-manager"
+import { KeyboardController } from "../../shared/util/keyboard-controller"
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
-import { System } from "../systems/system"
-import { EventManager } from "./event-manager"
-import { KeyboardController } from "./keyboard-controller"
 import { Engine } from "../engine"
 
 export class Room {
