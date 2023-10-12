@@ -1,4 +1,4 @@
-import { Engine } from "../scripts/engine"
+import { Engine } from "../scripts/rt/engine"
 
 const game = new Engine()
 const useEngine = () => {

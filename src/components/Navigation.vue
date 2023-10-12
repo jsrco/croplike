@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
-import { PhysicsSystem } from "../scripts/systems/physics"
+import { PhysicsSystem } from "../scripts/rt/systems/physics"
 
 const { game } = useEngine()
 
@@ -100,3 +100,4 @@ window.onclick = (e) => {
 }
 
 </script>
+../scripts/rt/systems/physics

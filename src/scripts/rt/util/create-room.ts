@@ -1,11 +1,11 @@
 import RAPIER from "@dimforge/rapier2d"
+import { Engine } from "../engine"
 import { CreateEntity, EntityMap } from "../entities/create-entity"
 import { wall } from "../entities/templates-entity"
 import { MovementSystem } from "../systems/movement"
 import { PhysicsSystem } from "../systems/physics"
 import { RenderSystem } from "../systems/render"
-import { Room } from "../util/room"
-import { Engine } from "../engine"
+import { Room } from "./room"
 
 export type RoomMap = {
     entities: Array<EntityMap>
