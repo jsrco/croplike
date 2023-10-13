@@ -112,4 +112,3 @@ window.onclick = (e) => {
 }
 
 </script>
-../scripts/rt/systems/physics

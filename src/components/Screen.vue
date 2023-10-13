@@ -24,10 +24,13 @@ onMounted(() => {
         "PixiPressStart2P",
         "url('./assets/fonts/PressStart2P-Regular.ttf')"
     )
+
     PressStart2P.load().then(function (font) {
         // with canvas, if this is ommited won't work
         document.fonts.add(font)
+        game.startRun()
         game.addCanvas(gameContainer.value)
     })
+    
 })
 </script>

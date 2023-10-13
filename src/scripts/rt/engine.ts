@@ -1,6 +1,5 @@
 import RAPIER from "@dimforge/rapier2d"
-import * as PIXI from "pixi.js"
-import { Ref, ref } from "vue"
+import { Base } from "../shared/base"
 import { Entity } from '../shared/entities/entity'
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
 import { EntityMap } from "./entities/create-entity"
@@ -9,37 +8,27 @@ import { CreateRoom, RoomMap } from "./util/create-room"
 import { Room } from './util/room'
 import { SaveManager } from "./util/save-manager"
 import { demoRoom, secondRoom, startRoom } from "./util/templates-room"
-export class Engine {
+
+export class Engine extends Base {
 
     appDimensions: RAPIER.Vector2 = { x: 3000, y: 1500 }
-    app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: this.appDimensions.x, height: this.appDimensions.y })
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     name: String = 'Croplike'
-    paused: Ref<Boolean> = ref(false)
     saveManager: SaveManager = new SaveManager()
-    textStyle: PIXI.TextStyle = new PIXI.TextStyle({
-        fontFamily: 'PixiPressStart2P',
-        fontSize: 8,
-        fill: ['#000000'],
-    })
-
+    
     room!: Room
     roomIndex: number = 0
     rooms: Array<RoomMap>
 
     player!: Entity
 
-    constructor() {
+    constructor(run?:boolean) {
         // set app
-        this.app.stage.eventMode = 'static'
+        super(run)
 
         this.roomIndex = 2
         this.rooms = [demoRoom, secondRoom, startRoom]
         this.switchRoom(this.roomIndex)
-
-        this.app.ticker.add((delta) => {
-            this.update(delta)
-        })
 
         window.addEventListener('keydown', (event) => {
             if (event.key === 'l') {
@@ -48,24 +37,8 @@ export class Engine {
         })
 
         window.addEventListener('keydown', (event) => {
-            if (event.key === 'p') {
-                this.pause()
-            }
-        })
-
-        window.addEventListener('keydown', (event) => {
             if (event.key === 's') {
                 this.save()
-            }
-        })
-
-        window.addEventListener('blur', () => {
-            if (this.paused.value === false) this.pause()
-        })
-
-        window.addEventListener("visibilitychange", () => {
-            if (document.visibilityState === 'hidden') {
-                if (this.paused.value === false) this.pause()
             }
         })
     }
@@ -87,21 +60,6 @@ export class Engine {
             this.switchRoom(this.roomIndex)
             this.app.renderer.resize(this.room.roomDimensions.x, this.room.roomDimensions.y)
         } else console.log('no saved data')
-    }
-
-    pause(): void {
-        this.paused.value = !this.paused.value
-        if (this.paused.value) this.pauseTicker()
-        else this.resumeTicker()
-    }
-
-    pauseTicker(): void {
-        this.app.ticker.stop()
-        this.app.renderer.clear()
-    }
-
-    resumeTicker(): void {
-        this.app.ticker.start()
     }
 
     save(): void {
@@ -143,7 +101,8 @@ export class Engine {
     }
 
     update(delta: number) {
-        if (!this.paused.value) this.room.update(delta)
+        // if (!this.paused.value && this.running.value) console.log('croplike running')
+        if (!this.paused.value && this.running.value) this.room.update(delta)
     }
 
 }
