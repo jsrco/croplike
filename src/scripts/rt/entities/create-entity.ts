@@ -1,7 +1,7 @@
-import { Entity } from "../../shared/entities/entity"
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
 import { Room } from "../util/room"
+import { Entity } from "./entity"
 
 export type EntityMap = {
     id?: string

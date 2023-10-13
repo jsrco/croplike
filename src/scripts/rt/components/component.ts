@@ -1,5 +1,5 @@
-import { Room } from "../../rt/util/room"
 import { Entity } from "../entities/entity"
+import { Room } from "../util/room"
 
 interface SaveObject {
     [key: string]: any

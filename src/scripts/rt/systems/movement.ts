@@ -1,7 +1,7 @@
-import { System } from "../../shared/systems/system"
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
 import { Room } from "../util/room"
+import { System } from "./system"
 
 export class MovementSystem extends System {
 
