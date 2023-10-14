@@ -44,7 +44,7 @@ export class Base {
         if (run) this.startRun()
     }
 
-    addCanvas(elementRef: any ) { 
+    addCanvas(elementRef: HTMLElement ) { 
         // Override this method in each subclass
     }
 
