@@ -93,8 +93,7 @@ const fields = [
     },
 ]
 
-// const debugList = RTGame.name === 'Croplike' ?  croplike : fields
-const debugList = TBGame.name === 'Croplike' ?  croplike : fields
+const debugList = fields // croplike
 
 const isInDebug: Ref<Boolean> = ref(false)
 

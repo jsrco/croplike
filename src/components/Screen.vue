@@ -16,8 +16,7 @@ import useEngine from "../composeables/use-engine"
 const gameContainer = ref()
 const { RTGame, TBGame } = useEngine()
 
-// const game = RTGame
-const game = TBGame
+const game = TBGame // RTGame
 
 onMounted(() => {
     const PressStart2P = new FontFace(
