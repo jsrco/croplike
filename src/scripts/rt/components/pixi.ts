@@ -1,7 +1,7 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Entity } from "../entities/entity"
-import { Room } from "../util/room"
+import { World } from "../util/world"
 import { Component } from "./component"
 
 export class PixiComponent extends Component {
@@ -16,8 +16,8 @@ export class PixiComponent extends Component {
     moveLeft: boolean = false
     moveRight: boolean = false
 
-    constructor(entity: Entity, room: Room, options: { color: string | '#ffffff', maxSize?: number, moveLeft?: boolean, moveRight?: boolean, size: RAPIER.Vector }) {
-        super(entity, room)
+    constructor(entity: Entity, world: World, options: { color: string | '#ffffff', maxSize?: number, moveLeft?: boolean, moveRight?: boolean, size: RAPIER.Vector }) {
+        super(entity, world)
         const { color, maxSize, moveLeft, moveRight, size } = options
         this.color = color
         this.maxSize = maxSize || 200
@@ -32,7 +32,7 @@ export class PixiComponent extends Component {
     }
 
     addToStage() {
-        this.room.engine.app.stage.addChild(this.sprite)
+        this.world.engine.app.stage.addChild(this.sprite)
     }
 
     setPosition(position: RAPIER.Vector): void {
@@ -52,7 +52,7 @@ export class PixiComponent extends Component {
     }
 
     removeFromStage() {
-        this.room.engine.app.stage.removeChild(this.sprite)
+        this.world.engine.app.stage.removeChild(this.sprite)
     }
     
 }

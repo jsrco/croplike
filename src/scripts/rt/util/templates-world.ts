@@ -1,9 +1,9 @@
 import { bigDemoEntity, demoEntity, growthDemoEntity, player } from "../entities/templates-entity"
-import { RoomMap } from "./create-room"
+import { WorldMap } from "./create-world"
 
-export const demoRoom: RoomMap = {
+export const demoWorld: WorldMap = {
         entities: [ bigDemoEntity, demoEntity, growthDemoEntity],
-        roomDimensions:  { x: 1800, y: 1500 },
+        worldDimensions:  { x: 1800, y: 1500 },
         systemMap: {
             movement: true,
             physics: true,
@@ -11,9 +11,9 @@ export const demoRoom: RoomMap = {
         }
 }
 
-export const secondRoom: RoomMap = {
+export const secondWorld: WorldMap = {
     entities: [ bigDemoEntity, demoEntity, growthDemoEntity ],
-    roomDimensions:  { x: 1200, y: 1500 },
+    worldDimensions:  { x: 1200, y: 1500 },
     systemMap: {
         movement: true,
         physics: true,
@@ -21,9 +21,9 @@ export const secondRoom: RoomMap = {
     }
 }
 
-export const startRoom: RoomMap = {
+export const startWorld: WorldMap = {
     entities: [ player ],
-    roomDimensions:  { x: 1800, y: 1500 },
+    worldDimensions:  { x: 1800, y: 1500 },
     systemMap: {
         movement: true,
         physics: true,

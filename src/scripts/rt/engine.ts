@@ -4,10 +4,10 @@ import { LocalStorageManager } from "../shared/util/local-storage-manager"
 import { EntityMap } from "./entities/create-entity"
 import { Entity } from './entities/entity'
 import { RenderSystem } from './systems/render'
-import { CreateRoom, RoomMap } from "./util/create-room"
-import { Room } from './util/room'
+import { CreateWorld, WorldMap } from "./util/create-world"
 import { SaveManager } from "./util/save-manager"
-import { demoRoom, secondRoom, startRoom } from "./util/templates-room"
+import { demoWorld, secondWorld, startWorld } from "./util/templates-world"
+import { World } from './util/world'
 
 export class Engine extends Base {
 
@@ -16,9 +16,9 @@ export class Engine extends Base {
     name: String = 'Croplike'
     saveManager: SaveManager = new SaveManager()
     
-    room!: Room
-    roomIndex: number = 0
-    rooms: Array<RoomMap>
+    world!: World
+    worldIndex: number = 0
+    worlds: Array<WorldMap>
 
     player!: Entity
 
@@ -26,9 +26,9 @@ export class Engine extends Base {
         // set app
         super(run)
 
-        this.roomIndex = 2
-        this.rooms = [demoRoom, secondRoom, startRoom]
-        this.switchRoom(this.roomIndex)
+        this.worldIndex = 2
+        this.worlds = [demoWorld, secondWorld, startWorld]
+        this.switchWorld(this.worldIndex)
 
         window.addEventListener('keydown', (event) => {
             if (event.key === 'l') {
@@ -44,7 +44,7 @@ export class Engine extends Base {
     }
 
     addCanvas(elementRef: HTMLElement) {
-        const render = this.room.getSystemByType('render') as RenderSystem
+        const render = this.world.getSystemByType('render') as RenderSystem
         if (render) render.appendElement(elementRef)
         else console.log("still loading.")
     }
@@ -53,12 +53,12 @@ export class Engine extends Base {
         const saveData: any = this.localStorageManager.getData()
         if (Object.keys(saveData).length !== 0) {
             this.paused.value = true
-            this.roomIndex = saveData.room
-            this.rooms = []
-            this.rooms = saveData.rooms
+            this.worldIndex = saveData.world
+            this.worlds = []
+            this.worlds = saveData.worlds
             this.app.stage.removeChildren()
-            this.switchRoom(this.roomIndex)
-            this.app.renderer.resize(this.room.roomDimensions.x, this.room.roomDimensions.y)
+            this.switchWorld(this.worldIndex)
+            this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)
         } else console.log('no saved data')
     }
 
@@ -66,14 +66,14 @@ export class Engine extends Base {
         this.paused.value = true
         this.localStorageManager.clearData()
         this.saveManager.clearData()
-        this.rooms[this.roomIndex] = this.saveManager.createRoomMap(this.room)
-        this.saveManager.setData(this.roomIndex, this.rooms)
+        this.worlds[this.worldIndex] = this.saveManager.createWorldMap(this.world)
+        this.saveManager.setData(this.worldIndex, this.worlds)
         this.localStorageManager.saveData(this.saveManager.data)
         this.pause()
     }
 
-    switchEntityToRoom(targetIndex: number, targetEntity: Entity): void {
-        const entities = this.rooms[this.roomIndex].entities
+    switchEntityToWorld(targetIndex: number, targetEntity: Entity): void {
+        const entities = this.worlds[this.worldIndex].entities
         for (let index = 0; index < entities.length; index++) {
             const entity = entities[index]
             if (entity.id === targetEntity.id) {
@@ -82,27 +82,27 @@ export class Engine extends Base {
             }
         }
         const entityInfo = this.saveManager.createEntityMap(targetEntity)
-        this.rooms[targetIndex].entities.push(entityInfo as EntityMap)
+        this.worlds[targetIndex].entities.push(entityInfo as EntityMap)
     }
 
-    switchRoom(targetIndex: number, targetEntity?: Entity): void {
+    switchWorld(targetIndex: number, targetEntity?: Entity): void {
         this.paused.value = true
-        if (this.room && targetEntity) {
-            this.room.removeEntity(targetEntity)
+        if (this.world && targetEntity) {
+            this.world.removeEntity(targetEntity)
         }
         this.app.stage.removeChildren()
         if (targetEntity) {
-            this.switchEntityToRoom(targetIndex, targetEntity)
+            this.switchEntityToWorld(targetIndex, targetEntity)
         }
-        this.room = CreateRoom(this, this.rooms[targetIndex])
-        this.roomIndex = targetIndex
-        this.app.renderer.resize(this.room.roomDimensions.x, this.room.roomDimensions.y)
+        this.world = CreateWorld(this, this.worlds[targetIndex])
+        this.worldIndex = targetIndex
+        this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)
         this.pause()
     }
 
     update(delta: number) {
         // if (!this.paused.value && this.running.value) console.log('croplike running')
-        if (!this.paused.value && this.running.value) this.room.update(delta)
+        if (!this.paused.value && this.running.value) this.world.update(delta)
     }
 
 }

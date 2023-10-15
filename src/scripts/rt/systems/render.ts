@@ -1,6 +1,6 @@
 import { PixiComponent } from "../components/pixi"
 import { Entity } from "../entities/entity"
-import { Room } from "../util/room"
+import { World } from "../util/world"
 import { System } from "./system"
 
 export class RenderSystem extends System {
@@ -11,10 +11,10 @@ export class RenderSystem extends System {
     targetInfo: PixiComponent
     type: string = 'render'
 
-    constructor(room: Room) {
-        super(room)
+    constructor(world: World) {
+        super(world)
 
-        this.target = this.room.engine.player
+        this.target = this.world.engine.player
         this.targetInfo = this.target.getComponent('pixi') as PixiComponent
         // Entities
         const entities = this.getEntitiesByComponent('pixi')
@@ -31,12 +31,12 @@ export class RenderSystem extends System {
     adjustCamera(): void {
         const targetCenterX = this.targetInfo.sprite.x + this.targetInfo.sprite.width / 2
         const targetCenterY = this.targetInfo.sprite.y + this.targetInfo.sprite.height / 2
-        const roomWidth = this.room.roomDimensions.x
-        const roomHeight = this.room.roomDimensions.y
+        const worldWidth = this.world.worldDimensions.x
+        const worldHeight = this.world.worldDimensions.y
         const left = 0
         const top = 0
-        const right = roomWidth
-        const bottom = roomHeight
+        const right = worldWidth
+        const bottom = worldHeight
         let stagePositionX = this.stageCenterX - targetCenterX
         let stagePositionY = this.stageCenterY - targetCenterY
 
@@ -48,11 +48,11 @@ export class RenderSystem extends System {
         stagePositionX = Math.max(maxStagePositionX, Math.min(stagePositionX, 0))
         stagePositionY = Math.max(maxStagePositionY, Math.min(stagePositionY, 0))
 
-        this.room.engine.app.stage.position.set(stagePositionX, stagePositionY)
+        this.world.engine.app.stage.position.set(stagePositionX, stagePositionY)
     }
 
     appendElement(elementRef: any): void {
-        elementRef.appendChild(this.room.engine.app.view)
+        elementRef.appendChild(this.world.engine.app.view)
     }
 
     update(deltaTime: number): void {

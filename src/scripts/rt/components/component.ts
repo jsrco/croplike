@@ -1,5 +1,5 @@
 import { Entity } from "../entities/entity"
-import { Room } from "../util/room"
+import { World } from "../util/world"
 
 interface SaveObject {
     [key: string]: any
@@ -10,11 +10,11 @@ export class Component {
     [key: string]: any // Add index signature
     owner!: Entity
     type!: string
-    room: Room
+    world: World
 
-    constructor(entity: Entity, room: Room) {
+    constructor(entity: Entity, world: World) {
         this.owner = entity
-        this.room = room
+        this.world = world
     }
 
     applyComponentData(data: SaveObject): void {
@@ -28,7 +28,7 @@ export class Component {
     copyComponentData(obj: this): SaveObject {
         const saveObject: SaveObject = {}
         for (const key in obj) {
-            if (key !== 'body' && key !== 'cleared' && key !== 'collider' && key !== 'colliderGraphics' && key !== 'owner'  && key !== 'sprite' && key !== 'type' && key !== 'room') saveObject[key] = obj[key]
+            if (key !== 'body' && key !== 'cleared' && key !== 'collider' && key !== 'colliderGraphics' && key !== 'owner'  && key !== 'sprite' && key !== 'type' && key !== 'world') saveObject[key] = obj[key]
         }
         return saveObject
     }

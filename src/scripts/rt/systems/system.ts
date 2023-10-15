@@ -1,6 +1,6 @@
 import { Engine } from "../engine"
 import { Entity } from "../entities/entity"
-import { Room } from "../util/room"
+import { World } from "../util/world"
 
 export class System {
 
@@ -8,13 +8,13 @@ export class System {
     engine: Engine
     keys: Set<string>
     type!: string
-    room: Room
+    world: World
 
-    constructor(room: Room) {
-        this.engine = room.engine
+    constructor(world: World) {
+        this.engine = world.engine
         this.keys = new Set<string>()
-        this.room = room
-        this.room.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
+        this.world = world
+        this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
     }
 
     cacheEntities(componentTypes: string[], entities: Entity[]): void {
@@ -36,7 +36,7 @@ export class System {
         if (cachedEntities) {
             return cachedEntities
         }
-        const newEntities = this.room.getEntitiesByComponent(...componentTypes)
+        const newEntities = this.world.getEntitiesByComponent(...componentTypes)
         this.cacheEntities(componentTypes, newEntities)
         return newEntities
     }

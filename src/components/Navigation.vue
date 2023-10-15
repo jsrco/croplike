@@ -25,15 +25,15 @@ import { PhysicsSystem } from "../scripts/rt/systems/physics"
 
 const { RTGame, TBGame } = useEngine()
 
-const switchRoom = ref(0)
+const switchWorld = ref(0)
 
 const croplike = [
     {
         name: 'switch room demo',
         operation: () => {
-            if (switchRoom.value === 0) switchRoom.value = 1
-            else switchRoom.value = 0
-            RTGame.switchRoom(switchRoom.value, RTGame.player)
+            if (switchWorld.value === 0) switchWorld.value = 1
+            else switchWorld.value = 0
+            RTGame.switchWorld(switchWorld.value, RTGame.player)
         }
     },
     {
@@ -75,7 +75,7 @@ const croplike = [
     {
         name: 'trigger collider borders',
         operation: () => {
-            const physics = RTGame.room.getSystemByType('physics') as PhysicsSystem
+            const physics = RTGame.world.getSystemByType('physics') as PhysicsSystem
             if (physics) { 
                 console.log('ran')
                 physics.triggerShowColliderBounds()

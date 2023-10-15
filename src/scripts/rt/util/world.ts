@@ -7,7 +7,7 @@ import { Engine } from "../engine"
 import { Entity } from "../entities/entity"
 import { System } from "../systems/system"
 
-export class Room {
+export class World {
 
     engine: Engine
     entities: Entity[]
@@ -15,16 +15,16 @@ export class Room {
     keyboardController: KeyboardController = new KeyboardController(this.eventManager)
     physicsWorld: RAPIER.World = new RAPIER.World({ x: 0.0, y: 500.0 })
     physicsWorldEventQueue: RAPIER.EventQueue = new RAPIER.EventQueue(true)
-    roomDimensions: RAPIER.Vector2
+    worldDimensions: RAPIER.Vector2
     systems: System[]
     wallSize: number = 40
 
-    constructor(engine: Engine, options: { roomDimensions: RAPIER.Vector }) {
-        const { roomDimensions } = options
+    constructor(engine: Engine, options: { worldDimensions: RAPIER.Vector }) {
+        const { worldDimensions } = options
 
         this.engine = engine
         this.entities = []
-        this.roomDimensions = roomDimensions
+        this.worldDimensions = worldDimensions
         this.systems = []
     }
 
