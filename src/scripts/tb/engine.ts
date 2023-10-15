@@ -1,14 +1,14 @@
 import RAPIER from "@dimforge/rapier2d"
-import { Base } from "../shared/base"
+import { Engine } from "../shared/engine"
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
+import { PixiComponent } from "./components/pixi"
+import { CreateEntity, createBounds } from "./entities/create-entity"
+import { Entity } from "./entities/entity"
+import { player } from "./entities/templates-entity"
 import { RenderSystem } from "./systems/render"
 import { World } from "./util/world"
-import { Entity } from "./entities/entity"
-import { CreateEntity, createBounds } from "./entities/create-entity"
-import { player } from "./entities/templates-entity"
-import { PixiComponent } from "./components/pixi"
 
-export class Engine extends Base {
+export class FieldsModule extends Engine {
 
     appDimensions: RAPIER.Vector2 = { x: 3000, y: 1500 }
     localStorageManager = new LocalStorageManager('field-v0-game-data')

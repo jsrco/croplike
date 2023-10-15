@@ -23,7 +23,7 @@ import { ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
 import { PhysicsSystem } from "../scripts/rt/systems/physics"
 
-const { RTGame, TBGame } = useEngine()
+const { croplikeModule, fieldsModule } = useEngine()
 
 const switchWorld = ref(0)
 
@@ -33,49 +33,49 @@ const croplike = [
         operation: () => {
             if (switchWorld.value === 0) switchWorld.value = 1
             else switchWorld.value = 0
-            RTGame.switchWorld(switchWorld.value, RTGame.player)
+            croplikeModule.switchWorld(switchWorld.value, croplikeModule.player)
         }
     },
     {
         name: 'console.dir info',
         operation: () => {
-            console.dir(RTGame)
+            console.dir(croplikeModule)
         }
     },
     {
         name: 'console.dir save',
         operation: () => {
-            console.dir(RTGame.localStorageManager.getData())
+            console.dir(croplikeModule.localStorageManager.getData())
         }
     },
     {
         name: 'clear save',
         operation: () => {
-            RTGame.localStorageManager.clearData()
+            croplikeModule.localStorageManager.clearData()
         }
     },
     {
         name: 'load',
         operation: () => {
-            RTGame.load()
+            croplikeModule.load()
         }
     },
     {
         name: 'pause',
         operation: () => {
-            RTGame.pause()
+            croplikeModule.pause()
         }
     },
     {
         name: 'save',
         operation: () => {
-            RTGame.save()
+            croplikeModule.save()
         }
     },
     {
         name: 'trigger collider borders',
         operation: () => {
-            const physics = RTGame.world.getSystemByType('physics') as PhysicsSystem
+            const physics = croplikeModule.world.getSystemByType('physics') as PhysicsSystem
             if (physics) { 
                 console.log('ran')
                 physics.triggerShowColliderBounds()
@@ -88,7 +88,7 @@ const fields = [
     {
         name: 'console.dir info',
         operation: () => {
-            console.dir(TBGame)
+            console.dir(fieldsModule)
         }
     },
 ]

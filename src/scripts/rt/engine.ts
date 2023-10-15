@@ -1,5 +1,5 @@
 import RAPIER from "@dimforge/rapier2d"
-import { Base } from "../shared/base"
+import { Engine } from "../shared/engine"
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
 import { EntityMap } from "./entities/create-entity"
 import { Entity } from './entities/entity'
@@ -9,7 +9,7 @@ import { SaveManager } from "./util/save-manager"
 import { demoWorld, secondWorld, startWorld } from "./util/templates-world"
 import { World } from './util/world'
 
-export class Engine extends Base {
+export class CropLikeModule extends Engine {
 
     appDimensions: RAPIER.Vector2 = { x: 3000, y: 1500 }
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')

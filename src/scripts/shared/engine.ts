@@ -2,7 +2,7 @@ import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Ref, ref } from "vue"
 
-export class Base {
+export class Engine {
 
     appDimensions: RAPIER.Vector2 = { x: 0, y: 0 }
     app: PIXI.Application
