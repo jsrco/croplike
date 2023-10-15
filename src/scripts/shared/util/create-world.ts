@@ -20,8 +20,8 @@ export type SystemMap = {
     render?: boolean, 
 }
 
-const createBounds = (world: World, worldMap: WorldMap): void => {
-    const { worldDimensions } = worldMap
+export const createBounds = (world: World): void => {
+    const { worldDimensions } = world
     // floor
     setBounds(wall, worldDimensions.x / 2, worldDimensions.y - (world.wallSize / 2), worldDimensions.x, world.wallSize)
     world.addEntity(CreateEntity(wall, world))
@@ -48,7 +48,7 @@ const createEntities = (engine: Engine, world: World, worldMap: WorldMap): void 
         if (entities[index].name === 'demo') world.addEntity(CreateEntity(entities[index], world))
         if (entities[index].name === 'growthDemo') world.addEntity(CreateEntity(entities[index], world))
     }
-    createBounds(world, worldMap)
+    createBounds(world)
 }
 
 export const CreateWorld = (engine: Engine, worldMap: WorldMap): World => {

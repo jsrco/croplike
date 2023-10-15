@@ -3,22 +3,33 @@ import * as PIXI from "pixi.js"
 import { Entity } from "../entities/entity"
 import { World } from "../util/world"
 import { Component } from "./component"
+import { RapierComponent } from "./rapier"
 
 export class PixiComponent extends Component {
 
     color: string
+    maxSize: number
     position: RAPIER.Vector = { x: 0, y: 0 }
     size: RAPIER.Vector = { x: 0, y: 0 }
     sprite: PIXI.Sprite
     type: string = 'pixi'
 
-    constructor(entity: Entity, world: World, options: { color: string | '#ffffff', size: RAPIER.Vector }) {
+    moveLeft: boolean = false
+    moveRight: boolean = false
+
+    constructor(entity: Entity, world: World, options: { color: string | '#ffffff', maxSize?: number, moveLeft?: boolean, moveRight?: boolean, size: RAPIER.Vector }) {
         super(entity, world)
-        const { color, size } = options
+        const { color, maxSize, moveLeft, moveRight, size } = options
         this.color = color
+        this.maxSize = maxSize || 200
         this.sprite = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.sprite.tint = this.color
         this.setSize(size)
+
+        if (moveLeft && moveRight) {
+            this.moveLeft = moveLeft
+            this.moveRight = moveRight
+        }
     }
 
     addToStage() {
@@ -29,7 +40,13 @@ export class PixiComponent extends Component {
         this.sprite.x = position.x
         this.sprite.y = position.y
 
-        this.position = position
+        // Adjust for on save / load, Rapier RigidBody starting from the center of the collider
+        const rapierComponent = this.owner.getComponent('rapier') as RapierComponent
+        if (rapierComponent) {
+            position.x += (this.sprite.width / 2)
+            position.y += (this.sprite.height / 2)
+            this.position = position
+        }
     }
 
     setSize(size: RAPIER.Vector): void {
@@ -41,5 +58,5 @@ export class PixiComponent extends Component {
     removeFromStage() {
         this.world.engine.app.stage.removeChild(this.sprite)
     }
-    
+
 }

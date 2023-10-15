@@ -1,12 +1,13 @@
 import RAPIER from "@dimforge/rapier2d"
 import { Engine } from "../shared/engine"
+import { createBounds } from "../shared/util/create-world"
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
-import { PixiComponent } from "./components/pixi"
-import { CreateEntity, createBounds } from "./entities/create-entity"
-import { Entity } from "./entities/entity"
+import { PixiComponent } from "./../shared/components/pixi"
+import { CreateEntity } from "./../shared/entities/create-entity"
+import { Entity } from "./../shared/entities/entity"
+import { RenderSystem } from "./../shared/systems/render"
+import { World } from "./../shared/util/world"
 import { player } from "./entities/templates-entity"
-import { RenderSystem } from "./systems/render"
-import { World } from "./util/world"
 
 export class FieldsModule extends Engine {
 
@@ -24,11 +25,9 @@ export class FieldsModule extends Engine {
         this.player = CreateEntity(player , this.world)
         const pixiComponent = this.player.getComponent('pixi') as PixiComponent
         pixiComponent.setPosition(player.options.position)
-
         this.world.addEntity(this.player)
 
         createBounds(this.world)
-
         // you will need to set this when creating the world
         this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)
     }

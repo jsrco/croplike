@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
-import { PhysicsSystem } from "../scripts/rt/systems/physics"
+import { PhysicsSystem } from "./../scripts/shared/systems/physics"
 
 const { croplikeModule, fieldsModule } = useEngine()
 
@@ -77,7 +77,6 @@ const croplike = [
         operation: () => {
             const physics = croplikeModule.world.getSystemByType('physics') as PhysicsSystem
             if (physics) { 
-                console.log('ran')
                 physics.triggerShowColliderBounds()
             }
         }
@@ -110,4 +109,4 @@ window.onclick = (e) => {
     if (!e.composedPath().includes(document.querySelector('.dropdown')!) && isInDebug.value === true) toggleDebug()
 }
 
-</script>
+</script>../scripts/shared/systems/physics

@@ -1,5 +1,5 @@
+import { EntityMap } from "../../shared/entities/create-entity"
 import { ColorSwatch } from '../../shared/util/color-swatch'
-import { EntityMap } from "./create-entity"
 
 export const player: EntityMap = {
     name: 'player',
@@ -9,8 +9,8 @@ export const player: EntityMap = {
     options: {
         color: ColorSwatch.green[3],
         position: {
-            x: 20,
-            y: 20,
+            x: 40,
+            y: 40,
         },
         size: {
             x: 20,

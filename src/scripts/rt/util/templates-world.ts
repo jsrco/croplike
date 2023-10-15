@@ -1,5 +1,5 @@
+import { WorldMap } from "../../shared/util/create-world"
 import { bigDemoEntity, demoEntity, growthDemoEntity, player } from "../entities/templates-entity"
-import { WorldMap } from "./create-world"
 
 export const demoWorld: WorldMap = {
         entities: [ bigDemoEntity, demoEntity, growthDemoEntity],

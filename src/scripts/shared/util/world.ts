@@ -1,11 +1,11 @@
 import RAPIER from "@dimforge/rapier2d"
-import { EventManager } from "../../shared/util/event-manager"
-import { KeyboardController } from "../../shared/util/keyboard-controller"
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
 import { Engine } from "../engine"
 import { Entity } from "../entities/entity"
 import { System } from "../systems/system"
+import { EventManager } from "./event-manager"
+import { KeyboardController } from "./keyboard-controller"
 
 export class World {
 
@@ -30,6 +30,7 @@ export class World {
 
     addEntity(entity: Entity): void {
         if (!this.isTouching(entity, this.entities)) this.entities.push(entity)
+        else console.log("can't add entity")
         // else find new spot
         // also check that entity is in bounds
     }
@@ -73,7 +74,7 @@ export class World {
                 pixiComponent.position.y > otherPixiComponent.position.y + otherPixiComponent.size.y // top
             ) {
                 // Collision detected
-                console.log(`Entity ${entity.name} is overlaps Entity ${otherEntity.name}`)
+                // console.log(`Entity ${entity.name} is overlaps Entity ${otherEntity.name}`)
                 return true
             }
         }

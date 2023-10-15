@@ -1,6 +1,8 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Ref, ref } from "vue"
+import { Entity } from "./entities/entity"
+import { SaveManager } from "./util/save-manager"
 
 export class Engine {
 
@@ -8,18 +10,21 @@ export class Engine {
     app: PIXI.Application
     paused: Ref<Boolean> = ref(false)
     running: Ref<Boolean> = ref(false)
+    saveManager: SaveManager = new SaveManager()
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
         fontSize: 8,
         fill: ['#000000'],
     })
 
-    constructor(run?:boolean) {
+    player!: Entity
+
+    constructor(run?: boolean) {
         // set app
         this.app = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: this.appDimensions.x, height: this.appDimensions.y })
-        
+
         this.app.stage.eventMode = 'static'
-        
+
         this.app.ticker.add((delta) => {
             this.update(delta)
         })
@@ -43,7 +48,7 @@ export class Engine {
         if (run) this.startRun()
     }
 
-    addCanvas(elementRef: HTMLElement ) { 
+    addCanvas(elementRef: HTMLElement) {
         // Override this method in each subclass
     }
 

@@ -1,26 +1,22 @@
 import RAPIER from "@dimforge/rapier2d"
 import { Engine } from "../shared/engine"
+import { EntityMap } from "../shared/entities/create-entity"
+import { Entity } from '../shared/entities/entity'
+import { RenderSystem } from '../shared/systems/render'
+import { CreateWorld, WorldMap } from "../shared/util/create-world"
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
-import { EntityMap } from "./entities/create-entity"
-import { Entity } from './entities/entity'
-import { RenderSystem } from './systems/render'
-import { CreateWorld, WorldMap } from "./util/create-world"
-import { SaveManager } from "./util/save-manager"
+import { World } from '../shared/util/world'
 import { demoWorld, secondWorld, startWorld } from "./util/templates-world"
-import { World } from './util/world'
 
 export class CropLikeModule extends Engine {
 
     appDimensions: RAPIER.Vector2 = { x: 3000, y: 1500 }
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     name: String = 'Croplike'
-    saveManager: SaveManager = new SaveManager()
     
     world!: World
     worldIndex: number = 0
     worlds: Array<WorldMap>
-
-    player!: Entity
 
     constructor(run?:boolean) {
         // set app

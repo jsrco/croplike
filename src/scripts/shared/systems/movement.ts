@@ -6,7 +6,7 @@ import { System } from "./system"
 export class MovementSystem extends System {
 
     acceleration: number = 20
-    maxRidingVelocity: number = 120 
+    maxRidingVelocity: number = 120
     maxVelocity: number = 260
     type: string = 'movement'
 
