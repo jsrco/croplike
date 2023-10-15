@@ -8,7 +8,6 @@ export class Base {
     app: PIXI.Application
     paused: Ref<Boolean> = ref(false)
     running: Ref<Boolean> = ref(false)
-    shifting: Ref<Boolean> = ref(false)
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
         fontSize: 8,
