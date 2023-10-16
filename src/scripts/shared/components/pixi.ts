@@ -22,9 +22,10 @@ export class PixiComponent extends Component {
         const { color, maxSize, moveLeft, moveRight, position, size } = options
         this.color = color
         this.maxSize = maxSize || 200
-        this.position = position
         this.sprite = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.sprite.tint = this.color
+
+        this.setPosition(position)
         this.setSize(size)
 
         if (moveLeft && moveRight) {

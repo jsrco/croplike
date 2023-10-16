@@ -9,12 +9,6 @@ export class MovementSystemTB extends System {
 
     constructor(world: World) {
         super(world)
-
-        const entities = this.world.getEntitiesByComponent('pixi')
-        for (const entity of entities) {
-            const pixiComponent = entity.getComponent('pixi') as PixiComponent
-            pixiComponent.setPosition(pixiComponent.position)
-        }
     }
 
     isOkToMove(entity: Entity): boolean {

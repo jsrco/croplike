@@ -24,16 +24,14 @@ export class FieldsModule extends Engine {
 
         this.player = CreateEntity(player , this.world)
         this.world.addEntity(this.player)
+        this.createBounds(this.world)
 
         this.world.addSystem(new MovementSystemTB(this.world) as MovementSystemTB)
 
         // you will need to set this when creating the world
         this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)
 
-        // TODO figure out why walls are not in proper spot and fix collisions
-        // createBounds(this.world)
-
-        // allow for turn
+        // allow for turn based movement
         this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
     }
 
