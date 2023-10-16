@@ -3,9 +3,10 @@ import { Engine } from "../shared/engine"
 import { EntityMap } from "../shared/entities/create-entity"
 import { Entity } from '../shared/entities/entity'
 import { RenderSystem } from '../shared/systems/render'
-import { CreateWorld, WorldMap } from "../shared/util/create-world"
+import { WorldMap } from "../shared/util/create-world"
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
 import { World } from '../shared/util/world'
+import { CreateWorld } from "./util/create-world"
 import { demoWorld, secondWorld, startWorld } from "./util/templates-world"
 
 export class CropLikeModule extends Engine {

@@ -23,7 +23,7 @@ import { ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
 import { PhysicsSystem } from "./../scripts/shared/systems/physics"
 
-const { croplikeModule, fieldsModule } = useEngine()
+const { activeModule } = useEngine()
 
 const switchWorld = ref(0)
 
@@ -33,49 +33,49 @@ const croplike = [
         operation: () => {
             if (switchWorld.value === 0) switchWorld.value = 1
             else switchWorld.value = 0
-            croplikeModule.switchWorld(switchWorld.value, croplikeModule.player)
+            activeModule.switchWorld(switchWorld.value, activeModule.player)
         }
     },
     {
         name: 'console.dir info',
         operation: () => {
-            console.dir(croplikeModule)
+            console.dir(activeModule)
         }
     },
     {
         name: 'console.dir save',
         operation: () => {
-            console.dir(croplikeModule.localStorageManager.getData())
+            console.dir(activeModule.localStorageManager.getData())
         }
     },
     {
         name: 'clear save',
         operation: () => {
-            croplikeModule.localStorageManager.clearData()
+            activeModule.localStorageManager.clearData()
         }
     },
     {
         name: 'load',
         operation: () => {
-            croplikeModule.load()
+            activeModule.load()
         }
     },
     {
         name: 'pause',
         operation: () => {
-            croplikeModule.pause()
+            activeModule.pause()
         }
     },
     {
         name: 'save',
         operation: () => {
-            croplikeModule.save()
+            activeModule.save()
         }
     },
     {
         name: 'trigger collider borders',
         operation: () => {
-            const physics = croplikeModule.world.getSystemByType('physics') as PhysicsSystem
+            const physics = activeModule.world.getSystemByType('physics') as PhysicsSystem
             if (physics) { 
                 physics.triggerShowColliderBounds()
             }
@@ -87,12 +87,18 @@ const fields = [
     {
         name: 'console.dir info',
         operation: () => {
-            console.dir(fieldsModule)
+            console.dir(activeModule)
         }
     },
+    {
+        name: 'console.log player info',
+        operation: () => {
+            console.dir(activeModule.player.components.pixi.position)
+        }
+    }
 ]
 
-const debugList = fields // croplike
+const debugList = activeModule.name === 'Croplike' ? croplike : fields
 
 const isInDebug: Ref<Boolean> = ref(false)
 

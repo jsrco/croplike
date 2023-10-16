@@ -3,12 +3,12 @@ import { RapierComponent } from "../components/rapier"
 import { World } from "../util/world"
 import { System } from "./system"
 
-export class MovementSystem extends System {
+export class MovementSystemRT extends System {
 
     acceleration: number = 20
     maxRidingVelocity: number = 120
     maxVelocity: number = 260
-    type: string = 'movement'
+    type: string = 'movement-RT'
 
     constructor(world: World) {
         super(world)

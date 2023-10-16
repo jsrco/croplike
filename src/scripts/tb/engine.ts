@@ -1,6 +1,6 @@
 import RAPIER from "@dimforge/rapier2d"
 import { Engine } from "../shared/engine"
-import { createBounds } from "../shared/util/create-world"
+import { MovementSystemTB } from "../shared/systems/movement-tb"
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
 import { PixiComponent } from "./../shared/components/pixi"
 import { CreateEntity } from "./../shared/entities/create-entity"
@@ -8,6 +8,7 @@ import { Entity } from "./../shared/entities/entity"
 import { RenderSystem } from "./../shared/systems/render"
 import { World } from "./../shared/util/world"
 import { player } from "./entities/templates-entity"
+import { createBounds } from "./util/create-world"
 
 export class FieldsModule extends Engine {
 
@@ -23,13 +24,18 @@ export class FieldsModule extends Engine {
         super(run)
 
         this.player = CreateEntity(player , this.world)
-        const pixiComponent = this.player.getComponent('pixi') as PixiComponent
-        pixiComponent.setPosition(player.options.position)
         this.world.addEntity(this.player)
 
-        createBounds(this.world)
+        this.world.addSystem(new MovementSystemTB(this.world) as MovementSystemTB)
+
         // you will need to set this when creating the world
         this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)
+
+        // TODO figure out why walls are not in proper spot and fix collisions
+        // createBounds(this.world)
+
+        // allow for turn
+        this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
     }
 
     addCanvas(elementRef: HTMLElement ) { 
@@ -39,9 +45,14 @@ export class FieldsModule extends Engine {
         else console.log("still loading.")
     }
 
+    onKeyChange(data: any): void {
+        const { key, isDown } = data
+        if (isDown) this.shifting.value = true
+    }
+
     update(delta: number) {
         // if (!this.paused.value && this.running.value) console.log('render some glyphs')
-        if (!this.paused.value && this.running.value) this.world.update(delta)
+        if (!this.paused.value && this.running.value && this.shifting.value) this.world.update(delta)
     }
 
 }

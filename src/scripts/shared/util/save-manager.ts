@@ -48,7 +48,8 @@ export class SaveManager {
             entities: [],
             worldDimensions: { x:0, y:0 },
             systemMap: {
-                movement: false,
+                movementRT: false,
+                movementTB: false,
                 physics: false,
                 render: false
             }
@@ -65,11 +66,13 @@ export class SaveManager {
 
     createSystemsMap(world: World): SystemMap {
         const systemMap = {
-            movement: false,
+            movementRT: false,
+            movementTB: false,
             physics: false,
             render: false,
         }
-        if (world.getSystemByType('movement')) systemMap.movement = true
+        if (world.getSystemByType('movement-RT')) systemMap.movementRT = true
+        if (world.getSystemByType('movement-TB')) systemMap.movementTB = true
         if (world.getSystemByType('physics')) systemMap.physics = true
         if (world.getSystemByType('render')) systemMap.render = true
         return systemMap

@@ -1,9 +1,9 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Entity } from "../entities/entity"
+import { PhysicsSystem } from "../systems/physics"
 import { World } from "../util/world"
 import { Component } from "./component"
-import { RapierComponent } from "./rapier"
 
 export class PixiComponent extends Component {
 
@@ -17,11 +17,12 @@ export class PixiComponent extends Component {
     moveLeft: boolean = false
     moveRight: boolean = false
 
-    constructor(entity: Entity, world: World, options: { color: string | '#ffffff', maxSize?: number, moveLeft?: boolean, moveRight?: boolean, size: RAPIER.Vector }) {
+    constructor(entity: Entity, world: World, options: { color: string | '#ffffff', maxSize?: number, moveLeft?: boolean, moveRight?: boolean, position: RAPIER.Vector, size: RAPIER.Vector }) {
         super(entity, world)
-        const { color, maxSize, moveLeft, moveRight, size } = options
+        const { color, maxSize, moveLeft, moveRight, position, size } = options
         this.color = color
         this.maxSize = maxSize || 200
+        this.position = position
         this.sprite = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.sprite.tint = this.color
         this.setSize(size)
@@ -41,12 +42,12 @@ export class PixiComponent extends Component {
         this.sprite.y = position.y
 
         // Adjust for on save / load, Rapier RigidBody starting from the center of the collider
-        const rapierComponent = this.owner.getComponent('rapier') as RapierComponent
-        if (rapierComponent) {
+        const physicsSystem = this.world.getSystemByType('physics') as PhysicsSystem
+        if (physicsSystem) {
             position.x += (this.sprite.width / 2)
             position.y += (this.sprite.height / 2)
-            this.position = position
         }
+        this.position = position
     }
 
     setSize(size: RAPIER.Vector): void {
