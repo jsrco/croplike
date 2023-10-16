@@ -1,58 +1,49 @@
+import RAPIER from "@dimforge/rapier2d"
 import { PixiComponent } from "../components/pixi"
-import { Entity } from "../entities/entity"
 import { World } from "../util/world"
 import { System } from "./system"
 
 export class MovementSystemTB extends System {
 
+    move: number = 20
     type: string = 'movement-TB'
 
     constructor(world: World) {
         super(world)
     }
 
-    isOkToMove(entity: Entity): boolean {
-        // Extract the position and size of the given entity
-        const pixiComponent = entity.getComponent('pixi') as PixiComponent
-        // Loop through the array of entities
-        for (const otherEntity of this.world.entities) {
-            // Skip the current entity itself
-            if (otherEntity === entity) {
-                continue
-            }
-            const otherPixiComponent = otherEntity.getComponent('pixi') as PixiComponent
-            // Check for overlap between the two entities
-            if (
-                pixiComponent.position.x > otherPixiComponent.position.x + otherPixiComponent.size.x && // left
-                pixiComponent.position.x + pixiComponent.size.x < otherPixiComponent.position.x && // right
-                pixiComponent.position.y + pixiComponent.size.y < otherPixiComponent.position.y && // bottom
-                pixiComponent.position.y > otherPixiComponent.position.y + otherPixiComponent.size.y // top
-            ) {
-                // Collision detected
-                console.log(`Entity ${entity.name} is overlaps Entity ${otherEntity.name}`)
-                console.log(pixiComponent.position, otherPixiComponent.position)
-                return false
-            }
-        }
-        // TODO check if in bounds
-        // No collision detected
-        return true
+    isInBounds(size: RAPIER.Vector2, target: RAPIER.Vector2): boolean {
+        const { x, y } = target
+        const { worldDimensions } = this.world
+        return x >= 0 && y >= 0 && x + size.x <= worldDimensions.x && y + size.y <= worldDimensions.y
     }
 
     moveDown(component: PixiComponent): void {
-        if (this.isOkToMove(component.owner)) component.setPosition({ x: component.position.x, y: component.position.y + 20 })
+        const { position, size } = component
+        const { x, y } = position
+        const newPosition: RAPIER.Vector2 = { x: x, y: y + this.move }
+        if (this.isInBounds(size, newPosition)) component.setPosition(newPosition)
     }
 
     moveLeft(component: PixiComponent): void {
-        if (this.isOkToMove(component.owner)) component.setPosition({ x: component.position.x - 20, y: component.position.y })
+        const { position, size } = component
+        const { x, y } = position
+        const newPosition: RAPIER.Vector2 = { x: x - this.move, y: y }
+        if (this.isInBounds(size, newPosition)) component.setPosition(newPosition)
     }
 
     moveRight(component: PixiComponent): void {
-        if (this.isOkToMove(component.owner)) component.setPosition({ x: component.position.x + 20, y: component.position.y })
+        const { position, size } = component
+        const { x, y } = position
+        const newPosition: RAPIER.Vector2 = { x: x + this.move, y: y }
+        if (this.isInBounds(size, newPosition)) component.setPosition(newPosition)
     }
 
     moveUp(component: PixiComponent): void {
-        if (this.isOkToMove(component.owner)) component.setPosition({ x: component.position.x, y: component.position.y - 20 })
+        const { position, size } = component
+        const { x, y } = position
+        const newPosition: RAPIER.Vector2 = { x: x, y: y - this.move }
+        if (this.isInBounds(size, newPosition)) component.setPosition(newPosition)
     }
 
     update(deltaTime: number): void {
@@ -66,8 +57,8 @@ export class MovementSystemTB extends System {
                 if (this.keys.has('ArrowRight')) this.moveRight(pixiComponent)
                 if (this.keys.has('ArrowUp')) this.moveUp(pixiComponent)
             }
-            this.engine.shifting.value = false
         }
+        this.engine.shifting.value = false
     }
 
 }

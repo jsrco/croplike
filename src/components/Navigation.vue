@@ -91,9 +91,12 @@ const fields = [
         }
     },
     {
-        name: 'console.log player info',
+        name: 'console.log entity info',
         operation: () => {
-            console.dir(activeModule.player.components.pixi.position)
+            for (const entity of activeModule.world.entities) {
+                console.log(entity.name, entity.components.pixi.position)
+                console.log(entity.name, entity.components.pixi.size)
+            }
         }
     }
 ]
