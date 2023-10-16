@@ -2,13 +2,11 @@ import RAPIER from "@dimforge/rapier2d"
 import { Engine } from "../shared/engine"
 import { MovementSystemTB } from "../shared/systems/movement-tb"
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
-import { PixiComponent } from "./../shared/components/pixi"
 import { CreateEntity } from "./../shared/entities/create-entity"
 import { Entity } from "./../shared/entities/entity"
 import { RenderSystem } from "./../shared/systems/render"
 import { World } from "./../shared/util/world"
 import { player } from "./entities/templates-entity"
-import { createBounds } from "./util/create-world"
 
 export class FieldsModule extends Engine {
 
