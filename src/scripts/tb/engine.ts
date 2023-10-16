@@ -1,8 +1,9 @@
 import RAPIER from "@dimforge/rapier2d"
 import { Engine } from "../shared/engine"
+import { wall } from "../shared/entities/templates-entity"
 import { MovementSystemTB } from "../shared/systems/movement-tb"
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
-import { CreateEntity } from "./../shared/entities/create-entity"
+import { CreateEntity, EntityMap } from "./../shared/entities/create-entity"
 import { Entity } from "./../shared/entities/entity"
 import { RenderSystem } from "./../shared/systems/render"
 import { World } from "./../shared/util/world"
@@ -52,5 +53,31 @@ export class FieldsModule extends Engine {
         // if (!this.paused.value && this.running.value) console.log('render some glyphs')
         if (!this.paused.value && this.running.value && this.shifting.value) this.world.update(delta)
     }
+
+    // Temp
+    createBounds(world: World): void {
+        const { worldDimensions } = world
+        // floor
+        this.setBounds(wall, 0, worldDimensions.y - world.wallSize, worldDimensions.x, world.wallSize)
+        world.addEntity(CreateEntity(wall, world))
+        // leftWall
+        this.setBounds(wall, 0, world.wallSize, world.wallSize, worldDimensions.y - (world.wallSize * 2))
+        world.addEntity(CreateEntity(wall, world))
+        // rightWall
+        this.setBounds(wall, worldDimensions.x - world.wallSize, world.wallSize, world.wallSize, worldDimensions.y - (world.wallSize * 2))
+        world.addEntity(CreateEntity(wall, world))
+        // ceiling
+        this.setBounds(wall, 0, 0, worldDimensions.x, world.wallSize)
+        world.addEntity(CreateEntity(wall, world))
+    }
+    
+    setBounds(entity: EntityMap, positionX: number, positionY: number, sizeX: number, sizeY: number): void {
+        const { position, size } = entity.options
+        position.x = positionX
+        position.y = positionY
+        size.x = sizeX
+        size.y = sizeY
+    }
+
 
 }
