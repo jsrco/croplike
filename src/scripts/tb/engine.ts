@@ -6,7 +6,7 @@ import { CreateEntity } from "./../shared/entities/create-entity"
 import { Entity } from "./../shared/entities/entity"
 import { RenderSystem } from "./../shared/systems/render"
 import { World } from "./../shared/util/world"
-import { player } from "./entities/templates-entity"
+import { dummy, player } from "./entities/templates-entity"
 
 export class FieldsModule extends Engine {
 
@@ -23,6 +23,7 @@ export class FieldsModule extends Engine {
 
         this.player = CreateEntity(player , this.world)
         this.world.addEntity(this.player)
+        this.world.addEntity(CreateEntity(dummy, this.world))
 
         this.world.addSystem(new MovementSystemTB(this.world) as MovementSystemTB)
 

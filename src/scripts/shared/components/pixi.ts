@@ -10,6 +10,7 @@ export class PixiComponent extends Component {
     color: string
     maxSize: number
     position: RAPIER.Vector = { x: 0, y: 0 }
+    positionTarget: RAPIER.Vector = { x: 0, y: 0 }
     size: RAPIER.Vector = { x: 0, y: 0 }
     sprite: PIXI.Sprite
     type: string = 'pixi'
@@ -26,6 +27,7 @@ export class PixiComponent extends Component {
         this.sprite.tint = this.color
 
         this.setPosition(position)
+        this.setPositionTarget(position)
         this.setSize(size)
 
         if (moveLeft && moveRight) {
@@ -36,6 +38,10 @@ export class PixiComponent extends Component {
 
     addToStage() {
         this.world.engine.app.stage.addChild(this.sprite)
+    }
+
+    removeFromStage() {
+        this.world.engine.app.stage.removeChild(this.sprite)
     }
 
     setPosition(position: RAPIER.Vector): void {
@@ -51,14 +57,14 @@ export class PixiComponent extends Component {
         this.position = position
     }
 
+    setPositionTarget(position: RAPIER.Vector): void {
+        this.positionTarget = position
+    }
+
     setSize(size: RAPIER.Vector): void {
         this.sprite.width = size.x
         this.sprite.height = size.y
         this.size = size
-    }
-
-    removeFromStage() {
-        this.world.engine.app.stage.removeChild(this.sprite)
     }
 
 }

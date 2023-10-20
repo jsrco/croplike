@@ -1,6 +1,24 @@
 import { EntityMap } from "../../shared/entities/create-entity"
 import { ColorSwatch } from '../../shared/util/color-swatch'
 
+export const dummy: EntityMap = {
+    name: 'dummy',
+    componentMap: {
+        pixi: true,
+    },
+    options: {
+        color: ColorSwatch.red[3],
+        position: {
+            x: 100,
+            y: 100,
+        },
+        size: {
+            x: 60,
+            y: 60,
+        },
+    }
+}
+
 export const player: EntityMap = {
     name: 'player',
     componentMap: {
