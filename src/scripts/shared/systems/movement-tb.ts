@@ -47,25 +47,25 @@ export class MovementSystemTB extends System {
 
     moveDown(component: PixiComponent): void {
         const { x, y } = component.position
-        const newPosition: RAPIER.Vector2 = { x: x, y: y + 2 }
+        const newPosition: RAPIER.Vector2 = { x: x, y: y + 4 }
         component.setPosition(newPosition)
     }
 
     moveLeft(component: PixiComponent): void {
         const { x, y } = component.position
-        const newPosition: RAPIER.Vector2 = { x: x - 2, y: y }
+        const newPosition: RAPIER.Vector2 = { x: x - 4, y: y }
         component.setPosition(newPosition)
     }
 
     moveRight(component: PixiComponent): void {
         const { x, y } = component.position
-        const newPosition: RAPIER.Vector2 = { x: x + 2, y: y }
+        const newPosition: RAPIER.Vector2 = { x: x + 4, y: y }
         component.setPosition(newPosition)
     }
 
     moveUp(component: PixiComponent): void {
         const { x, y } = component.position
-        const newPosition: RAPIER.Vector2 = { x: x, y: y - 2 }
+        const newPosition: RAPIER.Vector2 = { x: x, y: y - 4 }
         component.setPosition(newPosition)
     }
 
