@@ -12,7 +12,7 @@ export class FieldsModule extends Engine {
 
     appDimensions: RAPIER.Vector2 = { x: 3000, y: 1500 }
     localStorageManager = new LocalStorageManager('field-v0-game-data')
-    name: String = 'Fields'
+    name = 'Fields'
     world: World = new World(this, { worldDimensions: this.appDimensions } )
 
     player: Entity

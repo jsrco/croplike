@@ -27,7 +27,7 @@ export class PixiComponent extends Component {
         this.sprite.tint = this.color
 
         this.setPosition(position)
-        this.setPositionTarget(position)
+        this.canSetPositionTarget(position)
         this.setSize(size)
 
         if (moveLeft && moveRight) {
@@ -38,6 +38,49 @@ export class PixiComponent extends Component {
 
     addToStage() {
         this.world.engine.app.stage.addChild(this.sprite)
+    }
+
+    canSetPositionTarget(position: RAPIER.Vector): boolean {
+        let clear = false
+        if (this.isOkToMove(position)) {
+            this.positionTarget = position
+            clear = true
+        }
+        return clear
+    }
+
+    isInBounds(size: RAPIER.Vector2, target: RAPIER.Vector2): boolean {
+        const { x, y } = target
+        const { worldDimensions } = this.world
+        return x >= 0 && y >= 0 && x + size.x <= worldDimensions.x && y + size.y <= worldDimensions.y
+    }
+
+    isOkToMove(target: RAPIER.Vector2) {
+        if (this.world.engine.name === 'Croplike') return true
+        else return this.isInBounds(this.size, target) && this.isPositonClearFor(target)
+    }
+
+    isPositonClearFor(target: RAPIER.Vector2): boolean {
+        const entities = this.world.getEntitiesByComponent('pixi')
+        for (const entity of entities) {
+            const otherPixiComponent = entity.getComponent('pixi') as PixiComponent
+            // Skip the current entity itself
+            if (this.owner.id === entity.id) {
+                continue
+            }
+            const left1 = target.x
+            const right1 = target.x + this.size.x
+            const top1 = target.y
+            const bottom1 = target.y + this.size.y
+
+            const left2 = otherPixiComponent.positionTarget.x
+            const right2 = otherPixiComponent.positionTarget.x + otherPixiComponent.size.x
+            const top2 = otherPixiComponent.positionTarget.y
+            const bottom2 = otherPixiComponent.positionTarget.y + otherPixiComponent.size.y
+
+            return left2 >= right1 || right2 <= left1 || top2 >= bottom1 || bottom2 <= top1
+        }
+        return true
     }
 
     removeFromStage() {
@@ -55,10 +98,6 @@ export class PixiComponent extends Component {
             position.y += (this.sprite.height / 2)
         }
         this.position = position
-    }
-
-    setPositionTarget(position: RAPIER.Vector): void {
-        this.positionTarget = position
     }
 
     setSize(size: RAPIER.Vector): void {

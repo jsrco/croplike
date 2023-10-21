@@ -13,7 +13,7 @@ export class CropLikeModule extends Engine {
 
     appDimensions: RAPIER.Vector2 = { x: 3000, y: 1500 }
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
-    name: String = 'Croplike'
+    name = 'Croplike'
     
     world!: World
     worldIndex: number = 0

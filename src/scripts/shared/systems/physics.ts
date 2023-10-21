@@ -26,7 +26,6 @@ export class PhysicsSystem extends System {
     // Pixi renders the sprites starting from the center of the collider
     position.x -= colliderInfo.halfExtents.x
     position.y -= colliderInfo.halfExtents.y
-    // TODO check if an entity is already there, if true: entity already exist at location / find new spot
     pixiComponent.setPosition(position)
   }
 
