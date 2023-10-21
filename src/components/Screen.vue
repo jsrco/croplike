@@ -28,6 +28,5 @@ onMounted(() => {
         activeModule.startRun()
         activeModule.addCanvas(gameContainer.value)
     })
-    
 })
 </script>

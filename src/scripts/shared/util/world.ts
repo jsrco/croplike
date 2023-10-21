@@ -30,9 +30,18 @@ export class World {
 
     addEntity(entity: Entity): void {
         const pixiComponent = entity.getComponent('pixi') as PixiComponent
-        if(pixiComponent.canSetPositionTarget(pixiComponent.position)) this.entities.push(entity)
-        // TODO Apply reshuffle till location found
-        else console.log('failed to add', entity.name, entity.id)
+        if (pixiComponent.canSetPositionTarget(pixiComponent.position)) this.entities.push(entity)
+        else {
+            console.log('failed to add', entity.name, entity.id)
+            console.log('trying again')
+            const newPosition = pixiComponent.findPositionToSet(pixiComponent.position)
+            if (newPosition) {
+                pixiComponent.setPosition(newPosition)
+                this.addEntity(entity)
+            }
+            else console.log('cannot add', entity.name, entity.id)
+
+        }
     }
 
     addSystem(system: System): void {

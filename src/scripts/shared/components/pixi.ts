@@ -49,6 +49,23 @@ export class PixiComponent extends Component {
         return clear
     }
 
+    findPositionToSet(initialPosition: RAPIER.Vector2, increment: number = 20): RAPIER.Vector2 | undefined {
+        let currentX = initialPosition.x
+        let currentY = initialPosition.y
+
+        while (!this.canSetPositionTarget(new RAPIER.Vector2(currentX, currentY))) {
+            currentX += increment
+            if (currentX > this.world.worldDimensions.x) {
+                currentX = initialPosition.x
+                currentY += increment
+                if (currentY > this.world.worldDimensions.y) {
+                    return undefined // No unoccupied position found
+                }
+            }
+        }
+        return new RAPIER.Vector2(currentX, currentY)
+    }
+
     isInBounds(size: RAPIER.Vector2, target: RAPIER.Vector2): boolean {
         const { x, y } = target
         const { worldDimensions } = this.world

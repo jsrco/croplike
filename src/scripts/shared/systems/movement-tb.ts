@@ -5,7 +5,7 @@ import { System } from "./system"
 
 export class MovementSystemTB extends System {
 
-    
+
     increment: number = 2
     move: number = 20
     type: string = 'movement-TB'

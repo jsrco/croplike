@@ -76,7 +76,7 @@ const croplike = [
         name: 'trigger collider borders',
         operation: () => {
             const physics = activeModule.world.getSystemByType('physics') as PhysicsSystem
-            if (physics) { 
+            if (physics) {
                 physics.triggerShowColliderBounds()
             }
         }

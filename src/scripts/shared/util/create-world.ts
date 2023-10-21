@@ -13,5 +13,5 @@ export type SystemMap = {
     movementRT?: boolean,
     movementTB?: boolean,
     physics?: boolean,
-    render?: boolean, 
+    render?: boolean,
 }

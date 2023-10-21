@@ -26,8 +26,8 @@ export const createBounds = (world: World): void => {
 const createEntities = (engine: Engine, world: World, worldMap: WorldMap): void => {
     const { entities } = worldMap
 
-    for (let index = 0; index < entities.length; index++ ) {
-        if (entities[index].name === 'player')  {
+    for (let index = 0; index < entities.length; index++) {
+        if (entities[index].name === 'player') {
             engine.player = CreateEntity(entities[index], world)
             world.addEntity(engine.player)
         }
@@ -41,7 +41,7 @@ const createEntities = (engine: Engine, world: World, worldMap: WorldMap): void 
 export const CreateWorld = (engine: Engine, worldMap: WorldMap): World => {
     const { worldDimensions } = worldMap
     const world = new World(engine, { worldDimensions })
-   
+
     createEntities(engine, world, worldMap)
     loadSystems(world, worldMap)
 

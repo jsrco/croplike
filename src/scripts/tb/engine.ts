@@ -13,15 +13,15 @@ export class FieldsModule extends Engine {
     appDimensions: RAPIER.Vector2 = { x: 3000, y: 1500 }
     localStorageManager = new LocalStorageManager('field-v0-game-data')
     name = 'Fields'
-    world: World = new World(this, { worldDimensions: this.appDimensions } )
+    world: World = new World(this, { worldDimensions: this.appDimensions })
 
     player: Entity
 
-    constructor(run?:boolean) {
+    constructor(run?: boolean) {
         // set app
         super(run)
 
-        this.player = CreateEntity(player , this.world)
+        this.player = CreateEntity(player, this.world)
         this.world.addEntity(this.player)
         this.world.addEntity(CreateEntity(dummy, this.world))
 
@@ -34,7 +34,7 @@ export class FieldsModule extends Engine {
         this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
     }
 
-    addCanvas(elementRef: HTMLElement ) { 
+    addCanvas(elementRef: HTMLElement) {
         if (this.running.value) this.world.addSystem(new RenderSystem(this.world))
         const render = this.world.getSystemByType('render') as RenderSystem
         if (render) render.appendElement(elementRef)

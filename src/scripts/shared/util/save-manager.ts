@@ -46,7 +46,7 @@ export class SaveManager {
     createWorldMap(world: World): WorldMap {
         let worldData: WorldMap = {
             entities: [],
-            worldDimensions: { x:0, y:0 },
+            worldDimensions: { x: 0, y: 0 },
             systemMap: {
                 movementRT: false,
                 movementTB: false,
@@ -82,9 +82,9 @@ export class SaveManager {
         return this.data
     }
 
-    setData(world: number, worlds: Array<WorldMap>):void {
+    setData(world: number, worlds: Array<WorldMap>): void {
         this.data.world = world
         this.data.worlds = worlds
     }
-    
+
 }
