@@ -95,7 +95,9 @@ export class PixiComponent extends Component {
             const top2 = otherPixiComponent.positionTarget.y
             const bottom2 = otherPixiComponent.positionTarget.y + otherPixiComponent.size.y
 
-            return left2 >= right1 || right2 <= left1 || top2 >= bottom1 || bottom2 <= top1
+            const isOk = left2 >= right1 || right2 <= left1 || top2 >= bottom1 || bottom2 <= top1
+
+            if (!isOk) return false
         }
         return true
     }

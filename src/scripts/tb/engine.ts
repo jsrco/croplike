@@ -1,31 +1,21 @@
 import RAPIER from "@dimforge/rapier2d"
 import { Engine } from "../shared/engine"
-import { MovementSystemTB } from "../shared/systems/movement-tb"
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
-import { CreateEntity } from "./../shared/entities/create-entity"
-import { Entity } from "./../shared/entities/entity"
 import { RenderSystem } from "./../shared/systems/render"
 import { World } from "./../shared/util/world"
-import { dummy, player } from "./entities/templates-entity"
+import { CreateWorld } from "./util/create-world"
+import { startWorld } from "./util/template-world"
 
 export class FieldsModule extends Engine {
 
     appDimensions: RAPIER.Vector2 = { x: 3000, y: 1500 }
     localStorageManager = new LocalStorageManager('field-v0-game-data')
     name = 'Fields'
-    world: World = new World(this, { worldDimensions: this.appDimensions })
-
-    player: Entity
+    world: World = CreateWorld(this, startWorld)
 
     constructor(run?: boolean) {
         // set app
         super(run)
-
-        this.player = CreateEntity(player, this.world)
-        this.world.addEntity(this.player)
-        this.world.addEntity(CreateEntity(dummy, this.world))
-
-        this.world.addSystem(new MovementSystemTB(this.world) as MovementSystemTB)
 
         // you will need to set this when creating the world
         this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)

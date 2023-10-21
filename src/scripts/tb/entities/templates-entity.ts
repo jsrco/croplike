@@ -27,30 +27,12 @@ export const player: EntityMap = {
     options: {
         color: ColorSwatch.green[3],
         position: {
-            x: 40,
-            y: 40,
+            x: 60,
+            y: 60,
         },
         size: {
             x: 20,
             y: 20,
         },
     }
-}
-
-export const wall: EntityMap = {
-    name: 'wall',
-    componentMap: {
-        pixi: true,
-    },
-    options: {
-        color: ColorSwatch.blue[3],
-        position: {
-            x: 0,
-            y: 0,
-        },
-        size: {
-            x: 0,
-            y: 0,
-        },
-    },
 }

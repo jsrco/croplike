@@ -1,11 +1,11 @@
 import { Engine } from "../../shared/engine"
 import { CreateEntity, EntityMap } from "../../shared/entities/create-entity"
-import { wall } from "../../shared/entities/templates-entity"
 import { MovementSystemRT } from "../../shared/systems/movement-rt"
 import { PhysicsSystem } from "../../shared/systems/physics"
 import { RenderSystem } from "../../shared/systems/render"
 import { WorldMap } from "../../shared/util/create-world"
 import { World } from "../../shared/util/world"
+import { wall } from "../entities/templates-entity"
 
 export const createBounds = (world: World): void => {
     const { worldDimensions } = world

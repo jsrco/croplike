@@ -95,6 +95,7 @@ const fields = [
         operation: () => {
             for (const entity of activeModule.world.entities) {
                 console.log(entity.name, entity.components.pixi.position)
+                console.log(entity.name, entity.components.pixi.positionTarget)
                 console.log(entity.name, entity.components.pixi.size)
             }
         }
