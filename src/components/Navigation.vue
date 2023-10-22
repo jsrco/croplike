@@ -11,7 +11,7 @@
     </div>
     <div v-if="isInDebug"
         class="absolute bg-dirt border border-gray-300 dropdown flex flex-col pl-4 pr-3 py-1 rounded-sm max-w-12 z-40">
-        <div v-for="item in debugList" class="font-share text-gray-400 active:text-green-400 hover:text-white "
+        <div v-for="(item, index) in debugList" :class="{ 'font-bold text-red-400' : index === 0 }" class="font-share text-gray-400 active:text-green-400 hover:text-white "
             @click="operateDebug(item.operation)">
             {{ item.name }}
         </div>
@@ -31,6 +31,13 @@ const topic = ref('Fields')
 
 const debugList = computed(() => {
     const croplike = [
+        {
+            name: 'SWTICH TO TB',
+            operation: () => {
+                switchMoudele()
+                topic.value = 'Fields'
+            }
+        },
         {
             name: 'switch room demo',
             operation: () => {
@@ -84,16 +91,16 @@ const debugList = computed(() => {
                 }
             }
         },
-        {
-            name: 'switch module',
-            operation: () => {
-                switchMoudele()
-                topic.value = 'Fields'
-            }
-        },
     ]
 
     const fields = [
+        {
+            name: 'SWTICH TO RT',
+            operation: () => {
+                switchMoudele()
+                topic.value = 'Croplike'
+            }
+        },
         {
             name: 'console.dir info',
             operation: () => {
@@ -108,13 +115,6 @@ const debugList = computed(() => {
                     console.log(entity.name, entity.components.pixi.positionTarget)
                     console.log(entity.name, entity.components.pixi.size)
                 }
-            }
-        },
-        {
-            name: 'switch module',
-            operation: () => {
-                switchMoudele()
-                topic.value = 'Croplike'
             }
         },
     ]
