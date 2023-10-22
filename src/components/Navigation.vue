@@ -19,90 +19,107 @@
 </template>
 
 <script setup lang="ts">
-import { ref, Ref } from "vue"
+import { computed, ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
 import { PhysicsSystem } from "./../scripts/shared/systems/physics"
 
-const { activeModule } = useEngine()
+const { switchMoudele } = useEngine()
 
 const switchWorld = ref(0)
 
-const croplike = [
-    {
-        name: 'switch room demo',
-        operation: () => {
-            if (switchWorld.value === 0) switchWorld.value = 1
-            else switchWorld.value = 0
-            activeModule.switchWorld(switchWorld.value, activeModule.player)
-        }
-    },
-    {
-        name: 'console.dir info',
-        operation: () => {
-            console.dir(activeModule)
-        }
-    },
-    {
-        name: 'console.dir save',
-        operation: () => {
-            console.dir(activeModule.localStorageManager.getData())
-        }
-    },
-    {
-        name: 'clear save',
-        operation: () => {
-            activeModule.localStorageManager.clearData()
-        }
-    },
-    {
-        name: 'load',
-        operation: () => {
-            activeModule.load()
-        }
-    },
-    {
-        name: 'pause',
-        operation: () => {
-            activeModule.pause()
-        }
-    },
-    {
-        name: 'save',
-        operation: () => {
-            activeModule.save()
-        }
-    },
-    {
-        name: 'trigger collider borders',
-        operation: () => {
-            const physics = activeModule.world.getSystemByType('physics') as PhysicsSystem
-            if (physics) {
-                physics.triggerShowColliderBounds()
-            }
-        }
-    },
-]
+const topic = ref('Fields')
 
-const fields = [
-    {
-        name: 'console.dir info',
-        operation: () => {
-            console.dir(activeModule)
-        }
-    },
-    {
-        name: 'console.log entity info',
-        operation: () => {
-            for (const entity of activeModule.world.entities) {
-                console.log(entity.name, entity.components.pixi.position)
-                console.log(entity.name, entity.components.pixi.positionTarget)
-                console.log(entity.name, entity.components.pixi.size)
+const debugList = computed(() => {
+    const croplike = [
+        {
+            name: 'switch room demo',
+            operation: () => {
+                if (switchWorld.value === 0) switchWorld.value = 1
+                else switchWorld.value = 0
+                useEngine().activeModule.switchWorld(switchWorld.value, useEngine().activeModule.player)
             }
-        }
-    }
-]
+        },
+        {
+            name: 'console.dir info',
+            operation: () => {
+                console.dir(useEngine().activeModule)
+            }
+        },
+        {
+            name: 'console.dir save',
+            operation: () => {
+                console.dir(useEngine().activeModule.localStorageManager.getData())
+            }
+        },
+        {
+            name: 'clear save',
+            operation: () => {
+                useEngine().activeModule.localStorageManager.clearData()
+            }
+        },
+        {
+            name: 'load',
+            operation: () => {
+                useEngine().activeModule.load()
+            }
+        },
+        {
+            name: 'pause',
+            operation: () => {
+                useEngine().activeModule.pause()
+            }
+        },
+        {
+            name: 'save',
+            operation: () => {
+                useEngine().activeModule.save()
+            }
+        },
+        {
+            name: 'trigger collider borders',
+            operation: () => {
+                const physics = useEngine().activeModule.world.getSystemByType('physics') as PhysicsSystem
+                if (physics) {
+                    physics.triggerShowColliderBounds()
+                }
+            }
+        },
+        {
+            name: 'switch module',
+            operation: () => {
+                switchMoudele()
+                topic.value = 'Fields'
+            }
+        },
+    ]
 
-const debugList = activeModule.name === 'Croplike' ? croplike : fields
+    const fields = [
+        {
+            name: 'console.dir info',
+            operation: () => {
+                console.dir(useEngine().activeModule)
+            }
+        },
+        {
+            name: 'console.log entity info',
+            operation: () => {
+                for (const entity of useEngine().activeModule.world.entities) {
+                    console.log(entity.name, entity.components.pixi.position)
+                    console.log(entity.name, entity.components.pixi.positionTarget)
+                    console.log(entity.name, entity.components.pixi.size)
+                }
+            }
+        },
+        {
+            name: 'switch module',
+            operation: () => {
+                switchMoudele()
+                topic.value = 'Croplike'
+            }
+        },
+    ]
+    return topic.value === 'Croplike' ? croplike : fields
+})
 
 const isInDebug: Ref<Boolean> = ref(false)
 
