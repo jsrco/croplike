@@ -55,6 +55,11 @@ export class RenderSystem extends System {
         elementRef.appendChild(this.world.engine.app.view)
     }
 
+    setTarget(entity: Entity) {
+        this.target = entity
+        this.targetInfo = this.target.getComponent('pixi') as PixiComponent
+    }
+
     update(deltaTime: number): void {
         // Camera
         this.adjustCamera()

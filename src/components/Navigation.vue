@@ -11,8 +11,8 @@
     </div>
     <div v-if="isInDebug"
         class="absolute bg-dirt border border-gray-300 dropdown flex flex-col pl-4 pr-3 py-1 rounded-sm max-w-12 z-40">
-        <div v-for="(item, index) in debugList" :class="{ 'font-bold text-red-400' : index === 0 }" class="font-share text-gray-400 active:text-green-400 hover:text-white "
-            @click="operateDebug(item.operation)">
+        <div v-for="(item, index) in debugList" :class="{ 'font-bold text-red-400': index === 0 }"
+            class="font-share text-gray-400 active:text-green-400 hover:text-white " @click="operateDebug(item.operation)">
             {{ item.name }}
         </div>
     </div>
@@ -22,6 +22,7 @@
 import { computed, ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
 import { PhysicsSystem } from "./../scripts/shared/systems/physics"
+import { RenderSystem } from "../scripts/shared/systems/render"
 
 const { switchMoudele } = useEngine()
 
@@ -89,6 +90,15 @@ const debugList = computed(() => {
                 if (physics) {
                     physics.triggerShowColliderBounds()
                 }
+            }
+        },
+        {
+            name: 'setTarget to bigDemo',
+            operation: () => {
+                // active outside starter room
+                const render = useEngine().activeModule.world.getSystemByType('render') as RenderSystem
+                const entity = useEngine().activeModule.world.getEntityByName('bigDemo')
+                if (entity) render.setTarget(entity)
             }
         },
     ]

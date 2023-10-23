@@ -25,7 +25,6 @@ export class FieldsModule extends Engine {
     }
 
     addCanvas(elementRef: HTMLElement) {
-        if (this.running.value) this.world.addSystem(new RenderSystem(this.world))
         const render = this.world.getSystemByType('render') as RenderSystem
         if (render) render.appendElement(elementRef)
         else console.log("still loading.")

@@ -1,3 +1,4 @@
+import RAPIER from "@dimforge/rapier2d"
 import { Engine } from "../../shared/engine"
 import { CreateEntity, EntityMap } from "../../shared/entities/create-entity"
 import { MovementSystemRT } from "../../shared/systems/movement-rt"
@@ -5,22 +6,30 @@ import { PhysicsSystem } from "../../shared/systems/physics"
 import { RenderSystem } from "../../shared/systems/render"
 import { WorldMap } from "../../shared/util/create-world"
 import { World } from "../../shared/util/world"
-import { wall } from "../entities/templates-entity"
+import { ColorSwatch } from "../../shared/util/color-swatch"
 
 export const createBounds = (world: World): void => {
-    const { worldDimensions } = world
+    const { wallSize } = world
+    const { x, y } = world.worldDimensions
     // floor
-    setBounds(wall, worldDimensions.x / 2, worldDimensions.y - (world.wallSize / 2), worldDimensions.x, world.wallSize)
-    world.addEntity(CreateEntity(wall, world))
+    const floor = setBoundsMap(new RAPIER.Vector2(x / 2, y - (wallSize / 2)), new RAPIER.Vector2(x, wallSize))
+    floor.name = 'floor'
+    world.addEntity(CreateEntity(floor, world))
     // leftWall
-    setBounds(wall, world.wallSize / 2, (worldDimensions.y / 2), world.wallSize, worldDimensions.y - (world.wallSize * 2))
-    world.addEntity(CreateEntity(wall, world))
+    const leftWall = setBoundsMap(new RAPIER.Vector2(wallSize / 2, (y / 2)), new RAPIER.Vector2(wallSize, y - (wallSize * 2)))
+    leftWall.name = 'leftWall'
+
+    world.addEntity(CreateEntity(leftWall, world))
     // rightWall
-    setBounds(wall, worldDimensions.x - (world.wallSize / 2), (worldDimensions.y / 2), world.wallSize, worldDimensions.y - (world.wallSize * 2))
-    world.addEntity(CreateEntity(wall, world))
+    const rightWall = setBoundsMap(new RAPIER.Vector2(x - (wallSize / 2), (y / 2)), new RAPIER.Vector2(wallSize, y - (wallSize * 2)))
+    rightWall.name = 'rightWall'
+
+    world.addEntity(CreateEntity(rightWall, world))
     // ceiling
-    setBounds(wall, worldDimensions.x / 2, world.wallSize / 2, worldDimensions.x, world.wallSize)
-    world.addEntity(CreateEntity(wall, world))
+    const ceiling = setBoundsMap(new RAPIER.Vector2(x / 2, wallSize / 2), new RAPIER.Vector2(x, wallSize))
+    ceiling.name = 'ceiling'
+
+    world.addEntity(CreateEntity(ceiling, world))
 }
 
 const createEntities = (engine: Engine, world: World, worldMap: WorldMap): void => {
@@ -35,6 +44,7 @@ const createEntities = (engine: Engine, world: World, worldMap: WorldMap): void 
         if (entities[index].name === 'demo') world.addEntity(CreateEntity(entities[index], world))
         if (entities[index].name === 'growthDemo') world.addEntity(CreateEntity(entities[index], world))
     }
+
     createBounds(world)
 }
 
@@ -54,10 +64,21 @@ const loadSystems = (world: World, worldMap: WorldMap): void => {
     if (worldMap.systemMap.render) world.addSystem(new RenderSystem(world))
 }
 
-const setBounds = (entity: EntityMap, positionX: number, positionY: number, sizeX: number, sizeY: number): void => {
-    const { position, size } = entity.options
-    position.x = positionX
-    position.y = positionY
-    size.x = sizeX
-    size.y = sizeY
+const setBoundsMap = (position: RAPIER.Vector2, size: RAPIER.Vector2): EntityMap => {
+    const wall: EntityMap = {
+        name: 'wall',
+        componentMap: {
+            pixi: true,
+            rapier: true,
+        },
+        options: {
+            bodyType: 'fixed',
+            color: ColorSwatch.blue[3],
+            isOnGround: true,
+            position: position,
+            size: size,
+        },
+    }
+
+    return wall
 }

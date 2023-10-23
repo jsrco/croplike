@@ -40,7 +40,6 @@ export class World {
                 this.addEntity(entity)
             }
             else console.log('cannot add', entity.name, entity.id)
-
         }
     }
 
@@ -56,6 +55,10 @@ export class World {
 
     getEntityByHandle(handle: number): Entity | undefined {
         return this.entities.find(entity => entity.handle === handle)
+    }
+
+    getEntityByName(name: string): Entity | undefined {
+        return this.entities.find(entity => entity.name === name)
     }
 
     getSystemByType(type: string) {
