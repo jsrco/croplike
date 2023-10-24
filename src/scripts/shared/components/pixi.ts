@@ -73,33 +73,35 @@ export class PixiComponent extends Component {
     }
 
     isOkToMove(target: RAPIER.Vector2) {
-        if (this.world.engine.name === 'Croplike') return true
-        else return this.isInBounds(this.size, target) && this.isPositonClearFor(target)
+        if (this.owner.name === 'wall') return true
+        if (this.world.engine.name === 'Croplike') return this.isPositionClearFor(target)
+        else return this.isInBounds(this.size, target) && this.isPositionClearFor(target)
     }
 
-    isPositonClearFor(target: RAPIER.Vector2): boolean {
+    isPositionClearFor(target: RAPIER.Vector2): boolean {
         const entities = this.world.getEntitiesByComponent('pixi')
         for (const entity of entities) {
             const otherPixiComponent = entity.getComponent('pixi') as PixiComponent
-            // Skip the current entity itself
             if (this.owner.id === entity.id) {
-                continue
+                continue // Skip self
             }
-            const left1 = target.x
-            const right1 = target.x + this.size.x
-            const top1 = target.y
-            const bottom1 = target.y + this.size.y
+            const targetLeft = target.x
+            const targetRight = target.x + this.size.x
+            const targetTop = target.y
+            const targetBottom = target.y + this.size.y
 
-            const left2 = otherPixiComponent.positionTarget.x
-            const right2 = otherPixiComponent.positionTarget.x + otherPixiComponent.size.x
-            const top2 = otherPixiComponent.positionTarget.y
-            const bottom2 = otherPixiComponent.positionTarget.y + otherPixiComponent.size.y
+            const otherLeft = otherPixiComponent.positionTarget.x
+            const otherRight = otherPixiComponent.positionTarget.x + otherPixiComponent.size.x
+            const otherTop = otherPixiComponent.positionTarget.y
+            const otherBottom = otherPixiComponent.positionTarget.y + otherPixiComponent.size.y
 
-            const isOk = left2 >= right1 || right2 <= left1 || top2 >= bottom1 || bottom2 <= top1
-
-            if (!isOk) return false
+            const isCollision = otherLeft < targetRight && otherRight > targetLeft && otherTop < targetBottom && otherBottom > targetTop
+            if (isCollision) {
+                // Handle collision or return false, depending on the use case
+                return false
+            }
         }
-        return true
+        return true // No collision found
     }
 
     removeFromStage() {

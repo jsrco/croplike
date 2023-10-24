@@ -28,7 +28,7 @@ const { switchMoudele } = useEngine()
 
 const switchWorld = ref(0)
 
-const topic = ref('Fields')
+const topic = ref(useEngine().activeModule.name)
 
 const debugList = computed(() => {
     const croplike = [

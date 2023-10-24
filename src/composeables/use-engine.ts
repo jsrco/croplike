@@ -6,7 +6,7 @@ const croplikeModule = new CropLikeModule()
 const fieldsModule = new FieldsModule()
 const gameContainer = ref()
 
-let activeModule: any = fieldsModule // croplikeModule
+let activeModule: any = croplikeModule // fieldsModule
 const switchMoudele = () => {
     activeModule.stopRun()
     gameContainer.value.removeChild(activeModule.world.engine.app.view)

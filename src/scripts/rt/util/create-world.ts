@@ -13,22 +13,15 @@ export const createBounds = (world: World): void => {
     const { x, y } = world.worldDimensions
     // floor
     const floor = setBoundsMap(new RAPIER.Vector2(x / 2, y - (wallSize / 2)), new RAPIER.Vector2(x, wallSize))
-    floor.name = 'floor'
     world.addEntity(CreateEntity(floor, world))
     // leftWall
-    const leftWall = setBoundsMap(new RAPIER.Vector2(wallSize / 2, (y / 2)), new RAPIER.Vector2(wallSize, y - (wallSize * 2)))
-    leftWall.name = 'leftWall'
-
+    const leftWall = setBoundsMap(new RAPIER.Vector2(wallSize / 2, (y / 2)), new RAPIER.Vector2(wallSize, y - (2 * wallSize)))
     world.addEntity(CreateEntity(leftWall, world))
     // rightWall
-    const rightWall = setBoundsMap(new RAPIER.Vector2(x - (wallSize / 2), (y / 2)), new RAPIER.Vector2(wallSize, y - (wallSize * 2)))
-    rightWall.name = 'rightWall'
-
+    const rightWall = setBoundsMap(new RAPIER.Vector2(x - (wallSize / 2), (y / 2)), new RAPIER.Vector2(wallSize, y - (2 * wallSize)))
     world.addEntity(CreateEntity(rightWall, world))
     // ceiling
     const ceiling = setBoundsMap(new RAPIER.Vector2(x / 2, wallSize / 2), new RAPIER.Vector2(x, wallSize))
-    ceiling.name = 'ceiling'
-
     world.addEntity(CreateEntity(ceiling, world))
 }
 
