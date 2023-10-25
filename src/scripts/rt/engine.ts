@@ -28,13 +28,13 @@ export class CropLikeModule extends Engine {
         this.switchWorld(this.worldIndex)
 
         window.addEventListener('keydown', (event) => {
-            if (event.key === 'l') {
+            if (event.key === 'l' && this.running.value === true) {
                 this.load()
             }
         })
 
         window.addEventListener('keydown', (event) => {
-            if (event.key === 's') {
+            if (event.key === 's' && this.running.value === true) {
                 this.save()
             }
         })

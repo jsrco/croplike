@@ -32,7 +32,7 @@ export class Engine {
         })
 
         window.addEventListener('keydown', (event) => {
-            if (event.key === 'p') {
+            if (event.key === 'p' && this.running.value === true) {
                 this.pause()
             }
         })
