@@ -27,8 +27,9 @@ export class PixiComponent extends Component {
         this.sprite.tint = this.color
 
         this.setPosition(position)
-        this.canSetPositionTarget(position)
         this.setSize(size)
+
+        this.canSetPositionTarget(position)
 
         if (moveLeft && moveRight) {
             this.moveLeft = moveLeft
@@ -73,7 +74,7 @@ export class PixiComponent extends Component {
     }
 
     isOkToMove(target: RAPIER.Vector2) {
-        if (this.owner.name === 'wall') return true
+        // if (this.owner.name === 'wall') return true
         if (this.world.engine.name === 'Croplike') return this.isPositionClearFor(target)
         else return this.isInBounds(this.size, target) && this.isPositionClearFor(target)
     }
@@ -96,6 +97,7 @@ export class PixiComponent extends Component {
             const otherBottom = otherPixiComponent.positionTarget.y + otherPixiComponent.size.y
 
             const isCollision = otherLeft < targetRight && otherRight > targetLeft && otherTop < targetBottom && otherBottom > targetTop
+
             if (isCollision) {
                 // Handle collision or return false, depending on the use case
                 return false
