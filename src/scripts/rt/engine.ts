@@ -1,4 +1,5 @@
 import RAPIER from "@dimforge/rapier2d"
+import useEngine from "../../composeables/use-engine"
 import { Engine } from "../shared/engine"
 import { EntityMap } from "../shared/entities/create-entity"
 import { Entity } from '../shared/entities/entity'
@@ -29,13 +30,13 @@ export class CropLikeModule extends Engine {
 
         window.addEventListener('keydown', (event) => {
             if (event.key === 'l' && this.running === true) {
-                this.load()
+                useEngine().activeModule.value.load()
             }
         })
 
         window.addEventListener('keydown', (event) => {
             if (event.key === 's' && this.running === true) {
-                this.save()
+                useEngine().activeModule.value.save()
             }
         })
     }
