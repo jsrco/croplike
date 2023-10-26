@@ -4,9 +4,9 @@ import { CreateEntity, EntityMap } from "../../shared/entities/create-entity"
 import { MovementSystemRT } from "../../shared/systems/movement-rt"
 import { PhysicsSystem } from "../../shared/systems/physics"
 import { RenderSystem } from "../../shared/systems/render"
+import { ColorSwatch } from "../../shared/util/color-swatch"
 import { WorldMap } from "../../shared/util/create-world"
 import { World } from "../../shared/util/world"
-import { ColorSwatch } from "../../shared/util/color-swatch"
 
 export const createBounds = (world: World): void => {
     const { wallSize } = world

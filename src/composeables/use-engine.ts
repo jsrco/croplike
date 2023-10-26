@@ -1,4 +1,4 @@
-import { ref } from "vue"
+import { Ref, ref } from "vue"
 import { CropLikeModule } from "../scripts/rt/engine"
 import { FieldsModule } from "../scripts/tb/engine"
 
@@ -6,13 +6,13 @@ const croplikeModule = new CropLikeModule()
 const fieldsModule = new FieldsModule()
 const gameContainer = ref()
 
-let activeModule: any = croplikeModule // fieldsModule
+let activeModule: Ref<any> = ref(croplikeModule) // fieldsModule
 const switchMoudele = () => {
-    activeModule.stopRun()
-    gameContainer.value.removeChild(activeModule.world.engine.app.view)
-    activeModule.name === 'Croplike' ? activeModule = fieldsModule : activeModule = croplikeModule
-    activeModule.startRun()
-    activeModule.addCanvas(gameContainer.value)
+    activeModule.value.stopRun()
+    gameContainer.value.removeChild(activeModule.value.world.engine.app.view)
+    activeModule.value.name === 'Croplike' ? activeModule.value = fieldsModule : activeModule.value = croplikeModule
+    activeModule.value.startRun()
+    activeModule.value.addCanvas(gameContainer.value)
 }
 const useEngine = (elementRef?: HTMLElement) => {
     if (elementRef) gameContainer.value = elementRef

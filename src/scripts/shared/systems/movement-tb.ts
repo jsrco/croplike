@@ -75,8 +75,8 @@ export class MovementSystemTB extends System {
                 allAtTarget = false
             }
         }
-        if (allAtTarget) this.engine.shifting.value = false
-        else this.engine.shifting.value = true
+        if (allAtTarget) this.engine.shifting = false
+        else this.engine.shifting = true
     }
 
 }

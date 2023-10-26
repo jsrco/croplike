@@ -1,6 +1,6 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
-import { Ref, ref } from "vue"
+import useEngine from "../../composeables/use-engine"
 import { Entity } from "./entities/entity"
 import { SaveManager } from "./util/save-manager"
 
@@ -9,9 +9,9 @@ export class Engine {
     appDimensions: RAPIER.Vector2 = { x: 0, y: 0 }
     app: PIXI.Application
     name!: string
-    paused: Ref<boolean> = ref(false)
-    running: Ref<boolean> = ref(false)
-    shifting: Ref<boolean> = ref(false)
+    paused: boolean = false
+    running: boolean = false
+    shifting: boolean = false
     saveManager: SaveManager = new SaveManager()
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',
@@ -32,18 +32,18 @@ export class Engine {
         })
 
         window.addEventListener('keydown', (event) => {
-            if (event.key === 'p' && this.running.value === true) {
-                this.pause()
+            if (event.key === 'p' && this.running === true) {
+                useEngine().activeModule.value.pause()
             }
         })
 
         window.addEventListener('blur', () => {
-            if (this.paused.value === false) this.pause()
+            if (this.paused === false && this.running === true) useEngine().activeModule.value.pause()
         })
 
         window.addEventListener("visibilitychange", () => {
             if (document.visibilityState === 'hidden') {
-                if (this.paused.value === false) this.pause()
+                if (this.paused === false && this.running === true) useEngine().activeModule.value.pause()
             }
         })
 
@@ -55,8 +55,8 @@ export class Engine {
     }
 
     pause(): void {
-        this.paused.value = !this.paused.value
-        if (this.paused.value) this.pauseTicker()
+        this.paused = !this.paused
+        if (this.paused) this.pauseTicker()
         else this.resumeTicker()
     }
 
@@ -70,11 +70,11 @@ export class Engine {
     }
 
     startRun(): void {
-        this.running.value = true
+        this.running = true
     }
 
     stopRun(): void {
-        this.running.value = false
+        this.running = false
     }
 
     update(deltaTime: number): void {

@@ -32,11 +32,11 @@ export class FieldsModule extends Engine {
 
     onKeyChange(data: any): void {
         const { isDown } = data
-        if (isDown) this.shifting.value = true
+        if (isDown) this.shifting = true
     }
 
     update(delta: number) {
-        if (!this.paused.value && this.running.value && this.shifting.value) this.world.update(delta)
+        if (!this.paused && this.running && this.shifting) this.world.update(delta)
     }
 
 }

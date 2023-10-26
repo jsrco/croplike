@@ -28,13 +28,13 @@ export class CropLikeModule extends Engine {
         this.switchWorld(this.worldIndex)
 
         window.addEventListener('keydown', (event) => {
-            if (event.key === 'l' && this.running.value === true) {
+            if (event.key === 'l' && this.running === true) {
                 this.load()
             }
         })
 
         window.addEventListener('keydown', (event) => {
-            if (event.key === 's' && this.running.value === true) {
+            if (event.key === 's' && this.running === true) {
                 this.save()
             }
         })
@@ -49,7 +49,7 @@ export class CropLikeModule extends Engine {
     load(): void {
         const saveData: any = this.localStorageManager.getData()
         if (Object.keys(saveData).length !== 0) {
-            this.paused.value = true
+            this.paused = true
             this.worldIndex = saveData.world
             this.worlds = []
             this.worlds = saveData.worlds
@@ -60,7 +60,7 @@ export class CropLikeModule extends Engine {
     }
 
     save(): void {
-        this.paused.value = true
+        this.paused = true
         this.localStorageManager.clearData()
         this.saveManager.clearData()
         this.worlds[this.worldIndex] = this.saveManager.createWorldMap(this.world)
@@ -83,7 +83,7 @@ export class CropLikeModule extends Engine {
     }
 
     switchWorld(targetIndex: number, targetEntity?: Entity): void {
-        this.paused.value = true
+        this.paused = true
         if (this.world && targetEntity) {
             this.world.removeEntity(targetEntity)
         }
@@ -98,8 +98,8 @@ export class CropLikeModule extends Engine {
     }
 
     update(delta: number) {
-        // if (!this.paused.value && this.running.value) console.log('croplike running')
-        if (!this.paused.value && this.running.value) this.world.update(delta)
+        // if (!this.paused && this.running) console.log('croplike running')
+        if (!this.paused && this.running) this.world.update(delta)
     }
 
 }

@@ -21,14 +21,14 @@
 <script setup lang="ts">
 import { computed, ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
-import { PhysicsSystem } from "./../scripts/shared/systems/physics"
 import { RenderSystem } from "../scripts/shared/systems/render"
+import { PhysicsSystem } from "./../scripts/shared/systems/physics"
 
 const { switchMoudele } = useEngine()
 
 const switchWorld = ref(0)
 
-const topic = ref(useEngine().activeModule.name)
+const topic = ref(useEngine().activeModule.value.name)
 
 const debugList = computed(() => {
     const croplike = [
@@ -44,7 +44,7 @@ const debugList = computed(() => {
             operation: () => {
                 if (switchWorld.value === 0) switchWorld.value = 1
                 else switchWorld.value = 0
-                useEngine().activeModule.switchWorld(switchWorld.value, useEngine().activeModule.player)
+                useEngine().activeModule.value.switchWorld(switchWorld.value, useEngine().activeModule.value.player)
             }
         },
         {
@@ -56,37 +56,37 @@ const debugList = computed(() => {
         {
             name: 'console.dir save',
             operation: () => {
-                console.dir(useEngine().activeModule.localStorageManager.getData())
+                console.dir(useEngine().activeModule.value.localStorageManager.getData())
             }
         },
         {
             name: 'clear save',
             operation: () => {
-                useEngine().activeModule.localStorageManager.clearData()
+                useEngine().activeModule.value.localStorageManager.clearData()
             }
         },
         {
             name: 'load',
             operation: () => {
-                useEngine().activeModule.load()
+                useEngine().activeModule.value.load()
             }
         },
         {
             name: 'pause',
             operation: () => {
-                useEngine().activeModule.pause()
+                useEngine().activeModule.value.pause()
             }
         },
         {
             name: 'save',
             operation: () => {
-                useEngine().activeModule.save()
+                useEngine().activeModule.value.save()
             }
         },
         {
             name: 'trigger collider borders',
             operation: () => {
-                const physics = useEngine().activeModule.world.getSystemByType('physics') as PhysicsSystem
+                const physics = useEngine().activeModule.value.world.getSystemByType('physics') as PhysicsSystem
                 if (physics) {
                     physics.triggerShowColliderBounds()
                 }
@@ -96,8 +96,8 @@ const debugList = computed(() => {
             name: 'setTarget to bigDemo',
             operation: () => {
                 // active outside starter room
-                const render = useEngine().activeModule.world.getSystemByType('render') as RenderSystem
-                const entity = useEngine().activeModule.world.getEntityByName('bigDemo')
+                const render = useEngine().activeModule.value.world.getSystemByType('render') as RenderSystem
+                const entity = useEngine().activeModule.value.world.getEntityByName('bigDemo')
                 if (entity) render.setTarget(entity)
             }
         },
@@ -120,7 +120,7 @@ const debugList = computed(() => {
         {
             name: 'console.log entity info',
             operation: () => {
-                for (const entity of useEngine().activeModule.world.entities) {
+                for (const entity of useEngine().activeModule.value.world.entities) {
                     console.log(entity.name, entity.components.pixi.position)
                     console.log(entity.name, entity.components.pixi.positionTarget)
                     console.log(entity.name, entity.components.pixi.size)
