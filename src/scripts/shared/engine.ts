@@ -9,9 +9,9 @@ export class Engine {
     appDimensions: RAPIER.Vector2 = { x: 0, y: 0 }
     app: PIXI.Application
     name!: string
-    paused: Ref<Boolean> = ref(false)
-    running: Ref<Boolean> = ref(false)
-    shifting: Ref<Boolean> = ref(false)
+    paused: Ref<boolean> = ref(false)
+    running: Ref<boolean> = ref(false)
+    shifting: Ref<boolean> = ref(false)
     saveManager: SaveManager = new SaveManager()
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({
         fontFamily: 'PixiPressStart2P',

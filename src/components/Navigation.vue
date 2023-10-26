@@ -131,7 +131,7 @@ const debugList = computed(() => {
     return topic.value === 'Croplike' ? croplike : fields
 })
 
-const isInDebug: Ref<Boolean> = ref(false)
+const isInDebug: Ref<boolean> = ref(false)
 
 const operateDebug = (task: any) => {
     task()
