@@ -50,21 +50,22 @@ export class PixiComponent extends Component {
         return clear
     }
 
-    findPositionToSet(initialPosition: RAPIER.Vector2, increment: number = 20): RAPIER.Vector2 | undefined {
+    findPositionToSet(initialPosition: RAPIER.Vector, increment: number = 20): RAPIER.Vector | undefined {
         let currentX = initialPosition.x
         let currentY = initialPosition.y
 
-        while (!this.canSetPositionTarget(new RAPIER.Vector2(currentX, currentY))) {
-            currentX += increment
-            if (currentX > this.world.worldDimensions.x) {
-                currentX = initialPosition.x
-                currentY += increment
-                if (currentY > this.world.worldDimensions.y) {
-                    return undefined // No unoccupied position found
+        while (currentY <= this.world.worldDimensions.y) {
+            while (currentX <= this.world.worldDimensions.x) {
+                const newPosition = new RAPIER.Vector2(currentX, currentY)
+                if (this.canSetPositionTarget(newPosition) && this.isPositionClearFor(newPosition)) {
+                    return newPosition
                 }
+                currentX += increment
             }
+            currentX = 0
+            currentY += increment
         }
-        return new RAPIER.Vector2(currentX, currentY)
+        return undefined // No unoccupied position found
     }
 
     isInBounds(size: RAPIER.Vector2, target: RAPIER.Vector2): boolean {
