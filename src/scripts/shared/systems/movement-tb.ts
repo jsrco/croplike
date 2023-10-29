@@ -62,6 +62,23 @@ export class MovementSystemTB extends System {
                     const newPosition = { x: position.x, y: position.y - this.move }
                     if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
                 }
+                // diagonal
+                if (this.keys.has('End')) {
+                    const newPosition = { x: position.x - this.move, y: position.y + this.move }
+                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
+                }
+                if (this.keys.has('Home')) {
+                    const newPosition = { x: position.x - this.move, y: position.y - this.move }
+                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
+                }
+                if (this.keys.has('PageDown')) {
+                    const newPosition = { x: position.x + this.move, y: position.y + this.move }
+                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
+                }
+                if (this.keys.has('PageUp')) {
+                    const newPosition = { x: position.x + this.move, y: position.y - this.move }
+                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
+                }
             }
             if (!isAtTarget) {
                 const needsToGoDown = position.y < positionTarget.y

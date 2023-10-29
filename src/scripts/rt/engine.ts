@@ -3,10 +3,8 @@ import useEngine from "../../composeables/use-engine"
 import { Engine } from "../shared/engine"
 import { EntityMap } from "../shared/entities/create-entity"
 import { Entity } from '../shared/entities/entity'
-import { RenderSystem } from '../shared/systems/render'
 import { WorldMap } from "../shared/util/create-world"
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
-import { World } from '../shared/util/world'
 import { CreateWorld } from "./util/create-world"
 import { demoWorld, secondWorld, startWorld } from "./util/templates-world"
 
@@ -16,8 +14,6 @@ export class CropLikeModule extends Engine {
     localStorageManager = new LocalStorageManager('croplike-v0-game-data')
     name = 'Croplike'
 
-    world!: World
-    worldIndex: number = 0
     worlds: Array<WorldMap>
 
     constructor(run?: boolean) {
@@ -41,12 +37,6 @@ export class CropLikeModule extends Engine {
         })
     }
 
-    addCanvas(elementRef: HTMLElement) {
-        const render = this.world.getSystemByType('render') as RenderSystem
-        if (render) render.appendElement(elementRef)
-        else console.log("still loading.")
-    }
-
     load(): void {
         const saveData: any = this.localStorageManager.getData()
         if (Object.keys(saveData).length !== 0) {
@@ -58,16 +48,6 @@ export class CropLikeModule extends Engine {
             this.switchWorld(this.worldIndex)
             this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)
         } else console.log('no saved data')
-    }
-
-    save(): void {
-        this.paused = true
-        this.localStorageManager.clearData()
-        this.saveManager.clearData()
-        this.worlds[this.worldIndex] = this.saveManager.createWorldMap(this.world)
-        this.saveManager.setData(this.worldIndex, this.worlds)
-        this.localStorageManager.saveData(this.saveManager.data)
-        this.pause()
     }
 
     switchEntityToWorld(targetIndex: number, targetEntity: Entity): void {
