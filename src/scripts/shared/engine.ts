@@ -1,9 +1,10 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import useEngine from "../../composeables/use-engine"
+import { EntityMap } from "./entities/create-entity"
 import { Entity } from "./entities/entity"
 import { RenderSystem } from "./systems/render"
-import { WorldMap } from "./util/create-world"
+import { CreateWorld, WorldMap } from "./util/create-world"
 import { LocalStorageManager } from "./util/local-storage-manager"
 import { SaveManager } from "./util/save-manager"
 import { World } from "./util/world"
@@ -40,8 +41,20 @@ export class Engine {
         })
 
         window.addEventListener('keydown', (event) => {
+            if (event.key === 'l' && this.running === true) {
+                useEngine().activeModule.value.load()
+            }
+        })
+
+        window.addEventListener('keydown', (event) => {
             if (event.key === 'p' && this.running === true) {
                 useEngine().activeModule.value.pause()
+            }
+        })
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 's' && this.running === true) {
+                useEngine().activeModule.value.save()
             }
         })
 
@@ -62,6 +75,19 @@ export class Engine {
         const render = this.world.getSystemByType('render') as RenderSystem
         if (render) render.appendElement(elementRef)
         else console.log("still loading.")
+    }
+
+    load(): void {
+        const saveData: any = this.localStorageManager.getData()
+        if (Object.keys(saveData).length !== 0) {
+            this.paused = true
+            this.worldIndex = saveData.world
+            this.worlds = []
+            this.worlds = saveData.worlds
+            this.app.stage.removeChildren()
+            this.switchWorld(this.worldIndex)
+            this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)
+        } else console.log('no saved data')
     }
 
     pause(): void {
@@ -95,6 +121,34 @@ export class Engine {
 
     stopRun(): void {
         this.running = false
+    }
+
+    switchEntityToWorld(targetIndex: number, targetEntity: Entity): void {
+        const entities = this.worlds[this.worldIndex].entities
+        for (let index = 0; index < entities.length; index++) {
+            const entity = entities[index]
+            if (entity.id === targetEntity.id) {
+                entities.splice(index, 1)
+                break
+            }
+        }
+        const entityInfo = this.saveManager.createEntityMap(targetEntity)
+        this.worlds[targetIndex].entities.push(entityInfo as EntityMap)
+    }
+
+    switchWorld(targetIndex: number, targetEntity?: Entity): void {
+        this.paused = true
+        if (this.world && targetEntity) {
+            this.world.removeEntity(targetEntity)
+        }
+        this.app.stage.removeChildren()
+        if (targetEntity) {
+            this.switchEntityToWorld(targetIndex, targetEntity)
+        }
+        this.world = CreateWorld(this, this.worlds[targetIndex])
+        this.worldIndex = targetIndex
+        this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)
+        this.pause()
     }
 
     update(deltaTime: number): void {

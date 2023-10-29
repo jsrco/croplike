@@ -2,6 +2,7 @@ import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Entity } from "../entities/entity"
 import { PhysicsSystem } from "../systems/physics"
+import { gridSize } from "../util/config-options"
 import { World } from "../util/world"
 import { Component } from "./component"
 
@@ -50,7 +51,7 @@ export class PixiComponent extends Component {
         return clear
     }
 
-    findPositionToSet(increment: number = 20): RAPIER.Vector | undefined {
+    findPositionToSet(increment: number = gridSize.value): RAPIER.Vector | undefined {
         for (let y = 0; y <= this.world.worldDimensions.y; y += increment) {
             for (let x = 0; x <= this.world.worldDimensions.x; x += increment) {
                 const newPosition = new RAPIER.Vector2(x, y)

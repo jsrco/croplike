@@ -1,8 +1,6 @@
 import RAPIER from "@dimforge/rapier2d"
 import { Engine } from "../shared/engine"
 import { LocalStorageManager } from "../shared/util/local-storage-manager"
-import { World } from "./../shared/util/world"
-import { CreateWorld } from "./util/create-world"
 import { startWorld } from "./util/template-world"
 
 export class FieldsModule extends Engine {
@@ -11,11 +9,14 @@ export class FieldsModule extends Engine {
     localStorageManager = new LocalStorageManager('field-v0-game-data')
     name = 'Fields'
 
-    world: World = CreateWorld(this, startWorld)
-
     constructor(run?: boolean) {
         // set app
         super(run)
+
+        this.worldIndex = 0
+        this.worlds = [startWorld]
+        this.switchWorld(this.worldIndex)
+
 
         // you will need to set this when creating the world
         this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)

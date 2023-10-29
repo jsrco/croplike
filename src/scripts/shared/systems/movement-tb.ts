@@ -1,5 +1,6 @@
 import RAPIER from "@dimforge/rapier2d"
 import { PixiComponent } from "../components/pixi"
+import { gridSize } from "../util/config-options"
 import { World } from "../util/world"
 import { System } from "./system"
 
@@ -7,7 +8,7 @@ export class MovementSystemTB extends System {
 
 
     increment: number = 2
-    move: number = 20
+    move: number = gridSize.value
     type: string = 'movement-TB'
 
     constructor(world: World) {
