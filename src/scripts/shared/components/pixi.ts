@@ -50,22 +50,16 @@ export class PixiComponent extends Component {
         return clear
     }
 
-    findPositionToSet(initialPosition: RAPIER.Vector, increment: number = 20): RAPIER.Vector | undefined {
-        let currentX = initialPosition.x
-        let currentY = initialPosition.y
-
-        while (currentY <= this.world.worldDimensions.y) {
-            while (currentX <= this.world.worldDimensions.x) {
-                const newPosition = new RAPIER.Vector2(currentX, currentY)
-                if (this.canSetPositionTarget(newPosition) && this.isPositionClearFor(newPosition)) {
+    findPositionToSet(increment: number = 20): RAPIER.Vector | undefined {
+        for (let y = 0; y <= this.world.worldDimensions.y; y += increment) {
+            for (let x = 0; x <= this.world.worldDimensions.x; x += increment) {
+                const newPosition = new RAPIER.Vector2(x, y)
+                if (this.isInBounds(this.size, newPosition) && this.isPositionClearFor(newPosition)) {
                     return newPosition
                 }
-                currentX += increment
             }
-            currentX = 0
-            currentY += increment
         }
-        return undefined // No unoccupied position found
+        return undefined
     }
 
     isInBounds(size: RAPIER.Vector2, target: RAPIER.Vector2): boolean {
@@ -75,8 +69,7 @@ export class PixiComponent extends Component {
     }
 
     isOkToMove(target: RAPIER.Vector2) {
-        // if (this.owner.name === 'wall') return true
-        if (this.world.engine.name === 'Croplike') return this.isPositionClearFor(target)
+        if (this.world.engine.name === 'Croplike') return true // this.isPositionClearFor(target)
         else return this.isInBounds(this.size, target) && this.isPositionClearFor(target)
     }
 
@@ -91,20 +84,17 @@ export class PixiComponent extends Component {
             const targetRight = target.x + this.size.x
             const targetTop = target.y
             const targetBottom = target.y + this.size.y
-
             const otherLeft = otherPixiComponent.positionTarget.x
             const otherRight = otherPixiComponent.positionTarget.x + otherPixiComponent.size.x
             const otherTop = otherPixiComponent.positionTarget.y
             const otherBottom = otherPixiComponent.positionTarget.y + otherPixiComponent.size.y
-
             const isCollision = otherLeft < targetRight && otherRight > targetLeft && otherTop < targetBottom && otherBottom > targetTop
-
             if (isCollision) {
                 // Handle collision or return false, depending on the use case
                 return false
             }
         }
-        return true // No collision found
+        return true
     }
 
     removeFromStage() {
@@ -114,7 +104,6 @@ export class PixiComponent extends Component {
     setPosition(position: RAPIER.Vector): void {
         this.sprite.x = position.x
         this.sprite.y = position.y
-
         // Adjust for on save / load, Rapier RigidBody starting from the center of the collider
         const physicsSystem = this.world.getSystemByType('physics') as PhysicsSystem
         if (physicsSystem) {

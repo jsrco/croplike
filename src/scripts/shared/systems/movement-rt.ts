@@ -48,13 +48,11 @@ export class MovementSystemRT extends System {
         const entities = this.getEntitiesByComponent('rapier')
         for (const entity of entities) {
             const rapierComponent = entity.getComponent('rapier') as RapierComponent
-
             // Reset velocity to zero if no keys are pressed
             if (this.keys.size === 0 && entity.name === 'player' && !rapierComponent.isRiding) {
                 const currentVelocity = rapierComponent.body.linvel()
                 rapierComponent.setVelocity({ x: 0, y: currentVelocity.y })
             }
-
             if (entity.name === 'player') {
                 // Update velocity based on keys pressed
                 if (this.keys.has('ArrowLeft')) {
@@ -70,7 +68,6 @@ export class MovementSystemRT extends System {
                     this.wallJump(rapierComponent)
                 }
             }
-
             if (entity.name === 'bigDemo') {
                 const pixiComponent = entity.getComponent('pixi') as PixiComponent
                 if (pixiComponent.position.x <= 300) {

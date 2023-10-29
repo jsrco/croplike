@@ -22,7 +22,7 @@ export const secondWorld: WorldMap = {
 }
 
 export const startWorld: WorldMap = {
-    entities: [player],
+    entities: [player, demoEntity],
     worldDimensions: { x: 1800, y: 1500 },
     systemMap: {
         movementRT: true,

@@ -117,16 +117,6 @@ const debugList = computed(() => {
                 console.dir(useEngine().activeModule)
             }
         },
-        {
-            name: 'console.log entity info',
-            operation: () => {
-                for (const entity of useEngine().activeModule.value.world.entities) {
-                    console.log(entity.name, entity.components.pixi.position)
-                    console.log(entity.name, entity.components.pixi.positionTarget)
-                    console.log(entity.name, entity.components.pixi.size)
-                }
-            }
-        },
     ]
     return topic.value === 'Croplike' ? croplike : fields
 })

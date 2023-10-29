@@ -39,15 +39,12 @@ export class RenderSystem extends System {
         const bottom = worldHeight
         let stagePositionX = this.stageCenterX - targetCenterX
         let stagePositionY = this.stageCenterY - targetCenterY
-
         // Calculate the maximum allowable stage positions
         const maxStagePositionX = Math.min(left, window.innerWidth - right)
         const maxStagePositionY = Math.min(top, window.innerHeight - 36 - bottom)
-
         // Ensure stagePositionX and stagePositionY stay within the boundaries
         stagePositionX = Math.max(maxStagePositionX, Math.min(stagePositionX, 0))
         stagePositionY = Math.max(maxStagePositionY, Math.min(stagePositionY, 0))
-
         this.world.engine.app.stage.position.set(stagePositionX, stagePositionY)
     }
 

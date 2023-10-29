@@ -42,14 +42,12 @@ export class PhysicsSystem extends System {
         rapierComponent.collider.setHalfExtents(newSize)
         const newPixiSize = { x: newSize.x * 2, y: newSize.y * 2 }
         pixiComponent.setSize(newPixiSize)
-
         // Gradually update rider position
         if (collisionStatus.rider) {
           const riderPosition = collisionStatus.rider.body.translation()
           riderPosition.y += positionAdjust // Adjust the step size as needed
           collisionStatus.rider.body.setTranslation(riderPosition, true)
         }
-
         // Gradually update position
         const position = rapierComponent.body.translation()
         position.y += positionAdjust // Adjust the step size as needed
@@ -67,7 +65,6 @@ export class PhysicsSystem extends System {
         rapierComponent.collider.setHalfExtents(newSize)
         const newPixiSize = { x: newSize.x * 2, y: newSize.y * 2 }
         pixiComponent.setSize(newPixiSize)
-
         // Gradually update position
         const position = rapierComponent.body.translation()
         position.y -= positionAdjust // Adjust the step size as needed
@@ -79,22 +76,17 @@ export class PhysicsSystem extends System {
   gatherContactsInfo(contacts: Array<RAPIER.Collider | undefined>, rapierComponent: RapierComponent, collisionStatus: Collision): void {
     this.world.physicsWorld.contactsWith(rapierComponent.collider, (otherCollider) => {
       contacts.push(otherCollider)
-
       this.world.physicsWorld.contactPair(rapierComponent.collider, otherCollider, (manifold, flipped) => {
         const localNormal = flipped ? manifold.localNormal2() : manifold.localNormal1()
         const otherEntity = this.world.getEntityByHandle(otherCollider.handle)
         const otherRaiperComponent = otherEntity?.getComponent('rapier') as RapierComponent
-
         // Define the world up vector for a 2D game
         const upVector = { x: 0, y: 1 }
-
         // Calculate the cross product (z component) between the contact normal and the world up vector
         const crossProductZ = localNormal.x * upVector.y - localNormal.y * upVector.x
-
         // Define thresholds for identifying collision sides
         const verticalThreshold = 0.8 // Adjust as needed
         const horizontalThreshold = 0.8 // Adjust as needed
-
         // Determine which side of the collider the collision occurred on
         if (Math.abs(crossProductZ) < verticalThreshold) {
           // Vertical collision
@@ -145,7 +137,6 @@ export class PhysicsSystem extends System {
 
   update(deltaTime: number): void {
     this.world.physicsWorld.step(this.world.physicsWorldEventQueue)
-
     const entities = this.getEntitiesByComponent('rapier', 'pixi')
     for (const entity of entities) {
       const pixiComponent = entity.getComponent('pixi') as PixiComponent
@@ -160,15 +151,10 @@ export class PhysicsSystem extends System {
         top: false,
       }
       const contacts: Array<RAPIER.Collider | undefined> = []
-
       this.gatherContactsInfo(contacts, rapierComponent, collisionStatus)
-
       this.handleCollisions(contacts, rapierComponent, collisionStatus)
-
       if (rapierComponent.canGrow) this.entityGrowth(colliderInfo, pixiComponent, rapierComponent, collisionStatus)
-
       this.adjustPosition(colliderInfo, pixiComponent, rapierComponent)
-
       if (this.showColliderBounds) rapierComponent.updateGraphics()
       else if (!rapierComponent.cleared) rapierComponent.clearColliderGraphics()
     }

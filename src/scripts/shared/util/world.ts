@@ -33,8 +33,7 @@ export class World {
         if (pixiComponent.canSetPositionTarget(pixiComponent.position)) this.entities.push(entity)
         else {
             console.log('failed to add', entity.name, entity.id)
-            console.log('trying again')
-            const newPosition = pixiComponent.findPositionToSet(pixiComponent.position)
+            const newPosition = pixiComponent.findPositionToSet()
             if (newPosition) {
                 pixiComponent.setPosition(newPosition)
                 this.addEntity(entity)

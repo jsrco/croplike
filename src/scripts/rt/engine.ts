@@ -99,7 +99,6 @@ export class CropLikeModule extends Engine {
     }
 
     update(delta: number) {
-        // if (!this.paused && this.running) console.log('croplike running')
         if (!this.paused && this.running) this.world.update(delta)
     }
 
