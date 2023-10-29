@@ -1,5 +1,5 @@
-import { EntityMap } from "./create-entity"
-import { ColorSwatch } from '../util/color-swatch'
+import { ColorSwatch } from '../../shared/util/color-swatch'
+import { EntityMap } from "./../../shared/entities/create-entity"
 
 export const bigDemoEntity: EntityMap = {
     name: 'bigDemo',
@@ -93,25 +93,4 @@ export const player: EntityMap = {
             y: 20,
         },
     }
-}
-
-export const wall: EntityMap = {
-    name: 'wall',
-    componentMap: {
-        pixi: true,
-        rapier: true,
-    },
-    options: {
-        bodyType: 'fixed',
-        color: ColorSwatch.blue[3],
-        isOnGround: true,
-        position: {
-            x: 0,
-            y: 0,
-        },
-        size: {
-            x: 0,
-            y: 0,
-        },
-    },
 }

@@ -11,80 +11,117 @@
     </div>
     <div v-if="isInDebug"
         class="absolute bg-dirt border border-gray-300 dropdown flex flex-col pl-4 pr-3 py-1 rounded-sm max-w-12 z-40">
-        <div v-for="item in debugList" class="font-share text-gray-400 active:text-green-400 hover:text-white "
-            @click="operateDebug(item.operation)">
+        <div v-for="(item, index) in debugList" :class="{ 'font-bold text-red-400': index === 0 }"
+            class="font-share text-gray-400 active:text-green-400 hover:text-white " @click="operateDebug(item.operation)">
             {{ item.name }}
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, Ref } from "vue"
+import { computed, ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
-import { PhysicsSystem } from "../scripts/systems/physics"
+import { RenderSystem } from "../scripts/shared/systems/render"
+import { PhysicsSystem } from "./../scripts/shared/systems/physics"
 
-const { game } = useEngine()
+const { switchMoudele } = useEngine()
 
-const switchRoom = ref(0)
+const switchWorld = ref(0)
 
-const debugList = [
-    {
-        name: 'switch room demo',
-        operation: () => {
-            if (switchRoom.value === 0) switchRoom.value = 1
-            else switchRoom.value = 0
-            game.switchRoom(switchRoom.value, game.player)
-        }
-    },
-    {
-        name: 'console.dir info',
-        operation: () => {
-            console.dir(game)
-        }
-    },
-    {
-        name: 'console.dir save',
-        operation: () => {
-            console.dir(game.localStorageManager.getData())
-        }
-    },
-    {
-        name: 'clear save',
-        operation: () => {
-            game.localStorageManager.clearData()
-        }
-    },
-    {
-        name: 'load',
-        operation: () => {
-            game.load()
-        }
-    },
-    {
-        name: 'pause',
-        operation: () => {
-            game.pause()
-        }
-    },
-    {
-        name: 'save',
-        operation: () => {
-            game.save()
-        }
-    },
-    {
-        name: 'trigger collider borders',
-        operation: () => {
-            const physics = game.room.getSystemByType('physics') as PhysicsSystem
-            if (physics) { 
-                console.log('ran')
-                physics.triggerShowColliderBounds()
+const topic = ref(useEngine().activeModule.value.name)
+
+const debugList = computed(() => {
+    const croplike = [
+        {
+            name: 'SWTICH TO TB',
+            operation: () => {
+                switchMoudele()
+                topic.value = 'Fields'
             }
-        }
-    },
-]
+        },
+        {
+            name: 'switch room demo',
+            operation: () => {
+                if (switchWorld.value === 0) switchWorld.value = 1
+                else switchWorld.value = 0
+                useEngine().activeModule.value.switchWorld(switchWorld.value, useEngine().activeModule.value.player)
+            }
+        },
+        {
+            name: 'console.dir info',
+            operation: () => {
+                console.dir(useEngine().activeModule)
+            }
+        },
+        {
+            name: 'console.dir save',
+            operation: () => {
+                console.dir(useEngine().activeModule.value.localStorageManager.getData())
+            }
+        },
+        {
+            name: 'clear save',
+            operation: () => {
+                useEngine().activeModule.value.localStorageManager.clearData()
+            }
+        },
+        {
+            name: 'load',
+            operation: () => {
+                useEngine().activeModule.value.load()
+            }
+        },
+        {
+            name: 'pause',
+            operation: () => {
+                useEngine().activeModule.value.pause()
+            }
+        },
+        {
+            name: 'save',
+            operation: () => {
+                useEngine().activeModule.value.save()
+            }
+        },
+        {
+            name: 'trigger collider borders',
+            operation: () => {
+                const physics = useEngine().activeModule.value.world.getSystemByType('physics') as PhysicsSystem
+                if (physics) {
+                    physics.triggerShowColliderBounds()
+                }
+            }
+        },
+        {
+            name: 'setTarget to bigDemo',
+            operation: () => {
+                // active outside starter room
+                const render = useEngine().activeModule.value.world.getSystemByType('render') as RenderSystem
+                const entity = useEngine().activeModule.value.world.getEntityByName('bigDemo')
+                if (entity) render.setTarget(entity)
+            }
+        },
+    ]
 
-const isInDebug: Ref<Boolean> = ref(false)
+    const fields = [
+        {
+            name: 'SWTICH TO RT',
+            operation: () => {
+                switchMoudele()
+                topic.value = 'Croplike'
+            }
+        },
+        {
+            name: 'console.dir info',
+            operation: () => {
+                console.dir(useEngine().activeModule)
+            }
+        },
+    ]
+    return topic.value === 'Croplike' ? croplike : fields
+})
+
+const isInDebug: Ref<boolean> = ref(false)
 
 const operateDebug = (task: any) => {
     task()
@@ -99,4 +136,4 @@ window.onclick = (e) => {
     if (!e.composedPath().includes(document.querySelector('.dropdown')!) && isInDebug.value === true) toggleDebug()
 }
 
-</script>
+</script>../scripts/shared/systems/physics

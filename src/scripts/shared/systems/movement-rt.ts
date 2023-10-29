@@ -1,17 +1,17 @@
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
+import { World } from "../util/world"
 import { System } from "./system"
-import { Room } from "../util/room"
 
-export class MovementSystem extends System {
+export class MovementSystemRT extends System {
 
     acceleration: number = 20
-    maxRidingVelocity: number = 120 
+    maxRidingVelocity: number = 120
     maxVelocity: number = 260
-    type: string = 'movement'
+    type: string = 'movement-RT'
 
-    constructor(room: Room) {
-        super(room)
+    constructor(world: World) {
+        super(world)
     }
 
     jump(component: RapierComponent): void {
@@ -48,13 +48,11 @@ export class MovementSystem extends System {
         const entities = this.getEntitiesByComponent('rapier')
         for (const entity of entities) {
             const rapierComponent = entity.getComponent('rapier') as RapierComponent
-
             // Reset velocity to zero if no keys are pressed
             if (this.keys.size === 0 && entity.name === 'player' && !rapierComponent.isRiding) {
                 const currentVelocity = rapierComponent.body.linvel()
                 rapierComponent.setVelocity({ x: 0, y: currentVelocity.y })
             }
-
             if (entity.name === 'player') {
                 // Update velocity based on keys pressed
                 if (this.keys.has('ArrowLeft')) {
@@ -70,7 +68,6 @@ export class MovementSystem extends System {
                     this.wallJump(rapierComponent)
                 }
             }
-
             if (entity.name === 'bigDemo') {
                 const pixiComponent = entity.getComponent('pixi') as PixiComponent
                 if (pixiComponent.position.x <= 300) {

@@ -1,7 +1,7 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Entity } from "../entities/entity"
-import { Room } from "../util/room"
+import { World } from "../util/world"
 import { Component } from "./component"
 
 export class RapierComponent extends Component {
@@ -20,19 +20,19 @@ export class RapierComponent extends Component {
     type: string = 'rapier'
     velocity: RAPIER.Vector = { x: 0, y: 0 }
 
-    constructor(entity: Entity, room: Room, options: { bodyType: string, canGrow?: boolean, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, isRiding?: boolean, isStoodOn?: boolean, position: RAPIER.Vector, size: RAPIER.Vector, velocity?: RAPIER.Vector, }) {
-        super(entity, room)
+    constructor(entity: Entity, world: World, options: { bodyType: string, canGrow?: boolean, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, isRiding?: boolean, isStoodOn?: boolean, position: RAPIER.Vector, size: RAPIER.Vector, velocity?: RAPIER.Vector, }) {
+        super(entity, world)
 
         const { bodyType, canGrow, dominance, isColliding, isOnGround, isRiding, isStoodOn, position, size, velocity } = options
 
         let rigidBodyDesc = this.getRigidBodyDesc(bodyType)
         rigidBodyDesc.setTranslation(position.x, position.y)
         rigidBodyDesc.setCanSleep(false).lockRotations()
-        this.body = this.room.physicsWorld.createRigidBody(rigidBodyDesc)
+        this.body = this.world.physicsWorld.createRigidBody(rigidBodyDesc)
         this.bodyType = bodyType
 
         const colliderDesc = RAPIER.ColliderDesc.cuboid(size.x / 2, size.y / 2)
-        this.collider = this.room.physicsWorld.createCollider(colliderDesc, this.body)
+        this.collider = this.world.physicsWorld.createCollider(colliderDesc, this.body)
         this.collider.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS)
 
         this.colliderGraphics = new PIXI.Graphics()
@@ -49,7 +49,7 @@ export class RapierComponent extends Component {
     }
 
     addColliderGraphics(): void {
-        this.room.engine.app.stage.addChild(this.colliderGraphics)
+        this.world.engine.app.stage.addChild(this.colliderGraphics)
     }
 
     clearColliderGraphics(): void {
@@ -64,7 +64,7 @@ export class RapierComponent extends Component {
     }
 
     removeColliderGraphics(): void {
-        this.room.engine.app.stage.removeChild(this.colliderGraphics)
+        this.world.engine.app.stage.removeChild(this.colliderGraphics)
     }
 
     setDominance(dominance: { isIt: boolean, group: number }): void {

@@ -1,5 +1,5 @@
 export class LocalStorageManager<T> {
-    
+
     data: T | {}
     localStorageKey: string
 
@@ -22,7 +22,7 @@ export class LocalStorageManager<T> {
         }
         return this.data
     }
-    
+
     saveData(data: T): void {
         this.data = { ...this.data, ...data }
         const serializedData = JSON.stringify(data)
