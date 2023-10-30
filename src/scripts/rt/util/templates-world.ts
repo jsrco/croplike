@@ -1,4 +1,4 @@
-import { WorldMap } from "../../shared/util/create-world"
+import { WorldMap } from "../../util/create-world"
 import { bigDemoEntity, demoEntity, growthDemoEntity, player } from "../entities/templates-entity"
 
 export const demoWorld: WorldMap = {

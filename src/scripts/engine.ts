@@ -1,9 +1,11 @@
 import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
-import useEngine from "../../composeables/use-engine"
+import useEngine from "../composeables/use-engine"
 import { EntityMap } from "./entities/create-entity"
 import { Entity } from "./entities/entity"
+import { demoWorld, secondWorld, startWorld as startWorldRT } from "./rt/util/templates-world"
 import { RenderSystem } from "./systems/render"
+import { startWorld as startWorldTB } from "./tb/util/template-world"
 import { CreateWorld, WorldMap } from "./util/create-world"
 import { LocalStorageManager } from "./util/local-storage-manager"
 import { SaveManager } from "./util/save-manager"
@@ -13,7 +15,7 @@ export class Engine {
 
     appDimensions: RAPIER.Vector2 = { x: 0, y: 0 }
     app: PIXI.Application
-    name!: string
+    name: string
     paused: boolean = false
     running: boolean = false
     shifting: boolean = false
@@ -30,7 +32,12 @@ export class Engine {
     worldIndex: number = 0
     worlds!: Array<WorldMap>
 
-    constructor(run?: boolean) {
+    constructor(name: string, run?: boolean) {
+        this.name = name
+
+        if (this.name === 'Croplike') this.localStorageManager = new LocalStorageManager('croplike-v0-game-data')
+        if (this.name === 'Fields') this.localStorageManager = new LocalStorageManager('field-v0-game-data')
+
         // set app
         this.app = new PIXI.Application({ backgroundColor: 0x1d1d1d, width: this.appDimensions.x, height: this.appDimensions.y })
 
@@ -68,6 +75,13 @@ export class Engine {
             }
         })
 
+        this.worlds = (this.name === 'Croplike') ? [startWorldRT, demoWorld, secondWorld] : [startWorldTB]
+
+        this.switchWorld(this.worldIndex)
+
+        // allow for turn based movement
+        if (this.name === 'Fields') this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
+
         if (run) this.startRun()
     }
 
@@ -88,6 +102,11 @@ export class Engine {
             this.switchWorld(this.worldIndex)
             this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)
         } else console.log('no saved data')
+    }
+
+    onKeyChange(data: any): void {
+        const { isDown } = data
+        if (isDown) this.shifting = true
     }
 
     pause(): void {
@@ -151,8 +170,9 @@ export class Engine {
         this.pause()
     }
 
-    update(deltaTime: number): void {
-        // Override this method in each subclass
+    update(delta: number): void {
+        if (this.name === 'Croplike' && !this.paused && this.running) this.world.update(delta)
+        if (this.name === 'Fields' && !this.paused && this.running && this.shifting) this.world.update(delta)
     }
 
 }

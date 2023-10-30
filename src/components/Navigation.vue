@@ -136,4 +136,4 @@ window.onclick = (e) => {
     if (!e.composedPath().includes(document.querySelector('.dropdown')!) && isInDebug.value === true) toggleDebug()
 }
 
-</script>../scripts/shared/systems/physics
+</script>../scripts/shared/systems/physics../scripts/systems/render../scripts/systems/physics
