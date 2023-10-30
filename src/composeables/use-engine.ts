@@ -1,9 +1,8 @@
 import { Ref, ref } from "vue"
-import { CropLikeModule } from "../scripts/rt/engine"
-import { FieldsModule } from "../scripts/tb/engine"
+import { Engine } from "../scripts/engine"
 
-const croplikeModule = new CropLikeModule()
-const fieldsModule = new FieldsModule()
+const croplikeModule = new Engine('Croplike')
+const fieldsModule = new Engine('Fields')
 const gameContainer = ref()
 
 let activeModule: Ref<any> = ref(fieldsModule) // croplikeModule

@@ -21,8 +21,8 @@
 <script setup lang="ts">
 import { computed, ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
-import { RenderSystem } from "../scripts/shared/systems/render"
-import { PhysicsSystem } from "./../scripts/shared/systems/physics"
+import { RenderSystem } from "../scripts/systems/render"
+import { PhysicsSystem } from "./../scripts/systems/physics"
 
 const { switchMoudele } = useEngine()
 

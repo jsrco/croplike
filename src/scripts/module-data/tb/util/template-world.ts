@@ -1,4 +1,4 @@
-import { WorldMap } from "../../util/create-world"
+import { WorldMap } from "../../../util/create-world"
 import { dummy, player } from "../entities/templates-entity"
 
 

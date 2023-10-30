@@ -1,5 +1,5 @@
-import { EntityMap } from "../../entities/create-entity"
-import { ColorSwatch } from '../../util/color-swatch'
+import { EntityMap } from "../../../entities/create-entity"
+import { ColorSwatch } from '../../../util/color-swatch'
 
 export const dummy: EntityMap = {
     name: 'dummy',
