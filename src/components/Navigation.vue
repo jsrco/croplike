@@ -42,8 +42,8 @@ const debugList = computed(() => {
         {
             name: 'switch room demo',
             operation: () => {
-                if (switchWorld.value === 0) switchWorld.value = 1
-                else switchWorld.value = 0
+                if (switchWorld.value === 1) switchWorld.value = 2
+                else switchWorld.value = 1
                 useEngine().activeModule.value.switchWorld(switchWorld.value, useEngine().activeModule.value.player)
             }
         },
