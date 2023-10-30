@@ -13,7 +13,7 @@ import { World } from "./util/world"
 
 export class Engine {
 
-    appDimensions: RAPIER.Vector2 = { x: 0, y: 0 }
+    appDimensions: RAPIER.Vector2 = new RAPIER.Vector2(0, 0)
     app: PIXI.Application
     name: string
     paused: boolean = false

@@ -10,9 +10,9 @@ export class PixiComponent extends Component {
 
     color: string
     maxSize: number
-    position: RAPIER.Vector = { x: 0, y: 0 }
-    positionTarget: RAPIER.Vector = { x: 0, y: 0 }
-    size: RAPIER.Vector = { x: 0, y: 0 }
+    position: RAPIER.Vector = new RAPIER.Vector2(0, 0)
+    positionTarget: RAPIER.Vector = new RAPIER.Vector2(0, 0)
+    size: RAPIER.Vector = new RAPIER.Vector2(0, 0)
     sprite: PIXI.Sprite
     type: string = 'pixi'
 
