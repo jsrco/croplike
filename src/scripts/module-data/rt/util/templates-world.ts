@@ -2,7 +2,7 @@ import { WorldMap } from "../../../util/create-world"
 import { bigDemoEntity, demoEntity, growthDemoEntity, player } from "../entities/templates-entity"
 
 export const demoWorld: WorldMap = {
-    entities: [bigDemoEntity, demoEntity, growthDemoEntity],
+    entities: [demoEntity, growthDemoEntity],
     worldDimensions: { x: 1800, y: 1500 },
     systemMap: {
         movementRT: true,
@@ -22,7 +22,7 @@ export const secondWorld: WorldMap = {
 }
 
 export const startWorld: WorldMap = {
-    entities: [player, demoEntity],
+    entities: [player, demoEntity, bigDemoEntity],
     worldDimensions: { x: 1800, y: 1500 },
     systemMap: {
         movementRT: true,

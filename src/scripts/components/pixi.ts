@@ -70,7 +70,7 @@ export class PixiComponent extends Component {
     }
 
     isOkToMove(target: RAPIER.Vector2) {
-        if (this.world.engine.name === 'Croplike') return true // this.isPositionClearFor(target)
+        if (this.world.engine.name === 'Hunts') return true // this.isPositionClearFor(target)
         else return this.isInBounds(this.size, target) && this.isPositionClearFor(target)
     }
 

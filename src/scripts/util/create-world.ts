@@ -31,7 +31,7 @@ const createBounds = (world: World): void => {
         bound.options.name = name
         world.addEntity(CreateEntity(bound, world))
     }
-    if (engine.name === "Croplike") {
+    if (engine.name === "Hunts") {
         createBound('floor', new RAPIER.Vector2(x / 2, y - wallSize / 2), new RAPIER.Vector2(x, wallSize))
         createBound('leftWall', new RAPIER.Vector2(wallSize / 2, y / 2), new RAPIER.Vector2(wallSize, y - 2 * wallSize))
         createBound('rightWall', new RAPIER.Vector2(x - wallSize / 2, y / 2), new RAPIER.Vector2(wallSize, y - 2 * wallSize))

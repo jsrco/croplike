@@ -35,7 +35,7 @@ export class Engine {
     constructor(name: string, run?: boolean) {
         this.name = name
 
-        if (this.name === 'Croplike') this.localStorageManager = new LocalStorageManager('croplike-v0-game-data')
+        if (this.name === 'Hunts') this.localStorageManager = new LocalStorageManager('hunts-v0-game-data')
         if (this.name === 'Fields') this.localStorageManager = new LocalStorageManager('field-v0-game-data')
 
         // set app
@@ -75,7 +75,7 @@ export class Engine {
             }
         })
 
-        this.worlds = (this.name === 'Croplike') ? [startWorldRT, demoWorld, secondWorld] : [startWorldTB]
+        this.worlds = (this.name === 'Hunts') ? [startWorldRT, demoWorld, secondWorld] : [startWorldTB]
 
         this.switchWorld(this.worldIndex)
 
@@ -171,7 +171,7 @@ export class Engine {
     }
 
     update(delta: number): void {
-        if (this.name === 'Croplike' && !this.paused && this.running) this.world.update(delta)
+        if (this.name === 'Hunts' && !this.paused && this.running) this.world.update(delta)
         if (this.name === 'Fields' && !this.paused && this.running && this.shifting) this.world.update(delta)
     }
 
