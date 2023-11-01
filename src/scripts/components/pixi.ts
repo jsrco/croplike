@@ -2,6 +2,7 @@ import RAPIER from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Entity } from "../entities/entity"
 import { PhysicsSystem } from "../systems/physics"
+import { gridSize } from "../util/config-options"
 import { World } from "../util/world"
 import { Component } from "./component"
 
@@ -9,9 +10,9 @@ export class PixiComponent extends Component {
 
     color: string
     maxSize: number
-    position: RAPIER.Vector = { x: 0, y: 0 }
-    positionTarget: RAPIER.Vector = { x: 0, y: 0 }
-    size: RAPIER.Vector = { x: 0, y: 0 }
+    position: RAPIER.Vector = new RAPIER.Vector2(0, 0)
+    positionTarget: RAPIER.Vector = new RAPIER.Vector2(0, 0)
+    size: RAPIER.Vector = new RAPIER.Vector2(0, 0)
     sprite: PIXI.Sprite
     type: string = 'pixi'
 
@@ -50,7 +51,7 @@ export class PixiComponent extends Component {
         return clear
     }
 
-    findPositionToSet(increment: number = 20): RAPIER.Vector | undefined {
+    findPositionToSet(increment: number = gridSize.value): RAPIER.Vector | undefined {
         for (let y = 0; y <= this.world.worldDimensions.y; y += increment) {
             for (let x = 0; x <= this.world.worldDimensions.x; x += increment) {
                 const newPosition = new RAPIER.Vector2(x, y)
@@ -69,7 +70,7 @@ export class PixiComponent extends Component {
     }
 
     isOkToMove(target: RAPIER.Vector2) {
-        if (this.world.engine.name === 'Croplike') return true // this.isPositionClearFor(target)
+        if (this.world.engine.name === 'Hunts') return true // this.isPositionClearFor(target)
         else return this.isInBounds(this.size, target) && this.isPositionClearFor(target)
     }
 

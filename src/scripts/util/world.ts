@@ -4,6 +4,7 @@ import { RapierComponent } from "../components/rapier"
 import { Engine } from "../engine"
 import { Entity } from "../entities/entity"
 import { System } from "../systems/system"
+import { gridSize } from "./config-options"
 import { EventManager } from "./event-manager"
 import { KeyboardController } from "./keyboard-controller"
 
@@ -17,7 +18,7 @@ export class World {
     physicsWorldEventQueue: RAPIER.EventQueue = new RAPIER.EventQueue(true)
     worldDimensions: RAPIER.Vector2
     systems: System[]
-    wallSize: number = 40
+    wallSize: number = gridSize.value * 2
 
     constructor(engine: Engine, options: { worldDimensions: RAPIER.Vector }) {
         const { worldDimensions } = options

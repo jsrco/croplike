@@ -5,7 +5,7 @@
             Croplike
             <span class="cursor-pointer dropdown font-share"
                 :class="{ 'text-gray-400': !isInDebug, 'text-white': isInDebug }" @click="toggleDebug()">
-                {{ `:${isInDebug ? "/" : ""}debug` }}
+                :debug/{{ useEngine().activeModule.value.name }}
             </span>
         </div>
     </div>
@@ -21,8 +21,8 @@
 <script setup lang="ts">
 import { computed, ref, Ref } from "vue"
 import useEngine from "../composeables/use-engine"
-import { RenderSystem } from "../scripts/shared/systems/render"
-import { PhysicsSystem } from "./../scripts/shared/systems/physics"
+import { RenderSystem } from "../scripts/systems/render"
+import { PhysicsSystem } from "./../scripts/systems/physics"
 
 const { switchMoudele } = useEngine()
 
@@ -33,7 +33,7 @@ const topic = ref(useEngine().activeModule.value.name)
 const debugList = computed(() => {
     const croplike = [
         {
-            name: 'SWTICH TO TB',
+            name: 'SWTICH TO Fields',
             operation: () => {
                 switchMoudele()
                 topic.value = 'Fields'
@@ -42,13 +42,39 @@ const debugList = computed(() => {
         {
             name: 'switch room demo',
             operation: () => {
-                if (switchWorld.value === 0) switchWorld.value = 1
-                else switchWorld.value = 0
+                if (switchWorld.value === 1) switchWorld.value = 2
+                else switchWorld.value = 1
                 useEngine().activeModule.value.switchWorld(switchWorld.value, useEngine().activeModule.value.player)
             }
         },
         {
-            name: 'console.dir info',
+            name: 'trigger collider borders',
+            operation: () => {
+                const physics = useEngine().activeModule.value.world.getSystemByType('physics') as PhysicsSystem
+                if (physics) {
+                    physics.triggerShowColliderBounds()
+                }
+            }
+        },
+        {
+            name: 'set camera target to bigDemo',
+            operation: () => {
+                // active outside starter room
+                const render = useEngine().activeModule.value.world.getSystemByType('render') as RenderSystem
+                const entity = useEngine().activeModule.value.world.getEntityByName('bigDemo')
+                if (entity) render.setTarget(entity)
+            }
+        },
+    ]
+    const defaults = [
+        {
+            name: 'toggle info',
+            operation: () => {
+                useEngine().showInfo.value = true
+            }
+        },
+        {
+            name: 'console.dir module',
             operation: () => {
                 console.dir(useEngine().activeModule)
             }
@@ -83,42 +109,17 @@ const debugList = computed(() => {
                 useEngine().activeModule.value.save()
             }
         },
-        {
-            name: 'trigger collider borders',
-            operation: () => {
-                const physics = useEngine().activeModule.value.world.getSystemByType('physics') as PhysicsSystem
-                if (physics) {
-                    physics.triggerShowColliderBounds()
-                }
-            }
-        },
-        {
-            name: 'setTarget to bigDemo',
-            operation: () => {
-                // active outside starter room
-                const render = useEngine().activeModule.value.world.getSystemByType('render') as RenderSystem
-                const entity = useEngine().activeModule.value.world.getEntityByName('bigDemo')
-                if (entity) render.setTarget(entity)
-            }
-        },
     ]
-
     const fields = [
         {
-            name: 'SWTICH TO RT',
+            name: 'SWTICH TO Hunts',
             operation: () => {
                 switchMoudele()
-                topic.value = 'Croplike'
-            }
-        },
-        {
-            name: 'console.dir info',
-            operation: () => {
-                console.dir(useEngine().activeModule)
+                topic.value = 'Hunts'
             }
         },
     ]
-    return topic.value === 'Croplike' ? croplike : fields
+    return topic.value === 'Hunts' ? [...croplike, ...defaults] : [...fields, ...defaults]
 })
 
 const isInDebug: Ref<boolean> = ref(false)
@@ -136,4 +137,4 @@ window.onclick = (e) => {
     if (!e.composedPath().includes(document.querySelector('.dropdown')!) && isInDebug.value === true) toggleDebug()
 }
 
-</script>../scripts/shared/systems/physics
+</script>
