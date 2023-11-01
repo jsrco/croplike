@@ -6,7 +6,7 @@ import { System } from "./system"
 
 export class MovementSystemTB extends System {
 
-
+    hasPlayerGone: boolean = false
     increment: number = 2
     move: number = gridSize.value
     type: string = 'movement-TB'
@@ -39,62 +39,77 @@ export class MovementSystemTB extends System {
         component.setPosition(newPosition)
     }
 
+    startMove(component: PixiComponent, newPosition: RAPIER.Vector2): void {
+        if (component.canSetPositionTarget(newPosition)) {
+            this.hasPlayerGone = true
+        }
+    }
+
     update(deltaTime: number): void {
         const entities = this.getEntitiesByComponent('pixi')
-        let allAtTarget = true
         for (const entity of entities) {
             const pixiComponent = entity.getComponent('pixi') as PixiComponent
             const { position, positionTarget } = pixiComponent
             const isAtTarget = position.x === positionTarget.x && position.y === positionTarget.y
+            if (entity.name === 'dummy' && isAtTarget && this.hasPlayerGone) {
+                const player = this.world.getEntityByName('player')?.getComponent('pixi') as PixiComponent
+                if (player.position.x === player.positionTarget.x && player.position.y === player.positionTarget.y) {
+                    const randomMove = Math.random()
+                    if (randomMove < 0.5) { // Adjust this probability as needed
+                        const newPosition = new RAPIER.Vector2(position.x, position.y)
+
+                        // Randomly adjust x
+                        const randomX = Math.random()
+                        if (randomX < 0.3) {
+                            newPosition.x += this.move // Add this.move
+                        } else if (randomX > 0.7) {
+                            newPosition.x -= this.move // Subtract this.move
+                        }
+                        // If randomX is in the remaining range, do not adjust x
+
+                        // Randomly adjust y
+                        const randomY = Math.random()
+                        if (randomY < 0.3) {
+                            newPosition.y += this.move // Add this.move
+                        } else if (randomY > 0.7) {
+                            newPosition.y -= this.move // Subtract this.move
+                        }
+                        // If randomY is in the remaining range, do not adjust y
+                        pixiComponent.canSetPositionTarget(newPosition)
+                    }
+                }
+            }
             if (entity.name === 'player' && isAtTarget) {
-                if (this.keys.has('ArrowDown')) {
-                    const newPosition = new RAPIER.Vector2(position.x, position.y + this.move)
-                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
-                }
-                if (this.keys.has('ArrowLeft')) {
-                    const newPosition = new RAPIER.Vector2(position.x - this.move, position.y)
-                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
-                }
-                if (this.keys.has('ArrowRight')) {
-                    const newPosition = new RAPIER.Vector2(position.x + this.move, position.y)
-                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
-                }
-                if (this.keys.has('ArrowUp')) {
-                    const newPosition = new RAPIER.Vector2(position.x, position.y - this.move)
-                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
-                }
-                // diagonal
-                if (this.keys.has('End')) {
-                    const newPosition = new RAPIER.Vector2(position.x - this.move, position.y + this.move)
-                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
-                }
-                if (this.keys.has('Home')) {
-                    const newPosition = new RAPIER.Vector2(position.x - this.move, position.y - this.move)
-                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
-                }
-                if (this.keys.has('PageDown')) {
-                    const newPosition = new RAPIER.Vector2(position.x + this.move, position.y + this.move)
-                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
-                }
-                if (this.keys.has('PageUp')) {
-                    const newPosition = new RAPIER.Vector2(position.x + this.move, position.y - this.move)
-                    if (pixiComponent.canSetPositionTarget(newPosition)) allAtTarget = false
-                }
+                this.hasPlayerGone = false
+                const arrowKeys = ['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'End', 'Home', 'PageDown', 'PageUp']
+
+                arrowKeys.forEach((key, index) => {
+                    const keyActions = [
+                        () => new RAPIER.Vector2(position.x, position.y + this.move),
+                        () => new RAPIER.Vector2(position.x - this.move, position.y),
+                        () => new RAPIER.Vector2(position.x + this.move, position.y),
+                        () => new RAPIER.Vector2(position.x, position.y - this.move),
+                        () => new RAPIER.Vector2(position.x - this.move, position.y + this.move),
+                        () => new RAPIER.Vector2(position.x - this.move, position.y - this.move),
+                        () => new RAPIER.Vector2(position.x + this.move, position.y + this.move),
+                        () => new RAPIER.Vector2(position.x + this.move, position.y - this.move)
+                    ]
+                    if (this.keys.has(key)) {
+                        this.startMove(pixiComponent, keyActions[index]())
+                    }
+                })
             }
             if (!isAtTarget) {
                 const needsToGoDown = position.y < positionTarget.y
-                if (needsToGoDown) this.moveDown(pixiComponent)
                 const needsToGoLeft = position.x > positionTarget.x
-                if (needsToGoLeft) this.moveLeft(pixiComponent)
                 const needsToGoRight = position.x < positionTarget.x
-                if (needsToGoRight) this.moveRight(pixiComponent)
                 const needsToGoUp = position.y > positionTarget.y
+                if (needsToGoDown) this.moveDown(pixiComponent)
+                if (needsToGoLeft) this.moveLeft(pixiComponent)
+                if (needsToGoRight) this.moveRight(pixiComponent)
                 if (needsToGoUp) this.moveUp(pixiComponent)
-                allAtTarget = false
             }
         }
-        if (allAtTarget) this.engine.shifting = false
-        else this.engine.shifting = true
     }
 
 }

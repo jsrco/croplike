@@ -79,9 +79,6 @@ export class Engine {
 
         this.switchWorld(this.worldIndex)
 
-        // allow for turn based movement
-        if (this.name === 'Fields') this.world.eventManager.subscribe('keyChange', this.onKeyChange.bind(this))
-
         if (run) this.startRun()
     }
 
@@ -102,11 +99,6 @@ export class Engine {
             this.switchWorld(this.worldIndex)
             this.app.renderer.resize(this.world.worldDimensions.x, this.world.worldDimensions.y)
         } else console.log('no saved data')
-    }
-
-    onKeyChange(data: any): void {
-        const { isDown } = data
-        if (isDown) this.shifting = true
     }
 
     pause(): void {
@@ -171,8 +163,7 @@ export class Engine {
     }
 
     update(delta: number): void {
-        if (this.name === 'Hunts' && !this.paused && this.running) this.world.update(delta)
-        if (this.name === 'Fields' && !this.paused && this.running && this.shifting) this.world.update(delta)
+        if (!this.paused && this.running) this.world.update(delta)
     }
 
 }
