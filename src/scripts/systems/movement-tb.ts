@@ -54,29 +54,20 @@ export class MovementSystemTB extends System {
             if (entity.name === 'dummy' && isAtTarget && this.hasPlayerGone) {
                 const player = this.world.getEntityByName('player')?.getComponent('pixi') as PixiComponent
                 if (player.position.x === player.positionTarget.x && player.position.y === player.positionTarget.y) {
-                    const randomMove = Math.random()
-                    if (randomMove < 0.5) { // Adjust this probability as needed
-                        const newPosition = new RAPIER.Vector2(position.x, position.y)
-
-                        // Randomly adjust x
-                        const randomX = Math.random()
-                        if (randomX < 0.3) {
-                            newPosition.x += this.move // Add this.move
-                        } else if (randomX > 0.7) {
-                            newPosition.x -= this.move // Subtract this.move
-                        }
-                        // If randomX is in the remaining range, do not adjust x
-
-                        // Randomly adjust y
-                        const randomY = Math.random()
-                        if (randomY < 0.3) {
-                            newPosition.y += this.move // Add this.move
-                        } else if (randomY > 0.7) {
-                            newPosition.y -= this.move // Subtract this.move
-                        }
-                        // If randomY is in the remaining range, do not adjust y
-                        pixiComponent.canSetPositionTarget(newPosition)
+                    const newPosition = new RAPIER.Vector2(position.x, position.y)
+                    const randomX = Math.random()
+                    const randomY = Math.random()
+                    if (randomX < 0.3) {
+                        newPosition.x += this.move
+                    } else if (randomX > 0.7) {
+                        newPosition.x -= this.move
                     }
+                    if (randomY < 0.3) {
+                        newPosition.y += this.move
+                    } else if (randomY > 0.7) {
+                        newPosition.y -= this.move
+                    }
+                    pixiComponent.canSetPositionTarget(newPosition)
                 }
             }
             if (entity.name === 'player' && isAtTarget) {
