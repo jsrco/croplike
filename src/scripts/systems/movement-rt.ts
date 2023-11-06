@@ -1,4 +1,5 @@
 import { PixiComponent } from "../components/pixi"
+import { PositionComponent } from "../components/position"
 import { RapierComponent } from "../components/rapier"
 import { World } from "../util/world"
 import { System } from "./system"
@@ -70,10 +71,11 @@ export class MovementSystemRT extends System {
             }
             if (entity.name === 'bigDemo') {
                 const pixiComponent = entity.getComponent('pixi') as PixiComponent
-                if (pixiComponent.position.x <= 300) {
+                const positionComponent = entity.getComponent('position') as PositionComponent
+                if (positionComponent.position.x <= 300) {
                     pixiComponent.moveLeft = false
                     pixiComponent.moveRight = true
-                } else if (pixiComponent.position.x >= 800) {
+                } else if (positionComponent.position.x >= 800) {
                     pixiComponent.moveLeft = true
                     pixiComponent.moveRight = false
                 }

@@ -31,11 +31,25 @@ export class World {
     }
 
     addEntity(entity: Entity): void {
-        if (this.isOkToPlace(entity)) this.entities.push(entity)
+        if (this.engine.name === 'Hunts') this.entities.push(entity)
+        else if (this.isOkToPlace(entity)) this.entities.push(entity)
     }
 
     addSystem(system: System): void {
         this.systems.push(system)
+    }
+    
+    findPositionToSet(entity: Entity, increment: number = gridSize.value): Vector2 | undefined {
+        const positionComponent = entity.getComponent('position') as PositionComponent
+        for (let y = 0; y <= this.worldDimensions.y; y += increment) {
+            for (let x = 0; x <= this.worldDimensions.x; x += increment) {
+                const newPosition = new Vector2(x, y)
+                if (positionComponent.canSetTargetPosition(newPosition)) {
+                    return newPosition
+                }
+            }
+        }
+        return undefined
     }
 
     getEntitiesByComponent(...componentTypes: string[]): Entity[] {

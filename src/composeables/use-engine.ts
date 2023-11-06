@@ -6,7 +6,7 @@ const fieldsModule = new Engine('Fields')
 const gameContainer = ref()
 const showInfo = ref(false)
 
-let activeModule: Ref<any> = ref(fieldsModule) // huntsModule 
+let activeModule: Ref<any> = ref(huntsModule) // fieldsModule 
 const switchMoudele = () => {
     activeModule.value.stopRun()
     gameContainer.value.removeChild(activeModule.value.world.engine.app.view)

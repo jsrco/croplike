@@ -1,6 +1,7 @@
 import RAPIER from "@dimforge/rapier2d"
-import { PixiComponent } from "../components/pixi"
+import { PositionComponent } from "../components/position"
 import { RapierComponent } from "../components/rapier"
+import { SizeComponent } from "../components/size"
 import { World } from "../util/world"
 import { System } from "./system"
 
@@ -21,15 +22,15 @@ export class PhysicsSystem extends System {
     super(world)
   }
 
-  adjustPosition(colliderInfo: RAPIER.Cuboid, pixiComponent: PixiComponent, rapierComponent: RapierComponent) {
+  adjustPosition(colliderInfo: RAPIER.Cuboid, positionComponent: PositionComponent, rapierComponent: RapierComponent) {
     const position = rapierComponent.body.translation()
     // Pixi renders the sprites starting from the center of the collider
     position.x -= colliderInfo.halfExtents.x
     position.y -= colliderInfo.halfExtents.y
-    pixiComponent.setPosition(position)
+    positionComponent.setPosition(position)
   }
 
-  entityGrowth(colliderInfo: RAPIER.Cuboid, pixiComponent: PixiComponent, rapierComponent: RapierComponent, collisionStatus: Collision): void {
+  entityGrowth(colliderInfo: RAPIER.Cuboid, rapierComponent: RapierComponent, sizeComponent: SizeComponent, collisionStatus: Collision): void {
     const halfExtentsGrowth = 0.2
     const positionAdjust = 0.2
     if (colliderInfo.halfExtents.y > 10 && collisionStatus.top) {
@@ -41,7 +42,7 @@ export class PhysicsSystem extends System {
         colliderInfo.halfExtents = newSize
         rapierComponent.collider.setHalfExtents(newSize)
         const newPixiSize = { x: newSize.x * 2, y: newSize.y * 2 }
-        pixiComponent.setSize(newPixiSize)
+        sizeComponent.setSize(newPixiSize)
         // Gradually update rider position
         if (collisionStatus.rider) {
           const riderPosition = collisionStatus.rider.body.translation()
@@ -55,16 +56,16 @@ export class PhysicsSystem extends System {
       }
     }
 
-    if (colliderInfo.halfExtents.y < pixiComponent.maxSize / 2 && !collisionStatus.top) {
+    if (colliderInfo.halfExtents.y < sizeComponent.maxSize / 2 && !collisionStatus.top) {
       const newSizeY = colliderInfo.halfExtents.y + halfExtentsGrowth
-      if (newSizeY <= pixiComponent.maxSize / 2) {
+      if (newSizeY <= sizeComponent.maxSize / 2) {
         // Increase size and update physics properties gradually
         const newSize = { ...colliderInfo.halfExtents }
         newSize.y = newSizeY
         colliderInfo.halfExtents = newSize
         rapierComponent.collider.setHalfExtents(newSize)
         const newPixiSize = { x: newSize.x * 2, y: newSize.y * 2 }
-        pixiComponent.setSize(newPixiSize)
+        sizeComponent.setSize(newPixiSize)
         // Gradually update position
         const position = rapierComponent.body.translation()
         position.y -= positionAdjust // Adjust the step size as needed
@@ -92,7 +93,7 @@ export class PhysicsSystem extends System {
           // Vertical collision
           if (localNormal.y > 0) {
             collisionStatus.bottom = true
-            if (otherEntity?.name !== 'wall') {
+            if (otherEntity?.name !== 'ceiling' && otherEntity?.name !== 'floor' && otherEntity?.name !== 'leftWall' && otherEntity?.name !== 'rightWall') {
               collisionStatus.riding = true
               rapierComponent.setIsRiding(true)
             }
@@ -137,10 +138,11 @@ export class PhysicsSystem extends System {
 
   update(deltaTime: number): void {
     this.world.physicsWorld.step(this.world.physicsWorldEventQueue)
-    const entities = this.getEntitiesByComponent('rapier', 'pixi')
+    const entities = this.getEntitiesByComponent('position', 'rapier', 'size')
     for (const entity of entities) {
-      const pixiComponent = entity.getComponent('pixi') as PixiComponent
+      const positionComponent = entity.getComponent('position') as PositionComponent
       const rapierComponent = entity.getComponent('rapier') as RapierComponent
+      const sizeComponent = entity.getComponent('size') as SizeComponent
       const colliderInfo = rapierComponent.collider.shape as RAPIER.Cuboid
       const collisionStatus: Collision = {
         bottom: false,
@@ -153,8 +155,8 @@ export class PhysicsSystem extends System {
       const contacts: Array<RAPIER.Collider | undefined> = []
       this.gatherContactsInfo(contacts, rapierComponent, collisionStatus)
       this.handleCollisions(contacts, rapierComponent, collisionStatus)
-      if (rapierComponent.canGrow) this.entityGrowth(colliderInfo, pixiComponent, rapierComponent, collisionStatus)
-      this.adjustPosition(colliderInfo, pixiComponent, rapierComponent)
+      if (rapierComponent.canGrow) this.entityGrowth(colliderInfo, rapierComponent, sizeComponent, collisionStatus)
+      this.adjustPosition(colliderInfo, positionComponent, rapierComponent)
       if (this.showColliderBounds) rapierComponent.updateGraphics()
       else if (!rapierComponent.cleared) rapierComponent.clearColliderGraphics()
     }
