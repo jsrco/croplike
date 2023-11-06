@@ -99,6 +99,7 @@ export class MovementSystemTB extends System {
                         // Try to set the adjusted position
                         positionComponent.canSetTargetPosition(adjustedPosition)
                     }
+                    // todo check if an entity is in the path. 
                 }
             }
             if (entity.name === 'player' && this.allAtTarget()) {
