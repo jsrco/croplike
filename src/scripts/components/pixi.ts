@@ -42,13 +42,12 @@ export class PixiComponent extends Component {
         this.world.engine.app.stage.addChild(this.sprite)
     }
 
-    canSetPositionTarget(position: RAPIER.Vector): boolean {
-        let clear = false
+    canSetPositionTarget(position: RAPIER.Vector2): boolean {
         if (this.isOkToMove(position)) {
             this.positionTarget = position
-            clear = true
+            return true
         }
-        return clear
+        return false
     }
 
     findPositionToSet(increment: number = gridSize.value): RAPIER.Vector | undefined {
