@@ -29,7 +29,6 @@ const createBounds = (world: World): void => {
     const createBound = (name: string, position: Vector2, size: Vector2) => {
         const bound = setBoundsMap(position, size, world.engine.name === 'Hunts')
         bound.name = name
-        if (engine.name === "Fields") console.log(bound)
         world.addEntity(CreateEntity(bound, world))
     }
     if (engine.name === "Hunts") {
