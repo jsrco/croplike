@@ -27,8 +27,9 @@ const createBounds = (world: World): void => {
     const { engine, wallSize } = world
     const { x, y } = world.worldDimensions
     const createBound = (name: string, position: Vector2, size: Vector2) => {
-        const bound = setBoundsMap(position, size)
-        bound.options.name = name
+        const bound = setBoundsMap(position, size, world.engine.name === 'Hunts')
+        bound.name = name
+        if (engine.name === "Fields") console.log(bound)
         world.addEntity(CreateEntity(bound, world))
     }
     if (engine.name === "Hunts") {
@@ -75,12 +76,14 @@ const loadSystems = (world: World, worldMap: WorldMap): void => {
     if (worldMap.systemMap.render) world.addSystem(new RenderSystem(world))
 }
 
-const setBoundsMap = (position: Vector2, size: Vector2): EntityMap => {
+const setBoundsMap = (position: Vector2, size: Vector2, isItHunts: boolean): EntityMap => {
     const wall: EntityMap = {
         name: 'wall',
         componentMap: {
             pixi: true,
-            rapier: true,
+            position: true,
+            rapier: isItHunts,
+            size: true,
         },
         options: {
             bodyType: 'fixed',

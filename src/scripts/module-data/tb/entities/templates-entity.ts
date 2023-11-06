@@ -5,6 +5,8 @@ export const dummy: EntityMap = {
     name: 'dummy',
     componentMap: {
         pixi: true,
+        position: true,
+        size: true,
     },
     options: {
         color: ColorSwatch.red[3],
@@ -23,6 +25,8 @@ export const player: EntityMap = {
     name: 'player',
     componentMap: {
         pixi: true,
+        position: true,
+        size: true,
     },
     options: {
         color: ColorSwatch.green[3],

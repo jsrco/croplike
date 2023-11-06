@@ -5,7 +5,9 @@ export const bigDemoEntity: EntityMap = {
     name: 'bigDemo',
     componentMap: {
         pixi: true,
+        position: true,
         rapier: true,
+        size: true,
     },
     options: {
         bodyType: 'KinematicVelocityBased',
@@ -33,7 +35,9 @@ export const demoEntity: EntityMap = {
     name: 'demo',
     componentMap: {
         pixi: true,
+        position: true,
         rapier: true,
+        size: true,
     },
     options: {
         bodyType: 'dynamic',
@@ -53,7 +57,9 @@ export const growthDemoEntity: EntityMap = {
     name: 'growthDemo',
     componentMap: {
         pixi: true,
+        position: true,
         rapier: true,
+        size: true,
     },
     options: {
         bodyType: 'dynamic',
@@ -79,7 +85,9 @@ export const player: EntityMap = {
     name: 'player',
     componentMap: {
         pixi: true,
+        position: true,
         rapier: true,
+        size: true,
     },
     options: {
         bodyType: 'dynamic',

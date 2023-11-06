@@ -76,7 +76,19 @@ const debugList = computed(() => {
         {
             name: 'console.dir module',
             operation: () => {
-                console.dir(useEngine().activeModule)
+                console.dir(useEngine().activeModule.value)
+            }
+        },
+        {
+            name: 'console.log entity info',
+            operation: () => {
+                for (const entity of useEngine().activeModule.value.world.entities) {
+                    console.log(entity.name)
+                    console.log(entity.components.position.position.x, entity.components.position.position.y)
+                    console.log(entity.components.size.size.x, entity.components.size.size.y)
+                    console.log(entity.components.pixi.sprite.position.x,entity.components.pixi.sprite.position.y)
+                    console.log(entity.components.pixi.sprite.width, entity.components.pixi.sprite.height)
+                }
             }
         },
         {

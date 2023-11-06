@@ -5,18 +5,24 @@ import { Component } from "./component"
 
 export class PositionComponent extends Component {
 
-    position: Vector2 = { x: 0, y: 0 }
+    position: Vector2 = new Vector2(0, 0)
+    targetPosition: Vector2 = new Vector2(0, 0)
     type: string = 'position'
 
     constructor(entity: Entity, world: World, options: { position: Vector2 }) {
         super(entity, world)
         const { position } = options
-        this.setSize(position)
+        this.setPosition(position)
+        this.setTargetPosition(position)
     }
 
-    setSize(position: Vector2) {
+    setPosition(position: Vector2) {
         this.position = position
         this.world.eventManager.dispatch('positionChange', { entity: this.owner, positionComponent: this })
+    }
+
+    setTargetPosition(position: Vector2) {
+        this.targetPosition = position
     }
 
 }

@@ -18,7 +18,6 @@ export class Engine {
     name: string
     paused: boolean = false
     running: boolean = false
-    shifting: boolean = false
     localStorageManager!: LocalStorageManager<any>
     saveManager: SaveManager = new SaveManager()
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({

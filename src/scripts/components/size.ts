@@ -5,12 +5,14 @@ import { Component } from "./component"
 
 export class SizeComponent extends Component {
 
-    size: Vector2 = { x: 0, y: 0 }
+    maxSize: number
+    size: Vector2 = new Vector2(0, 0)
     type: string = 'size'
 
-    constructor(entity: Entity, world: World, options: { size: Vector2 }) {
+    constructor(entity: Entity, world: World, options: { maxSize?: number, size: Vector2 }) {
         super(entity, world)
-        const { size } = options
+        const { maxSize, size } = options
+        this.maxSize = maxSize || 200
         this.setSize(size)
     }
 

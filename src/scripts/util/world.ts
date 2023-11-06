@@ -14,7 +14,7 @@ export class World {
     entities: Entity[]
     eventManager: EventManager = new EventManager()
     keyboardController: KeyboardController = new KeyboardController(this.eventManager)
-    physicsWorld: RAPIER.World = new RAPIER.World({ x: 0.0, y: 500.0 })
+    physicsWorld: RAPIER.World = new RAPIER.World(new Vector2(0, 500))
     physicsWorldEventQueue: RAPIER.EventQueue = new RAPIER.EventQueue(true)
     worldDimensions: Vector2
     systems: System[]
@@ -22,7 +22,6 @@ export class World {
 
     constructor(engine: Engine, options: { worldDimensions: Vector2 }) {
         const { worldDimensions } = options
-
         this.engine = engine
         this.entities = []
         this.worldDimensions = worldDimensions
@@ -30,17 +29,7 @@ export class World {
     }
 
     addEntity(entity: Entity): void {
-        const pixiComponent = entity.getComponent('pixi') as PixiComponent
-        if (pixiComponent.canSetPositionTarget(pixiComponent.position)) this.entities.push(entity)
-        else {
-            console.log('failed to add', entity.name, entity.id)
-            const newPosition = pixiComponent.findPositionToSet()
-            if (newPosition) {
-                pixiComponent.setPosition(newPosition)
-                this.addEntity(entity)
-            }
-            else console.log('cannot add', entity.name, entity.id)
-        }
+        this.entities.push(entity)
     }
 
     addSystem(system: System): void {
