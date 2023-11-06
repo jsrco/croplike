@@ -16,6 +16,15 @@ export class PositionComponent extends Component {
         this.setTargetPosition(position)
     }
 
+    canSetTargetPosition(position: Vector2): boolean {
+        this.targetPosition = position
+        if (this.world.isOkToPlace(this.owner)) {
+            return true
+        }
+        this.targetPosition = this.position
+        return false
+    }
+    
     setPosition(position: Vector2) {
         this.position = position
         this.world.eventManager.dispatch('positionChange', { entity: this.owner, positionComponent: this })
