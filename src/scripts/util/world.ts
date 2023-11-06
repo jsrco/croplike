@@ -1,4 +1,4 @@
-import RAPIER from "@dimforge/rapier2d"
+import RAPIER, { Vector2 } from "@dimforge/rapier2d"
 import { PixiComponent } from "../components/pixi"
 import { RapierComponent } from "../components/rapier"
 import { Engine } from "../engine"
@@ -16,11 +16,11 @@ export class World {
     keyboardController: KeyboardController = new KeyboardController(this.eventManager)
     physicsWorld: RAPIER.World = new RAPIER.World({ x: 0.0, y: 500.0 })
     physicsWorldEventQueue: RAPIER.EventQueue = new RAPIER.EventQueue(true)
-    worldDimensions: RAPIER.Vector2
+    worldDimensions: Vector2
     systems: System[]
     wallSize: number = gridSize.value * 2
 
-    constructor(engine: Engine, options: { worldDimensions: RAPIER.Vector }) {
+    constructor(engine: Engine, options: { worldDimensions: Vector2 }) {
         const { worldDimensions } = options
 
         this.engine = engine

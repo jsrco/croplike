@@ -1,4 +1,4 @@
-import RAPIER from "@dimforge/rapier2d"
+import { Vector2 } from "@dimforge/rapier2d"
 import { PixiComponent } from "../components/pixi"
 import { gridSize } from "../util/config-options"
 import { World } from "../util/world"
@@ -15,7 +15,7 @@ export class MovementSystemTB extends System {
         super(world)
     }
 
-    adjustPosition(currentPosition: RAPIER.Vector2, newPosition: RAPIER.Vector2): RAPIER.Vector2 {
+    adjustPosition(currentPosition: Vector2, newPosition: Vector2): Vector2 {
         const diffX = newPosition.x - currentPosition.x
         const diffY = newPosition.y - currentPosition.y
 
@@ -23,7 +23,7 @@ export class MovementSystemTB extends System {
         const adjustedX = diffX > 0 ? currentPosition.x + Math.min(this.move, diffX) : currentPosition.x - Math.min(this.move, Math.abs(diffX))
         const adjustedY = diffY > 0 ? currentPosition.y + Math.min(this.move, diffY) : currentPosition.y - Math.min(this.move, Math.abs(diffY))
 
-        return new RAPIER.Vector2(adjustedX, adjustedY)
+        return new Vector2(adjustedX, adjustedY)
     }
 
     allAtTarget(): boolean {
@@ -39,33 +39,33 @@ export class MovementSystemTB extends System {
 
     moveDown(component: PixiComponent): void {
         const { x, y } = component.position
-        const newPosition: RAPIER.Vector2 = new RAPIER.Vector2(x, y + this.increment)
+        const newPosition: Vector2 = new Vector2(x, y + this.increment)
         component.setPosition(newPosition)
     }
 
     moveLeft(component: PixiComponent): void {
         const { x, y } = component.position
-        const newPosition: RAPIER.Vector2 = new RAPIER.Vector2(x - this.increment, y)
+        const newPosition: Vector2 = new Vector2(x - this.increment, y)
         component.setPosition(newPosition)
     }
 
     moveRight(component: PixiComponent): void {
         const { x, y } = component.position
-        const newPosition: RAPIER.Vector2 = new RAPIER.Vector2(x + this.increment, y)
+        const newPosition: Vector2 = new Vector2(x + this.increment, y)
         component.setPosition(newPosition)
     }
 
     moveUp(component: PixiComponent): void {
         const { x, y } = component.position
-        const newPosition: RAPIER.Vector2 = new RAPIER.Vector2(x, y - this.increment)
+        const newPosition: Vector2 = new Vector2(x, y - this.increment)
         component.setPosition(newPosition)
     }
 
-    partialMove(component: PixiComponent, newPosition: RAPIER.Vector2): void {
+    partialMove(component: PixiComponent, newPosition: Vector2): void {
         const { x, y } = component.position
     }
 
-    startMove(component: PixiComponent, newPosition: RAPIER.Vector2): void {
+    startMove(component: PixiComponent, newPosition: Vector2): void {
         if (component.canSetPositionTarget(newPosition)) {
             this.hasPlayerGone = true
         }
@@ -80,7 +80,7 @@ export class MovementSystemTB extends System {
             if (entity.name === 'dummy' && isAtTarget && this.hasPlayerGone) {
                 const player = this.world.getEntityByName('player')?.getComponent('pixi') as PixiComponent
                 if (player.position.x === player.positionTarget.x && player.position.y === player.positionTarget.y) {
-                    const newPosition = new RAPIER.Vector2(position.x, position.y)
+                    const newPosition = new Vector2(position.x, position.y)
                     const randomX = Math.random()
                     const randomY = Math.random()
                     if (randomX < 0.3) {
@@ -109,14 +109,14 @@ export class MovementSystemTB extends System {
 
                 arrowKeys.forEach((key, index) => {
                     const keyActions = [
-                        () => new RAPIER.Vector2(position.x, position.y + this.move),
-                        () => new RAPIER.Vector2(position.x - this.move, position.y),
-                        () => new RAPIER.Vector2(position.x + this.move, position.y),
-                        () => new RAPIER.Vector2(position.x, position.y - this.move),
-                        () => new RAPIER.Vector2(position.x - this.move, position.y + this.move),
-                        () => new RAPIER.Vector2(position.x - this.move, position.y - this.move),
-                        () => new RAPIER.Vector2(position.x + this.move, position.y + this.move),
-                        () => new RAPIER.Vector2(position.x + this.move, position.y - this.move)
+                        () => new Vector2(position.x, position.y + this.move),
+                        () => new Vector2(position.x - this.move, position.y),
+                        () => new Vector2(position.x + this.move, position.y),
+                        () => new Vector2(position.x, position.y - this.move),
+                        () => new Vector2(position.x - this.move, position.y + this.move),
+                        () => new Vector2(position.x - this.move, position.y - this.move),
+                        () => new Vector2(position.x + this.move, position.y + this.move),
+                        () => new Vector2(position.x + this.move, position.y - this.move)
                     ]
                     if (this.keys.has(key)) {
                         this.startMove(pixiComponent, keyActions[index]())

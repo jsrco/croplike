@@ -1,4 +1,4 @@
-import RAPIER from "@dimforge/rapier2d"
+import RAPIER, { Vector2 } from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Entity } from "../entities/entity"
 import { World } from "../util/world"
@@ -18,9 +18,9 @@ export class RapierComponent extends Component {
     isRiding: boolean = false
     isStoodOn: boolean = false
     type: string = 'rapier'
-    velocity: RAPIER.Vector = { x: 0, y: 0 }
+    velocity: Vector2 = { x: 0, y: 0 }
 
-    constructor(entity: Entity, world: World, options: { bodyType: string, canGrow?: boolean, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, isRiding?: boolean, isStoodOn?: boolean, position: RAPIER.Vector, size: RAPIER.Vector, velocity?: RAPIER.Vector, }) {
+    constructor(entity: Entity, world: World, options: { bodyType: string, canGrow?: boolean, dominance?: { isIt: boolean, group: number }, isColliding?: boolean, isOnGround?: boolean, isRiding?: boolean, isStoodOn?: boolean, position: Vector2, size: Vector2, velocity?: Vector2, }) {
         super(entity, world)
 
         const { bodyType, canGrow, dominance, isColliding, isOnGround, isRiding, isStoodOn, position, size, velocity } = options
@@ -88,7 +88,7 @@ export class RapierComponent extends Component {
         this.isStoodOn = isIt
     }
 
-    setVelocity(velocity: RAPIER.Vector): void {
+    setVelocity(velocity: Vector2): void {
         this.body.setLinvel(velocity, true)
         this.velocity = velocity
     }

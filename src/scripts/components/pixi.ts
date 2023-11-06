@@ -1,4 +1,4 @@
-import RAPIER from "@dimforge/rapier2d"
+import { Vector2 } from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import { Entity } from "../entities/entity"
 import { PhysicsSystem } from "../systems/physics"
@@ -10,16 +10,16 @@ export class PixiComponent extends Component {
 
     color: string
     maxSize: number
-    position: RAPIER.Vector = new RAPIER.Vector2(0, 0)
-    positionTarget: RAPIER.Vector = new RAPIER.Vector2(0, 0)
-    size: RAPIER.Vector = new RAPIER.Vector2(0, 0)
+    position: Vector2 = new Vector2(0, 0)
+    positionTarget: Vector2 = new Vector2(0, 0)
+    size: Vector2 = new Vector2(0, 0)
     sprite: PIXI.Sprite
     type: string = 'pixi'
 
     moveLeft: boolean = false
     moveRight: boolean = false
 
-    constructor(entity: Entity, world: World, options: { color: string | '#ffffff', maxSize?: number, moveLeft?: boolean, moveRight?: boolean, position: RAPIER.Vector, size: RAPIER.Vector }) {
+    constructor(entity: Entity, world: World, options: { color: string | '#ffffff', maxSize?: number, moveLeft?: boolean, moveRight?: boolean, position: Vector2, size: Vector2 }) {
         super(entity, world)
         const { color, maxSize, moveLeft, moveRight, position, size } = options
         this.color = color
@@ -42,7 +42,7 @@ export class PixiComponent extends Component {
         this.world.engine.app.stage.addChild(this.sprite)
     }
 
-    canSetPositionTarget(position: RAPIER.Vector2): boolean {
+    canSetPositionTarget(position: Vector2): boolean {
         if (this.isOkToMove(position)) {
             this.positionTarget = position
             return true
@@ -50,10 +50,10 @@ export class PixiComponent extends Component {
         return false
     }
 
-    findPositionToSet(increment: number = gridSize.value): RAPIER.Vector | undefined {
+    findPositionToSet(increment: number = gridSize.value): Vector2 | undefined {
         for (let y = 0; y <= this.world.worldDimensions.y; y += increment) {
             for (let x = 0; x <= this.world.worldDimensions.x; x += increment) {
-                const newPosition = new RAPIER.Vector2(x, y)
+                const newPosition = new Vector2(x, y)
                 if (this.isInBounds(this.size, newPosition) && this.isPositionClearFor(newPosition)) {
                     return newPosition
                 }
@@ -62,18 +62,18 @@ export class PixiComponent extends Component {
         return undefined
     }
 
-    isInBounds(size: RAPIER.Vector2, target: RAPIER.Vector2): boolean {
+    isInBounds(size: Vector2, target: Vector2): boolean {
         const { x, y } = target
         const { worldDimensions } = this.world
         return x >= 0 && y >= 0 && x + size.x <= worldDimensions.x && y + size.y <= worldDimensions.y
     }
 
-    isOkToMove(target: RAPIER.Vector2) {
+    isOkToMove(target: Vector2) {
         if (this.world.engine.name === 'Hunts') return true // this.isPositionClearFor(target)
         else return this.isInBounds(this.size, target) && this.isPositionClearFor(target)
     }
 
-    isPositionClearFor(target: RAPIER.Vector2): boolean {
+    isPositionClearFor(target: Vector2): boolean {
         const entities = this.world.getEntitiesByComponent('pixi')
         for (const entity of entities) {
             const otherPixiComponent = entity.getComponent('pixi') as PixiComponent
@@ -101,7 +101,7 @@ export class PixiComponent extends Component {
         this.world.engine.app.stage.removeChild(this.sprite)
     }
 
-    setPosition(position: RAPIER.Vector): void {
+    setPosition(position: Vector2): void {
         this.sprite.x = position.x
         this.sprite.y = position.y
         // Adjust for on save / load, Rapier RigidBody starting from the center of the collider
@@ -113,7 +113,7 @@ export class PixiComponent extends Component {
         this.position = position
     }
 
-    setSize(size: RAPIER.Vector): void {
+    setSize(size: Vector2): void {
         this.sprite.width = size.x
         this.sprite.height = size.y
         this.size = size
