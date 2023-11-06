@@ -15,6 +15,17 @@ export class MovementSystemTB extends System {
         super(world)
     }
 
+    allAtTarget(): boolean {
+        const entities = this.getEntitiesByComponent('pixi')
+        for (const entity of entities) {
+            const pixiComponent = entity.getComponent('pixi') as PixiComponent
+            const { position, positionTarget } = pixiComponent
+            const isAtTarget = position.x === positionTarget.x && position.y === positionTarget.y
+            if (!isAtTarget) return false
+        }
+        return true
+    }
+
     moveDown(component: PixiComponent): void {
         const { x, y } = component.position
         const newPosition: RAPIER.Vector2 = new RAPIER.Vector2(x, y + this.increment)
@@ -70,7 +81,7 @@ export class MovementSystemTB extends System {
                     pixiComponent.canSetPositionTarget(newPosition)
                 }
             }
-            if (entity.name === 'player' && isAtTarget) {
+            if (entity.name === 'player' && this.allAtTarget()) {
                 this.hasPlayerGone = false
                 const arrowKeys = ['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'End', 'Home', 'PageDown', 'PageUp']
 
