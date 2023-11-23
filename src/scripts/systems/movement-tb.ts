@@ -53,11 +53,13 @@ export class MovementSystemTB extends System {
     startMove(component: PositionComponent, newPosition: Vector2): void {
         const { x, y } = component.position
         if (x === newPosition.x && y === newPosition.y) {
-            console.log('already there')
-        } else if (component.canSetTargetPosition(newPosition)) {
-            if (component.owner.name === 'player') this.hasPlayerGone = true
-        } else if (!component.canSetTargetPosition(newPosition)) {
-            console.log('cant move there')
+            console.log(component.owner.name, 'already there')
+        } else {
+            if (component.canSetTargetPosition(newPosition)) {
+                if (component.owner.name === 'player') this.hasPlayerGone = true
+            } else {
+                console.log(component.owner.name, 'cant move there')
+            }
         }
     }
 
