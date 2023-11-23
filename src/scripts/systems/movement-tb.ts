@@ -65,7 +65,10 @@ export class MovementSystemTB extends System {
 
     startMove(component: PositionComponent, newPosition: Vector2): void {
         if (component.canSetTargetPosition(newPosition)) {
+            console.log(component.owner.name)
             this.hasPlayerGone = true
+        } else {
+            console.log(component.owner.name, "can't move there")
         }
     }
 
@@ -74,35 +77,30 @@ export class MovementSystemTB extends System {
         for (const entity of entities) {
             const positionComponent = entity.getComponent('position') as PositionComponent
             const { position, targetPosition } = positionComponent
+            const allAtTarget = this.allAtTarget()
             const isAtTarget = position.x === targetPosition.x && position.y === targetPosition.y
-            if (entity.name === 'dummy' && isAtTarget && this.hasPlayerGone) {
+            if (entity.name === 'dummy' && allAtTarget && this.hasPlayerGone) {
                 const player = this.world.getEntityByName('player')?.getComponent('position') as PositionComponent
                 if (player.position.x === player.targetPosition.x && player.position.y === player.targetPosition.y) {
                     const newPosition = new Vector2(position.x, position.y)
                     const randomX = Math.random()
                     const randomY = Math.random()
                     if (randomX < 0.3) {
-                        newPosition.x += this.move * 3
+                        newPosition.x += this.move
                     } else if (randomX > 0.7) {
-                        newPosition.x -= this.move * 3
+                        newPosition.x -= this.move
                     }
                     if (randomY < 0.3) {
-                        newPosition.y += this.move * 3
+                        newPosition.y += this.move
                     } else if (randomY > 0.7) {
-                        newPosition.y -= this.move * 3
+                        newPosition.y -= this.move
                     }
                     // Adjust the position only if canSetTargetPosition returns false
-                    if (!positionComponent.canSetTargetPosition(newPosition)) {
-                        // Adjust the new position based on the current position and movement restrictions
-                        const adjustedPosition = this.adjustPosition(position, newPosition)
-
-                        // Try to set the adjusted position
-                        positionComponent.canSetTargetPosition(adjustedPosition)
-                    }
+                    this.startMove(positionComponent, newPosition)
                     // todo check if an entity is in the path. 
                 }
             }
-            if (entity.name === 'player' && this.allAtTarget()) {
+            if (entity.name === 'player' && allAtTarget) {
                 this.hasPlayerGone = false
                 const arrowKeys = ['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'End', 'Home', 'PageDown', 'PageUp']
                 arrowKeys.forEach((key, index) => {
