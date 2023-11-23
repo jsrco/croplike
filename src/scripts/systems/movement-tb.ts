@@ -14,15 +14,6 @@ export class MovementSystemTB extends System {
     constructor(world: World) {
         super(world)
     }
-    
-    adjustPosition(currentPosition: Vector2, newPosition: Vector2): Vector2 {
-        const diffX = newPosition.x - currentPosition.x
-        const diffY = newPosition.y - currentPosition.y
-        // Adjust the new position based on movement restrictions (20 or 40)
-        const adjustedX = diffX > 0 ? currentPosition.x + Math.min(this.move, diffX) : currentPosition.x - Math.min(this.move, Math.abs(diffX))
-        const adjustedY = diffY > 0 ? currentPosition.y + Math.min(this.move, diffY) : currentPosition.y - Math.min(this.move, Math.abs(diffY))
-        return new Vector2(adjustedX, adjustedY)
-    }
 
     allAtTarget(): boolean {
         const entities = this.getEntitiesByComponent('position')
@@ -59,16 +50,14 @@ export class MovementSystemTB extends System {
         component.setPosition(newPosition)
     }
 
-    partialMove(component: PositionComponent, newPosition: Vector2): void {
-        const { x, y } = component.position
-    }
-
     startMove(component: PositionComponent, newPosition: Vector2): void {
-        if (component.canSetTargetPosition(newPosition)) {
-            console.log(component.owner.name)
-            this.hasPlayerGone = true
-        } else {
-            console.log(component.owner.name, "can't move there")
+        const { x, y } = component.position
+        if (x === newPosition.x && y === newPosition.y) {
+            console.log('already there')
+        } else if (component.canSetTargetPosition(newPosition)) {
+            if (component.owner.name === 'player') this.hasPlayerGone = true
+        } else if (!component.canSetTargetPosition(newPosition)) {
+            console.log('cant move there')
         }
     }
 
