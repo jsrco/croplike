@@ -26,6 +26,35 @@ export class MovementSystemTB extends System {
         return true
     }
 
+    isPathClearFor(entityToCheck: Entity, newPosition: Vector2): boolean {
+        // const positionComponent = entityToCheck.getComponent('position') as PositionComponent
+        // const sizeComponent = entityToCheck.getComponent('size') as SizeComponent
+        // const { x, y } = positionComponent.targetPosition
+        // const { size } = sizeComponent
+        // const entities = this.getEntitiesByComponent('position', 'size')
+        // for (const entity of entities) {
+        //     const otherPositionComponent = entity.getComponent('position') as PositionComponent
+        //     const otherSizeComponent = entity.getComponent('size') as SizeComponent
+        //     if (entityToCheck.id === entity.id) {
+        //         continue // Skip self
+        //     }
+        //     const targetLeft = x
+        //     const targetRight = x + size.x
+        //     const targetTop = y
+        //     const targetBottom = y + size.y
+        //     const otherLeft = otherPositionComponent.targetPosition.x
+        //     const otherRight = otherPositionComponent.targetPosition.x + otherSizeComponent.size.x
+        //     const otherTop = otherPositionComponent.targetPosition.y
+        //     const otherBottom = otherPositionComponent.targetPosition.y + otherSizeComponent.size.y
+        //     const isCollision = otherLeft < targetRight && otherRight > targetLeft && otherTop < targetBottom && otherBottom > targetTop
+        //     if (isCollision) {
+        //         // Handle collision or return false, depending on the use case
+        //         return false
+        //     }
+        // }
+        // return true
+    }
+
     moveDown(component: PositionComponent): void {
         const { x, y } = component.position
         const newPosition: Vector2 = new Vector2(x, y + this.increment)
@@ -55,20 +84,17 @@ export class MovementSystemTB extends System {
         if (x === newPosition.x && y === newPosition.y) {
             console.log(component.owner.name, 'already there')
         } else {
+            // todo: check if path is clear using: this.isPathClearFor(component.owner, newPosition)
             if (component.canSetTargetPosition(newPosition)) {
                 if (component.owner.name === 'player') this.hasPlayerGone = true
             } else {
                 const diffX = newPosition.x - x
                 const diffY = newPosition.y - y
                 if (Math.abs(diffX) <= 20 && Math.abs(diffY) <= 20) {
-                    console.log(component.owner.name, 'cant move there')
                 } else if (Math.abs(diffX) > 20 || Math.abs(diffY) > 20) {
-                    console.log(component.owner.name, diffX, diffY)
-                    // Adjust the new position based on movement restrictions
-                    // check for 0 then do plus negative and correctly adjsut 
-                    // const adjustedX = diffX > 0 ? x + (diffX - this.move) : x + (diffX + this.move)
-                    // const adjustedY = diffY > 0 ? y + (diffY - this.move) : y + (diffY + this.move)
-                    // this.startMove(component, new Vector2(adjustedX, adjustedY))
+                    const adjustedX = diffX === 0 ? x : diffX > 0 ? x + (diffX - this.move) : x + (diffX + this.move)
+                    const adjustedY = diffY === 0 ? y : diffY > 0 ? y + (diffY - this.move) : y + (diffY + this.move)
+                    this.startMove(component, new Vector2(adjustedX, adjustedY))
                 }
             }
         }
@@ -88,18 +114,16 @@ export class MovementSystemTB extends System {
                     const randomX = Math.random()
                     const randomY = Math.random()
                     if (randomX < 0.3) {
-                        newPosition.x += this.move
+                        newPosition.x += this.move * 3
                     } else if (randomX > 0.7) {
-                        newPosition.x -= this.move
+                        newPosition.x -= this.move * 3
                     }
                     if (randomY < 0.3) {
-                        newPosition.y += this.move
+                        newPosition.y += this.move * 3
                     } else if (randomY > 0.7) {
-                        newPosition.y -= this.move
+                        newPosition.y -= this.move * 3
                     }
-                    // Adjust the position only if canSetTargetPosition returns false
                     this.startMove(positionComponent, newPosition)
-                    // todo check if an entity is in the path. 
                 }
             }
             if (entity.name === 'player' && allAtTarget) {
@@ -107,14 +131,14 @@ export class MovementSystemTB extends System {
                 const arrowKeys = ['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'End', 'Home', 'PageDown', 'PageUp']
                 arrowKeys.forEach((key, index) => {
                     const keyActions = [
-                        () => new Vector2(position.x, position.y + this.move * 3),
-                        () => new Vector2(position.x - this.move * 3, position.y),
-                        () => new Vector2(position.x + this.move * 3, position.y),
-                        () => new Vector2(position.x, position.y - this.move * 3),
-                        () => new Vector2(position.x - this.move * 3, position.y + this.move * 3),
-                        () => new Vector2(position.x - this.move * 3, position.y - this.move * 3),
-                        () => new Vector2(position.x + this.move * 3, position.y + this.move * 3),
-                        () => new Vector2(position.x + this.move * 3, position.y - this.move * 3)
+                        () => new Vector2(position.x, position.y + this.move),
+                        () => new Vector2(position.x - this.move, position.y),
+                        () => new Vector2(position.x + this.move, position.y),
+                        () => new Vector2(position.x, position.y - this.move),
+                        () => new Vector2(position.x - this.move, position.y + this.move),
+                        () => new Vector2(position.x - this.move, position.y - this.move),
+                        () => new Vector2(position.x + this.move, position.y + this.move),
+                        () => new Vector2(position.x + this.move, position.y - this.move)
                     ]
                     if (this.keys.has(key)) {
                         this.startMove(positionComponent, keyActions[index]())
