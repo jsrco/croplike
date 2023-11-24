@@ -7,7 +7,7 @@ import { System } from "./system"
 export class MovementSystemTB extends System {
 
     hasPlayerGone: boolean = false
-    increment: number = 2
+    increment: number = 2 // needs to be divisible by move
     move: number = gridSize.value
     type: string = 'movement-TB'
 
@@ -58,7 +58,18 @@ export class MovementSystemTB extends System {
             if (component.canSetTargetPosition(newPosition)) {
                 if (component.owner.name === 'player') this.hasPlayerGone = true
             } else {
-                console.log(component.owner.name, 'cant move there')
+                const diffX = newPosition.x - x
+                const diffY = newPosition.y - y
+                if (Math.abs(diffX) <= 20 && Math.abs(diffY) <= 20) {
+                    console.log(component.owner.name, 'cant move there')
+                } else if (Math.abs(diffX) > 20 || Math.abs(diffY) > 20) {
+                    console.log(component.owner.name, diffX, diffY)
+                    // Adjust the new position based on movement restrictions
+                    // check for 0 then do plus negative and correctly adjsut 
+                    // const adjustedX = diffX > 0 ? x + (diffX - this.move) : x + (diffX + this.move)
+                    // const adjustedY = diffY > 0 ? y + (diffY - this.move) : y + (diffY + this.move)
+                    // this.startMove(component, new Vector2(adjustedX, adjustedY))
+                }
             }
         }
     }
@@ -96,14 +107,14 @@ export class MovementSystemTB extends System {
                 const arrowKeys = ['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'End', 'Home', 'PageDown', 'PageUp']
                 arrowKeys.forEach((key, index) => {
                     const keyActions = [
-                        () => new Vector2(position.x, position.y + this.move),
-                        () => new Vector2(position.x - this.move, position.y),
-                        () => new Vector2(position.x + this.move, position.y),
-                        () => new Vector2(position.x, position.y - this.move),
-                        () => new Vector2(position.x - this.move, position.y + this.move),
-                        () => new Vector2(position.x - this.move, position.y - this.move),
-                        () => new Vector2(position.x + this.move, position.y + this.move),
-                        () => new Vector2(position.x + this.move, position.y - this.move)
+                        () => new Vector2(position.x, position.y + this.move * 3),
+                        () => new Vector2(position.x - this.move * 3, position.y),
+                        () => new Vector2(position.x + this.move * 3, position.y),
+                        () => new Vector2(position.x, position.y - this.move * 3),
+                        () => new Vector2(position.x - this.move * 3, position.y + this.move * 3),
+                        () => new Vector2(position.x - this.move * 3, position.y - this.move * 3),
+                        () => new Vector2(position.x + this.move * 3, position.y + this.move * 3),
+                        () => new Vector2(position.x + this.move * 3, position.y - this.move * 3)
                     ]
                     if (this.keys.has(key)) {
                         this.startMove(positionComponent, keyActions[index]())
