@@ -79,6 +79,7 @@ const setBoundsMap = (position: Vector2, size: Vector2, isItHunts: boolean): Ent
     const wall: EntityMap = {
         name: 'wall',
         componentMap: {
+            movement: true,
             pixi: true,
             position: true,
             rapier: isItHunts,

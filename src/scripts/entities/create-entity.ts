@@ -1,3 +1,4 @@
+import { MovementComponent } from "../components/movement"
 import { PixiComponent } from "../components/pixi"
 import { PositionComponent } from "../components/position"
 import { RapierComponent } from "../components/rapier"
@@ -9,6 +10,7 @@ export type EntityMap = {
     id?: string
     name: string
     componentMap: {
+        movement?: boolean
         pixi?: boolean
         position?: boolean
         rapier?: boolean
@@ -20,6 +22,10 @@ export type EntityMap = {
 export const CreateEntity = (entityMap: EntityMap, world: World): Entity => {
     const entity = new Entity(entityMap.name, entityMap.id)
     const components = []
+    if (entityMap.componentMap.movement)
+        components.push(
+            new MovementComponent(entity, world, entityMap.options)
+        )
     if (entityMap.componentMap.pixi)
         components.push(
             new PixiComponent(entity, world, entityMap.options)

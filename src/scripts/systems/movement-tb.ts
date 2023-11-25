@@ -1,4 +1,5 @@
 import { Vector2 } from "@dimforge/rapier2d"
+import { MovementComponent } from "../components/movement"
 import { PositionComponent } from "../components/position"
 import { SizeComponent } from "../components/size"
 import { Entity } from "../entities/entity"
@@ -109,9 +110,11 @@ export class MovementSystemTB extends System {
     }
 
     update(deltaTime: number): void {
-        const entities = this.getEntitiesByComponent('position')
+        const entities = this.getEntitiesByComponent('movement', 'position')
         for (const entity of entities) {
+            const movementComponent = entity.getComponent('movement') as MovementComponent
             const positionComponent = entity.getComponent('position') as PositionComponent
+            const { allowedMoves } = movementComponent
             const { position, targetPosition } = positionComponent
             const allAtTarget = this.allAtTarget()
             const isAtTarget = position.x === targetPosition.x && position.y === targetPosition.y
@@ -122,14 +125,14 @@ export class MovementSystemTB extends System {
                     const randomX = Math.random()
                     const randomY = Math.random()
                     if (randomX < 0.3) {
-                        newPosition.x += this.move * 3
+                        newPosition.x += this.move * allowedMoves
                     } else if (randomX > 0.7) {
-                        newPosition.x -= this.move * 3
+                        newPosition.x -= this.move * allowedMoves
                     }
                     if (randomY < 0.3) {
-                        newPosition.y += this.move * 3
+                        newPosition.y += this.move * allowedMoves
                     } else if (randomY > 0.7) {
-                        newPosition.y -= this.move * 3
+                        newPosition.y -= this.move * allowedMoves
                     }
                     this.startMove(positionComponent, newPosition)
                 }
@@ -139,14 +142,14 @@ export class MovementSystemTB extends System {
                 const arrowKeys = ['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'End', 'Home', 'PageDown', 'PageUp']
                 arrowKeys.forEach((key, index) => {
                     const keyActions = [
-                        () => new Vector2(position.x, position.y + this.move),
-                        () => new Vector2(position.x - this.move, position.y),
-                        () => new Vector2(position.x + this.move, position.y),
-                        () => new Vector2(position.x, position.y - this.move),
-                        () => new Vector2(position.x - this.move, position.y + this.move),
-                        () => new Vector2(position.x - this.move, position.y - this.move),
-                        () => new Vector2(position.x + this.move, position.y + this.move),
-                        () => new Vector2(position.x + this.move, position.y - this.move)
+                        () => new Vector2(position.x, position.y + (this.move * allowedMoves)),
+                        () => new Vector2(position.x - (this.move * allowedMoves), position.y),
+                        () => new Vector2(position.x + (this.move * allowedMoves), position.y),
+                        () => new Vector2(position.x, position.y - (this.move * allowedMoves)),
+                        () => new Vector2(position.x - (this.move * allowedMoves), position.y + (this.move * allowedMoves)),
+                        () => new Vector2(position.x - (this.move * allowedMoves), position.y - (this.move * allowedMoves)),
+                        () => new Vector2(position.x + (this.move * allowedMoves), position.y + (this.move * allowedMoves)),
+                        () => new Vector2(position.x + (this.move * allowedMoves), position.y - (this.move * allowedMoves))
                     ]
                     if (this.keys.has(key)) {
                         this.startMove(positionComponent, keyActions[index]())
