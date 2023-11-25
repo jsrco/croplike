@@ -1,5 +1,7 @@
 import { Vector2 } from "@dimforge/rapier2d"
 import { PositionComponent } from "../components/position"
+import { SizeComponent } from "../components/size"
+import { Entity } from "../entities/entity"
 import { gridSize } from "../util/config-options"
 import { World } from "../util/world"
 import { System } from "./system"
@@ -27,32 +29,30 @@ export class MovementSystemTB extends System {
     }
 
     isPathClearFor(entityToCheck: Entity, newPosition: Vector2): boolean {
-        // const positionComponent = entityToCheck.getComponent('position') as PositionComponent
-        // const sizeComponent = entityToCheck.getComponent('size') as SizeComponent
-        // const { x, y } = positionComponent.targetPosition
-        // const { size } = sizeComponent
-        // const entities = this.getEntitiesByComponent('position', 'size')
-        // for (const entity of entities) {
-        //     const otherPositionComponent = entity.getComponent('position') as PositionComponent
-        //     const otherSizeComponent = entity.getComponent('size') as SizeComponent
-        //     if (entityToCheck.id === entity.id) {
-        //         continue // Skip self
-        //     }
-        //     const targetLeft = x
-        //     const targetRight = x + size.x
-        //     const targetTop = y
-        //     const targetBottom = y + size.y
-        //     const otherLeft = otherPositionComponent.targetPosition.x
-        //     const otherRight = otherPositionComponent.targetPosition.x + otherSizeComponent.size.x
-        //     const otherTop = otherPositionComponent.targetPosition.y
-        //     const otherBottom = otherPositionComponent.targetPosition.y + otherSizeComponent.size.y
-        //     const isCollision = otherLeft < targetRight && otherRight > targetLeft && otherTop < targetBottom && otherBottom > targetTop
-        //     if (isCollision) {
-        //         // Handle collision or return false, depending on the use case
-        //         return false
-        //     }
-        // }
-        // return true
+        const sizeComponent = entityToCheck.getComponent('size') as SizeComponent
+        const { size } = sizeComponent
+        const entities = this.getEntitiesByComponent('position', 'size')
+        for (const entity of entities) {
+            const otherPositionComponent = entity.getComponent('position') as PositionComponent
+            const otherSizeComponent = entity.getComponent('size') as SizeComponent
+            if (entityToCheck.id === entity.id) {
+                continue // Skip self
+            }
+            const targetLeft = newPosition.x
+            const targetRight = newPosition.x + size.x
+            const targetTop = newPosition.y
+            const targetBottom = newPosition.y + size.y
+            const otherLeft = otherPositionComponent.targetPosition.x
+            const otherRight = otherPositionComponent.targetPosition.x + otherSizeComponent.size.x
+            const otherTop = otherPositionComponent.targetPosition.y
+            const otherBottom = otherPositionComponent.targetPosition.y + otherSizeComponent.size.y
+            const isCollision = otherLeft < targetRight && otherRight > targetLeft && otherTop < targetBottom && otherBottom > targetTop
+            if (isCollision) {
+                // Handle collision or return false, depending on the use case
+                return false
+            }
+        }
+        return true
     }
 
     moveDown(component: PositionComponent): void {
@@ -84,17 +84,25 @@ export class MovementSystemTB extends System {
         if (x === newPosition.x && y === newPosition.y) {
             console.log(component.owner.name, 'already there')
         } else {
-            // todo: check if path is clear using: this.isPathClearFor(component.owner, newPosition)
-            if (component.canSetTargetPosition(newPosition)) {
-                if (component.owner.name === 'player') this.hasPlayerGone = true
-            } else {
-                const diffX = newPosition.x - x
-                const diffY = newPosition.y - y
-                if (Math.abs(diffX) <= 20 && Math.abs(diffY) <= 20) {
-                } else if (Math.abs(diffX) > 20 || Math.abs(diffY) > 20) {
-                    const adjustedX = diffX === 0 ? x : diffX > 0 ? x + (diffX - this.move) : x + (diffX + this.move)
-                    const adjustedY = diffY === 0 ? y : diffY > 0 ? y + (diffY - this.move) : y + (diffY + this.move)
-                    this.startMove(component, new Vector2(adjustedX, adjustedY))
+            const diffX = newPosition.x - x
+            const diffY = newPosition.y - y
+            if (Math.abs(diffX) <= this.move && Math.abs(diffY) <= this.move) {
+                if (component.canSetTargetPosition(newPosition)) {
+                    if (component.owner.name === 'player') this.hasPlayerGone = true
+                } else console.log(component.owner.name, "can't move there")
+            } else if (Math.abs(diffX) > this.move || Math.abs(diffY) > this.move) {
+                let clearedPosition: Vector2 = { x, y }
+                while (clearedPosition.x !== newPosition.x || clearedPosition.y !== newPosition.y) {
+                    const adjustedX = diffX === 0 ? clearedPosition.x : diffX > 0 ? clearedPosition.x + this.move : clearedPosition.x - this.move
+                    const adjustedY = diffY === 0 ? clearedPosition.y : diffY > 0 ? clearedPosition.y + this.move : clearedPosition.y - this.move
+                    const adjustedVector = new Vector2(adjustedX, adjustedY)
+                    if (component.canSetTargetPosition(adjustedVector)) {
+                        if (component.owner.name === 'player') this.hasPlayerGone = true
+                        clearedPosition = adjustedVector
+                    } else {
+                        this.startMove(component, clearedPosition)
+                        break
+                    }
                 }
             }
         }
