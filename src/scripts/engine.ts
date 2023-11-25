@@ -1,4 +1,4 @@
-import RAPIER from "@dimforge/rapier2d"
+import { Vector2 } from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
 import useEngine from "../composeables/use-engine"
 import { EntityMap } from "./entities/create-entity"
@@ -13,12 +13,11 @@ import { World } from "./util/world"
 
 export class Engine {
 
-    appDimensions: RAPIER.Vector2 = new RAPIER.Vector2(0, 0)
+    appDimensions: Vector2 = new Vector2(0, 0)
     app: PIXI.Application
     name: string
     paused: boolean = false
     running: boolean = false
-    shifting: boolean = false
     localStorageManager!: LocalStorageManager<any>
     saveManager: SaveManager = new SaveManager()
     textStyle: PIXI.TextStyle = new PIXI.TextStyle({

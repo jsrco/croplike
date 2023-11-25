@@ -1,5 +1,6 @@
 import { EntityMap } from "../entities/create-entity"
 import { Entity } from "../entities/entity"
+import { PhysicsSystem } from "../systems/physics"
 import { SystemMap, WorldMap } from "./create-world"
 import { World } from "./world"
 
@@ -24,7 +25,7 @@ export class SaveManager {
     }
 
     createEntityMap(entity: Entity): EntityMap | undefined {
-        if (entity.name !== 'wall') {
+        if (entity.name !== 'ceiling' && entity.name !== 'floor' && entity.name !== 'leftWall' && entity.name !== 'rightWall') {
             const entityMap: any = {
                 id: entity.id,
                 name: entity.name,
@@ -38,6 +39,12 @@ export class SaveManager {
                     ...entityMap.options,
                     ...targetComponent.copyComponentData(targetComponent)
                 }
+            }
+            // Adjust for on save / load, Rapier RigidBody starting from the center of the collider
+            const physicsSystem = entity.components['position'].world.getSystemByType('physics') as PhysicsSystem
+            if (physicsSystem) {
+                entityMap.options.position.x += (entityMap.options.size.x / 2)
+                entityMap.options.position.y += (entityMap.options.size.y / 2)
             }
             return entityMap
         }

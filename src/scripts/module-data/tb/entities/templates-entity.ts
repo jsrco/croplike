@@ -4,9 +4,13 @@ import { ColorSwatch } from '../../../util/color-swatch'
 export const dummy: EntityMap = {
     name: 'dummy',
     componentMap: {
+        movement: true,
         pixi: true,
+        position: true,
+        size: true,
     },
     options: {
+        allowedMoves: 4,
         color: ColorSwatch.red[3],
         position: {
             x: 100,
@@ -22,7 +26,10 @@ export const dummy: EntityMap = {
 export const player: EntityMap = {
     name: 'player',
     componentMap: {
+        movement: true,
         pixi: true,
+        position: true,
+        size: true,
     },
     options: {
         color: ColorSwatch.green[3],

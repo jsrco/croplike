@@ -76,7 +76,7 @@ const debugList = computed(() => {
         {
             name: 'console.dir module',
             operation: () => {
-                console.dir(useEngine().activeModule)
+                console.dir(useEngine().activeModule.value)
             }
         },
         {

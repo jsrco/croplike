@@ -1,6 +1,8 @@
-import RAPIER from "@dimforge/rapier2d"
+import RAPIER, { Vector2 } from "@dimforge/rapier2d"
 import { PixiComponent } from "../components/pixi"
+import { PositionComponent } from "../components/position"
 import { RapierComponent } from "../components/rapier"
+import { SizeComponent } from "../components/size"
 import { Engine } from "../engine"
 import { Entity } from "../entities/entity"
 import { System } from "../systems/system"
@@ -14,15 +16,14 @@ export class World {
     entities: Entity[]
     eventManager: EventManager = new EventManager()
     keyboardController: KeyboardController = new KeyboardController(this.eventManager)
-    physicsWorld: RAPIER.World = new RAPIER.World({ x: 0.0, y: 500.0 })
+    physicsWorld: RAPIER.World = new RAPIER.World(new Vector2(0, 500))
     physicsWorldEventQueue: RAPIER.EventQueue = new RAPIER.EventQueue(true)
-    worldDimensions: RAPIER.Vector2
+    worldDimensions: Vector2
     systems: System[]
     wallSize: number = gridSize.value * 2
 
-    constructor(engine: Engine, options: { worldDimensions: RAPIER.Vector }) {
+    constructor(engine: Engine, options: { worldDimensions: Vector2 }) {
         const { worldDimensions } = options
-
         this.engine = engine
         this.entities = []
         this.worldDimensions = worldDimensions
@@ -30,21 +31,25 @@ export class World {
     }
 
     addEntity(entity: Entity): void {
-        const pixiComponent = entity.getComponent('pixi') as PixiComponent
-        if (pixiComponent.canSetPositionTarget(pixiComponent.position)) this.entities.push(entity)
-        else {
-            console.log('failed to add', entity.name, entity.id)
-            const newPosition = pixiComponent.findPositionToSet()
-            if (newPosition) {
-                pixiComponent.setPosition(newPosition)
-                this.addEntity(entity)
-            }
-            else console.log('cannot add', entity.name, entity.id)
-        }
+        if (this.engine.name === 'Hunts') this.entities.push(entity)
+        else if (this.isOkToPlace(entity)) this.entities.push(entity)
     }
 
     addSystem(system: System): void {
         this.systems.push(system)
+    }
+    
+    findPositionToSet(entity: Entity, increment: number = gridSize.value): Vector2 | undefined {
+        const positionComponent = entity.getComponent('position') as PositionComponent
+        for (let y = 0; y <= this.worldDimensions.y; y += increment) {
+            for (let x = 0; x <= this.worldDimensions.x; x += increment) {
+                const newPosition = new Vector2(x, y)
+                if (positionComponent.canSetTargetPosition(newPosition)) {
+                    return newPosition
+                }
+            }
+        }
+        return undefined
     }
 
     getEntitiesByComponent(...componentTypes: string[]): Entity[] {
@@ -63,6 +68,47 @@ export class World {
 
     getSystemByType(type: string) {
         return this.systems.find(system => system.type === type)
+    }
+
+    isInBounds(entity: Entity): boolean {
+        const positionComponent = entity.getComponent('position') as PositionComponent
+        const sizeComponent = entity.getComponent('size') as SizeComponent
+        const { x, y } = positionComponent.targetPosition
+        const { size } = sizeComponent
+        return x >= 0 && y >= 0 && x + size.x <= this.worldDimensions.x && y + size.y <= this.worldDimensions.y
+    }
+
+    isOkToPlace(entity: Entity) {
+        return this.isInBounds(entity) && this.isPositionClearFor(entity)
+    }
+
+    isPositionClearFor(entityToCheck: Entity): boolean {
+        const positionComponent = entityToCheck.getComponent('position') as PositionComponent
+        const sizeComponent = entityToCheck.getComponent('size') as SizeComponent
+        const { x, y } = positionComponent.targetPosition
+        const { size } = sizeComponent
+        const entities = this.getEntitiesByComponent('position', 'size')
+        for (const entity of entities) {
+            const otherPositionComponent = entity.getComponent('position') as PositionComponent
+            const otherSizeComponent = entity.getComponent('size') as SizeComponent
+            if (entityToCheck.id === entity.id) {
+                continue // Skip self
+            }
+            const targetLeft = x
+            const targetRight = x + size.x
+            const targetTop = y
+            const targetBottom = y + size.y
+            const otherLeft = otherPositionComponent.targetPosition.x
+            const otherRight = otherPositionComponent.targetPosition.x + otherSizeComponent.size.x
+            const otherTop = otherPositionComponent.targetPosition.y
+            const otherBottom = otherPositionComponent.targetPosition.y + otherSizeComponent.size.y
+            const isCollision = otherLeft < targetRight && otherRight > targetLeft && otherTop < targetBottom && otherBottom > targetTop
+            if (isCollision) {
+                // Handle collision or return false, depending on the use case
+                return false
+            }
+        }
+        return true
     }
 
     removeEntity(entity: Entity): void {
