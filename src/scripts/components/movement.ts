@@ -25,7 +25,7 @@ export class MovementComponent extends Component {
         this.canBePushed = canIt
     }
     
-    setCanPushed(canIt: boolean) {
+    setCanPush(canIt: boolean) {
         this.canPushed = canIt
     }
 
