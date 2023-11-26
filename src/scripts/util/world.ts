@@ -106,7 +106,6 @@ export class World {
             const isCollision = otherLeft < targetRight && otherRight > targetLeft && otherTop < targetBottom && otherBottom > targetTop
             if (isCollision) {
                 // Handle collision or return false, depending on the use case
-                // handle push 
                 const movementComponent = entityToCheck.getComponent('movement') as MovementComponent
                 if (movementComponent && movementComponent.canPush) {
                     const otherMovementComponent = entity.getComponent('movement') as MovementComponent
