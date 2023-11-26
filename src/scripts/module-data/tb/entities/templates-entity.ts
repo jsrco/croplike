@@ -57,8 +57,8 @@ export const pushMe: EntityMap = {
         canBePushed: true,
         color: ColorSwatch.yellow[3],
         position: {
-            x: 200,
-            y: 200,
+            x: 80,
+            y: 100,
         },
         size: {
             x: 20,

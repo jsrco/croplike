@@ -9,11 +9,11 @@ export class MovementComponent extends Component {
     canPush: boolean = false
     type: string = 'movement'
 
-    constructor(entity: Entity, world: World, options: { allowedMoves: number, canBepushed: boolean, canPush: boolean }) {
+    constructor(entity: Entity, world: World, options: { allowedMoves: number, canBePushed: boolean, canPush: boolean }) {
         super(entity, world)
-        const { allowedMoves, canBepushed, canPush } = options
+        const { allowedMoves, canBePushed, canPush } = options
         if (allowedMoves) this.setAllowedMoves(allowedMoves)
-        if (canBepushed) this.setCanBePushed(canBepushed)
+        if (canBePushed) this.setCanBePushed(canBePushed)
         if (canPush) this.setCanPush(canPush)
     }
 
@@ -26,7 +26,7 @@ export class MovementComponent extends Component {
     }
     
     setCanPush(canIt: boolean) {
-        this.canPushed = canIt
+        this.canPush = canIt
     }
 
 }
