@@ -4,7 +4,7 @@ import { Engine } from "../scripts/engine"
 const huntsModule = new Engine('Hunts')
 const fieldsModule = new Engine('Fields')
 const gameContainer = ref()
-const showInfo = ref(false)
+const showInfo = ref(true)
 
 let activeModule: Ref<any> = ref(fieldsModule) // huntsModule 
 const switchMoudele = () => {
