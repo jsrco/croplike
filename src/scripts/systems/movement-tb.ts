@@ -1,8 +1,6 @@
 import { Vector2 } from "@dimforge/rapier2d"
 import { MovementComponent } from "../components/movement"
 import { PositionComponent } from "../components/position"
-import { SizeComponent } from "../components/size"
-import { Entity } from "../entities/entity"
 import { gridSize } from "../util/config-options"
 import { World } from "../util/world"
 import { System } from "./system"
@@ -29,31 +27,31 @@ export class MovementSystemTB extends System {
         return true
     }
 
-    isPathClearFor(entityToCheck: Entity, newPosition: Vector2): boolean {
-        const sizeComponent = entityToCheck.getComponent('size') as SizeComponent
-        const { size } = sizeComponent
-        const entities = this.getEntitiesByComponent('position', 'size')
-        for (const entity of entities) {
-            const otherPositionComponent = entity.getComponent('position') as PositionComponent
-            const otherSizeComponent = entity.getComponent('size') as SizeComponent
-            if (entityToCheck.id === entity.id) {
-                continue // Skip self
-            }
-            const targetLeft = newPosition.x
-            const targetRight = newPosition.x + size.x
-            const targetTop = newPosition.y
-            const targetBottom = newPosition.y + size.y
-            const otherLeft = otherPositionComponent.targetPosition.x
-            const otherRight = otherPositionComponent.targetPosition.x + otherSizeComponent.size.x
-            const otherTop = otherPositionComponent.targetPosition.y
-            const otherBottom = otherPositionComponent.targetPosition.y + otherSizeComponent.size.y
-            const isCollision = otherLeft < targetRight && otherRight > targetLeft && otherTop < targetBottom && otherBottom > targetTop
-            if (isCollision) {
-                // Handle collision or return false, depending on the use case
-                return false
-            }
+    getMoveTo(target: Vector2, current: Vector2, allowedMoves: number): Vector2 {
+        const diffX = target.x - current.x
+        const diffY = target.y - current.y
+        if (diffX === 0 && diffY === 0) {
+            return current
         }
-        return true
+        const maxMoveX = Math.sign(diffX) * this.move
+        const maxMoveY = Math.sign(diffY) * this.move
+        // Calculate the actual move distance based on increments of this.move
+        let moveX = 0
+        let moveY = 0
+
+        let allowed = 0
+        while (allowed < allowedMoves && Math.abs(moveX) < Math.abs(diffX) && Math.abs(moveX + this.move) <= Math.abs(maxMoveX)) {
+            allowed++
+            moveX += Math.sign(diffX) * this.move
+        }
+        allowed = 0
+        while (allowed < allowedMoves && Math.abs(moveY) < Math.abs(diffY) && Math.abs(moveY + this.move) <= Math.abs(maxMoveY)) {
+            allowed++
+            moveY += Math.sign(diffY) * this.move
+        }
+        // todo correct over move
+        // console.log(current)
+        return new Vector2(current.x + moveX, current.y + moveY)
     }
 
     moveDown(component: PositionComponent): void {
@@ -118,23 +116,28 @@ export class MovementSystemTB extends System {
             const { position, targetPosition } = positionComponent
             const allAtTarget = this.allAtTarget()
             const isAtTarget = position.x === targetPosition.x && position.y === targetPosition.y
-            if (entity.name === 'dummy' && allAtTarget && this.hasPlayerGone) {
+            if ((entity.name === 'dummy' || entity.name === 'stalker') && allAtTarget && this.hasPlayerGone) {
                 const player = this.world.getEntityByName('player')?.getComponent('position') as PositionComponent
                 if (player.position.x === player.targetPosition.x && player.position.y === player.targetPosition.y) {
-                    const newPosition = new Vector2(position.x, position.y)
-                    const randomX = Math.random()
-                    const randomY = Math.random()
-                    if (randomX < 0.3) {
-                        newPosition.x += this.move * allowedMoves
-                    } else if (randomX > 0.7) {
-                        newPosition.x -= this.move * allowedMoves
+                    const newPosition = this.getMoveTo(player.position, position, allowedMoves)
+                    if (entity.name === 'dummy') {
+                        newPosition.x = position.x
+                        newPosition.y = position.y
+                        const randomX = Math.random()
+                        const randomY = Math.random()
+                        if (randomX < 0.3) {
+                            newPosition.x += this.move * allowedMoves
+                        } else if (randomX > 0.7) {
+                            newPosition.x -= this.move * allowedMoves
+                        }
+                        if (randomY < 0.3) {
+                            newPosition.y += this.move * allowedMoves
+                        } else if (randomY > 0.7) {
+                            newPosition.y -= this.move * allowedMoves
+                        }
+                        this.startMove(positionComponent, newPosition)
                     }
-                    if (randomY < 0.3) {
-                        newPosition.y += this.move * allowedMoves
-                    } else if (randomY > 0.7) {
-                        newPosition.y -= this.move * allowedMoves
-                    }
-                    this.startMove(positionComponent, newPosition)
+                    if (entity.name === 'stalker') this.startMove(positionComponent, newPosition)
                 }
             }
             if (entity.name === 'player' && allAtTarget) {
@@ -156,6 +159,7 @@ export class MovementSystemTB extends System {
                     }
                 })
             }
+            // todo find a way to run this on all entities at once.
             if (!isAtTarget) {
                 const needsToGoDown = position.y < targetPosition.y
                 const needsToGoLeft = position.x > targetPosition.x

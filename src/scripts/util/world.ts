@@ -9,6 +9,7 @@ import { System } from "../systems/system"
 import { gridSize } from "./config-options"
 import { EventManager } from "./event-manager"
 import { KeyboardController } from "./keyboard-controller"
+import { MovementComponent } from "../components/movement"
 
 export class World {
 
@@ -105,6 +106,15 @@ export class World {
             const isCollision = otherLeft < targetRight && otherRight > targetLeft && otherTop < targetBottom && otherBottom > targetTop
             if (isCollision) {
                 // Handle collision or return false, depending on the use case
+                const movementComponent = entityToCheck.getComponent('movement') as MovementComponent
+                if (movementComponent && movementComponent.canPush) {
+                    const otherMovementComponent = entity.getComponent('movement') as MovementComponent
+                    if (otherMovementComponent && otherMovementComponent.canBePushed) {
+                        const diffX = x - positionComponent.position.x
+                        const diffY = y - positionComponent.position.y
+                        if (otherPositionComponent.canSetTargetPosition(new Vector2(otherPositionComponent.position.x + diffX, otherPositionComponent.position.y + diffY))) return true
+                    }
+                }
                 return false
             }
         }

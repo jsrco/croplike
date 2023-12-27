@@ -57,6 +57,8 @@ const createEntities = (engine: Engine, world: World, worldMap: WorldMap): void 
         if (entities[index].name === 'demo') world.addEntity(CreateEntity(entities[index], world))
         if (entities[index].name === 'dummy') world.addEntity(CreateEntity(entities[index], world))
         if (entities[index].name === 'growthDemo') world.addEntity(CreateEntity(entities[index], world))
+        if (entities[index].name === 'pushable') world.addEntity(CreateEntity(entities[index], world))
+        if (entities[index].name === 'stalker') world.addEntity(CreateEntity(entities[index], world))
     }
 }
 

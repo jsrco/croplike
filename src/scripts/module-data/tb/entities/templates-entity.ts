@@ -13,8 +13,8 @@ export const dummy: EntityMap = {
         allowedMoves: 4,
         color: ColorSwatch.red[3],
         position: {
-            x: 100,
-            y: 100,
+            x: 500,
+            y: 300,
         },
         size: {
             x: 60,
@@ -32,10 +32,55 @@ export const player: EntityMap = {
         size: true,
     },
     options: {
+        canPush: true,
         color: ColorSwatch.green[3],
         position: {
             x: 80,
             y: 80,
+        },
+        size: {
+            x: 20,
+            y: 20,
+        },
+    }
+}
+
+export const pushMe: EntityMap = {
+    name: 'pushable',
+    componentMap: {
+        movement: true,
+        pixi: true,
+        position: true,
+        size: true,
+    },
+    options: {
+        canBePushed: true,
+        color: ColorSwatch.yellow[3],
+        position: {
+            x: 80,
+            y: 100,
+        },
+        size: {
+            x: 20,
+            y: 20,
+        },
+    }
+}
+
+export const stalker: EntityMap = {
+    name: 'stalker',
+    componentMap: {
+        movement: true,
+        pixi: true,
+        position: true,
+        size: true,
+    },
+    options: {
+        allowedMoves: 3,
+        color: ColorSwatch.red[3],
+        position: {
+            x: 300,
+            y: 300,
         },
         size: {
             x: 20,
