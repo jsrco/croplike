@@ -8,6 +8,11 @@
 }
 
 @font-face {
+  font-family: Roboto;
+  src: url("./assets/fonts/Roboto-Regular.ttf");
+}
+
+@font-face {
   font-family: ShareTech;
   src: url("./assets/fonts/ShareTech-Regular.ttf");
 }

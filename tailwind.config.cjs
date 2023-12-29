@@ -6,6 +6,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
+      'roboto': ['Roboto'],
       'start': ['PressStart2p'],
       'share': ['ShareTech'],
     },
