@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue"
-import useEngine from "../composeables/use-engine"
+import useEngine from "../../composeables/use-engine"
 
 const gameContainer = ref()
 const { activeModule } = useEngine()

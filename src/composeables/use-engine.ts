@@ -1,5 +1,5 @@
 import { Ref, ref } from "vue"
-import { Engine } from "../scripts/engine"
+import { Engine } from "../scripts/pixi/engine"
 
 const huntsModule = new Engine('Hunts')
 const fieldsModule = new Engine('Fields')

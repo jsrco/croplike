@@ -28,7 +28,7 @@
 </template>
   
 <script setup lang="ts">
-import useEngine from '../composeables/use-engine'
+import useEngine from "../../composeables/use-engine"
 
 const toggleInfo = () => {
     useEngine().showInfo.value = false
