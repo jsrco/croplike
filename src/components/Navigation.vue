@@ -7,7 +7,7 @@
         <div class="flex gap-x-12">
             <div v-for="item in navigation" :key="item.name" :class="{
                 'underline underline-offset-8': currentRoutePath === item.href
-            }" class="text-2xl leading-6 text-white font-share">
+            }" class="text-2xl leading-6 text-white font-roboto">
                 <router-link :to="item.href">{{ item.name }}</router-link>
             </div>
         </div>
