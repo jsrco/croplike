@@ -18,7 +18,7 @@
             See the code on
             <a class="font-bold pt-2 text-green-400" href="https://github.com/jsrco/croplike" target="_blank">GitHub</a>
         </div>
-        <div @click="toggleInfo">
+        <div @click="toggle">
             <div class="pt-4 text-lg">Click here to access the real time <span
                     class="font-bold text-yellow-400 ">"Hunts"</span> and turn based <span
                     class="font-bold text-yellow-400 ">"Fields"</span> modules!</div>
@@ -30,8 +30,21 @@
 <script setup lang="ts">
 import useEngine from "../../composeables/use-engine"
 
+const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen()
+    } else if (document.exitFullscreen) {
+        document.exitFullscreen()
+    }
+}
+
 const toggleInfo = () => {
     useEngine().showInfo.value = false
     if (useEngine().activeModule.value.paused === true) useEngine().activeModule.value.pause()
+}
+
+const toggle = () => {
+    toggleFullScreen()
+    toggleInfo()
 }
 </script>

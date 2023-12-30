@@ -1,6 +1,6 @@
 <template>
     <nav :class="{
-        'hidden': currentRoutePath === '/pixi-demo'
+        'hidden': currentRoutePath === '/game' || currentRoutePath === '/pixi-demo'
     }" class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div class="flex flex-1">
         </div>
