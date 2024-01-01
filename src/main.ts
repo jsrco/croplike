@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHistory  } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import About from './components/pages/About.vue'
 import Game from './components/pages/Game.vue'
@@ -12,11 +12,11 @@ const routes = [
     // { path: '/about', component: About },
     { path: '/game', component: Game },
     // { path: '/pixi-demo', component: PixiDemo },
-    
+    { path: '/:catchAll(.*)', redirect: '/' }, // Redirect any unmatched route to the main path
 ]
 
 const router = createRouter({
-    history: createWebHistory (),
+    history: createWebHistory(),
     routes,
 })
 

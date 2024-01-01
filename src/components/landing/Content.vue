@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-12 sm:pt-16 pb-24 sm:pb-32">
+  <div class="pt-24 sm:pt-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
         <h1 class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl font-share">{{ Content.title }}</h1>
