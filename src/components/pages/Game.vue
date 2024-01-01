@@ -3,7 +3,9 @@
         class="absolute inset-0 text-white border sm:px-6 lg:px-8 p-4">
         <!-- Content goes here -->
         <div class="text-2xl leading-6 text-white font-roboto">
-            <router-link to="/" @click="exitFullScreen">Home</router-link>
+            <router-link to="/" @click="exitFullScreen">{{ `<- Back` }}</router-link>
+            <div class="mt-4 font-start text-sm">Double click to enter full screen</div>
+            <div class="font-start text-sm">Game currently unavailable</div>
         </div>
     </div>
 </template>
@@ -27,7 +29,7 @@ window.addEventListener('resize', handleResize)
 window.addEventListener('dblclick', handleDoubleClick, false)
 
 const exitFullScreen = () => {
-    if (document.exitFullscreen) {
+    if (document.fullscreenElement && document.exitFullscreen) {
         document.exitFullscreen()
     }
 }
