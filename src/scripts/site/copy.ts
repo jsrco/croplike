@@ -48,13 +48,13 @@ export const Copy = {
                     id: 1,
                     question: "When is Croplike going to be released?",
                     answer:
-                        "Croplike will release when its done. I am a solo developer working full time on another project while raising a two-year-old.  Delivering a polished and engaging game experience, and quality takes time.",
+                        "Croplike will release when its done. I am a solo developer working full time on another project while raising a small child.  Delivering a polished and engaging game experience.  Quality takes time.",
                 },
                 {
                     id: 2,
                     question: "What is the significance of South Story in the game's universe",
                     answer:
-                        "South Story is a crafted universe designed for game development and storytelling. All narratives within this setting share a common element. A mysterious area where everything ceases to exist upon entry. The concept of non-existence can be a unsettling and intriguing aspect to explore.",
+                        "South Story is a crafted universe designed for game development and storytelling. All narratives share a common element. A mysterious area where everything ceases to exist upon entry. The concept of non-existence can be a unsettling and intriguing aspect to explore.",
                 },
                 {
                     id: 3,
