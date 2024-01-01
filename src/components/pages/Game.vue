@@ -1,6 +1,7 @@
 <template>
     <div :style="{ width: `${stageX}px`, height: `${stageY}px` }"
-        class="absolute inset-0 text-white border sm:px-6 lg:px-8 p-4">
+        class="absolute inset-0 text-white border sm:px-6 lg:px-8 p-4"
+        @touchend="handleTouchEnd">
         <!-- Content goes here -->
         <div class="text-2xl leading-6 text-white font-roboto">
             <router-link to="/" @click="exitFullScreen">{{ `<- Back` }}</router-link>
@@ -23,6 +24,18 @@ const handleResize = () => {
 
 const handleDoubleClick = () => {
     toggleFullScreen()
+}
+
+let touchStartTime = 0
+
+const handleTouchEnd = () => {
+  const currentTime = new Date().getTime()
+  const timeDiff = currentTime - touchStartTime
+  if (timeDiff < 300 && timeDiff > 0) {
+    // Double tap detected
+    handleDoubleClick()
+  }
+  touchStartTime = currentTime
 }
 
 window.addEventListener('resize', handleResize)
