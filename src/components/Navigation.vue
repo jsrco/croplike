@@ -33,7 +33,7 @@ onMounted(() => {
 
 const navigation = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
+    // { name: 'About', href: '/about' },
     { name: 'Game', href: '/game' },
     // { name: 'Pixi-Demo', href: '/pixi-demo' },
 ]
