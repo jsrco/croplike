@@ -1,11 +1,10 @@
 <template>
     <div :style="{ width: `${stageX}px`, height: `${stageY}px` }"
-        class="absolute inset-0 text-white border sm:px-6 lg:px-8 p-4"
-        @touchend="handleTouchEnd">
+        class="absolute inset-0 text-white border sm:px-6 lg:px-8 p-4">
         <!-- Content goes here -->
         <div class="text-2xl leading-6 text-white font-roboto">
             <router-link to="/" @click="exitFullScreen">{{ `<- Back` }}</router-link>
-            <div class="mt-4 font-start text-sm">Double click to enter full screen</div>
+            <div class="mt-4 font-start text-sm">Double click to enter full screen or tap <span class="text-orange-400" @click="handleDoubleClick">here</span></div>
             <div class="font-start text-sm">Gameplay currently unavailable</div>
         </div>
     </div>
@@ -24,18 +23,6 @@ const handleResize = () => {
 
 const handleDoubleClick = () => {
     toggleFullScreen()
-}
-
-let touchStartTime = 0
-
-const handleTouchEnd = () => {
-  const currentTime = new Date().getTime()
-  const timeDiff = currentTime - touchStartTime
-  if (timeDiff < 300 && timeDiff > 0) {
-    // Double tap detected
-    handleDoubleClick()
-  }
-  touchStartTime = currentTime
 }
 
 window.addEventListener('resize', handleResize)
