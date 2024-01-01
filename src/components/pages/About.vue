@@ -12,10 +12,10 @@
                 <div
                     class="mt-10 grid max-w-xl grid-cols-1 gap-8 text-base leading-7 text-gray-300 lg:max-w-none lg:grid-cols-2 font-roboto">
                     <div>
-                        <p>{{ About.textSeven }}</p>
+                        <p>{{ About.textOne }}</p>
                     </div>
                     <div>
-                        <p>{{ About.textEight }}</p>
+                        <p>{{ About.textTwo }}</p>
                     </div>
                 </div>
                 <div class="mt-16 max-w-7xl">
