@@ -8,26 +8,13 @@
 }
 
 @font-face {
-  font-family: ShareTech;
-  src: url("./assets/fonts/ShareTech-Regular.ttf");
+  font-family: Roboto;
+  src: url("./assets/fonts/Roboto-Regular.ttf");
 }
 
-#app {
-  height: 100%;
-  left: 0;
-  outline: none;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  -webkit-user-select: none;
-  /* Safari */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* IE10+/Edge */
-  user-select: none;
-  /* Standard */
-  width: 100%;
+@font-face {
+  font-family: ShareTech;
+  src: url("./assets/fonts/ShareTech-Regular.ttf");
 }
 
 html {
@@ -35,7 +22,8 @@ html {
 }
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  user-select: none;
 }

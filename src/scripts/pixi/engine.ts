@@ -1,6 +1,6 @@
 import { Vector2 } from "@dimforge/rapier2d"
 import * as PIXI from "pixi.js"
-import useEngine from "../composeables/use-engine"
+import useEngine from "../../composeables/use-engine"
 import { EntityMap } from "./entities/create-entity"
 import { Entity } from "./entities/entity"
 import { demoWorld, secondWorld, startWorld as startWorldRT } from "./module-data/rt/util/templates-world"
