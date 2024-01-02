@@ -9,7 +9,7 @@ import './style.css'
 
 const routes = [
     { path: '/', component: Landing },
-    // { path: '/about', component: About },
+    { path: '/about', component: About },
     { path: '/game', component: Game },
     // { path: '/pixi-demo', component: PixiDemo },
     { path: '/:catchAll(.*)', redirect: '/' }, // Redirect any unmatched route to the main path

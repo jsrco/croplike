@@ -1,21 +1,20 @@
 <template>
     <div class="px-6 py-24 sm:py-32 lg:px-8">
         <div class="mx-auto max-w-7xl text-base leading-7 text-gray-300 font-roboto">
-            <h2 class="text-2xl font-bold tracking-tight text-white font-share">{{ About.headerOne }}</h2>
             <div class="mt-10 max-w-7xl">
-                <ul role="list" class="mt-8 max-w-xl space-y-8">
-                    <li v-for="item in About.subText" :key="item.id" class="flex gap-x-3">
-                        <span><strong class="font-semibold text-white font-share">{{ item.title }}</strong> {{ item.text
-                        }}</span>
-                    </li>
-                </ul>
-                <div
-                    class="mt-10 grid max-w-xl grid-cols-1 gap-8 text-base leading-7 text-gray-300 lg:max-w-none lg:grid-cols-2 font-roboto">
-                    <div>
-                        <p>{{ About.textOne }}</p>
-                    </div>
-                    <div>
-                        <p>{{ About.textTwo }}</p>
+                <div class="mt-16 max-w-7xl">
+                    <h2 class="text-2xl font-bold tracking-tight text-white font-share">{{ About.headerOne }}</h2>
+                    <div
+                        class="mt-10 grid max-w-xl grid-cols-1 gap-8 text-base leading-7 text-gray-300 lg:max-w-none lg:grid-cols-2 font-roboto">
+                        <div>
+                            <p>{{ About.subTextOne }}</p>
+                            <p class="mt-8">{{ About.subTextTwo }}</p>
+                        </div>
+                        <div>
+                            <p>{{ About.subTextThree }}</p>
+                            <img class="rounded-xl object-cover mt-8" src="../../assets/ff5x5-sheet.png"
+                            alt="Sprite Shee Filler Img" />
+                        </div>
                     </div>
                 </div>
                 <div class="mt-16 max-w-7xl">
@@ -23,10 +22,12 @@
                     <div
                         class="mt-10 grid max-w-xl grid-cols-1 gap-8 text-base leading-7 text-gray-300 lg:max-w-none lg:grid-cols-2 font-roboto">
                         <div>
-                            <p>{{ About.textThree }}</p>
+                            <p>{{ About.textOne }}</p>
+                            <p class="mt-8">{{ About.textTwo }}</p>
                         </div>
                         <div>
-                            <p>{{ About.textFour }}</p>
+                            <p>{{ About.textThree }}</p>
+                            <p class="mt-8">{{ About.textFour }}</p>
                         </div>
                     </div>
                 </div>

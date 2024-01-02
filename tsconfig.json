@@ -23,6 +23,9 @@
     "src/**/*.tsx",
     "src/**/*.vue"
   ],
+  "exclude": [
+    "src/scripts/rotjs"
+  ],
   "references": [
     {
       "path": "./tsconfig.node.json"
