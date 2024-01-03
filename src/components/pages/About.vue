@@ -1,5 +1,5 @@
 <template>
-    <div class="px-6 py-24 sm:py-32 lg:px-8">
+    <div class="px-6 pt-12 sm:pt-16 pb-24 sm:pb-32 lg:px-8">
         <div class="mx-auto max-w-7xl text-base leading-7 text-gray-300 font-roboto">
             <div class="mt-10 max-w-7xl">
                 <div class="mt-16 max-w-7xl">
@@ -55,7 +55,7 @@
             <figure class="mt-16 flex flex-col items-center">
                 <img class="rounded-xl object-cover" src="../../assets/FatThunder.png" alt="Fat Thunder Logo" />
                 <figcaption class="mt-4 flex gap-x-2 text-sm leading-6 font-share">
-                    A bit more infomration about<a class="font-bold text-red-400" href="https://www.fatthunder.com"
+                    A bit more infomration about <a class="font-bold text-red-400" href="https://www.fatthunder.com"
                         target="_blank">Fat Thunder</a>
                 </figcaption>
             </figure>
