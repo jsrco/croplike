@@ -12,7 +12,7 @@
                         </div>
                         <div>
                             <p>{{ About.subTextThree }}</p>
-                            <img class="rounded-xl object-cover mt-8" src="../../assets/ff5x5-sheet.png"
+                            <img class="rounded-xl object-cover mt-8" src="/assets/ff5x5-sheet.png"
                             alt="Sprite Shee Filler Img" />
                         </div>
                     </div>
