@@ -1,6 +1,15 @@
-[gd_scene format=3 uid="uid://h03iiiemhten"]
+[gd_scene load_steps=3 format=3 uid="uid://h03iiiemhten"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_nnuw5"]
+[ext_resource type="PackedScene" uid="uid://c81ul1l0w8jvu" path="res://player.tscn" id="2_cgd1x"]
 
 [node name="Main" type="Node"]
+script = ExtResource("1_nnuw5")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.113725, 0.113725, 0.113725, 1)
 
 [node name="Label" type="Label" parent="."]
 offset_left = 38.0
@@ -10,3 +19,5 @@ offset_bottom = 189.0
 theme_override_font_sizes/font_size = 18
 text = "This is a Godot Scene running in browser."
 autowrap_mode = 2
+
+[node name="Player" parent="." instance=ExtResource("2_cgd1x")]
