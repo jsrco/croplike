@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://h03iiiemhten"]
+
+[node name="Main" type="Node"]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 38.0
+offset_top = 90.0
+offset_right = 269.0
+offset_bottom = 189.0
+theme_override_font_sizes/font_size = 18
+text = "This is a Godot Scene running in browser."
+autowrap_mode = 2
