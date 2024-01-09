@@ -12,7 +12,7 @@
                         </div>
                         <div>
                             <p>{{ About.subTextThree }}</p>
-                            <img class="rounded-xl object-cover mt-8" src="../../assets/ff5x5-sheet.png"
+                            <img class="rounded-xl object-cover mt-8" src="/assets/ff5x5-sheet.png"
                             alt="Sprite Shee Filler Img" />
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <figure class="mt-16 flex flex-col items-center">
-                <img class="rounded-xl object-cover" src="../../assets/FatThunder.png" alt="Fat Thunder Logo" />
+                <img class="rounded-xl object-cover" src="/assets/FatThunder.png" alt="Fat Thunder Logo" />
                 <figcaption class="mt-4 flex gap-x-2 text-sm leading-6 font-share">
                     A bit more infomration about <a class="font-bold text-red-400" href="https://www.fatthunder.com"
                         target="_blank">Fat Thunder</a>
