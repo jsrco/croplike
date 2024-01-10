@@ -21,6 +21,10 @@ window/size/mode=4
 window/size/resizable=false
 window/stretch/mode="canvas_items"
 
+[filesystem]
+
+import/blender/enabled=false
+
 [input]
 
 move_down={
