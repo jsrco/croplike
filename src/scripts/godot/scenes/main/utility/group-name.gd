@@ -1,5 +1,0 @@
-const ARROW: String = "arrow"
-const DWARF: String = "dwarf"
-const FLOOR: String = "floor"
-const PLAYER: String = "player"
-const WALL: String = "wall"
