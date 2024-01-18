@@ -22,4 +22,3 @@ func set_tile_type(tile_definition: TileDefinition) -> void:
 	_definition = tile_definition
 	texture = _definition.texture
 	modulate = _definition.color_dark
-
