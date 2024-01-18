@@ -1,19 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://yb12nv4utbd8"]
+[gd_scene load_steps=4 format=3 uid="uid://yb12nv4utbd8"]
 
-[ext_resource type="Texture2D" uid="uid://c46axn0mmbhbu" path="res://assets/ff5x5-sheet.png" id="1_hdu3u"]
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_y5i64"]
-[ext_resource type="Script" path="res://scenes/game/event-handler.gd" id="3_knof3"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pl6ph"]
-atlas = ExtResource("1_hdu3u")
-region = Rect2(57, 201, 15, 15)
+[ext_resource type="Script" path="res://scenes/game/event_handler.gd" id="3_knof3"]
+[ext_resource type="Script" path="res://map/map.gd" id="3_mpd8i"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_y5i64")
 
-[node name="Player" type="Sprite2D" parent="."]
-texture = SubResource("AtlasTexture_pl6ph")
-centered = false
+[node name="Entities" type="Node2D" parent="."]
 
 [node name="Event Handler" type="Node" parent="."]
 script = ExtResource("3_knof3")
+
+[node name="Map" type="Node2D" parent="."]
+script = ExtResource("3_mpd8i")
