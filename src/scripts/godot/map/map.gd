@@ -6,8 +6,8 @@ var map_data: MapData
 @onready var dungeon_generator: DungeonGenerator = $"Dungeon Generator"
 
 
-func _ready() -> void:
-	map_data = dungeon_generator.generate_dungeon()
+func generate(player: Entity) -> void:
+	map_data = dungeon_generator.generate_dungeon(player)
 	_place_tiles()
 
 

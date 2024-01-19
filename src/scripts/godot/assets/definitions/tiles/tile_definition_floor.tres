@@ -9,8 +9,8 @@ region = Rect2(219, 129, 15, 15)
 
 [resource]
 script = ExtResource("1_u0v74")
-is_walkable = true
 is_transparent = true
+is_walkable = true
 texture = SubResource("AtlasTexture_shap1")
-color_lit = Color(0.580392, 0.639216, 0.721569, 1)
 color_dark = Color(0.117647, 0.160784, 0.231373, 1)
+color_lit = Color(0.580392, 0.639216, 0.721569, 1)
