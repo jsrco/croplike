@@ -9,7 +9,7 @@ region = Rect2(21, 129, 15, 15)
 
 [resource]
 script = ExtResource("1_thys1")
-is_transparent = true
+is_transparent = false
 is_walkable = false
 texture = SubResource("AtlasTexture_wgdl1")
 color_dark = Color(0.117647, 0.160784, 0.231373, 1)

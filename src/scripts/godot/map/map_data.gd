@@ -24,6 +24,11 @@ func get_tile(grid_position: Vector2i) -> Tile:
 	return tiles[tile_index]
 
 
+func get_tile_xy(x: int, y: int) -> Tile:
+	var grid_position := Vector2i(x, y)
+	return get_tile(grid_position)
+
+
 func grid_to_index(grid_position: Vector2i) -> int:
 	if not is_in_bounds(grid_position):
 		return -1
