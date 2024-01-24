@@ -6,15 +6,24 @@ const TILE_TYPES = {
 	"wall": preload("res://assets/definitions/tiles/tile_definition_wall.tres"),
 }
 
+var entities: Array[Entity]
 var height: int
 var tiles: Array[Tile]
 var width: int
 
 
 func _init(map_width: int, map_height: int) -> void:
-	width = map_width
+	entities = []
 	height = map_height
+	width = map_width
 	_setup_tiles()
+
+
+func get_blocking_entity_at_location(grid_position: Vector2i) -> Entity:
+	for entity in entities:
+		if entity.is_blocking_movement() and entity.grid_position == grid_position:
+			return entity
+	return null
 
 
 func get_tile(grid_position: Vector2i) -> Tile:

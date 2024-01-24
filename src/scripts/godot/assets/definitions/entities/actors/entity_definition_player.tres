@@ -9,5 +9,7 @@ region = Rect2(273, 219, 15, 15)
 
 [resource]
 script = ExtResource("1_efot6")
+is_blocking_movement = true
+name = "Player"
 texture = SubResource("AtlasTexture_vtup0")
 color = Color(1, 1, 1, 1)

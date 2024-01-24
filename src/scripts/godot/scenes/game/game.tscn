@@ -15,12 +15,14 @@ script = ExtResource("3_knof3")
 [node name="Map" type="Node2D" parent="."]
 script = ExtResource("3_mpd8i")
 
+[node name="Tiles" type="Node2D" parent="Map"]
+
+[node name="Entities" type="Node2D" parent="Map"]
+
 [node name="Dungeon Generator" type="Node" parent="Map"]
 script = ExtResource("4_i0sh4")
 
 [node name="Field Of View" type="Node" parent="Map"]
 script = ExtResource("5_g0y0l")
-
-[node name="Entities" type="Node2D" parent="."]
 
 [node name="Player Camera" type="Camera2D" parent="."]
