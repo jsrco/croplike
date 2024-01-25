@@ -29,6 +29,12 @@ script = ExtResource("3_mpd8i")
 
 [node name="DungeonGenerator" type="Node" parent="Map"]
 script = ExtResource("4_i0sh4")
+map_height = null
+map_width = null
+max_monsters_per_room = null
+max_rooms = null
+room_max_size = null
+room_min_size = null
 
 [node name="FieldOfView" type="Node" parent="Map"]
 script = ExtResource("5_g0y0l")

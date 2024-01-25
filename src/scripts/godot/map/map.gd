@@ -7,8 +7,8 @@ var map_data: MapData
 
 @onready var entities: Node2D = $Entities
 @onready var tiles: Node2D = $Tiles
-@onready var dungeon_generator: DungeonGenerator = $"Dungeon Generator"
-@onready var field_of_view: FieldOfView = $"Field Of View"
+@onready var dungeon_generator: DungeonGenerator = $DungeonGenerator
+@onready var field_of_view: FieldOfView = $FieldOfView
 
 
 func generate(player: Entity) -> void:

@@ -2,9 +2,18 @@ class_name MeleeAction
 extends ActionWithDirection
 
 
-func perform(game: Game, entity: Entity) -> void:
-	var destination := Vector2i(entity.grid_position + offset)
-	var target: Entity = game.get_map_data().get_blocking_entity_at_location(destination)
+func perform() -> void:
+	var target: Entity = get_target_actor()
 	if not target:
 		return
-	print("You kick the %s, much to it's annoyance!" % target.get_entity_name())
+	
+	var damage: int = entity.fighter_component.power - target.fighter_component.defense
+	
+	var attack_description: String = "%s attacks %s" % [entity.get_entity_name(), target.get_entity_name()]
+	if damage > 0:
+		attack_description += " for %d hit points." % damage
+		print(attack_description)
+		target.fighter_component.hp -= damage
+	else:
+		attack_description += " but does no damage."
+		print(attack_description)

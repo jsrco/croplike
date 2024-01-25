@@ -11,7 +11,7 @@ const entity_types = {
 @export var map_width: int = 80
 
 @export_category("Monsters RNG")
-@export var max_monsters_per_room = 2
+@export var max_monsters_per_room: int = 2
 
 @export_category("Rooms RNG")
 @export var max_rooms: int = 30
@@ -26,7 +26,7 @@ func _ready() -> void:
 
 
 func generate_dungeon(player:Entity) -> MapData:
-	var dungeon := MapData.new(map_width, map_height)
+	var dungeon := MapData.new(map_width, map_height, player)
 	dungeon.entities.append(player)
 	
 	var rooms: Array[Rect2i] = []
@@ -34,32 +34,33 @@ func generate_dungeon(player:Entity) -> MapData:
 	for _try_room in max_rooms:
 		var room_width: int = _rng.randi_range(room_min_size, room_max_size)
 		var room_height: int = _rng.randi_range(room_min_size, room_max_size)
-	
+		
 		var x: int = _rng.randi_range(0, dungeon.width - room_width - 1)
 		var y: int = _rng.randi_range(0, dungeon.height - room_height - 1)
-	
+		
 		var new_room := Rect2i(x, y, room_width, room_height)
-	
+		
 		var has_intersections := false
 		for room in rooms:
-			# Rect2i.intersects() checks for overlapping points. In order to allow bordering rooms one room is shrunk.
-			if room.intersects(new_room.grow(-1)):
+			if room.intersects(new_room):
 				has_intersections = true
 				break
 		if has_intersections:
 			continue
-	
+		
 		_carve_room(dungeon, new_room)
-	
+		
 		if rooms.is_empty():
 			player.grid_position = new_room.get_center()
+			player.map_data = dungeon
 		else:
 			_tunnel_between(dungeon, rooms.back().get_center(), new_room.get_center())
-	
+		
 		_place_entities(dungeon, new_room)
-	
+		
 		rooms.append(new_room)
 	
+	dungeon.setup_pathfinding()
 	return dungeon
 
 
@@ -83,19 +84,19 @@ func _place_entities(dungeon: MapData, room: Rect2i) -> void:
 		var x: int = _rng.randi_range(room.position.x + 1, room.end.x - 1)
 		var y: int = _rng.randi_range(room.position.y + 1, room.end.y - 1)
 		var new_entity_position := Vector2i(x, y)
-		
+	
 		var can_place = true
 		for entity in dungeon.entities:
 			if entity.grid_position == new_entity_position:
 				can_place = false
 				break
-		
+	
 		if can_place:
 			var new_entity: Entity
 			if _rng.randf() < 0.8:
-				new_entity = Entity.new(new_entity_position, entity_types.orc)
+				new_entity = Entity.new(dungeon, new_entity_position, entity_types.orc)
 			else:
-				new_entity = Entity.new(new_entity_position, entity_types.troll)
+				new_entity = Entity.new(dungeon, new_entity_position, entity_types.troll)
 			dungeon.entities.append(new_entity)
 
 
