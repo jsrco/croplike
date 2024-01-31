@@ -1,12 +1,15 @@
 class_name FighterComponent
 extends Component
 
+signal hp_changed(hp, max_hp)
+
 var death_color: Color
 var death_texture: Texture
 var defense: int
 var hp: int:
 	set(value):
 		hp = clampi(value, 0, max_hp)
+		hp_changed.emit(hp, max_hp)
 		if hp <= 0:
 			die()
 var max_hp: int
