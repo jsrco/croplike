@@ -27,14 +27,17 @@ func _init(definition: FighterComponentDefinition) -> void:
 
 func die() -> void:
 	var death_message: String
+	var death_message_color: Color
 	
 	if get_map_data().player == entity:
 		death_message = "You died!"
+		death_message_color = GameColors.PLAYER_DIE
 		SignalBus.player_died.emit()
 	else:
 		death_message = "%s is dead!" % entity.get_entity_name()
+		death_message_color = GameColors.ENEMY_DIE
 	
-	print(death_message)
+	MessageLog.send_message(death_message, death_message_color)
 	entity.texture = death_texture
 	entity.modulate = death_color
 	entity.ai_component.queue_free()
