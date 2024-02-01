@@ -1,6 +1,8 @@
 class_name MapData
 extends RefCounted
 
+signal entity_placed(entity)
+
 const ENTITY_PATHFINDING_WEIGHT = 10.0
 const TILE_TYPES = {
 	"floor": preload("res://assets/definitions/tiles/tile_definition_floor.tres"),
@@ -43,6 +45,14 @@ func get_blocking_entity_at_location(grid_position: Vector2i) -> Entity:
 		if entity.is_blocking_movement() and entity.grid_position == grid_position:
 			return entity
 	return null
+
+
+func get_items() -> Array[Entity]:
+	var items: Array[Entity] = []
+	for entity in entities:
+		if entity.consumable_component != null:
+			items.append(entity)
+	return items
 
 
 func get_tile(grid_position: Vector2i) -> Tile:

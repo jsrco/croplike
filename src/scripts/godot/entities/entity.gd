@@ -13,12 +13,14 @@ enum EntityType {
 
 var ai_component: BaseAIComponent
 var blocks_movement: bool
+var consumable_component: ConsumableComponent
 var entity_name: String
 var fighter_component: FighterComponent
 var grid_position: Vector2i:
 	set(value):
 		grid_position = value
 		position = Grid.grid_to_world(grid_position)
+var inventory_component: InventoryComponent
 var map_data: MapData
 var type: EntityType:
 	set(value):
@@ -73,3 +75,12 @@ func set_entity_type(entity_definition: EntityDefinition) -> void:
 	if entity_definition.fighter_definition:
 		fighter_component = FighterComponent.new(entity_definition.fighter_definition)
 		add_child(fighter_component)
+	
+	if entity_definition.consumable_definition:
+		if entity_definition.consumable_definition is HealingConsumableComponentDefinition:
+			consumable_component = HealingConsumableComponent.new(entity_definition.consumable_definition)
+			add_child(consumable_component)
+	
+	if entity_definition.inventory_capacity > 0:
+		inventory_component = InventoryComponent.new(entity_definition.inventory_capacity)
+		add_child(inventory_component)

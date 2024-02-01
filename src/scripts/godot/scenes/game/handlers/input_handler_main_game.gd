@@ -26,6 +26,9 @@ func get_action(player: Entity) -> Action:
 	if Input.is_action_just_pressed("view_history"):
 		get_parent().transition_to(InputHandler.InputHandlers.HISTORY_VIEWER)
 	
+	if Input.is_action_just_pressed("pickup"):
+		action = PickupAction.new(player)	
+	
 	if Input.is_action_just_pressed("quit") or Input.is_action_just_pressed("ui_back"):
 		action = EscapeAction.new(player)
 	

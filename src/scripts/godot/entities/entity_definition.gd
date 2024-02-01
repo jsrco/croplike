@@ -3,6 +3,8 @@ extends Resource
 
 @export_category("Components")
 @export var ai_type: Entity.AIType
+@export var consumable_definition: ConsumableComponentDefinition
+@export var inventory_capacity: int = 0
 @export var fighter_definition: FighterComponentDefinition
 
 @export_category("Mechanics")

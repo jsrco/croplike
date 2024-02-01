@@ -44,6 +44,7 @@ shadow_size = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_4dbfx"]
 font = ExtResource("13_ix6nu")
+font_size = 8
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v7vku"]
 content_margin_left = 8.0

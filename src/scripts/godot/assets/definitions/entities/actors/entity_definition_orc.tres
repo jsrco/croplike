@@ -20,6 +20,7 @@ region = Rect2(255, 21, 15, 15)
 [resource]
 script = ExtResource("1_e1x2f")
 ai_type = 1
+inventory_capacity = 0
 fighter_definition = SubResource("Resource_4gqyu")
 is_blocking_movement = true
 type = 2

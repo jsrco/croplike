@@ -12,5 +12,5 @@ func get_map_data() -> MapData:
 	return entity.map_data
 
 
-func perform() -> void:
-	pass
+func perform() -> bool:
+	return false
