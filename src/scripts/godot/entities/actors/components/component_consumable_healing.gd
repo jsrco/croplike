@@ -16,6 +16,7 @@ func activate(action: ItemAction) -> bool:
 			"You consume the %s, and recover %d HP!" % [entity.get_entity_name(), amount_recovered],
 			GameColors.HEALTH_RECOVERED
 		)
+		consume(consumer)
 		return true
 	MessageLog.send_message("Your health is already full.", GameColors.IMPOSSIBLE)
 	return false

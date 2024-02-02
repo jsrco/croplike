@@ -5,6 +5,7 @@ enum InputHandlers {
 	MAIN_GAME,
 	GAME_OVER,
 	HISTORY_VIEWER,
+	DUMMY,
 }
 
 @export var start_input_handler: InputHandlers
@@ -15,6 +16,7 @@ var current_input_handler: BaseInputHandler
 	InputHandlers.MAIN_GAME: $MainGame,
 	InputHandlers.GAME_OVER: $GameOver,
 	InputHandlers.HISTORY_VIEWER: $HistoryViewer,
+	InputHandlers.DUMMY: $DummyInputHandler,
 }
 
 
@@ -24,7 +26,7 @@ func _ready() -> void:
 
 
 func get_action(player: Entity) -> Action:
-	return current_input_handler.get_action(player)
+	return await current_input_handler.get_action(player)
 
 
 func transition_to(input_handler: InputHandlers) -> void:

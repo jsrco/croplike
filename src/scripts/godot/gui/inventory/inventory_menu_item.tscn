@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://bclms4u5q1li"]
+
+[ext_resource type="FontFile" uid="uid://btgkvtx4uf7jh" path="res://assets/fonts/PressStart2P-Regular.ttf" id="1_lxg8y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gylnx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxtry"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+
+[node name="InventoryMenuButton" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("1_lxg8y")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_gylnx")
+theme_override_styles/hover = SubResource("StyleBoxFlat_bxtry")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_bxtry")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_gylnx")
+theme_override_styles/focus = SubResource("StyleBoxFlat_bxtry")
+action_mode = 0
+shortcut_feedback = false
