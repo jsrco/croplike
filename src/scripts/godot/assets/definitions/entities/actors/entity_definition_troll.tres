@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="EntityDefinition" load_steps=7 format=3 uid="uid://cn084tlfhdoct"]
 
-[ext_resource type="Script" path="res://entities/actors/components/definitions/component_fighter_definition.gd" id="1_4e07k"]
+[ext_resource type="Script" path="res://entities/actors/components/definitions/component_definition_fighter.gd" id="1_4e07k"]
 [ext_resource type="Texture2D" uid="uid://khsax660a83c" path="res://assets/resources/default_death_texture.tres" id="1_jgw53"]
 [ext_resource type="Script" path="res://entities/entity_definition.gd" id="1_vhe66"]
 [ext_resource type="Texture2D" uid="uid://c46axn0mmbhbu" path="res://assets/ff5x5-sheet.png" id="2_yycga"]

@@ -4,7 +4,10 @@ extends Node
 const entity_types = {
 	"orc": preload("res://assets/definitions/entities/actors/entity_definition_orc.tres"),
 	"troll": preload("res://assets/definitions/entities/actors/entity_definition_troll.tres"),
-	"health_potion": preload("res://assets/definitions/entities/items/entity_definition_health_potion.tres")
+	"health_potion": preload("res://assets/definitions/entities/items/entity_definition_health_potion.tres"),
+	"lightning_scroll": preload("res://assets/definitions/entities/items/entity_definition_lightning_scroll.tres"),
+	"confusion_scroll": preload("res://assets/definitions/entities/items/entity_definition_confusion_scroll.tres"),
+	"fireball_potion": preload("res://assets/definitions/entities/items/entity_definition_fireball_potion.tres"),
 }
 
 @export_category("Entities RNG")
@@ -114,7 +117,16 @@ func _place_entities(dungeon: MapData, room: Rect2i) -> void:
 				break
 	
 		if can_place:
-			var new_entity: Entity = Entity.new(dungeon, new_entity_position, entity_types.health_potion)
+			var item_chance: float = _rng.randf()
+			var new_entity: Entity
+			if item_chance < 0.7:
+				new_entity = Entity.new(dungeon, new_entity_position, entity_types.health_potion)
+			elif item_chance < 0.8:
+				new_entity = Entity.new(dungeon, new_entity_position, entity_types.fireball_potion)
+			elif item_chance < 0.9:
+				new_entity = Entity.new(dungeon, new_entity_position, entity_types.confusion_scroll)
+			else:
+				new_entity = Entity.new(dungeon, new_entity_position, entity_types.lightning_scroll)
 			dungeon.entities.append(new_entity)
 
 

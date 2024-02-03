@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://yb12nv4utbd8"]
+[gd_scene load_steps=24 format=3 uid="uid://yb12nv4utbd8"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_y5i64"]
 [ext_resource type="Script" path="res://scenes/game/handlers/input_handler_main_game.gd" id="2_qjf5i"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://gui/hp_display.gd" id="9_fjayw"]
 [ext_resource type="FontFile" uid="uid://bo2x8df32lbre" path="res://assets/fonts/ShareTech-Regular.ttf" id="9_vy18p"]
 [ext_resource type="Script" path="res://gui/message_log.gd" id="11_0imta"]
+[ext_resource type="PackedScene" uid="uid://dul0cq7tfpbxa" path="res://gui/reticle/reticle.tscn" id="11_i1cql"]
 [ext_resource type="FontFile" uid="uid://btgkvtx4uf7jh" path="res://assets/fonts/PressStart2P-Regular.ttf" id="13_ix6nu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hrmlg"]
@@ -85,7 +86,7 @@ stretch = true
 disable_3d = true
 handle_input_locally = false
 canvas_item_default_texture_filter = 0
-size = Vector2i(600, 496)
+size = Vector2i(2, 2)
 render_target_update_mode = 4
 
 [node name="Game" type="Node2D" parent="VBoxContainer/SubViewportContainer/SubViewport"]
@@ -94,8 +95,9 @@ script = ExtResource("1_y5i64")
 [node name="InputHandler" type="Node" parent="VBoxContainer/SubViewportContainer/SubViewport/Game"]
 script = ExtResource("2_ut0k4")
 
-[node name="MainGame" type="Node" parent="VBoxContainer/SubViewportContainer/SubViewport/Game/InputHandler"]
+[node name="MainGame" type="Node" parent="VBoxContainer/SubViewportContainer/SubViewport/Game/InputHandler" node_paths=PackedStringArray("reticle")]
 script = ExtResource("2_qjf5i")
+reticle = NodePath("../../Map/Reticle")
 
 [node name="GameOver" type="Node" parent="VBoxContainer/SubViewportContainer/SubViewport/Game/InputHandler"]
 script = ExtResource("3_2r225")
@@ -123,6 +125,8 @@ script = ExtResource("5_g0y0l")
 
 [node name="MouseoverChecker" type="Node2D" parent="VBoxContainer/SubViewportContainer/SubViewport/Game/Map"]
 script = ExtResource("9_8xn6m")
+
+[node name="Reticle" parent="VBoxContainer/SubViewportContainer/SubViewport/Game/Map" instance=ExtResource("11_i1cql")]
 
 [node name="PlayerCamera" type="Camera2D" parent="VBoxContainer/SubViewportContainer/SubViewport/Game"]
 
