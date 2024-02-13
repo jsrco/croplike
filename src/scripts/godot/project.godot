@@ -21,6 +21,10 @@ window/size/viewport_width=600
 window/size/viewport_height=600
 window/size/resizable=false
 
+[filesystem]
+
+import/blender/enabled=false
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
