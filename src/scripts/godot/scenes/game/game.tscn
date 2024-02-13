@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bv472kwryxsm7"]
+
+[ext_resource type="FontFile" uid="uid://btgkvtx4uf7jh" path="res://assets/fonts/PressStart2P-Regular.ttf" id="1_cwx03"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("1_cwx03")
+text = "A game text"
