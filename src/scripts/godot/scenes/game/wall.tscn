@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dek548omp44x0"]
+
+[ext_resource type="Texture2D" uid="uid://c46axn0mmbhbu" path="res://assets/ff5x5-sheet.png" id="1_3h0t8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icpit"]
+atlas = ExtResource("1_3h0t8")
+region = Rect2(399, 219, 15, 15)
+
+[node name="Wall" type="Sprite2D"]
+modulate = Color(0.972549, 0.443137, 0.443137, 1)
+texture = SubResource("AtlasTexture_icpit")
+centered = false

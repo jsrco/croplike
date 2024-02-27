@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="EntityDefinition" load_steps=7 format=3 uid="uid://cn084tlfhdoct"]
+
+[ext_resource type="Script" path="res://entities/actors/components/definitions/component_definition_fighter.gd" id="1_4e07k"]
+[ext_resource type="Texture2D" uid="uid://khsax660a83c" path="res://assets/resources/default_death_texture.tres" id="1_jgw53"]
+[ext_resource type="Script" path="res://entities/entity_definition.gd" id="1_vhe66"]
+[ext_resource type="Texture2D" uid="uid://c46axn0mmbhbu" path="res://assets/ff5x5-sheet.png" id="2_yycga"]
+
+[sub_resource type="Resource" id="Resource_rtrsy"]
+script = ExtResource("1_4e07k")
+defense = 1
+max_hp = 16
+power = 4
+death_texture = ExtResource("1_jgw53")
+death_color = Color(0.6, 0.105882, 0.105882, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sg1rp"]
+atlas = ExtResource("2_yycga")
+region = Rect2(345, 21, 15, 15)
+
+[resource]
+script = ExtResource("1_vhe66")
+ai_type = 1
+inventory_capacity = 0
+fighter_definition = SubResource("Resource_rtrsy")
+is_blocking_movement = true
+type = 2
+name = "Troll"
+texture = SubResource("AtlasTexture_sg1rp")
+color = Color(0.639216, 0.901961, 0.207843, 1)

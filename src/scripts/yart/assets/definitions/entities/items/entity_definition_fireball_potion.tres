@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="EntityDefinition" load_steps=6 format=3 uid="uid://c326x6wj5yq6c"]
+
+[ext_resource type="Script" path="res://entities/entity_definition.gd" id="1_ekt02"]
+[ext_resource type="Script" path="res://entities/actors/components/definitions/component_definition_consumable_fireball_damage.gd" id="1_hq1gg"]
+[ext_resource type="Texture2D" uid="uid://c46axn0mmbhbu" path="res://assets/ff5x5-sheet.png" id="3_dnugk"]
+
+[sub_resource type="Resource" id="Resource_m3gv5"]
+script = ExtResource("1_hq1gg")
+damage = 12
+radius = 3
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4cwd"]
+atlas = ExtResource("3_dnugk")
+region = Rect2(558, 252, 18, 15)
+
+[resource]
+script = ExtResource("1_ekt02")
+ai_type = 0
+consumable_definition = SubResource("Resource_m3gv5")
+inventory_capacity = 0
+is_blocking_movement = false
+type = 1
+name = "Fireball Potion"
+texture = SubResource("AtlasTexture_i4cwd")
+color = Color(0.984314, 0.572549, 0.235294, 1)

@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3 uid="uid://yb12nv4utbd8"]
+
+[ext_resource type="Script" path="res://scenes/game/game.gd" id="1_y5i64"]
+[ext_resource type="Script" path="res://scenes/game/handlers/input_handler_main_game.gd" id="2_qjf5i"]
+[ext_resource type="Script" path="res://scenes/game/handlers/input_handler.gd" id="2_ut0k4"]
+[ext_resource type="Script" path="res://scenes/game/handlers/input_handler_game_over.gd" id="3_2r225"]
+[ext_resource type="Script" path="res://map/map.gd" id="3_mpd8i"]
+[ext_resource type="Script" path="res://map/dungeon_generator.gd" id="4_i0sh4"]
+[ext_resource type="Script" path="res://map/field_of_view.gd" id="5_g0y0l"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_y5i64")
+
+[node name="InputHandler" type="Node" parent="."]
+script = ExtResource("2_ut0k4")
+
+[node name="GameOver" type="Node" parent="InputHandler"]
+script = ExtResource("3_2r225")
+
+[node name="MainGame" type="Node" parent="InputHandler"]
+script = ExtResource("2_qjf5i")
+
+[node name="Map" type="Node2D" parent="."]
+script = ExtResource("3_mpd8i")
+
+[node name="Tiles" type="Node2D" parent="Map"]
+
+[node name="Entities" type="Node2D" parent="Map"]
+
+[node name="DungeonGenerator" type="Node" parent="Map"]
+script = ExtResource("4_i0sh4")
+map_height = null
+map_width = null
+max_monsters_per_room = null
+max_rooms = null
+room_max_size = null
+room_min_size = null
+
+[node name="FieldOfView" type="Node" parent="Map"]
+script = ExtResource("5_g0y0l")
+
+[node name="PlayerCamera" type="Camera2D" parent="."]
