@@ -19,13 +19,13 @@ func create_wall():
 	var entities = $Entities
 	var viewport_size = get_viewport_rect().size
 	# Specify the positions for the top and bottom edges
-	for x in range(0, viewport_size.x, cell_size):
+	for x in range(0, 600, cell_size):
 		entities.add_child(create_wall_at(Vector2(x, 0)))
-		entities.add_child(create_wall_at(Vector2(x, viewport_size.y - cell_size)))
+		entities.add_child(create_wall_at(Vector2(x, 600 - cell_size)))
 	# Specify the positions for the left and right edges
-	for y in range(cell_size, viewport_size.y - cell_size, cell_size):
+	for y in range(cell_size, 600 - cell_size, cell_size):
 		entities.add_child(create_wall_at(Vector2(0, y)))
-		entities.add_child(create_wall_at(Vector2(viewport_size.x - cell_size, y)))
+		entities.add_child(create_wall_at(Vector2(600 - cell_size, y)))
 
 
 func create_wall_at(position: Vector2) -> Node2D:
