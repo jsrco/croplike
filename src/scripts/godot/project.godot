@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Orange"
-run/main_scene="res://scenes/game/game.tscn"
+run/main_scene="res://scenes/platform/world.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://assets/icon.svg"
 

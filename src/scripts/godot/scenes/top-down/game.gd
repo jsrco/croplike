@@ -1,6 +1,6 @@
 extends Node2D
 
-var wall_scene = preload("res://scenes/game/wall.tscn")
+var wall_scene = preload("res://scenes/top-down/wall.tscn")
 
 
 # Called when the node enters the scene tree for the first time.

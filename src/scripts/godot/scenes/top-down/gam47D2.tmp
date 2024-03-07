@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://bv472kwryxsm7"]
+
+[ext_resource type="Script" path="res://scenes/top-down/game.gd" id="1_8rubl"]
+[ext_resource type="Texture2D" uid="uid://c46axn0mmbhbu" path="res://assets/ff5x5-sheet.png" id="2_wnufh"]
+[ext_resource type="Script" path="res://scenes/top-down/entity.gd" id="3_y0snx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rtki4"]
+atlas = ExtResource("2_wnufh")
+region = Rect2(273, 219, 15, 15)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_8rubl")
+
+[node name="Entities" type="Node2D" parent="."]
+
+[node name="Player" type="Sprite2D" parent="."]
+position = Vector2(15, 15)
+texture = SubResource("AtlasTexture_rtki4")
+centered = false
+script = ExtResource("3_y0snx")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
